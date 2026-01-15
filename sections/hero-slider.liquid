@@ -1,0 +1,530 @@
+{{ 'hero-slider.css' | asset_url | stylesheet_tag: preload: true }}
+{%- liquid
+  assign container_class = section.settings.container_width
+  if section.settings.container_width == 'full-width'
+    assign container_class = 'full-width'
+  endif
+
+  assign adapt_aspect_ratio_desktop = ''
+  assign adapt_aspect_ratio_mobile = ''
+  
+  if section.settings.slider_height == 'adapt' and section.blocks.first.settings.image != blank
+    assign adapt_aspect_ratio_desktop = section.blocks.first.settings.image.aspect_ratio
+  endif
+  
+  if section.settings.slider_height_mobile == 'adapt'
+    if section.blocks.first.settings.mobile_image != blank
+      assign adapt_aspect_ratio_mobile = section.blocks.first.settings.mobile_image.aspect_ratio
+    elsif section.blocks.first.settings.image != blank
+      assign adapt_aspect_ratio_mobile = section.blocks.first.settings.image.aspect_ratio
+    endif
+  endif
+
+  assign slider_classes = 'hero-slider swiper'
+  assign slider_classes = slider_classes | append: ' hero-slider--height-desktop-' | append: section.settings.slider_height
+  assign slider_classes = slider_classes | append: ' hero-slider--height-mobile-' | append: section.settings.slider_height_mobile
+  assign slider_classes = slider_classes | append: ' hero-slider--pagination-' | append: section.settings.pagination_position
+  assign slider_classes = slider_classes | append: ' hero-slider--navigation-' | append: section.settings.navigation_position
+-%}
+
+<style>
+  .hero-slider[data-section-id="{{ section.id }}"] {
+    {% if adapt_aspect_ratio_desktop != '' %}
+      aspect-ratio: {{ adapt_aspect_ratio_desktop }};
+    {% endif %}
+  }
+  
+  @media (max-width: 767px) {
+    .hero-slider[data-section-id="{{ section.id }}"] {
+      {% if adapt_aspect_ratio_mobile != '' %}
+        aspect-ratio: {{ adapt_aspect_ratio_mobile }};
+      {% endif %}
+    }
+  }
+</style>
+
+<div class="{{ container_class }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
+  <div class="{{ slider_classes }}" data-section-id="{{ section.id }}">
+    
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide m-color-{{ block.settings.color_scheme }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <div class="hero-slide__image-container">
+              {%- if block.settings.mobile_image != blank -%}
+                <picture>
+                  <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_image | image_url: width: 800, height: 800 }}">
+                  <img
+                    srcset="{{ block.settings.image | image_url: width: 1800, height: 800 }} 1x, {{ block.settings.image | image_url: width: 1800, height: 800, scale: 2 }} 2x"
+                    src="{{ block.settings.image | image_url: width: 1800, height: 800 }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                  >
+                </picture>
+              {%- else -%}
+                <img
+                  srcset="{{ block.settings.image | image_url: width: 1800, height: 800 }} 1x, {{ block.settings.image | image_url: width: 1800, height: 800, scale: 2 }} 2x"
+                  src="{{ block.settings.image | image_url: width: 1800, height: 800 }}"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                >
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            <div class="hero-slide__placeholder">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+
+          <div class="hero-slide__overlay" style="--overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+          
+          <div class="content-wapper {{ block.settings.container_width }}" style="display: flex; justify-content: {{ block.settings.horizontal_alignment }}; height: 100%;">
+            <div class="hero-slide__content-container" style="display: flex; align-items: {{ block.settings.vertical_alignment }}; height: 100%;; width: auto;">
+              <div class="hero-slide__content content-width-{{ block.settings.content_width }} text-{{ block.settings.text_alignment }} border-radius-{{ block.settings.corner-radius }}" style="background: {{ block.settings.background }}; backdrop-filter: blur({{ block.settings.background_blur }}px);">
+                <div class="m-color-{{ block.settings.text_color_scheme }}">
+                  <h4 class="hero-slide-sub-heading {{ block.settings.sub_heading_font_size }}">{{ block.settings.sub_heading | escape }}</h4>
+                  <h2 class="hero-slide-heading {{ block.settings.heading_font_size }}">{{ block.settings.heading | escape }}</h2>
+                  <div class="hero-slide-text rte">{{ block.settings.text }}</div>
+                </div>
+
+                {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
+                  <div class="hero-slide__buttons">
+                    {%- if block.settings.button_label_1 != blank -%}
+                      <a href="{{ block.settings.button_link_1 }}" class="btn {{ block.settings.first_button_type }}" {% if block.settings.button_link_1 contains '://' %}target="_blank"{% endif %}>
+                        {{ block.settings.button_label_1 | escape }}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.button_label_2 != blank -%}
+                      <a href="{{ block.settings.button_link_2 }}" class="btn {{ block.settings.second_button_type }}" {% if block.settings.button_link_2 contains '://' %}target="_blank"{% endif %}>
+                        {{ block.settings.button_label_2 | escape }}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      {%- if section.settings.show_navigation -%}
+
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+      {%- endif -%}
+
+      {%- if section.settings.show_pagination -%}
+        <div class="swiper-pagination"></div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const swiperContainer = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!swiperContainer) return;
+
+    const swiperOptions = {
+      loop: {% if section.settings.loop_sliders %}true{% else %}false{% endif %},
+      effect: 'slide',
+      speed: 500,
+    };
+
+    {% if section.settings.auto_rotate_sliders %}
+      swiperOptions.autoplay = {
+        delay: {{ section.settings.change_sliders_every | times: 1000 }},
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      };
+    {% endif %}
+
+    {% if section.settings.show_navigation %}
+      swiperOptions.navigation = {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      };
+    {% endif %}
+
+    {% if section.settings.show_pagination %}
+      swiperOptions.pagination = {
+        el: '.swiper-pagination',
+        clickable: true,
+      };
+    {% endif %}
+
+    const swiper = new Swiper(swiperContainer, swiperOptions);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slider",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container type",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "header",
+      "content": "Slider Height"
+    },
+    {
+      "type": "select",
+      "id": "slider_height",
+      "label": "Desktop height",
+      "options": [
+        { "value": "adapt", "label": "Adapt to first slide image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full-screen", "label": "Full screen" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "slider_height_mobile",
+      "label": "Mobile height",
+      "options": [
+        { "value": "adapt", "label": "Adapt to first slide image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full-screen", "label": "Full screen" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "Slider Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_sliders",
+      "label": "Loop slides",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate_sliders",
+      "label": "Auto rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "change_sliders_every",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Change slides every",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination (dots)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "pagination_position",
+      "label": "Pagination position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation (arrows)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "navigation_position",
+      "label": "Navigation position",
+      "options": [
+        { "value": "middle-between", "label": "Middle (between)" },
+        { "value": "top-between", "label": "Top (between)" },
+        { "value": "bottom-between", "label": "Bottom (between)" },
+        { "value": "top-left", "label": "Top Left" },
+        { "value": "top-right", "label": "Top Right" },
+        { "value": "middle-left", "label": "Middle Left" },
+        { "value": "middle-right", "label": "Middle Right" },
+        { "value": "bottom-left", "label": "Bottom Left" },
+        { "value": "bottom-center", "label": "Bottom Center" },
+        { "value": "bottom-right", "label": "Bottom Right" }
+      ],
+      "default": "middle-between"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "custom class"
+
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "info": "Color control for sidebar [Learn more](https://codecraftmehedi.com/)", 
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "color_scheme",
+          "id": "text_color_scheme",
+          "label": "Text color scheme"
+        },
+        {
+          "type": "header",
+          "content": "Content area"
+        },
+        {
+          "type": "select",
+          "id": "container_width",
+          "label": "Container type",
+          "options": [
+            { "value": "container", "label": "Container" },
+            { "value": "container-fluid", "label": "Container fluid" },
+            { "value": "container-narrow", "label": "Container narrow" },
+            { "value": "container-extra-narrow", "label": "Container extra narrow" },
+            { "value": "full-width", "label": "Full width" }
+          ],
+          "default": "full-width"
+        },
+        {
+          "type": "header",
+          "content": "Background Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "sub_heading",
+          "label": "Sub Heading",
+          "default": "Sub Heading"
+        },
+        {
+          "type": "select",
+          "id": "sub_heading_font_size",
+          "label": "Font Size",
+          "info": "Change variable font size form typography settings [Learn more](https://codecraftmehedi.com/)",
+          "options": [
+            { "value": "h3", "label": "h3" },
+            { "value": "h4", "label": "h4" },
+            { "value": "h5", "label": "h5" },
+            { "value": "h6", "label": "h6" },
+          ],
+          "default": "h4"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_font_size",
+          "label": "Font Size",
+          "options": [
+            { "value": "h1", "label": "h1" },
+            { "value": "h2", "label": "h2" },
+            { "value": "h3", "label": "h3" },
+            { "value": "h4", "label": "h4" },
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Discover our premium collection of organic honey, rich ghee, and aromatic coffee.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "label": "First Button Label",
+          "default": "Shop Honey"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "First Button Link"
+        },
+        {
+          "type": "select",
+          "id": "first_button_type",
+          "label": "Button type",
+          "options": [
+            {"value": "btn--primary", "label": "Primary"},
+            {"value": "btn--secondary", "label": "Secondary"},
+            {"value": "btn--underline", "label": "Underline"},
+            {"value": "btn--gradient", "label": "Gradient"},
+          ],
+          "default": "btn--primary"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Second Button Label",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Second Button Link"
+        },
+        {
+          "type": "select",
+          "id": "second_button_type",
+          "label": "Button type",
+          "options": [
+            {"value": "btn--primary", "label": "Primary"},
+            {"value": "btn--secondary", "label": "Secondary"},
+            {"value": "btn--underline", "label": "Underline"},
+            {"value": "btn--gradient", "label": "Gradient"},
+          ],
+          "default": "btn--secondary"
+        },
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "color_background",
+          "id": "background",
+          "label": "Background",
+          "default": "rgba(0, 0, 0, 0.5)"
+        },
+        {
+          "type": "range",
+          "id": "background_blur",
+          "label": "Background Blur",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "default": 5
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "horizontal_alignment",
+          "label": "Horizontal alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" },
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "options": [
+            { "value": "flex-start", "label": "Top" },
+            { "value": "center", "label": "Middle" },
+            { "value": "flex-end", "label": "Bottom" },
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Content width"
+        },
+        {
+          "type": "select",
+          "id": "content_width",
+          "label": "Width",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "extra-large", "label": "Extra large" },
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "select",
+          "id": "corner-radius",
+          "label": "Corner Radius",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "style-one", "label": "Style one" },
+            { "value": "style-two", "label": "Style two" },
+          ],
+          "default": "none"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slider",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

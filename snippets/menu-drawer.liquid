@@ -1,0 +1,136 @@
+{{ 'menu-drawer.css' | asset_url | stylesheet_tag: preload: true }}
+
+<!-- Menu Drawer Overlay -->
+<div class="drawer__overlay" id="drawer-overlay"></div>
+
+<!-- Menu Drawer -->
+<div class="drawer drawer--menu m-color-{{ section.settings.color_scheme }}" id="menu-drawer" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer__inner">
+    <div class="drawer__main">
+      <div class="drawer__header">
+        <button class="drawer__close" aria-label="Close" data-drawer-close>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="drawer__content">
+        <!-- Main Menu Panel -->
+        <div class="drawer__panel drawer__panel--main active" id="panel-main">
+          <nav class="menu" role="navigation" aria-label="Main Menu">
+            <ul class="menu__list menu__list--level-1">
+              {%- for link in linklists[section.settings.menu].links -%}
+                <li class="menu__item">
+                  {%- if link.links != blank -%}
+                    <!-- Item with submenu -->
+                    <button class="menu__link menu__link--button" 
+                            aria-expanded="false" 
+                            data-target-panel="panel-{{ link.handle }}">
+                      <span>{{ link.title }}</span>
+                      <svg class="menu__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                  {%- else -%}
+                    <!-- Simple link without submenu -->
+                    <a href="{{ link.url }}" 
+                       class="menu__link"
+                       {% if link.current %} aria-current="page"{% endif %}>
+                      {{ link.title }}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </div>
+        
+        <!-- Second Level Submenu Panels -->
+        {%- for link in linklists[section.settings.menu].links -%}
+          {%- if link.links != blank -%}
+            <!-- Submenu Panel -->
+            <div class="drawer__panel drawer__panel--submenu" id="panel-{{ link.handle }}">
+              <div class="drawer__submenu-header">
+                <button class="drawer__back" 
+                        aria-label="Back to main menu" 
+                        data-target-panel="panel-main">
+                  <svg class="menu__arrow menu__arrow--back" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>{{ link.title }}</span>
+                </button>
+              </div>
+              
+              <nav class="menu menu--submenu" role="navigation" aria-label="{{ link.title }} submenu">
+                <ul class="menu__list menu__list--level-2">
+                  {%- for child_link in link.links -%}
+                    <li class="menu__item">
+                      {%- if child_link.links != blank -%}
+                        <!-- Nested submenu item -->
+                        <button class="menu__link menu__link--button" 
+                                aria-expanded="false" 
+                                data-target-panel="panel-{{ child_link.handle }}">
+                          <span>{{ child_link.title }}</span>
+                          <svg class="menu__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </button>
+                      {%- else -%}
+                        <!-- Simple child link -->
+                        <a href="{{ child_link.url }}" 
+                           class="menu__link"
+                           {% if child_link.current %} aria-current="page"{% endif %}>
+                          {{ child_link.title }}
+                        </a>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+        
+        <!-- Third Level Submenu Panels -->
+        {%- for link in linklists[section.settings.menu].links -%}
+          {%- if link.links != blank -%}
+            {%- for child_link in link.links -%}
+              {%- if child_link.links != blank -%}
+                <!-- Third Level Submenu Panel -->
+                <div class="drawer__panel drawer__panel--submenu" id="panel-{{ child_link.handle }}">
+                  <div class="drawer__submenu-header">
+                    <button class="drawer__back" 
+                            aria-label="Back to {{ link.title }}" 
+                            data-target-panel="panel-{{ link.handle }}">
+                      <svg class="menu__arrow menu__arrow--back" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>{{ child_link.title }}</span>
+                    </button>
+                  </div>
+                  
+                  <nav class="menu menu--submenu" role="navigation" aria-label="{{ child_link.title }} submenu">
+                    <ul class="menu__list menu__list--level-3">
+                      {%- for grandchild_link in child_link.links -%}
+                        <li class="menu__item">
+                          <a href="{{ grandchild_link.url }}" 
+                             class="menu__link"
+                             {% if grandchild_link.current %} aria-current="page"{% endif %}>
+                            {{ grandchild_link.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </nav>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'menu-drawer.js' | asset_url }}" defer="defer"></script>

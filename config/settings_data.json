@@ -1,0 +1,154 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "logo": "shopify://shop_images/Halla_Hijab_Color.png",
+    "logo_width_desktop": 170,
+    "logo_width_tablet": 120,
+    "logo_width_mobile": 100,
+    "site_name": "Halla Hijab",
+    "favicon": "shopify://shop_images/Fav_icon_halla_hijab_1.png",
+    "enable_rtl": false,
+    "type_base_font": "abril_fatface_n4",
+    "use_custom_font_body": true,
+    "custom_body_font": "https://cdn.shopify.com/s/files/1/0964/2108/5491/files/Sofia_Pro_Regular.woff2?v=1767820314",
+    "type_base_size": 20,
+    "type_base_line_height": 21,
+    "type_header_font": "abril_fatface_n4",
+    "use_custom_font_heading": true,
+    "custom_heading_font": "https://cdn.shopify.com/s/files/1/0964/2108/5491/files/Sofia_Pro_Regular.woff2?v=1767820314",
+    "h1_font_size": 92,
+    "h2_font_size": 56,
+    "h3_font_size": 40,
+    "h4_font_size": 28,
+    "h5_font_size": 22,
+    "container_max_width": 1480,
+    "container_fluid_width": 1620,
+    "container_narrow_width": 1100,
+    "container_extra_narrow_width": 670,
+    "section_spacing_desktop": 0,
+    "section_spacing_mobile": 0,
+    "min_page_margin": 18,
+    "body_background": "#f3f3f4",
+    "body_link": "#d33636",
+    "primary_button_bg": "#d33636",
+    "primary_button_border": "#e02b2b",
+    "gradient_button_hover_bg": "",
+    "gradient_button_hover_label": "#d33636",
+    "animation_button_hover_label": "#F5F5F5",
+    "animation_button_font_size": 18,
+    "animation_button_letter_space": 3,
+    "spacing_sections": 0,
+    "spacing_sections_mobile": 0,
+    "search_type": "drawer",
+    "search_color_scheme": "scheme-1e6195d5-cb89-4a9c-a4a6-d3205814ce99",
+    "corner-radius-style-one": 4,
+    "cart_behavior": "ajax_drawer",
+    "aspect_ratio": "cropped-image--portrait",
+    "whatsapp_number": "+84 (0)387 392 056",
+    "social_twitter_link": "#",
+    "social_facebook_link": "#",
+    "social_pinterest_link": "#",
+    "social_instagram_link": "#",
+    "type_header_base_size": 49,
+    "type_header_spacing": 0,
+    "background_color": "#222222",
+    "foreground_color": "#666666",
+    "max_page_width": "110rem",
+    "type_primary_font": "abril_fatface_n4",
+    "content_for_index": [],
+    "color_schemes": {
+      "default": {
+        "settings": {
+          "background": "#222222",
+          "background_secondary": "#222222",
+          "background_gradient": "",
+          "text": "#ffffff",
+          "subtext": "#ffffff",
+          "heading_text": "#eeeeee",
+          "link_color": "#ffffff",
+          "link_hover_color": "#666666",
+          "price_sale": "#e02b2b",
+          "price_regular": "#666666",
+          "form_field": "#ffffff",
+          "form_field_label": "#222222",
+          "tooltip": "#222222",
+          "tooltip_label": "#ffffff",
+          "border": "#eeeeee",
+          "additional_color_1": "#ff0000",
+          "additional_color_2": "#00ff00"
+        }
+      },
+      "scheme-1e6195d5-cb89-4a9c-a4a6-d3205814ce99": {
+        "settings": {
+          "background": "#222222",
+          "background_secondary": "#222222",
+          "background_gradient": "",
+          "text": "#222222",
+          "subtext": "#ffffff",
+          "heading_text": "#222222",
+          "link_color": "#222222",
+          "link_hover_color": "#666666",
+          "price_sale": "#cccccc",
+          "price_regular": "#666666",
+          "form_field": "#ffffff",
+          "form_field_label": "#222222",
+          "tooltip": "#222222",
+          "tooltip_label": "#ffffff",
+          "border": "#eeeeee",
+          "additional_color_1": "#ff0000",
+          "additional_color_2": "#00ff00"
+        }
+      },
+      "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6": {
+        "settings": {
+          "background": "#f3f3f4",
+          "background_secondary": "#000000",
+          "background_gradient": "",
+          "text": "#222222",
+          "subtext": "#222222",
+          "heading_text": "#222222",
+          "link_color": "#222222",
+          "link_hover_color": "#222222",
+          "price_sale": "#e02b2b",
+          "price_regular": "#222222",
+          "form_field": "#ffffff",
+          "form_field_label": "#222222",
+          "tooltip": "#222222",
+          "tooltip_label": "#ffffff",
+          "border": "#222222",
+          "additional_color_1": "#ff0000",
+          "additional_color_2": "#00ff00"
+        }
+      },
+      "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f": {
+        "settings": {
+          "background": "#f3f3f4",
+          "background_secondary": "#222222",
+          "background_gradient": "",
+          "text": "#222222",
+          "subtext": "#222222",
+          "heading_text": "#222222",
+          "link_color": "#222222",
+          "link_hover_color": "#666666",
+          "price_sale": "#e02b2b",
+          "price_regular": "#666666",
+          "form_field": "#ffffff",
+          "form_field_label": "#222222",
+          "tooltip": "#222222",
+          "tooltip_label": "#ffffff",
+          "border": "#cccccc",
+          "additional_color_1": "#ff0000",
+          "additional_color_2": "#00ff00"
+        }
+      }
+    }
+  }
+}

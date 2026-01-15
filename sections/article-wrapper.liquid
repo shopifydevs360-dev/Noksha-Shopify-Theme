@@ -1,0 +1,190 @@
+{{ 'article-wrapper.css' | asset_url | stylesheet_tag }}
+{% render 'section-base-style' %}
+
+{%- assign blog_object = blogs[section.settings.blog] -%}
+
+{%- liquid
+  assign classes = 'featured-posts section-x-padding'
+  assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
+  assign classes = classes | append: ' ' | append: section.settings.color_control
+  assign classes = classes | append: ' m-color-' | append: section.settings.text_color_scheme
+  assign classes = classes | append: ' ' | append: section.settings.custom_class | default: ''
+  assign wrapper_title_size = '' | append: section.settings.wrapper_title_font_size | default: ''
+  assign post_title_font = '' | append: section.settings.post_title_font | default: ''
+-%}
+
+{% if blog_object.articles.size > 0 %}
+<section class="{{ classes }}" data-featured-articles>
+  <h1 class="container sidebar-space {{ wrapper_title_size }}">
+    {{ section.settings.wrapper_title }}
+  </h1>
+
+  <div class="articles-wrapper sidebar-space">
+    <div class="article-track">
+      {% for article in blog_object.articles limit: 2 %}
+        <article
+          class="article-slide {% if forloop.first %}is-active{% endif %}"
+          data-slide="{{ forloop.index0 }}"
+        >
+          <div class="article-pin-card">
+            <div class="image-wrap">
+              <a href="{{ article.url }}" class="image-item">
+                <div class="cropped-image-wrapper cropped-image--square">
+                  {% if article.image %}
+                    <img
+                      srcset="
+                        {{ article.image | image_url: width: 900 }} 1x,
+                        {{ article.image | image_url: width: 900, scale: 2 }} 2x
+                      "
+                      src="{{ article.image | image_url: width: 900 }}"
+                      alt="{{ article.image.alt | escape | default: article.title }}"
+                      loading="lazy"
+                      width="{{ article.image.width }}"
+                      height="{{ article.image.height }}"
+                    >
+                  {% endif %}
+                </div>
+              </a>
+            </div>
+
+            <div class="text-wrap">
+              <div class="featured-post-count">
+                {% for article in blog_object.articles limit: 2 %}
+                  <button
+                    class="counter-item {% if forloop.first %}active-counter{% endif %}"
+                    data-index="{{ forloop.index0 }}"
+                  >
+                    {{ forloop.index | prepend: '0' }}
+                  </button>
+                {% endfor %}
+              </div>
+              <a href="{{ article.url }}" class="text-item">
+
+                <h2 class="article-title {{ post_title_font }}">{{ article.title }}</h2>
+
+                <span class="hide-tablet hide-mobile hide-tablet-landscape">
+                  {% if article.excerpt != blank %}
+                    <p class="article-excerpt ">
+                      {{ article.excerpt | strip_html | truncate: 200 }}
+                    </p>
+                  {% else %}
+                    <p class="article-excerpt">
+                      {{ article.content | strip_html | truncate: 200 }}
+                    </p>
+                  {% endif %}
+                </span>
+                <span class="btn-wrapper active-underline">
+                  <p class="btn--animation hover-underline">Explore</p>
+                </span>
+              </a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container sidebar-space end-link active-underline">
+    <a class="btn--animation hover-underline" href="{{ section.settings.blog.url }}">All Features</a>
+  </div>
+</section>
+{% endif %}
+
+<script src="{{ 'article-wrapper.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Featured Articles",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "text_color_scheme",
+      "label": "Text color scheme"
+    },
+    {
+      "type": "text",
+      "id": "wrapper_title",
+      "label": "Section title",
+      "default": "Featured Articles"
+    },
+    {
+      "type": "select",
+      "id": "wrapper_title_font_size",
+      "label": "Font Size",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" },
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Select blog"
+    },
+    {
+      "type": "select",
+      "id": "post_title_font",
+      "label": "Post title font",
+      "options": [
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" },
+        { "value": "h5", "label": "h5" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Articles",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

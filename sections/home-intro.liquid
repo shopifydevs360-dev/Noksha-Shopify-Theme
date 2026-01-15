@@ -1,0 +1,60 @@
+{{ 'home-intro.css' | asset_url | stylesheet_tag }}
+
+<section class="home-intro">
+
+  <!-- BLACK TEXT (BACKGROUND) -->
+  <div class="home-intro__text home-intro__text--black">
+    <h2 class="home-intro__heading">
+      {{ section.settings.heading_text }}
+    </h2>
+  </div>
+
+  <!-- MASK (IMAGE + WHITE TEXT) -->
+  <div class="home-intro__mask">
+
+    <!-- WHITE TEXT (ONLY VISIBLE OVER IMAGE) -->
+    <div class="home-intro__text home-intro__text--white">
+      <h2 class="home-intro__heading">
+        {{ section.settings.heading_text }}
+      </h2>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="home-intro__image">
+      {% if section.settings.image %}
+        <img
+          src="{{ section.settings.image | image_url: width: 2000 }}"
+          alt=""
+          loading="eager"
+        >
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+<script src="{{ 'home-intro.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Home Intro",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading_text",
+      "label": "Heading text",
+      "default": "<p>OUAI /wā/ (noun) — pronounced way</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Intro"
+    }
+  ]
+}
+{% endschema %}

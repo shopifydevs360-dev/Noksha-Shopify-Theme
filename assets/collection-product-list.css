@@ -1,0 +1,154 @@
+/* Main Collection Layout */
+.collection-wrapper {
+  display: flex;
+  gap: 30px;
+}
+
+.collection-wrapper.with-sidebar {
+  flex-direction: row;
+}
+
+.product-list-wapper {
+  flex-grow: 1;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: var(--border-radius-style-two, 8px);
+  background-color: rgb(var(--color-background-secondary));
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.results-count {
+  font-size: 0.9em;
+  color: rgb(var(--color-subtext));
+}
+
+.sort-dropdown {
+  padding: 8px 12px;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: var(--border-radius-style-one, 4px);
+  background-color: rgb(var(--color-background));
+  font-family: var(--font-body-family);
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: var(--border-radius-style-one, 4px);
+}
+
+.view-btn {
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: rgb(var(--color-text));
+}
+
+.view-btn:first-child {
+  border-right: 1px solid rgb(var(--color-border));
+}
+
+.view-btn.active,
+.view-btn:hover {
+  background-color: rgb(var(--color-background-secondary));
+}
+
+/* Product Grid */
+.products-grid {
+  display: grid;
+  gap: 20px;
+}
+
+/* Grid Columns - Desktop */
+.grid-desktop-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-desktop-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-desktop-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-desktop-5 { grid-template-columns: repeat(5, 1fr); }
+.grid-desktop-6 { grid-template-columns: repeat(6, 1fr); }
+
+/* Grid Columns - Mobile */
+@media (max-width: 749px) {
+  .collection-wrapper {
+    flex-direction: column;
+  }
+  
+  .toolbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .grid-mobile-1 { grid-template-columns: 1fr; }
+  .grid-mobile-2 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Pagination */
+.pagination,
+.load-more-container,
+.infinity-loading {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.pagination .list {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination .page a,
+.pagination .page span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 50%;
+  text-decoration: none;
+  color: rgb(var(--color-text));
+  transition: all 0.2s;
+}
+
+.pagination .page a:hover {
+  background-color: rgb(var(--color-link));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-link));
+}
+
+.pagination .page.current span {
+  background-color: rgb(var(--color-link));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-link));
+}
+
+.loading-spinner {
+  border: 4px solid rgba(var(--color-text), 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: rgb(var(--color-link));
+  animation: spin 1s ease infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

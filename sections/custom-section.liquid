@@ -1,0 +1,350 @@
+{% liquid
+  assign has_bg_image = false
+  if section.settings.background_image != blank or section.settings.background_image_mobile != blank
+    assign has_bg_image = true
+  endif
+
+  assign bg_color = section.settings.background_color
+  assign container_width = section.settings.container_width
+  assign height_type = section.settings.height_type
+  assign justify_content = section.settings.justify_content
+  
+  if section.settings.background_image != blank and height_type == "image"
+    assign aspect_ratio = section.settings.background_image.aspect_ratio
+  endif
+  
+  if section.settings.background_image_mobile != blank and height_type == "image"
+    assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
+  endif
+%}
+
+<style>
+  /* Section wrapper */
+  .section-{{ section.id }}-id .custom-section__inner{
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: {{ justify_content }};
+    {% unless has_bg_image %}
+      background-color: {{ bg_color }};
+    {% endunless %}
+    border-top-left-radius: {{ section.settings.border_radius_top }}px;
+    border-top-right-radius: {{ section.settings.border_radius_top }}px;
+    border-bottom-left-radius: {{ section.settings.border_radius_bottom }}px;
+    border-bottom-right-radius: {{ section.settings.border_radius_bottom }}px;
+  }
+
+  /* Inner wrapper with padding */
+  .section-{{ section.id }}-id .custom-section__inner {
+    position: relative;
+    z-index: 1;
+    padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: {{ justify_content }};
+  }
+
+/* Apply height modes to the inner wrapper */
+.section-{{ section.id }}-id .custom-section__inner[data-height="content"] { height: auto; }
+.section-{{ section.id }}-id .custom-section__inner[data-height="custom"] { height: {{ section.settings.height_desktop }}px; }
+
+{% if height_type == "image" and aspect_ratio %}
+  .section-{{ section.id }}-id .custom-section__inner[data-height="image"] { 
+    height: auto;
+    position: relative;
+  }
+  .section-{{ section.id }}-id .custom-section__inner[data-height="image"]::before {
+    content: "";
+    display: block;
+    width: 100%;
+    padding-top: calc(100% / {{ aspect_ratio }});
+  }
+  .section-{{ section.id }}-id .custom-section__inner[data-height="image"] > .custom-section__background,
+  .section-{{ section.id }}-id .custom-section__inner[data-height="image"] .custom-section__overlay,
+  .section-{{ section.id }}-id .custom-section__inner[data-height="image"] .custom-section__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .section-{{ section.id }}-id .custom-section__inner[data-height="image"] .custom-section__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: {{ justify_content }};
+    z-index: 1;
+    padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
+  }
+  
+  {% if aspect_ratio_mobile %}
+    @media (max-width: 768px) {
+      .section-{{ section.id }}-id .custom-section__inner[data-height="image"]::before {
+        padding-top: calc(100% / {{ aspect_ratio_mobile }});
+      }
+    }
+  {% endif %}
+{% endif %}
+
+@media (max-width: 1024px) {
+  .section-{{ section.id }}-id .custom-section__inner[data-height="custom"] {
+    height: {{ section.settings.height_tablet }}px;
+  }
+}
+@media (max-width: 768px) {
+  .section-{{ section.id }}-id .custom-section__inner[data-height="custom"] {
+    height: {{ section.settings.height_mobile }}px;
+  }
+}
+
+
+  /* Background wrapper (fills section height including padding) */
+  .section-{{ section.id }}-id .custom-section__background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  .section-{{ section.id }}-id .custom-section__background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  {% if section.settings.background_image_mobile %}
+    .section-{{ section.id }}-id .custom-section__background .mobile-bg { display: none; }
+    @media (max-width: 768px) {
+      .section-{{ section.id }}-id .custom-section__background .desktop-bg { display: none; }
+      .section-{{ section.id }}-id .custom-section__background .mobile-bg { display: block; }
+    }
+  {% endif %}
+
+  /* Overlay */
+  {% if section.settings.overlay_enable %}
+    .section-{{ section.id }}-id .custom-section__overlay {
+      position: absolute;
+      inset: 0;
+      background-color: {{ section.settings.overlay_color }};
+      opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+      z-index: -1;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+  {% endif %}
+</style>
+
+<div class="custom-section section-{{ section.id }}-id {{ container_width }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
+  <div class="custom-section__inner" data-height="{{ height_type }}">
+
+    {% if has_bg_image %}
+      <div class="custom-section__background">
+        {% if section.settings.background_image %}
+          {{ section.settings.background_image
+            | image_url: width: 2000
+            | image_tag: class: 'desktop-bg', loading: 'lazy' }}
+        {% endif %}
+        {% if section.settings.background_image_mobile %}
+          {{ section.settings.background_image_mobile
+            | image_url: width: 1000
+            | image_tag: class: 'mobile-bg', loading: 'lazy' }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.overlay_enable %}
+      <div class="custom-section__overlay" aria-hidden="true"></div>
+    {% endif %}
+
+    <div class="custom-section__content">
+      {% content_for 'blocks' %}
+    </div>
+
+  </div>
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Custom section",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "select",
+      "id": "height_type",
+      "label": "Section height",
+      "options": [
+        { "value": "content", "label": "Adapt to content" },
+        { "value": "image", "label": "Adapt to image" },
+        { "value": "custom", "label": "Custom height" }
+      ],
+      "default": "content"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Custom height (desktop)",
+      "min": 200,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "height_tablet",
+      "label": "Custom height (tablet)",
+      "min": 200,
+      "max": 1500,
+      "step": 20,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Custom height (mobile)",
+      "min": 200,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_enable",
+      "label": "Enable overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "border_radius_top",
+      "label": "Top border radius",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "border_radius_bottom",
+      "label": "Bottom border radius",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Inner padding & alignment"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Padding top/bottom",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Padding left/right",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "justify_content",
+      "label": "Content vertical alignment",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "custom class"
+
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "info": "Color control for sidebar [Learn more](https://codecraftmehedi.com/)", 
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+  ],
+  "presets": [
+    { "name": "Custom Section" }
+  ]
+}
+{% endschema %}

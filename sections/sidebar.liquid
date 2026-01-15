@@ -1,0 +1,171 @@
+{{ 'sidebar.css' | asset_url | stylesheet_tag: preload: true }}
+<div class="navigation">
+  <!--============================
+        Sidebar Panel
+  =============================-->
+  <div id="js-sidebar" class="m-sidebar hide-tablet hide-mobile hide-tablet-landscape expended">
+    <div id="area-expended" class="m-sidebar__content">
+
+      <!-- Logo -->
+      <div class="m-sidebar__logo">
+          {% render 'logo' %}
+      </div>
+      <!--   HAMBURGER   -->
+        <button type="button" class="hamburger color-control" aria-label="Open nav menu" data-trigger-section="nav-drawer">
+            <div>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+        </button>
+      <!-- Navigation -->
+      <nav class="m-sidebar__nav">
+        <!-- Search -->
+        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
+            data-trigger-section="search-drawer" aria-label="Site search">
+            <span class="js-open-icon-text" data-open-item="search-drawer-open-item">
+                <span class="icon">
+                    <!-- icon search -->
+                  {%- render 'theme-icon', icon: 'search' -%}
+                </span>
+                <strong class="text">Search</strong>
+            </span>
+            <span class="js-close-icon-text hide" data-close-item="search-drawer-close-item">
+                <strong class="text">Close</strong>
+            </span>
+        </a>
+        <!-- ACCOUNT LINKS -->
+        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
+            data-trigger-section="account-drawer" aria-label="Site account">
+            <span class="js-open-icon-text" data-open-item="account-drawer-open-item">
+                <span class="icon">
+                    <!-- icon account -->
+                  {%- render 'theme-icon', icon: 'account' -%}
+                </span>
+                <strong class="text">Account</strong>
+            </span>
+            <span class="js-close-icon-text hide" data-close-item="account-drawer-close-item">
+                <strong class="text">Close</strong>
+            </span>
+        </a>
+        <!-- Bag -->
+        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
+            data-trigger-section="bag-drawer" aria-label="Site bag">
+            <span class="js-open-icon-text" data-open-item="bag-drawer-open-item">
+                <span class="icon">
+                    <!-- icon bag -->
+                  {%- render 'theme-icon', icon: 'bag' -%}
+                  <span class="cart-count cart-count-icon">{{ cart.item_count }}</span>
+                </span>
+                <strong class="text">Bag (<span class="cart-count">{{ cart.item_count }}</span>)</strong>
+            </span>
+            <span class="js-close-icon-text hide" data-close-item="bag-drawer-close-item">
+                <strong class="text">Close</strong>
+            </span>
+        </a>
+      </nav>
+
+
+    </div>
+  </div>
+  <!--============================
+            Mobile Header
+  =============================-->
+  <div class="m-mobile-header hide-desktop hide-large-screens">
+    <div class="m-mobile-header__content">
+
+      <!-- Logo -->
+      <div class="m-mobile-header__logo">
+          {% render 'logo' %}
+      </div>
+      <!-- Navigation -->
+      <nav class="m-mobile-header__nav">
+        <!-- Search -->
+        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
+            data-trigger-section="search-drawer" aria-label="Site search">
+            <span class="js-open-icon-text" data-open-item="search-drawer-open-item">
+                <span class="icon">
+                    <!-- icon search -->
+                  {%- render 'theme-icon', icon: 'search' -%}
+                </span>
+            </span>
+            <span class="js-close-icon-text hide" data-close-item="search-drawer-close-item">
+              {%- render 'theme-icon', icon: 'close' -%}
+            </span>
+        </a>
+        <!-- ACCOUNT LINKS -->
+        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
+            data-trigger-section="account-drawer" aria-label="Site account">
+            <span class="js-open-icon-text" data-open-item="account-drawer-open-item">
+                <span class="icon">
+                    <!-- icon account -->
+                  {%- render 'theme-icon', icon: 'account' -%}
+                </span>
+            </span>
+            <span class="js-close-icon-text hide" data-close-item="account-drawer-close-item">
+              {%- render 'theme-icon', icon: 'close' -%}
+            </span>
+        </a>
+        <!-- Bag -->
+        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
+            data-trigger-section="bag-drawer" aria-label="Site bag">
+            <span class="js-open-icon-text" data-open-item="bag-drawer-open-item">
+                <span class="icon">
+                    <!-- icon bag -->
+                  {%- render 'theme-icon', icon: 'bag' -%}
+                  <span class="cart-count cart-count-icon">{{ cart.item_count }}</span>
+                </span>
+            </span>
+            <span class="js-close-icon-text hide" data-close-item="bag-drawer-close-item">
+              {%- render 'theme-icon', icon: 'close' -%}
+            </span>
+        </a>
+      </nav>
+      <!--   HAMBURGER   -->
+      <button type="button" class="hamburger color-control" aria-label="Open nav menu" data-trigger-section="nav-drawer">
+          <div>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="js-open-overlay" class="sidebar-overlay hide"></div>
+{% render 'nav-drawer' %}
+{% render 'search-drawer' %}
+{% render 'account-drawer' %}
+{% render 'bag-drawer' %}
+<script src="{{ 'sidebar.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Sidebar",
+  "limit": 1,
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "white_logo",
+      "label": "White Logo",
+      "info": "White logo will be control color with dark & light"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand text",
+      "default": "Noor"
+    }
+  ],
+  "presets": [
+    { "name": "Sidebar" }
+  ]
+}
+{% endschema %}

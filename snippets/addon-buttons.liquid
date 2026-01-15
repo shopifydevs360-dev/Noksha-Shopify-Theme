@@ -1,0 +1,52 @@
+<div class="product-block addon-buttons"{{ block.shopify_attributes }}>
+ <ul>
+    {% if block.settings.show_compare %}
+    <li class="addon-item">
+      <a href="#add-to-compare" class="addon-link btn-compare">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'compare' %}</span>
+        <span class="addon-text">Compare</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if block.settings.show_wishlist %}
+    <li class="addon-item">
+      <a href="#add-to-wishlist" class="addon-link btn-wishlist">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'wishlist' %}</span>
+        <span class="addon-text">Wishlist</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if block.settings.show_ask_question %}
+    <li class="addon-item">
+      <a href="#ask-question" class="addon-link btn-ask-question">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'question' %}</span>
+        <span class="addon-text">Quick View</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if block.settings.show_size_guide %}
+    <li class="addon-item">
+      <a href="#size-guide" class="addon-link btn-size-guide">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'measure' %}</span>
+        <span class="addon-text">Size Guide</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if block.settings.show_track_order %}
+    <li class="addon-item">
+      <a href="{{ settings.track_order_page_url }}" class="addon-link btn-track-order">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'map' %}</span>
+        <span class="addon-text">Track Order</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if block.settings.show_social_share %}
+    <li class="addon-item">
+      <a href="#social-share" class="addon-link btn-social-share">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'social-share' %}</span>
+        <span class="addon-text">Share</span>
+      </a>
+    </li>
+    {% endif %}
+ </ul>
+</div>

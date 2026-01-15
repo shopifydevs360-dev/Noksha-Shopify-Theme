@@ -1,0 +1,179 @@
+{{ 'header.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% liquid
+  assign container_width = section.settings.container_width
+  assign color_scheme = section.settings.color_scheme
+  assign sticky_behavior = section.settings.sticky_behavior
+  assign transparent_header = false
+
+  if template.name == 'index' and section.settings.enable_transparent_header
+    assign transparent_header = true
+  endif
+
+  assign header_classes = 'main-header m-color-' | append: color_scheme
+
+  if transparent_header
+    assign header_classes = header_classes | append: ' is-transparent'
+  endif
+
+  if sticky_behavior == 'always'
+    assign header_classes = header_classes | append: ' is-sticky sticky--always'
+  elsif sticky_behavior == 'scroll-up'
+    assign header_classes = header_classes | append: ' is-sticky sticky--scroll-up'
+  endif
+%}
+
+<header
+  class="{{ header_classes }}"
+  data-color-scheme="{{ color_scheme }}"
+  {% if transparent_header and section.settings.transparent_text_color %}
+    style="--header-transparent-text: {{ section.settings.transparent_text_color }};"
+  {% endif %}
+>
+  <div class="header-container {{ container_width }}">
+    
+    <!-- Left: Menu Trigger -->
+    <div class="header__left">
+      <button class="header__menu-trigger" aria-label="Menu" data-drawer-toggle="menu-drawer">
+        <span class="menu-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Center: Logo -->
+    <div class="header__center">
+      <div class="header__logo">
+        {% render 'logo' %}
+      </div>
+    </div>
+
+    <!-- Right: Icons -->
+    <div class="header__right header__icons">
+      {% if section.settings.enable_search %}
+        {%- render 'header-search' -%}
+      {% endif %}
+      {% if section.settings.enable_account and shop.customer_accounts_enabled %}
+        {% render 'header-account' %}
+      {% endif %}
+      {% if section.settings.enable_wishlist %}
+        {%- render 'header-wishlist' -%}
+      {% endif %}
+      {% if section.settings.enable_cart %}
+        {%- render 'header-cart' -%}
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+{%- render 'menu-drawer' -%}
+{%- render 'search-drawer' -%}
+{% comment %} <script src="{{ 'header.js' | asset_url }}" defer="defer"></script> {% endcomment %}
+
+{% schema %}
+{
+  "name": "t:general.header",
+  "limit": 1,
+  "enabled_on": {"groups": ["header"]},
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "inverse"
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Transparent Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_header",
+      "label": "Enable transparent header",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "transparent_logo",
+      "label": "Transparent header logo (optional)"
+    },
+    {
+      "type": "color",
+      "id": "transparent_text_color",
+      "label": "Transparent header text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Sticky Header"
+    },
+    {
+      "type": "select",
+      "id": "sticky_behavior",
+      "label": "Sticky header behavior",
+      "options": [
+        { "value": "none", "label": "No sticky" },
+        { "value": "always", "label": "Always sticky" },
+        { "value": "scroll-up", "label": "Sticky on scroll-up" }
+      ],
+      "default": "scroll-up"
+    },
+    {
+      "type": "header",
+      "content": "Header elements"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Enable search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_account",
+      "label": "Enable account",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wishlist",
+      "label": "Enable wishlist",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_cart",
+      "label": "Enable cart",
+      "default": true
+    }
+  ],
+  "presets": [
+    { "name": "Header" }
+  ]
+}
+{% endschema %}

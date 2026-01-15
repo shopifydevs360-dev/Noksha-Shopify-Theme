@@ -1,0 +1,23 @@
+<div class="product-block icon-list-item">
+  <ul class="icon-list-item__list" {{ block.shopify_attributes }}>
+      <li class="icon-list-item__item">
+        <div class="icon-list-item__icon">
+            {% if block.settings.custom_icon %}
+              <img src="{{ block.settings.custom_icon | img_url: '360x' }}" 
+                alt="{{ item.text }}" height="auto" 
+                width="{{ block.settings.custom_icon.width }}" 
+                height="{{ block.settings.custom_icon.height }}" />
+            {% else %}
+              {% render 'theme-icon', icon: block.settings.theme_icon %}
+            {% endif %}
+        </div>
+        <div class="icon-list-item__content">
+          {% if block.settings.link %}
+            <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+          {% else %}
+            {{ block.settings.text }}
+          {% endif %}
+        </div>
+      </li>
+  </ul>
+</div>

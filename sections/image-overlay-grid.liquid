@@ -1,0 +1,208 @@
+{{ 'image-overlay-grid.css' | asset_url | stylesheet_tag: preload: true }}
+{% render 'section-base-style' %}
+
+<div
+  class="image-overlay-grid {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}"
+  {{ section.shopify_attributes }}
+>
+  <div class="section-{{ section.id }}-padding">
+    <div class="image-overlay-grid cols-{{ section.settings.columns }} no-gap">
+
+      {% for block in section.blocks %}
+
+        {% liquid
+          assign button_class = block.settings.button_type
+
+          if block.settings.button_type == 'btn--animation'
+            assign button_class = button_class | append: ' ' | append: block.settings.animation_type
+          else
+            assign button_class = button_class | append: ' btn'
+          endif
+        %}
+
+        <div class="grid-item" {{ block.shopify_attributes }}>
+          <a
+            href="{{ block.settings.link }}"
+            aria-label="{{ block.settings.title }} Shop Now"
+            class="image-with-text-overlay{% if block.settings.button_type == 'btn--animation' and block.settings.animation_type == 'hover-underline' %} active-underline{% endif %}"
+          >
+
+            <!-- IMAGE -->
+            <div class="scaling-image-wrapper">
+              <div
+                class="sliding-img-wrapper large-image"
+                data-swipe-dir="up"
+                data-shape="square"
+              >
+                <div
+                  class="img-slide-bg"
+                  style="background-color: {{ block.settings.image_background_color }};"
+                ></div>
+
+                {% if block.settings.image %}
+                  <div class="cropped-image-wrapper cropped-image--square is-hover-zoom-in">
+                    <img
+                      src="{{ block.settings.image | img_url: '720x' }}"
+                      srcset="
+                        {{ block.settings.image | img_url: '720x' }} 720w,
+                        {{ block.settings.image | img_url: '1024x' }} 1024w,
+                        {{ block.settings.image | img_url: '1440x' }} 1440w
+                      "
+                      sizes="(min-width: 1200px) 50vw, 100vw"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                    >
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- TEXT -->
+            <div class="image-overlay-end-details">
+              <span class="title {{ button_class }}">
+                {{ block.settings.title }}
+              </span>
+
+              <span class="cta {{ button_class }}">
+                {{ block.settings.cta_text }}
+              </span>
+            </div>
+
+          </a>
+        </div>
+
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Image Overlay Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_type",
+          "label": "Button type",
+          "options": [
+            { "value": "btn--primary", "label": "Primary" },
+            { "value": "btn--secondary", "label": "Secondary" },
+            { "value": "btn--underline", "label": "Underline" },
+            { "value": "btn--gradient", "label": "Gradient" },
+            { "value": "btn--animation", "label": "Animation" }
+          ],
+          "default": "btn--primary"
+        },
+        {
+          "type": "select",
+          "id": "animation_type",
+          "label": "Animation type",
+          "visible_if": "{{ block.settings.button_type == 'btn--animation' }}",
+          "options": [
+            { "value": "hover-underline", "label": "Hover Underline" },
+            { "value": "upcomming", "label": "Upcoming" }
+          ],
+          "default": "hover-underline"
+        },
+        {
+          "type": "color",
+          "id": "image_background_color",
+          "label": "Image Background Color",
+          "default": "#F3F3F4"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Image Overlay Grid",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

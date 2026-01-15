@@ -1,0 +1,101 @@
+{% comment %}
+  Logo Snippet: Supports alternate logo for transparent header
+{% endcomment %}
+
+
+
+{% liquid
+  assign logo_alt = settings.site_name | default: shop.name 
+  assign transparent_logo = section.settings.transparent_logo
+  assign transparent_header_active = false
+
+  if template.name == 'index' and section.settings.enable_transparent_header
+    assign transparent_header_active = true
+  endif
+%}
+
+<a href="{{ routes.root_url }}" class="m-header__logo color-control color-light">
+  {% if settings.logo != blank %}
+    {{ settings.logo 
+      | image_url: width: 300 
+      | image_tag: 
+          class: 'm-logo__image m-logo__image--default dark-logo', 
+          widths: '100,150,200,250,300,400,500', 
+          sizes: '(max-width: 480px) 100px, (max-width: 768px) 150px, 300px', 
+          alt: logo_alt,
+          loading: 'lazy'
+    }}
+    {% if section.settings.white_logo != blank %}
+      {{ section.settings.white_logo
+        | image_url: width: 300 
+        | image_tag: 
+            class: 'm-logo__image m-logo__image--default light-logo', 
+            widths: '100,150,200,250,300,400,500', 
+            sizes: '(max-width: 480px) 100px, (max-width: 768px) 150px, 300px', 
+            alt: logo_alt,
+            loading: 'lazy'
+      }}
+    {% endif %}
+  {% else %}
+    <strong class="m-logo__image--default">{{ settings.site_name | default: shop.name }}</strong>
+  {% endif %}
+
+  {% if transparent_header_active and transparent_logo != blank %}
+    {{ transparent_logo
+      | image_url: width: 300 
+      | image_tag: 
+          class: 'm-logo__image m-logo__image--transparent', 
+          widths: '100,150,200,250,300,400,500', 
+          sizes: '(max-width: 480px) 100px, (max-width: 768px) 150px, 300px', 
+          alt: logo_alt,
+          loading: 'lazy'
+    }}
+  {% endif %}
+
+</a>
+
+<style>
+.m-logo__image {
+  width: var(--logo-mobile-width);
+}
+.footer__logo img{
+  width: calc(var(--logo-mobile-width) * 1.2);
+}
+@media (min-width: 991px) {
+  .m-logo__image {
+    width: var(--logo-desktop-width);
+  }
+  .footer__logo img{
+  width: calc(var(--logo-desktop-width) * 1.2);
+  }
+}
+
+@media (min-width: 440px) and (max-width: 991px) {
+  .m-logo__image {
+    width: var(--logo-tablet-width);
+  }
+  .footer__logo img{
+  width: calc(var(--logo-tablet-width) * 1.2);
+  }
+}
+</style>
+{% if section.settings.white_logo != blank %}
+<style>
+  .color-control.color-dark .light-logo,
+  .color-control.color-light .dark-logo
+  {
+    display: none;
+  }
+  .drawer-flyout .navigation .light-logo,
+  .drawer-flyout .navigation .color-dark .light-logo,
+  .drawer-flyout .navigation .color-light .light-logo
+  {
+    display: none;
+  }
+  .drawer-flyout .navigation .color-dark .dark-logo,
+  .drawer-flyout .navigation .color-light .dark-logo
+  {
+    display: block !important;
+  }
+</style>
+{% endif %}

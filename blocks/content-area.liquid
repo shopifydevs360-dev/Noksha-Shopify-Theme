@@ -1,0 +1,70 @@
+{% doc %}
+  A content wrapper that constrains width and applies consistent padding.
+  @example
+  {% content_for 'block', type: 'content-area', id: 'content-area' %}
+{% enddoc %}
+
+<div
+  class="content-area"
+  style="
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    padding: {{ block.settings.padding }}px;
+    text-align: {{ block.settings.text_align }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  .content-area {
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Content Area",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "default": 1200,
+      "min": 600,
+      "max": 2000,
+      "step": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "default": 40,
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content Area",
+      "category": "Layout"
+    }
+  ]
+}
+{% endschema %}

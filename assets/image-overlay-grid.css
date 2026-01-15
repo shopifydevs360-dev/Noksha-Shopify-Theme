@@ -1,0 +1,49 @@
+.image-overlay-grid {
+    position: relative;
+    max-width: 100%;
+}
+.image-overlay-grid .image-with-text-overlay {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+.image-overlay-grid .image-overlay-end-details {
+    position: absolute;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    padding: 0 1rem 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Tablet (portrait) */
+@media (min-width: 441px) and (max-width: 768px) {
+    .image-overlay-grid .image-overlay-end-details {
+        padding: 0 1.5rem 1.2rem;
+    }
+}
+
+/* Tablet (landscape) */
+@media (min-width: 769px) and (max-width: 991px) {
+    .image-overlay-grid .image-overlay-end-details {
+        padding: 0 1.5rem 1rem;
+    }
+}
+
+/* Desktop / Laptop */
+@media (min-width: 992px) and (max-width: 1320px) {
+    .image-overlay-grid .image-overlay-end-details {
+        padding: 0 3.2rem 2rem;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1321px) {
+    .image-overlay-grid .image-overlay-end-details {
+        padding: 0 9rem 3rem;
+    }
+}

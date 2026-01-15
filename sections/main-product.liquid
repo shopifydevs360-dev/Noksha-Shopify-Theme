@@ -1,0 +1,453 @@
+{{ 'main-product.css' | asset_url | stylesheet_tag }}
+{{ 'product-media.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign p_outer_classes = 'main-product'
+  assign p_outer_classes = p_outer_classes | append: ' m-color-' | append: section.settings.main_product_color
+  assign p_outer_classes = p_outer_classes | append: ' ' | append: section.settings.custom_class
+  assign p_outer_classes = p_outer_classes | append: ' ' | append: section.settings.color_control
+-%}
+<section class="{{ p_outer_classes }}">
+
+  <div class="product-layout">
+
+    <!-- =====================
+         LEFT: PRODUCT MEDIA
+    ====================== -->
+    <div class="media-warpper">
+      {% render 'main-product-media', product: product %}
+    </div>
+    <!-- =====================
+         RIGHT: PRODUCT INFO
+    ====================== -->
+    <div class="product-info">
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+
+          <!-- TITLE + PRICE -->
+          {% when 'title_price' %}
+            {% render 'product-title-price', product: product, block: block %}
+
+
+          <!-- REVIEW COUNT -->
+          {% when 'review-count' %}
+            {% if product.metafields.reviews.count > 0 %}
+              {% render 'review-count', product: product, block: block %}
+            {% endif %}
+
+          <!-- ADD TO CART FORM -->
+          {% when 'add_to_cart_form' %}
+            {% render 'main-add-to-cart-form', product: product, block: block %}
+
+
+          <!-- SHORT DESCRIPTION -->
+          {% when 'short_description' %}
+            {% if product.metafields.custom.short_description != blank %}
+              <div class="product-block short-description" {{ block.shopify_attributes }}>
+                <h3 class="label {{ block.settings.text_size }}">{{ block.settings.heading }}</h3>
+                {{ product.metafields.custom.short_description }}
+              </div>
+            {% endif %}
+
+
+          <!-- FULL DESCRIPTION -->
+          {% when 'description' %}
+            <div class="product-block main-description" {{ block.shopify_attributes }}>
+              <h3 class="label {{ block.settings.text_size }}">{{ block.settings.heading }}</h3>
+              {{ product.description }}
+            </div>
+
+          <!-- ACCORDION -->
+          {% when 'accordion' %}
+            {% render 'product-accordion', block: block %}
+          {% when 'product_meta' %}
+            {% render 'product-meta', block: block %}
+          <!-- breadcrumb -->  
+          {% when 'breadcrumb' %}
+            <nav class="product-breadcrumb" {{ block.shopify_attributes }}>
+              <a href="{{ routes.root_url }}">Home</a>
+              {% if product.collections.first %}
+                <span>/</span>
+                <a href="{{ product.collections.first.url }}">
+                  {{ product.collections.first.title }}
+                </a>
+              {% endif %}
+              <span>/</span>
+              <span>{{ product.title }}</span>
+            </nav>
+          <!-- =====================
+               COLLECTION NAME ONLY
+          ====================== -->
+          {% when 'product_collection' %}
+            {% if product.collections.first %}
+              <div class="product-collection" {{ block.shopify_attributes }}>
+                <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+              </div>
+            {% endif %}
+
+          <!-- =====================
+               icon list item
+          ====================== -->
+          {% when 'icon_list_item' %}
+            {% render 'icon-list-item', block: block %}
+          <!-- =====================
+               CUSTOM LIQUID
+          ====================== -->
+          {% when 'custom_liquid' %}
+            <div class="product-block custom-liquid" {{ block.shopify_attributes }}>
+              {{ block.settings.custom_liquid }}
+            </div>
+
+          <!-- =====================
+               Addon buttons
+          ====================== -->
+          {% when 'addon_buttons' %}
+            {% render 'addon-buttons', block: block %}
+
+          <!-- =====================
+               RICHTEXT
+          ====================== -->
+          {% when 'richtext' %}
+            <div class="product-block richtext" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </div>
+          {% when 'empty_space' %}
+            <!-- Empty block for spacing -->
+            <div class="empty-space" style="height: {{ block.settings.height }}px" {{ block.shopify_attributes }}>
+              {% if block.settings.show_divider %}
+                <div class="divider"></div>
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</section>
+<script src="{{ 'main-product.js' | asset_url }}" defer></script>
+<script src="{{ 'product-media.js' | asset_url }}" defer></script>
+<script>
+  window.product = {{ product | json }};
+</script>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "main_product_color",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "blocks": [
+    { 
+      "type": "title_price", 
+      "name": "Title & price", 
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "title_font_size",
+          "label": "Title font size",
+          "options": [
+            { "value": "h1", "label": "h1" },
+            { "value": "h2", "label": "h2" },
+            { "value": "h3", "label": "h3" },
+            { "value": "h4", "label": "h4" },
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "select",
+          "id": "price_font_size",
+          "label": "Price font size",
+          "options": [
+            { "value": "h1", "label": "h1" },
+            { "value": "h2", "label": "h2" },
+            { "value": "h3", "label": "h3" },
+            { "value": "h4", "label": "h4" },
+            { "value": "h5", "label": "h5" },
+            { "value": "h6", "label": "h6" },
+          ],
+          "default": "h3"
+        },
+      ]
+    },
+    { "type": "review-count", "name": "Reviews count", "limit": 1 },
+    { 
+      "type": "add_to_cart_form", 
+      "name": "Add to cart", 
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "cart_behavior",
+          "label": "Action",
+          "options": [
+            {
+              "value": "redirect",
+              "label": "Redirect to Cart Page"
+            },
+            {
+              "value": "ajax",
+              "label": "Ajax - No Redirect"
+            },
+            {
+              "value": "ajax_drawer",
+              "label": "Ajax + Open Cart Drawer"
+            }
+          ],
+          "default": "redirect"
+        },
+      ]
+    },
+    { 
+      "type": "short_description",
+      "name": "Short description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Short Description"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            { "value": "h1", "label": "h1" },
+            { "value": "h2", "label": "h2" },
+            { "value": "h3", "label": "h3" },
+            { "value": "h4", "label": "h4" },
+            { "value": "h5", "label": "h5" },
+            { "value": "h6", "label": "h6" },
+          ],
+          "default": "h4"
+        }
+      ]
+    },
+    { "type": "description", 
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Description"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            { "value": "h1", "label": "h1" },
+            { "value": "h2", "label": "h2" },
+            { "value": "h3", "label": "h3" },
+            { "value": "h4", "label": "h4" },
+            { "value": "h5", "label": "h5" },
+            { "value": "h6", "label": "h6" }
+          ],
+          "default": "h4"
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "richtext", "id": "content", "label": "Content" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Richtext"
+        }
+      ]
+    },
+    {
+      "type": "product_meta",
+      "name": "Product meta",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_sku",
+          "label": "Show SKU",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_vendor",
+          "label": "Show Vendor",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_type",
+          "label": "Show Product Type",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_availability",
+          "label": "Show Availability",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "product_collection",
+      "name": "Product collection",
+      "settings": []
+    },
+    {
+      "type": "icon_list_item",
+      "name": "Icon list item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "theme_icon",
+          "label": "Select theme icon",
+          "options": [
+            { "value": "fast-shipping", "label": "Fast Shipping" },
+            { "value": "percel", "label": "Percel" },
+            { "value": "tag", "label": "Tag" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "facebook", "label": "Facebook" },
+            { "value": "twitter", "label": "Twitter" },
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "youtube", "label": "YouTube" },
+            { "value": "pinterest", "label": "Pinterest" },
+            { "value": "email", "label": "Email" },
+            { "value": "wishlist", "label": "Wishlist" }
+          ],
+          "default": "fast-shipping"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Or upload custom icon",
+          "info": "Recommended size: 64x64px"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free delivery on all orders over £120.00"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL",
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Liquid"
+        }
+      ]
+    },
+    {
+      "type": "addon_buttons",
+      "name": "Addon buttons",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_compare",
+          "label": "Show add to compare",
+          "default":true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "label": "Show add to wishlist",
+          "default":true
+        },
+        {          
+          "type": "checkbox",
+          "id": "show_ask_question",
+          "label": "Show ask question",
+          "default":false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_size_guide",
+          "label": "Show size guide",
+          "default":false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_share",
+          "label": "Show share buttons",
+          "default":true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_track_order",
+          "label": "Show track order",
+          "default":false
+        },
+
+      ]
+    },
+    {
+      "type": "empty_space",
+      "name": "Empty space",
+      "settings": [
+        {
+          "type": "number",
+          "id": "height",
+          "label": "Height (px)",
+          "default": 20
+        },
+        {
+          "type": "checkbox",
+          "id": "show_divider",
+          "label": "Show Divider"
+        }
+      ]
+    },
+    {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": []
+    }
+  ]
+}
+{% endschema %}

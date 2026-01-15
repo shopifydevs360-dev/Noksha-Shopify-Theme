@@ -1,0 +1,177 @@
+{%- liquid
+  if product == blank
+    echo 'Product media unavailable'
+    break
+  endif
+
+  assign featured_media = product.featured_media
+  assign media_count = product.media.size
+-%}
+
+<div class="product-media">
+
+  <!-- =====================
+       MAIN MEDIA
+  ====================== -->
+  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
+
+    {% if featured_media.media_type contains 'video' %}
+      {{ featured_media | video_tag:
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false,
+        playsinline: true,
+        preload: 'metadata'
+      }}
+
+    {% elsif featured_media.media_type == 'image' %}
+      <img
+        srcset="
+          {%- if featured_media.width >= 165 -%}{{ featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+          {%- if featured_media.width >= 360 -%}{{ featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+          {%- if featured_media.width >= 533 -%}{{ featured_media | image_url: width: 533 }} 533w,{%- endif -%}
+          {%- if featured_media.width >= 720 -%}{{ featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+          {%- if featured_media.width >= 940 -%}{{ featured_media | image_url: width: 940 }} 940w,{%- endif -%}
+          {%- if featured_media.width >= 1066 -%}{{ featured_media | image_url: width: 1066 }} 1066w,{%- endif -%}
+          {%- if featured_media.width >= 1500 -%}{{ featured_media | image_url: width: 1500 }} 1500w,{%- endif -%}
+          {{ featured_media | image_url }} {{ featured_media.width }}w
+        "
+        src="{{ featured_media | image_url: width: 360 }}"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        alt="{{ featured_media.alt | escape }}"
+        loading="lazy"
+        class="js-open-lightbox"
+        width="{{ featured_media.width }}"
+        height="{{ featured_media.height }}"
+      >
+    {% endif %}
+
+  </div>
+
+  <!-- =====================
+       VIDEO ROW (IF EXISTS)
+  ====================== -->
+  {% assign has_video = false %}
+  {% for media in product.media %}
+    {% if media.media_type contains 'video' %}
+      {% assign has_video = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if has_video %}
+    <div class="product-media__video-row hide-tablet hide-mobile hide-tablet-landscape">
+      {% for media in product.media %}
+        {% if media.media_type contains 'video' %}
+          <div class="product-media__video js-open-lightbox">
+            {{ media | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              preload: 'metadata'
+            }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- =====================
+       IMAGE SLIDER / THUMBS
+  ====================== -->
+  {% if media_count > 1 %}
+    <div class="product-media__thumbs swiper">
+      <div class="swiper-wrapper">
+
+        {% for media in product.media %}
+          {% if media.media_type == 'image' %}
+            <div class="swiper-slide">
+              <img
+                srcset="
+                  {%- if media.width >= 360 -%}{{ media | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if media.width >= 720 -%}{{ media | image_url: width: 720 }} 720w,{%- endif -%}
+                  {%- if media.width >= 1066 -%}{{ media | image_url: width: 1066 }} 1066w,{%- endif -%}
+                  {%- if media.width >= 1500 -%}{{ media | image_url: width: 1500 }} 1500w,{%- endif -%}
+                  {{ media | image_url }} {{ media.width }}w
+                "
+                src="{{ media | image_url: width: 720 }}"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                alt="{{ media.alt | escape }}"
+                loading="lazy"
+                width="{{ media.width }}"
+                height="{{ media.height }}"
+                class="js-open-lightbox"
+              >
+
+            </div>
+          {% endif %}
+        {% endfor %}
+
+      </div>
+      
+      <div class="swiper-nav-wrapper">
+        <button
+          class="swiper-button-prev"
+          aria-label="Previous slide"
+        >
+          <span class="inner-text h5">Previous</span>
+        </button>
+
+        <button
+          class="swiper-button-next"
+          aria-label="Next slide"
+        >
+          <span class="line"></span>
+          <span class="inner-text h5">Next</span>
+        </button>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  {% endif %}
+
+</div>
+
+<!-- =====================
+     LIGHTBOX
+====================== -->
+<div class="media-lightbox" id="mediaLightbox">
+  <div class="media-lightbox__overlay"></div>
+
+  <div class="media-lightbox__content">
+    <button class="media-lightbox__close" aria-label="Close">×</button>
+
+    <div class="swiper media-lightbox__slider">
+      <div class="swiper-wrapper">
+
+        {% for media in product.media %}
+          {% if media.media_type == 'image' %}
+            <div class="swiper-slide">
+              <img
+                srcset="
+                  {%- if media.width >= 720 -%}{{ media | image_url: width: 720 }} 720w,{%- endif -%}
+                  {%- if media.width >= 1066 -%}{{ media | image_url: width: 1066 }} 1066w,{%- endif -%}
+                  {%- if media.width >= 1500 -%}{{ media | image_url: width: 1500 }} 1500w,{%- endif -%}
+                  {{ media | image_url }} {{ media.width }}w
+                "
+                src="{{ media | image_url: width: 720 }}"
+                sizes="90vw"
+                alt="{{ media.alt | escape }}"
+                loading="lazy"
+                width="{{ media.width }}"
+                height="{{ media.height }}"
+              >
+            </div>
+          {% endif %}
+        {% endfor %}
+
+      </div>
+
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</div>

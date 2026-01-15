@@ -1,0 +1,68 @@
+{% doc %}
+  Renders a responsive grid layout.
+  @example
+  {% content_for 'block', type: 'grid', id: 'grid' %}
+{% enddoc %}
+
+<div
+  class="layout-grid"
+  style="
+    grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
+    gap: {{ block.settings.gap }}px;
+    padding: {{ block.settings.padding }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  .layout-grid {
+    display: grid;
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Grid Layout",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Number of columns",
+      "default": 3,
+      "min": 1,
+      "max": 6,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "default": 0,
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grid Layout",
+      "category": "Layout"
+    }
+  ]
+}
+{% endschema %}

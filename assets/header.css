@@ -1,0 +1,182 @@
+.main-header {
+  position: relative;
+  z-index: 100;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text));
+  border-bottom: 1px solid rgb(var(--color-border));
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.header-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+/* Left */
+.header__left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* Center logo absolutely centered */
+.header__center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 1;
+}
+
+/* Right icons */
+.header__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  gap: 1rem;
+}
+
+/* Icons */
+.header__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: rgb(var(--color-text));
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.header__icon:hover {
+  background-color: rgba(var(--color-text), 0.1);
+}
+
+.header__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Transparent header mode */
+.main-header.is-transparent {
+  background: transparent;
+  border-bottom: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: var(--header-transparent-text, #ffffff);
+  z-index: 200;
+}
+
+.main-header.is-transparent .header__icon:hover {
+  background-color: rgba(var(--header-transparent-text, #ffffff), 0.1);
+}
+
+.main-header.is-transparent .header__logo img {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+}
+
+/* Transparent header - color and logo behavior */
+.main-header.is-transparent a,
+.main-header.is-transparent .header__icon svg,
+.main-header.is-transparent .menu-icon span {
+  color: var(--header-transparent-text, #ffffff);
+  stroke: var(--header-transparent-text, #ffffff);
+}
+
+.main-header.is-transparent .menu-icon span {
+  background-color: var(--header-transparent-text, #ffffff);
+}
+
+/* Sticky header styles - only apply when actually sticky */
+.main-header.is-sticky.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgb(var(--color-background));
+  border-bottom: 1px solid rgb(var(--color-border));
+  color: rgb(var(--color-text));
+  z-index: 100;
+}
+
+/* Reset colors for sticky header */
+.main-header.is-sticky.is-fixed a,
+.main-header.is-sticky.is-fixed .header__icon svg,
+.main-header.is-sticky.is-fixed .menu-icon span {
+  color: rgb(var(--color-text));
+  stroke: rgb(var(--color-text));
+}
+
+.main-header.is-sticky.is-fixed .menu-icon span {
+  background-color: rgb(var(--color-text));
+}
+
+/* Reset hover state for sticky header */
+.main-header.is-sticky.is-fixed .header__icon:hover {
+  background-color: rgba(var(--color-text), 0.1);
+}
+
+/* Reset logo filter for sticky header */
+.main-header.is-sticky.is-fixed .header__logo img {
+  filter: none;
+}
+
+/* Always sticky - header stays at the top */
+.main-header.sticky--always {
+  /* This will be made fixed immediately by JS */
+}
+
+/* Scroll-up sticky behavior */
+.main-header.sticky--scroll-up {
+  /* This will be made fixed when user scrolls */
+  transform: translateY(0);
+}
+
+/* When scrolling down, hide the header */
+body.scroll-down .main-header.sticky--scroll-up.is-fixed {
+  transform: translateY(-100%);
+}
+
+/* When scrolling up, show the header */
+body.scroll-up .main-header.sticky--scroll-up.is-fixed {
+  transform: translateY(0);
+}
+
+
+/* --- Logo Toggle Logic --- */
+
+/* By default, hide the transparent logo */
+.m-logo__image--transparent {
+  display: none;
+}
+
+/* 
+ * When the header is in its initial transparent state (at the top of the page),
+ * show the transparent logo and hide the default one.
+ */
+.main-header.is-transparent:not(.is-fixed) .m-logo__image--transparent {
+  display: block;
+}
+.main-header.is-transparent:not(.is-fixed) .m-logo__image--default {
+  display: none;
+}
+
+/* 
+ * When the header becomes sticky (fixed position), always show the default logo.
+ * This rule overrides the transparent state above.
+ */
+.main-header.is-sticky.is-fixed .m-logo__image--default {
+  display: block;
+}
+.main-header.is-sticky.is-fixed .m-logo__image--transparent {
+  display: none;
+}

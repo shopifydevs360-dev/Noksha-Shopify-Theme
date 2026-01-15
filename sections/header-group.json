@@ -1,0 +1,66 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "t:general.header",
+  "sections": {
+    "announcement_bar_4TgJrq": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_EcXpME": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping on orders over $50",
+            "link": "https://face.come"
+          }
+        },
+        "announcement_zjie7X": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping on orders over $50",
+            "link": "https://face.com"
+          }
+        },
+        "announcement_7w4jW9": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping on orders over $50",
+            "link": "https://biik.com"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_EcXpME",
+        "announcement_zjie7X",
+        "announcement_7w4jW9"
+      ],
+      "name": "Announcement bar",
+      "settings": {
+        "marquee_speed": 60,
+        "font_size": 18,
+        "font_weight": "500",
+        "text_color_scheme": ""
+      }
+    },
+    "sidebar_j78B4r": {
+      "type": "sidebar",
+      "name": "Sidebar",
+      "settings": {
+        "white_logo": "shopify://shop_images/Halla_Hijab_white.png",
+        "color_scheme": "",
+        "brand_text": "Halla Hijab"
+      }
+    }
+  },
+  "order": [
+    "announcement_bar_4TgJrq",
+    "sidebar_j78B4r"
+  ]
+}

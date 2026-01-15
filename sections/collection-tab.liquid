@@ -1,0 +1,253 @@
+{{ 'collection-tab.css' | asset_url | stylesheet_tag }}
+{% render 'section-base-style' %}
+<div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
+  <div class="product-carousel section-{{ section.id }}-padding">
+    <!-- ================= MOBILE TITLE ================= -->
+    <h2 class="container hide-desktop hide-large-screens">
+      <a href="{{ section.settings.title_link }}" aria-label="{{ section.settings.title }}">
+        <div data-reveal="lines-masked" class="info-title">
+          {{ section.settings.title }}
+        </div>
+      </a>
+    </h2>
+
+    <!-- ================= FILTER TABS ================= -->
+    <div class="swiper swiper-container-filter">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% assign handle = block.settings.collection.handle %}
+          <div class="related-product-caps swiper-slide {% if forloop.first %}active{% endif %}">
+            <a
+              href="#"
+              class="js-slider-filter"
+              data-filter="{{ handle }}"
+              aria-label="{{ block.settings.tab_label }}"
+            >
+              {{ block.settings.tab_label }}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- ================= PRODUCTS CAROUSEL ================= -->
+    <div class="swiper swiper-container-product">
+      <div class="swiper-wrapper">
+
+        <!-- Desktop Lead Card -->
+        <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
+          <div class="collection-lead-info">
+            <h2 class="hd-3">
+              <a href="{{ section.settings.title_link }}">
+                <div data-reveal="lines-masked" class="info-title">
+                  {{ section.settings.title }}
+                </div>
+              </a>
+            </h2>
+
+            <a href="{{ section.settings.title_link }}" class="btn btn-arrow">
+              SHOP NOW
+              <span class="icon">
+                {% render 'theme-icon', icon: 'right-arrow' %}
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Products -->
+        {% for block in section.blocks %}
+          {% assign collection = collections[block.settings.collection.handle] %}
+
+            {% if collection and collection.products != blank %}
+            {% for product in collection.products limit: 6 %}
+              <div
+                class="swiper-slide product-slide"
+                data-collection="{{ collection.handle }}"
+                {% unless forloop.parentloop.first %}hidden{% endunless %}
+              >
+                {% render 'product-card', product: product %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>Please select a collection</p>
+          {% endif %}
+        {% endfor %}
+
+      </div>
+
+      <div class="swiper-scrollbar hide-desktop hide-large-screens"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const section = document.querySelector('.js-product-carousel-{{ section.id }}');
+  if (!section) return;
+
+  const tabs = section.querySelectorAll('.js-slider-filter');
+  const slides = section.querySelectorAll('.product-slide');
+
+  /* ---------------- SWIPERS ---------------- */
+  new Swiper(section.querySelector('.swiper-container-filter'), {
+    slidesPerView: 'auto',
+    freeMode: true,
+    spaceBetween: 40
+  });
+
+  const productSwiper = new Swiper(section.querySelector('.swiper-container-product'), {
+    slidesPerView: 1.2,
+    spaceBetween: 24,
+    scrollbar: {
+      el: section.querySelector('.swiper-scrollbar'),
+      draggable: true
+    },
+    breakpoints: {
+      580: { slidesPerView: 2.5 },
+      991: { slidesPerView: 3 },
+      1321: { slidesPerView: 3.5 }
+    }
+  });
+
+  /* ---------------- INIT FIRST TAB ---------------- */
+  const firstTab = tabs[0];
+  const firstFilter = firstTab.dataset.filter;
+
+  firstTab.closest('.related-product-caps').classList.add('active');
+
+  slides.forEach(slide => {
+    if (slide.dataset.collection === firstFilter) {
+      slide.style.display = 'block';
+    }
+  });
+
+  productSwiper.update();
+
+  /* ---------------- TAB CLICK ---------------- */
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+
+      const filter = tab.dataset.filter;
+
+      /* active tab */
+      section.querySelectorAll('.related-product-caps')
+        .forEach(el => el.classList.remove('active'));
+      tab.closest('.related-product-caps').classList.add('active');
+
+      /* reset slides */
+      slides.forEach(slide => {
+        slide.style.display = '';
+      });
+
+      /* show matching slides */
+      slides.forEach(slide => {
+        if (slide.dataset.collection === filter) {
+          slide.style.display = 'block';
+        }
+      });
+
+      productSwiper.update();
+      productSwiper.slideTo(0);
+    });
+  });
+});
+</script>
+
+
+{% schema %}
+{
+  "name": "Collection Tabs Carousel",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "title_link",
+      "label": "Title Link"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 52
+    },
+        {
+      "type": "header",
+      "content": "Dynamic Option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "info": "Color control for sidebar [Learn more](https://codecraftmehedi.com/)",      
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab Label"
+        },
+        {
+          "type": "url",
+          "id": "tab_link",
+          "label": "Tab Collection Link"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Collection Tabs Carousel",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

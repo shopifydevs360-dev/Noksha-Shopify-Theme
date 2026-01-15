@@ -1,0 +1,48 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "collection-product-list",
+      "settings": {
+        "container_type": "container-fluid",
+        "color_scheme": "scheme-1e6195d5-cb89-4a9c-a4a6-d3205814ce99",
+        "grid_columns_desktop": "3",
+        "grid_columns_mobile": "1",
+        "enable_pagination": true,
+        "products_per_page": 4,
+        "pagination_type": "infinity_loading",
+        "enable_sorting": true,
+        "enable_filter": true,
+        "filter_position": "sidebar",
+        "enable_availability": true,
+        "enable_price": true,
+        "enable_collection": true,
+        "specific_collections": "",
+        "enable_brand": true,
+        "specific_brands": "",
+        "enable_color": true,
+        "specific_colors": "",
+        "enable_custom_filter_1": false,
+        "custom_filter_1_title": "",
+        "custom_filter_1_tags": "",
+        "enable_custom_filter_2": false,
+        "custom_filter_2_title": "",
+        "custom_filter_2_tags": "",
+        "enable_custom_filter_3": false,
+        "custom_filter_3_title": "",
+        "custom_filter_3_tags": ""
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

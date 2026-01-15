@@ -1,0 +1,84 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "t:general.footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "newsletter_CFVLR3": {
+          "type": "newsletter",
+          "settings": {
+            "block_width": "33",
+            "logo": "shopify://shop_images/Halla_Hijab_white.png",
+            "text": "<p>By registering, I agree to receive emails from Halla Hijab and other trusted P&G brands and programs. </p>",
+            "checkbox_text": "Yes, send me your newsletter",
+            "button_text": "Subscribe"
+          }
+        },
+        "empty_space_HXhE9H": {
+          "type": "empty_space",
+          "settings": {
+            "block_width": 50
+          }
+        },
+        "menu_im6XPD": {
+          "type": "menu",
+          "settings": {
+            "block_width": "15",
+            "title": "Contact",
+            "menu": "contact"
+          }
+        },
+        "menu_gkXTYr": {
+          "type": "menu",
+          "settings": {
+            "block_width": "20",
+            "title": "Customer Care",
+            "menu": "customer-care"
+          }
+        },
+        "get_in_touch_GMYwnU": {
+          "type": "get_in_touch",
+          "settings": {
+            "block_width": "33",
+            "title": "Get in Touch",
+            "phone_text": "<p>Call us Mon-Fri 10am-4:30pm</p>",
+            "whatsapp_text": "<p>Talk to us on Whatsapp</p>",
+            "email_text": "<p>Email us</p>"
+          }
+        }
+      },
+      "block_order": [
+        "newsletter_CFVLR3",
+        "empty_space_HXhE9H",
+        "menu_im6XPD",
+        "menu_gkXTYr",
+        "get_in_touch_GMYwnU"
+      ],
+      "settings": {
+        "footer_color_scheme": "default",
+        "container_width": "container-fluid",
+        "show_footer_bottom": true,
+        "copyright_text": "<p>Your Store. All rights reserved.</p>",
+        "show_payment_methods": true,
+        "show_social_icons": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "custom_class": "",
+        "color_control": "section-dark"
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

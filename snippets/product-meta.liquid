@@ -1,0 +1,23 @@
+<div class="product-metadata">
+    <ul class="product-meta" {{ block.shopify_attributes }}>
+    {% if block.settings.show_vendor %}
+    <li><b>Vendor:</b> {{ product.vendor }}</li>
+    {% endif %}
+    {% if block.settings.show_type and product.type != blank %}
+    <li><b>Type:</b> {{ product.type }}</li>
+    {% endif %}
+    {% if block.settings.show_sku and product.selected_or_first_available_variant.sku != blank %}
+    <li><b>SKU:</b> {{ product.selected_or_first_available_variant.sku }}</li>
+    {% endif %}
+    {% if block.settings.show_availability %}
+    <li>
+        <b>Availability:</b>
+        {% if product.available %}
+            In Stock
+        {% else %}
+            Out of Stock
+        {% endif %}
+    </li>
+    {% endif %}
+</ul>
+</div>

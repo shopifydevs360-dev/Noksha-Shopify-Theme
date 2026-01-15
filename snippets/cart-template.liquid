@@ -1,0 +1,127 @@
+{{ 'cart-template.css' | asset_url | stylesheet_tag }}
+<div class="cart-template">
+  <div class="container">
+    <form action="{{ routes.cart_url }}" method="post" novalidate>
+      <div class="cart-template__inner">
+
+        <!-- =====================
+             LEFT SIDE – CART ITEMS
+        ====================== -->
+        <div class="cart-template-left">
+
+          <h2 class="cart-title">Your Bag</h2>
+
+          {% assign free_shipping_threshold = 10000 %}
+          {% if cart.total_price < free_shipping_threshold %}
+            <p class="cart-free-shipping">
+              You are {{ free_shipping_threshold | minus: cart.total_price | money }}
+              away from free shipping
+            </p>
+          {% else %}
+            <p class="cart-free-shipping success">
+              🎉 You’ve unlocked free shipping!
+            </p>
+          {% endif %}
+
+          {% if cart.item_count > 0 %}
+            <div class="cart-items">
+
+              {% for item in cart.items %}
+                <div class="cart-item">
+
+                  <!-- Product image -->
+                  <div class="cart-item-image">
+                    <a href="{{ item.url }}">
+                      {{ item.image | image_url: width: 200 | image_tag }}
+                    </a>
+                  </div>
+
+                  <!-- Product info -->
+                  <div class="cart-item-info">
+                    <a href="{{ item.url }}" class="cart-item-title">
+                      {{ item.product.title }}
+                    </a>
+
+                    {% if item.variant.title != 'Default Title' %}
+                      <p class="cart-item-variant">{{ item.variant.title }}</p>
+                    {% endif %}
+
+                    <p class="cart-item-price">
+                      {{ item.final_line_price | money }}
+                    </p>
+
+                    <!-- Quantity selector -->
+                    <div class="cart-item-qty">
+                      <input
+                        type="number"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="0"
+                      >
+                    </div>
+
+                    <!-- Remove -->
+                    <a
+                      href="{{ item.url_to_remove }}"
+                      class="cart-item-remove"
+                    >
+                      Remove
+                    </a>
+                  </div>
+
+                </div>
+              {% endfor %}
+
+            </div>
+          {% else %}
+            <p>Your cart is empty.</p>
+          {% endif %}
+        </div>
+
+        <!-- =====================
+             RIGHT SIDE – SUMMARY
+        ====================== -->
+        <div class="cart-template-right">
+
+          <h3>Order Summary</h3>
+
+          <div class="cart-summary-row">
+            <span>Subtotal</span>
+            <span>{{ cart.items_subtotal_price | money }}</span>
+          </div>
+
+          <div class="cart-summary-row">
+            <span>Shipping</span>
+            <span>
+              {% if cart.total_price >= free_shipping_threshold %}
+                Free
+              {% else %}
+                Calculated at checkout
+              {% endif %}
+            </span>
+          </div>
+
+          <div class="cart-summary-row">
+            <span>Taxes</span>
+            <span>Calculated at checkout</span>
+          </div>
+
+          <div class="cart-summary-row total">
+            <strong>Total</strong>
+            <strong>{{ cart.total_price | money }}</strong>
+          </div>
+
+          <button
+            type="submit"
+            name="checkout"
+            class="cart-checkout-btn"
+          >
+            Checkout
+          </button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="{{ 'cart-template.js' | asset_url }}" defer></script>

@@ -1,0 +1,20 @@
+.shopify-section-nav {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  max-width: 700px;
+  background: #f0eee8;
+  z-index: 9;
+  transform: translateX(-100%);
+  transition: all 0.4s cubic-bezier(.32,.24,.15,1);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.shopify-section-nav.nav-drawer-open {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+transition: all 1s cubic-bezier(.32,.24,.15,1);
+}
+

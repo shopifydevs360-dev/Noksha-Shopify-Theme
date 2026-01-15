@@ -1,0 +1,26 @@
+<a href="{{ routes.cart_url }}" class="header__icon header__cart" aria-label="Cart">
+    <span class="icon icon-cart" aria-hidden="true">{%- render 'theme-icon', icon: 'cart' -%}</span>
+    {% if cart.item_count > 0 %}
+    <span class="cart-count">{{ cart.item_count }}</span>
+    {% endif %}
+</a>
+
+<style>
+      .cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgb(var(--color-price-sale));
+    color: rgb(var(--color-background));
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0 4px;
+  }
+</style>

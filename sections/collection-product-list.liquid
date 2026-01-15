@@ -1,0 +1,382 @@
+{{ 'collection-product-list.css' | asset_url | stylesheet_tag }}
+{{ 'products-filter.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Pass the cart_behavior setting to JavaScript via a data attribute.
+  This allows the JS to know whether to use AJAX or form submission.
+{%- endcomment -%}
+<div class="shopify-section m-color-{{ section.settings.color_scheme.id }}" data-cart-behavior="{{ settings.cart_behavior }}">
+  <div class="{{ section.settings.container_type }}">
+    <div class="collection-wrapper {% if section.settings.enable_filter and section.settings.filter_position == 'sidebar' %}with-sidebar{% endif %}">
+      <!-- Filters Sidebar -->
+      {% if section.settings.enable_filter %}
+        {% render 'products-filter' %}
+      {% endif %}
+
+      <!-- Main Content -->
+      <main class="product-list-wapper" data-pagination-type="{{ section.settings.pagination_type }}">
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <!-- Filter Button - Show when off-canvas is selected -->
+          {% if section.settings.enable_filter and section.settings.filter_position == 'off_canvas' %}
+            <div class="toolbar-actions">
+              <button class="btn btn--secondary" onclick="toggleDesktopFilters()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+                </svg>
+                Filters
+              </button>
+            </div>
+          {% endif %}
+          
+          <!-- Results Count -->
+          <div class="results-count">
+            Showing <strong>{{ collection.products_count }}</strong> products
+          </div>
+          
+          <!-- Sorting Options -->
+          <div class="toolbar-actions">
+            {% if section.settings.enable_sorting %}
+              <div class="view-toggle">
+                <button class="view-btn active" onclick="setView('grid')" title="Grid View">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z"/>
+                  </svg>
+                </button>
+                <button class="view-btn" onclick="setView('list')" title="List View">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                  </svg>
+                </button>
+              </div>
+              <select class="sort-dropdown" onchange="location = this.value;">
+                <option value="{{ collection.url }}?sort_by={{ collection.sort_by | default: collection.default_sort_by }}" selected>
+                  Sort by
+                </option>
+                {% for option in collection.sort_options %}
+                  <option value="{{ collection.url }}?sort_by={{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
+                    {{ option.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid grid-desktop-{{ section.settings.grid_columns_desktop }} grid-mobile-{{ section.settings.grid_columns_mobile }}" id="productsContainer">
+          {% paginate collection.products by section.settings.products_per_page %}
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% endfor %}
+
+            <!-- Pagination -->
+            {% if section.settings.enable_pagination and paginate.pages > 1 %}
+              {% if section.settings.pagination_type == 'pagination_by_number' %}
+                <div class="pagination">
+                  {{ paginate | default_pagination }}
+                </div>
+              {% elsif section.settings.pagination_type == 'load_more_button' %}
+                <div class="load-more-container">
+                  <button id="load-more-btn" class="btn btn--primary">
+                    Load More
+                  </button>
+                </div>
+              {% elsif section.settings.pagination_type == 'infinity_loading' %}
+                <div class="infinity-loading">
+                  <div class="loading-spinner"></div>
+                  <p>Loading more products...</p>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endpaginate %}
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Filter Toggle -->
+{% if section.settings.enable_filter %}
+<button class="mobile-filter-toggle" onclick="toggleMobileFilters()">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+  </svg>
+</button>
+{% endif %}
+
+<script src="{{ 'products-filter.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'pagination.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'filter-toggle.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Collection Product List",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container Type",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Container Fluid"
+        },
+        {
+          "value": "container-narrow",
+          "label": "Container Narrow"
+        },
+        {
+          "value": "container-extra-narrow",
+          "label": "Container Extra Narrow"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Product Grid"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns_desktop",
+      "label": "Desktop Grid Columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns_mobile",
+      "label": "Mobile Grid Columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Pagination"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_pagination",
+      "label": "Enable Pagination",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 2,
+      "max": 48,
+      "step": 1,
+      "label": "Products per page",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "pagination_type",
+      "label": "Pagination Type",
+      "options": [
+        {
+          "value": "pagination_by_number",
+          "label": "Pagination by Number"
+        },
+        {
+          "value": "load_more_button",
+          "label": "Load More Button"
+        },
+        {
+          "value": "infinity_loading",
+          "label": "Infinity Loading"
+        }
+      ],
+      "default": "pagination_by_number"
+    },
+    {
+      "type": "header",
+      "content": "Sorting & Filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable Sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filter",
+      "label": "Enable Filter",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "filter_position",
+      "label": "Filter Position",
+      "options": [
+        {
+          "value": "sidebar",
+          "label": "Sidebar"
+        },
+        {
+          "value": "off_canvas",
+          "label": "Off Canvas"
+        }
+      ],
+      "default": "sidebar"
+    },
+    {
+      "type": "header",
+      "content": "Filter Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_availability",
+      "label": "Enable Availability Filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_price",
+      "label": "Enable Price Filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_collection",
+      "label": "Enable Collection Filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "specific_collections",
+      "label": "Specific Collections",
+      "info": "Enter collection handles separated by commas. Leave empty to show all collections."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_brand",
+      "label": "Enable Brand Filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "specific_brands",
+      "label": "Specific Brands",
+      "info": "Enter brand names separated by commas. Leave empty to show all brands."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_color",
+      "label": "Enable Color Filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "specific_colors",
+      "label": "specific Colors",
+      "info": "Enter color names separated by commas. Leave empty to show all colors."
+    },
+    {
+      "type": "header",
+      "content": "Custom Filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_filter_1",
+      "label": "Enable Custom Filter 1",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_filter_1_title",
+      "label": "Filter 1 Title"
+    },
+    {
+      "type": "text",
+      "id": "custom_filter_1_tags",
+      "label": "Filter 1 Product Tags",
+      "info": "Enter product tags separated by commas."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_filter_2",
+      "label": "Enable Custom Filter 2",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_filter_2_title",
+      "label": "Filter 2 Title"
+    },
+    {
+      "type": "text",
+      "id": "custom_filter_2_tags",
+      "label": "Filter 2 Product Tags",
+      "info": "Enter product tags separated by commas."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_filter_3",
+      "label": "Enable Custom Filter 3",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_filter_3_title",
+      "label": "Filter 3 Title"
+    },
+    {
+      "type": "text",
+      "id": "custom_filter_3_tags",
+      "label": "Filter 3 Product Tags",
+      "info": "Enter product tags separated by commas."
+    }
+  ]
+}
+{% endschema %}

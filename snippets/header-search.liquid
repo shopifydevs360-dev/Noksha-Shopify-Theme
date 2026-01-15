@@ -1,0 +1,9 @@
+{% if settings.search_type == 'page' %}
+  <a href="{{ routes.search_url }}" class="header__icon header__search hide-mobile" aria-label="Search">
+    <span class="icon icon-search" aria-hidden="true">{%- render 'theme-icon', icon: 'search' -%}</span>
+  </a>
+{% else %}
+  <button class="header__icon header__search hide-mobile" aria-label="Search" data-drawer-toggle="search-drawer">
+    <span class="icon icon-search" aria-hidden="true">{%- render 'theme-icon', icon: 'search' -%}</span>
+  </button>
+{% endif %}

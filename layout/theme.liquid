@@ -1,0 +1,64 @@
+{% liquid
+  # Get the RTL setting from theme settings
+  assign enable_rtl = settings.enable_rtl
+  assign language_support_rtl = settings.language_support_rtl
+
+  # Check if the current shop locale is in the RTL language list
+  if enable_rtl and language_support_rtl != blank
+    assign shop_locale = localization.language.iso_code
+    assign language_support_rtl_list = language_support_rtl | split: ','
+    assign is_rtl = language_support_rtl_list | where: shop_locale
+    if is_rtl.size > 0
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+
+  # Compose body classes
+  assign body_classes = 'template-' | append: template.name | append: ' ' | append: template.suffix
+%}
+
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" data-template="{{ template.name }}" {% if enable_rtl %} dir="rtl" class="rtl" {% endif %}>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {% if settings.favicon != blank %}
+      <link rel="shortcut icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {% endif %}
+
+
+    {% render 'css-variables' %}
+
+
+    {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'product-card-style.css' | asset_url | stylesheet_tag }}
+    {% render 'meta-tags' %}
+
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'product-card.js' | asset_url }}" defer="defer"></script>
+    {% comment %} Swiper Slider CDN {% endcomment %}
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag: preload: true }}
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'ScrollTrigger.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'gsap.min.js' | asset_url }}" defer="defer"></script>
+
+
+    {{ content_for_header }}
+  </head>
+
+  <body id="theme-noor" class="{{ body_classes }}{% if enable_rtl %} rtl{% endif %}" {% if template.name == 'product' %} data-product-id="{{ product.id }}" {% endif %}>
+    {% sections 'header-group' %}
+
+    {{ content_for_layout }}
+
+    {% sections 'footer-group' %}
+  </body>
+</html>

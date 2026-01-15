@@ -1,0 +1,236 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_slideshow_DY9JwJ": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "image_slide_da8geD": {
+          "type": "image_slide",
+          "settings": {
+            "text_color_scheme": "default",
+            "image": "shopify://shop_images/Gemini_Generated_Image_sskctbsskctbsskc.png",
+            "mobile_image": "shopify://shop_images/Forest_620x_105465d1-625c-45b3-be53-e5b2829d7cbe.webp",
+            "subheading": "MODEST SILHOUETTES FOR WORKOUTS",
+            "sub_heading_font_size": "h4",
+            "heading": "ACTIVEWEAR SET",
+            "heading_size": "hd-2",
+            "cta_text": "SHOP NOW",
+            "link": "",
+            "background_color": "#f3e3d3",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0.3,
+            "horizontal_alignment": "left",
+            "vertical_alignment": "bottom"
+          }
+        },
+        "image_slide_xNDwjP": {
+          "type": "image_slide",
+          "settings": {
+            "text_color_scheme": "default",
+            "image": "shopify://shop_images/Gemini_Generated_Image_lxrcvilxrcvilxrc.png",
+            "mobile_image": "shopify://shop_images/Aab_2025_09_26_0034_1.jpg",
+            "subheading": "PREMIUM HIJABS FOR DAILY WEAR",
+            "sub_heading_font_size": "h4",
+            "heading": "NEW IN HIJAB",
+            "heading_size": "hd-2",
+            "cta_text": "SHOP NOW",
+            "link": "",
+            "background_color": "#f3e3d3",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "horizontal_alignment": "left",
+            "vertical_alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "image_slide_da8geD",
+        "image_slide_xNDwjP"
+      ],
+      "name": "Hero Slideshow",
+      "settings": {
+        "sidebar_image": "shopify://shop_images/pexels-thirdman-8489273.jpg",
+        "enable_autoplay": false,
+        "custom_class": "",
+        "color_control": "section-dark"
+      }
+    },
+    "collection_tab_jigG9e": {
+      "type": "collection-tab",
+      "blocks": {
+        "tab_Nq43z7": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Hijab",
+            "tab_link": "",
+            "collection": "hijabs"
+          }
+        },
+        "tab_CNPqei": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Abayas",
+            "tab_link": "",
+            "collection": "abayas"
+          }
+        }
+      },
+      "block_order": [
+        "tab_Nq43z7",
+        "tab_CNPqei"
+      ],
+      "name": "Product Tabs Carousel",
+      "settings": {
+        "color_scheme": "scheme-1e6195d5-cb89-4a9c-a4a6-d3205814ce99",
+        "title": "Best Sellers",
+        "title_link": "",
+        "padding_top": 100,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "collection_tab_HFCJgQ": {
+      "type": "collection-tab",
+      "blocks": {
+        "tab_YkmqyG": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Modest Maxi Dresses",
+            "tab_link": "",
+            "collection": "modest-maxi-dresses"
+          }
+        },
+        "tab_xa3MVn": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Co-ord Sets",
+            "tab_link": "",
+            "collection": "co-ord-sets"
+          }
+        }
+      },
+      "block_order": [
+        "tab_YkmqyG",
+        "tab_xa3MVn"
+      ],
+      "name": "Product Tabs Carousel",
+      "settings": {
+        "color_scheme": "scheme-1e6195d5-cb89-4a9c-a4a6-d3205814ce99",
+        "title": "Friday Offer",
+        "title_link": "",
+        "padding_top": 52,
+        "padding_bottom": 100,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "image_overlay_grid_Gz6VEw": {
+      "type": "image-overlay-grid",
+      "blocks": {
+        "image_kECNVX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ABAYAS_15cc78c0-b1eb-41af-88c6-2.jpg",
+            "title": "ABAYAS",
+            "cta_text": "SHOP NOW",
+            "link": "",
+            "button_type": "btn--animation",
+            "animation_type": "hover-underline",
+            "image_background_color": "#f3f3f4"
+          }
+        },
+        "image_aqwiNQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/MAXIS_2_81740592-609c-471a-96f9.jpg",
+            "title": "MAXI DRESSES",
+            "cta_text": "SHOP NOW",
+            "link": "",
+            "button_type": "btn--animation",
+            "animation_type": "hover-underline",
+            "image_background_color": "#f3f3f4"
+          }
+        },
+        "image_y36x6i": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Co-Ords_1_4ac1d864-feb8-4340-a9f.jpg",
+            "title": "HIJABS",
+            "cta_text": "SHOP NOW",
+            "link": "",
+            "button_type": "btn--animation",
+            "animation_type": "hover-underline",
+            "image_background_color": "#f3f3f4"
+          }
+        },
+        "image_aAzyWm": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/HIJABS_1_2b0fca8a-4c36-4dcd-b998.jpg",
+            "title": "CO-ORDS",
+            "cta_text": "SHOP NOW",
+            "link": "",
+            "button_type": "btn--animation",
+            "animation_type": "hover-underline",
+            "image_background_color": "#f3f3f4"
+          }
+        }
+      },
+      "block_order": [
+        "image_kECNVX",
+        "image_aqwiNQ",
+        "image_y36x6i",
+        "image_aAzyWm"
+      ],
+      "name": "Image Overlay Grid",
+      "settings": {
+        "columns": 2,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": "",
+        "color_control": "section-dark"
+      }
+    },
+    "article_wrapper_tkFWde": {
+      "type": "article-wrapper",
+      "name": "Articles Wrapper",
+      "settings": {
+        "text_color_scheme": "scheme-1e6195d5-cb89-4a9c-a4a6-d3205814ce99",
+        "wrapper_title": "Featured Articles",
+        "wrapper_title_font_size": "h2",
+        "blog": "journal",
+        "post_title_font": "h3",
+        "padding_top": 64,
+        "padding_bottom": 68,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "home_intro_LaEWrV": {
+      "type": "home-intro",
+      "disabled": true,
+      "name": "Hero Intro",
+      "settings": {
+        "heading_text": "<p>Meet the base you'll build every outfit on.</p>",
+        "image": "shopify://shop_images/Gemini_Generated_Image_sskctbsskctbsskc.png"
+      }
+    }
+  },
+  "order": [
+    "hero_slideshow_DY9JwJ",
+    "collection_tab_jigG9e",
+    "collection_tab_HFCJgQ",
+    "image_overlay_grid_Gz6VEw",
+    "article_wrapper_tkFWde",
+    "home_intro_LaEWrV"
+  ]
+}

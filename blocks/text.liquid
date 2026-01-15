@@ -1,0 +1,58 @@
+{% doc %}
+  Renders a text block.
+
+  @example
+  {% content_for 'block', type: 'text', id: 'text' %}
+{% enddoc %}
+
+{% assign tag = block.settings.text_style %}
+<{{ tag }}
+  class="text"
+  style="--text-align: {{ block.settings.alignment }}"
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.text }}
+</{{ tag }}>
+
+{% stylesheet %}
+  .text {
+    text-align: var(--text-align);
+  }
+{% endstylesheet %}
+
+
+{% schema %}
+{
+  "name": "t:general.text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:labels.text",
+      "default": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "t:labels.text_style",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" },
+        { "value": "p", "label": "Paragraph" }
+      ],
+      "default": "p"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:labels.alignment",
+      "default": "left"
+    }
+  ],
+  "presets": [{ "name": "t:general.text" }]
+}
+{% endschema %}

@@ -1,0 +1,59 @@
+/* Fixed promo bar */
+.announcement-bar.sticky-promo-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 340;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text));
+}
+
+/* Body offset */
+body.has-promo-bar {
+  padding-top: 3.2rem;
+}
+
+/* Container */
+.announcement-bar .promo-bar-wrap {
+    height: 3.2rem;
+    overflow: hidden;
+    position: relative;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Marquee area */
+.announcement-bar .marquee-text {
+  overflow: hidden;
+}
+
+/* Marquee animation */
+.announcement-bar .marquee__inner {
+  display: flex;
+  width: fit-content;
+  white-space: nowrap;
+  transform: translateZ(0);
+  color: rgb(var(--color-text));
+}
+
+/* Items */
+.announcement-bar .marquee__inner span {
+  padding: 0 2.5rem;
+  white-space: nowrap;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+ .announcement-bar .marquee__inner {
+    animation: none;
+  }
+}
+
+/* Animation */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

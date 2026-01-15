@@ -1,0 +1,93 @@
+<div class="product-block product-form-wrapper" {{ block.shopify_attributes }}>
+
+  {% form 'product', product, class: 'product-form' %}
+        {% assign current_variant = product.selected_or_first_available_variant %}
+    <!-- REQUIRED VARIANT ID (CRITICAL) -->
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <!-- VARIANTS -->
+    <div class="variant-selector">
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
+            <legend>{{ option.name }}</legend>
+
+            <div class="variant-buttons">
+              {% for value in option.values %}
+                <label class="variant-btn">
+                  <input
+                    type="radio"
+                    name="options[{{ option.name }}]"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
+                  <span>{{ value }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+      {% endunless %}
+    </div>
+    <div class="qty-cart-btn-wrap">
+      <!-- QUANTITY -->
+      <div class="quantity-dropdown" data-qty-dropdown>
+        <button type="button" class="qty-toggle" data-qty-toggle>
+          Qty 1
+        </button>
+
+        <ul class="qty-list">
+          {% assign quantities = "1,2,3,4,5,6" | split: "," %}
+          {% for qty in quantities %}
+            <li
+              class="qty-item {% if forloop.first %}is-selected{% endif %}"
+              data-qty="{{ qty }}"
+            >
+              Qty {{ qty }}
+            </li>
+          {% endfor %}
+        </ul>
+
+        <!-- Hidden input for Shopify -->
+        <input type="hidden" name="quantity" value="1">
+      </div>
+
+
+      <!-- ADD TO CART -->
+      <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
+        <button
+          type="submit"
+          class="btn-add-to-cart"
+          data-role="add-to-cart"
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          {% if current_variant.available %}
+            Add to cart
+          {% else %}
+            Out of stock
+          {% endif %}
+        </button>
+      </div>
+    </div>
+
+    <!-- BUY / NOTIFY -->
+    <div class="quick-checkout">
+      <button
+        type="button"
+        class="btn-buy-now {% unless current_variant.available %}hide{% endunless %}"
+        data-role="buy-now"
+      >
+        Buy it now
+      </button>
+
+      <button
+        type="button"
+        class="btn-notify {% if current_variant.available %}hide{% endif %}"
+        data-role="notify"
+      >
+        Notify me when available
+      </button>
+    </div>
+
+  {% endform %}
+
+</div>

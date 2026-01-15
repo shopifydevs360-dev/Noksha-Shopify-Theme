@@ -1,0 +1,122 @@
+{% if product %}
+{% assign cart_behavior = settings.cart_behavior | default: 'ajax' %}
+<div class="product-card" data-product-id="{{ product.id }}">
+  <!-- ================= IMAGE WRAP ================= -->
+  <div class="image-wrap">
+    <a href="{{ product.url }}" aria-label="{{ product.title }}">
+      <div class="cropped-image-wrapper {{ settings.aspect_ratio }} is-hover-zoom-out">
+        <!-- ================= BADGE ================= -->
+        {% if product.tags contains 'best seller' %}
+          <div class="product-badges-wrapper">
+            <span>Best Seller</span>
+          </div>
+        {% endif %}
+
+        <!-- ================= PRIMARY IMAGE ================= -->
+        {% if product.featured_image %}
+          <img
+            srcset="
+              {{ product.featured_image | img_url: '165x' }} 165w,
+              {{ product.featured_image | img_url: '360x' }} 360w,
+              {{ product.featured_image | img_url: '533x' }} 533w,
+              {{ product.featured_image | img_url: '720x' }} 720w,
+              {{ product.featured_image | img_url: '940x' }} 940w,
+              {{ product.featured_image | img_url: '1066x' }} 1066w
+            "
+            src="{{ product.featured_image | img_url: '533x' }}"
+            sizes="(min-width: 1100px) 535px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
+            alt="{{ product.featured_image.alt | escape }}"
+            class="product-card__image"
+            loading="lazy"
+            width="{{ product.featured_image.width }}"
+            height="{{ product.featured_image.height }}"
+          >
+        {% endif %}
+
+        <!-- ================= HOVER IMAGE ================= -->
+        {% if product.images.size > 1 %}
+          {% assign hover_image = product.images[1] %}
+          <img
+            srcset="
+              {{ hover_image | img_url: '165x' }} 165w,
+              {{ hover_image | img_url: '360x' }} 360w,
+              {{ hover_image | img_url: '533x' }} 533w,
+              {{ hover_image | img_url: '720x' }} 720w,
+              {{ hover_image | img_url: '940x' }} 940w,
+              {{ hover_image | img_url: '1066x' }} 1066w
+            "
+            src="{{ hover_image | img_url: '533x' }}"
+            sizes="(min-width: 1100px) 535px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
+            alt="{{ hover_image.alt | escape }}"
+            class="hover-img"
+            loading="lazy"
+            width="{{ hover_image.width }}"
+            height="{{ hover_image.height }}"
+          >
+        {% endif %}
+
+      </div>
+    </a>
+
+    <!-- ================= Add to cart button ================= -->
+    <div class="cart-button-wrapper swiper-no-swiping btn-action--{{ cart_behavior }}">
+      {% if product.variants.size > 1 %}
+        <div class="variants-outer-wrapper">
+          <div class="card-variants-wrapper">
+            {% for variant in product.variants %}
+              <button
+                type="button"
+                class="card-variant-btn {% unless variant.available %} disabled{% endunless %}"
+                data-variant-id="{{ variant.id }}"
+                {% unless variant.available %}disabled{% endunless %}
+              >
+                <span>{{ variant.title }}</span>
+                <span>{{ variant.price | money }}</span>
+              </button>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-to-cart-btn single-product">
+            Make Selection
+          </button>
+        </div>
+
+      {% else %}
+
+        {% assign variant = product.variants.first %}
+        <form method="post" action="{{ routes.cart_add_url }}" class="product-form">
+          <input type="hidden" name="id" value="{{ variant.id }}">
+
+          <button
+            type="submit"
+            class="add-to-cart-btn single-product"
+            {% unless variant.available %}disabled{% endunless %}
+          >
+            {% if variant.available %}
+              Add to bag
+            {% else %}
+              Out of stock
+            {% endif %}
+          </button>
+        </form>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- ================= PRODUCT INFO ================= -->
+  <div class="product-card-info">
+    <div class="split-aligner">
+
+      <span class="title h5">
+        <a href="{{ product.url }}">{{ product.title }}</a>
+      </span>
+      <p class="price h5">
+        {{ product.price | money }}
+      </p>
+
+    </div>
+  </div>
+
+</div>
+
+{% endif %}

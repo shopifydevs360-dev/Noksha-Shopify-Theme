@@ -1,0 +1,156 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "product_collection_3QwKdn": {
+          "type": "product_collection",
+          "settings": {}
+        },
+        "breadcrumb_6V9nX7": {
+          "type": "breadcrumb",
+          "settings": {}
+        },
+        "title_price_YnB7D8": {
+          "type": "title_price",
+          "settings": {
+            "title_font_size": "h4",
+            "price_font_size": "h5"
+          }
+        },
+        "description_Th49Tf": {
+          "type": "description",
+          "settings": {
+            "heading": "",
+            "text_size": "h4"
+          }
+        },
+        "add_to_cart_form_8aMLxd": {
+          "type": "add_to_cart_form",
+          "settings": {
+            "cart_behavior": "ajax_drawer"
+          }
+        },
+        "addon_buttons_HDrn66": {
+          "type": "addon_buttons",
+          "settings": {
+            "show_compare": false,
+            "show_wishlist": false,
+            "show_ask_question": false,
+            "show_size_guide": true,
+            "show_social_share": true,
+            "show_track_order": true
+          }
+        },
+        "accordion_GJhgHM": {
+          "type": "accordion",
+          "settings": {
+            "title": "TELL ME MORE",
+            "content": "<p>This color-safe shampoo breathes life into fine, flat hair with strengthening keratin, biotin, and nourishing chia seed oil. Hair is left clean, bouncy, and full of volume, so you can finally be fine with being fine. Follow with Fine Conditioner for best results.</p>"
+          }
+        },
+        "accordion_EA3PW7": {
+          "type": "accordion",
+          "settings": {
+            "title": "FULL INGREDIENTS",
+            "content": "<p>Water / Aqua / Eau, Sodium C14-16 Olefin Sulfonate, Cocamidopropyl Betaine, Sodium Methyl Cocoyl Taurate, Peg-200 Hydrogenated Glyceryl Palmate, Cocamide Mipa, Fragrance / Parfum, , Panthenol, Cocoglucosides</p>"
+          }
+        },
+        "product_meta_iat8W8": {
+          "type": "product_meta",
+          "settings": {
+            "show_sku": true,
+            "show_vendor": true,
+            "show_type": true,
+            "show_availability": true
+          }
+        },
+        "icon_list_item_z7m9a8": {
+          "type": "icon_list_item",
+          "settings": {
+            "theme_icon": "fast-shipping",
+            "text": "Free delivery on all orders over £120.00",
+            "link": ""
+          }
+        },
+        "icon_list_item_BEYnrm": {
+          "type": "icon_list_item",
+          "settings": {
+            "theme_icon": "percel",
+            "text": "Free Exchanges & Quick and Easy Returns",
+            "link": ""
+          }
+        },
+        "icon_list_item_CMNkGX": {
+          "type": "icon_list_item",
+          "settings": {
+            "theme_icon": "phone",
+            "custom_icon": "shopify://shop_images/telephone.png",
+            "text": "Contact our customer care team",
+            "link": "shopify://products/abstract-ink-premium-modal-hijab"
+          }
+        },
+        "icon_list_item_c4jLwi": {
+          "type": "icon_list_item",
+          "settings": {
+            "theme_icon": "tag",
+            "text": "Dsicover more about the brand",
+            "link": ""
+          }
+        },
+        "empty_space_PLg87X": {
+          "type": "empty_space",
+          "settings": {
+            "height": 50,
+            "show_divider": false
+          }
+        }
+      },
+      "block_order": [
+        "product_collection_3QwKdn",
+        "breadcrumb_6V9nX7",
+        "title_price_YnB7D8",
+        "description_Th49Tf",
+        "add_to_cart_form_8aMLxd",
+        "addon_buttons_HDrn66",
+        "accordion_GJhgHM",
+        "accordion_EA3PW7",
+        "product_meta_iat8W8",
+        "icon_list_item_z7m9a8",
+        "icon_list_item_BEYnrm",
+        "icon_list_item_CMNkGX",
+        "icon_list_item_c4jLwi",
+        "empty_space_PLg87X"
+      ],
+      "settings": {
+        "main_product_color": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {
+        "color_scheme": "",
+        "title": "You may also like",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related_products"
+  ]
+}

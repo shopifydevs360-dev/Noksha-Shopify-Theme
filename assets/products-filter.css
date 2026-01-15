@@ -1,0 +1,188 @@
+/* Filters Wrapper (for both sidebar and off-canvas) */
+.filters-wrapper {
+  background-color: rgb(var(--color-background));
+  padding: 20px;
+  border-radius: var(--border-radius-style-two, 8px);
+  border: 1px solid rgb(var(--color-border));
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.filters-header h2 {
+  margin: 0;
+}
+
+.filters-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: rgb(var(--color-text));
+}
+
+.filter-group {
+  margin-bottom: 25px;
+}
+
+.filter-group h3 {
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgb(var(--color-heading));
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  color: rgb(var(--color-text));
+}
+
+.filter-label input[type="checkbox"] {
+  min-width: 18px;
+  min-height: 18px;
+  accent-color: rgb(var(--color-link));
+}
+
+/* Price Filter Specifics */
+.price-filter .range-input {
+  position: relative;
+  height: 5px;
+  width: 100%;
+  margin: 20px 0;
+  background: rgb(var(--color-border));
+  border-radius: 5px;
+}
+
+.range-input input {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range-input input::-webkit-slider-thumb {
+  height: 17px;
+  width: 17px;
+  border-radius: 50%;
+  background: rgb(var(--color-link));
+  pointer-events: auto;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.price-filter .price-input {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.price-input input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: var(--border-radius-style-one, 4px);
+}
+
+/* Color Filter Specifics */
+.color-filter-label {
+  gap: 5px;
+}
+
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-border), 0.5);
+}
+
+/* Off-Canvas Filter Styles */
+@media (min-width: 750px) {
+  .collection-wrapper:not(.with-sidebar) .filters-wrapper {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Hide off-screen */
+    width: 400px;
+    height: 100vh;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(var(--color-text), 0.1);
+  }
+
+  .collection-wrapper:not(.with-sidebar) .filters-wrapper.active {
+    right: 0; /* Slide into view */
+  }
+  
+  .collection-wrapper:not(.with-sidebar) .filters-close-btn {
+    display: block;
+  }
+}
+
+/* Mobile Filter Toggle Button */
+.mobile-filter-toggle {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+  width: 60px;
+  height: 60px;
+  background-color: rgb(var(--color-link));
+  color: rgb(var(--color-background));
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(var(--color-text), 0.2);
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 749px) {
+  .mobile-filter-toggle {
+    display: flex;
+  }
+
+  .filters-wrapper {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Hide off-screen */
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    box-shadow: 5px 0 15px rgba(var(--color-text), 0.1);
+  }
+
+  .filters-wrapper.active {
+    left: 0; /* Slide into view */
+  }
+
+  .filters-close-btn {
+    display: block;
+  }
+}
+
+/* Prevent body scroll when filter is open on mobile */
+body.filter-open {
+  overflow: hidden;
+}

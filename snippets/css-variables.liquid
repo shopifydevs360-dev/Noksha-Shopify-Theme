@@ -1,0 +1,233 @@
+{% style %}
+{%- comment -%}
+  Load Shopify fonts (if not using custom)
+{%- endcomment -%}
+{% unless settings.use_custom_font_body %}
+  {{ settings.type_base_font | font_face: font_display: 'swap' }}
+  {{ settings.type_base_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ settings.type_base_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+{% endunless %}
+
+{% unless settings.use_custom_font_heading %}
+  {{ settings.type_header_font | font_face: font_display: 'swap' }}
+  {{ settings.type_header_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ settings.type_header_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+{% endunless %}
+
+
+{%- comment -%}
+  Load custom fonts if enabled
+{%- endcomment -%}
+{% if settings.use_custom_font_body and settings.custom_body_font != blank %}
+    {% assign body_fonts = settings.custom_body_font | split: '\n' %}
+    {% for font_item in body_fonts %}
+      {% assign font_url = font_item | split: '@' | first %}
+      {% assign font_weight = font_item | split: '@' | last | default: settings.custom_body_weight %}
+      @font-face {
+        font-family: 'CustomBodyFont';
+        src: url('{{ font_url | strip }}') format('woff2');
+        font-weight: {{ font_weight }};
+        font-style: normal;
+        font-display: swap;
+      }
+    {% endfor %}
+{% endif %}
+
+{% if settings.use_custom_font_heading and settings.custom_heading_font != blank %}
+    {% assign heading_fonts = settings.custom_heading_font | split: '\n' %}
+    {% for font_item in heading_fonts %}
+      {% assign font_url = font_item | split: '@' | first %}
+      {% assign font_weight = font_item | split: '@' | last | default: settings.custom_heading_weight %}
+      @font-face {
+        font-family: 'CustomHeadingFont';
+        src: url('{{ font_url | strip }}') format('woff2');
+        font-weight: {{ font_weight }};
+        font-style: normal;
+        font-display: swap;
+      }
+    {% endfor %}
+{% endif %}
+
+
+{%- comment -%}
+  Root variables
+{%- endcomment -%}
+:root {
+  /* Logo Size */
+    --logo-desktop-width: {{ settings.logo_width_desktop }}px;
+    --logo-tablet-width: {{ settings.logo_width_tablet }}px;
+    --logo-mobile-width: {{ settings.logo_width_mobile }}px;
+  /* Typography */
+  {% if settings.use_custom_font_body %}
+    --font-body-family: 'CustomBodyFont', sans-serif;
+    --font-body-weight: {{ settings.custom_body_weight }};
+  {% else %}
+    --font-body-family: {{ settings.type_base_font.family }}, {{ settings.type_base_font.fallback_families }};
+    --font-body-weight: {{ settings.type_base_font.weight }};
+  {% endif %}
+  --font-body-size: {{ settings.type_base_size }}px;
+  --font-body-line-height: {{ settings.type_base_line_height }}px;
+
+  {% if settings.use_custom_font_heading %}
+    --font-heading-family: 'CustomHeadingFont', sans-serif;
+    --font-heading-weight: {{ settings.custom_heading_weight }};
+  {% else %}
+    --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+    --font-heading-weight: {{ settings.type_header_font.weight }};
+  {% endif %}
+/* Heading style variable */
+  --font-h1-size: {{ settings.h1_font_size }}px;
+  --font-h1-weight: {{ settings.h1_font_weight }};
+  --font-h1-letter-spacing: {{ settings.h1_letter_spacing }}px;
+
+  --font-h2-size: {{ settings.h2_font_size }}px;
+  --font-h2-weight: {{ settings.h2_font_weight }};
+  --font-h2-letter-spacing: {{ settings.h2_letter_spacing }}px;
+
+  --font-h3-size: {{ settings.h3_font_size }}px;
+  --font-h3-weight: {{ settings.h3_font_weight }};
+  --font-h3-letter-spacing: {{ settings.h3_letter_spacing }}px;
+
+  --font-h4-size: {{ settings.h4_font_size }}px;
+  --font-h4-weight: {{ settings.h4_font_weight }};
+  --font-h4-letter-spacing: {{ settings.h4_letter_spacing }}px;
+
+  --font-h5-size: {{ settings.h5_font_size }}px;
+  --font-h5-weight: {{ settings.h5_font_weight }};
+  --font-h5-letter-spacing: {{ settings.h5_letter_spacing }}px;
+
+  --font-h6-size: {{ settings.h6_font_size }}px;
+  --font-h6-weight: {{ settings.h6_font_weight }};
+  --font-h6-letter-spacing: {{ settings.h6_letter_spacing }}px;
+
+
+  /* Layout */
+  --page-margin: {{ settings.min_page_margin }}px;
+  --container-max-width: {{ settings.container_max_width }}px;
+  --container-fluid-width: {{ settings.container_fluid_width }}px;
+  --container-narrow-width: {{ settings.container_narrow_width }}px;
+  --container-extra-narrow-width: {{ settings.container_extra_narrow_width }}px;
+  /* Default body color */
+  --color-body-background: {{ settings.body_background }};
+  --color-body-text: {{ settings.body_text }};
+  --color-body-link: {{ settings.body_link }};
+  --color-body-link-hover: {{ settings.body_link_hover }};
+}
+
+
+/* =============================
+   COLOR SCHEMES
+============================= */
+{% for scheme in settings.color_schemes -%}
+  {%- if forloop.index == 1 -%}
+    :root,
+  {%- endif -%}
+  .m-color-{{ scheme.id }} {
+    /* Backgrounds */
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-background-secondary: {{ scheme.settings.background_secondary.red }}, {{ scheme.settings.background_secondary.green }}, {{ scheme.settings.background_secondary.blue }};
+    {% if scheme.settings.background_gradient != empty %}
+      --gradient-background: {{ scheme.settings.background_gradient }};
+    {% else %}
+      --gradient-background: {{ scheme.settings.background }};
+    {% endif %}
+
+    /* Text */
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-subtext: {{ scheme.settings.subtext.red }}, {{ scheme.settings.subtext.green }}, {{ scheme.settings.subtext.blue }};
+    --color-heading: {{ scheme.settings.heading_text.red }}, {{ scheme.settings.heading_text.green }}, {{ scheme.settings.heading_text.blue }};
+
+    /* Links */
+    --color-link: {{ scheme.settings.link_color.red }}, {{ scheme.settings.link_color.green }}, {{ scheme.settings.link_color.blue }};
+    --color-link-hover: {{ scheme.settings.link_hover_color.red }}, {{ scheme.settings.link_hover_color.green }}, {{ scheme.settings.link_hover_color.blue }};
+
+    /* Price */
+    --color-price-sale: {{ scheme.settings.price_sale.red }}, {{ scheme.settings.price_sale.green }}, {{ scheme.settings.price_sale.blue }};
+    --color-price-regular: {{ scheme.settings.price_regular.red }}, {{ scheme.settings.price_regular.green }}, {{ scheme.settings.price_regular.blue }};
+
+    /* Form Fields */
+    --color-form-field: {{ scheme.settings.form_field.red }}, {{ scheme.settings.form_field.green }}, {{ scheme.settings.form_field.blue }};
+    --color-form-field-text: {{ scheme.settings.form_field_label.red }}, {{ scheme.settings.form_field_label.green }}, {{ scheme.settings.form_field_label.blue }};
+
+    /* Tooltip */
+    --color-tooltip: {{ scheme.settings.tooltip.red }}, {{ scheme.settings.tooltip.green }}, {{ scheme.settings.tooltip.blue }};
+    --color-tooltip-text: {{ scheme.settings.tooltip_label.red }}, {{ scheme.settings.tooltip_label.green }}, {{ scheme.settings.tooltip_label.blue }};
+
+    /* Border */
+    --color-border: {{ scheme.settings.border.red }}, {{ scheme.settings.border.green }}, {{ scheme.settings.border.blue }};
+
+        /* Additional Colors */
+    --color-additional-1: {{ scheme.settings.additional_color_1.red }}, {{ scheme.settings.additional_color_1.green }}, {{ scheme.settings.additional_color_1.blue }};
+    --color-additional-2: {{ scheme.settings.additional_color_2.red }}, {{ scheme.settings.additional_color_2.green }}, {{ scheme.settings.additional_color_2.blue }};
+
+  }
+{% endfor %}
+
+
+/* =============================
+   BUTTON COLORS (GLOBAL)
+============================= */
+:root {
+  /* Primary Button */
+  --btn-primary-bg: {{ settings.primary_button_bg }};
+  --btn-primary-label: {{ settings.primary_button_label }};
+  --btn-primary-border: {{ settings.primary_button_border }};
+  --btn-primary-hover-bg: {{ settings.primary_button_hover_bg }};
+  --btn-primary-hover-label: {{ settings.primary_button_hover_label }};
+  --btn-primary-hover-border: {{ settings.primary_button_hover_border }};
+  --btn-primary-font: {{ settings.primary_button_font.family }}, {{ settings.primary_button_font.fallback_families }};
+  --btn-primary-font-size: {{ settings.primary_button_font_size }}px;
+  --btn-primary-letter-space: {{ settings.primary_button_letter_space }}px;
+
+  /* Secondary Button */
+  --btn-secondary-bg: {{ settings.secondary_button_bg }};
+  --btn-secondary-label: {{ settings.secondary_button_label }};
+  --btn-secondary-border: {{ settings.secondary_button_border }};
+  --btn-secondary-hover-bg: {{ settings.secondary_button_hover_bg }};
+  --btn-secondary-hover-label: {{ settings.secondary_button_hover_label }};
+  --btn-secondary-hover-border: {{ settings.secondary_button_hover_border }};
+  --btn-secondary-font: {{ settings.secondary_button_font.family }}, {{ settings.secondary_button_font.fallback_families }};
+  --btn-secondary-font-size: {{ settings.secondary_button_font_size }}px;
+  --btn-secondary-letter-space: {{ settings.secondary_button_letter_space }}px;
+
+  /* Underline Button */
+  --btn-underline-color: {{ settings.underline_button_color }};
+  --btn-underline-hover-color: {{ settings.underline_button_hover_color }};
+  --btn-underline-font: {{ settings.underline_button_font.family }}, {{ settings.underline_button_font.fallback_families }};
+  --btn-underline-font-size: {{ settings.underline_button_font_size }}px;
+  --btn-underline-letter-space: {{ settings.underline_button_letter_space }}px;
+
+  /* Gradient Button */
+  {% if settings.gradient_button_bg != blank %}
+    --btn-gradient-bg: {{ settings.gradient_button_bg }};
+  {% endif %}
+  {% if settings.gradient_button_hover_bg != blank %}
+    --btn-gradient-hover-bg: {{ settings.gradient_button_hover_bg }};
+  {% endif %}
+  --btn-gradient-label: {{ settings.gradient_button_label }};
+  --btn-gradient-hover-label: {{ settings.gradient_button_hover_label }};
+  --btn-gradient-font: {{ settings.gradient_button_font.family }}, {{ settings.gradient_button_font.fallback_families }};
+  --btn-gradient-font-size: {{ settings.gradient_button_font_size }}px;
+  --btn-gradient-letter-space: {{ settings.gradient_button_letter_space }}px;
+
+  /* Animation Button */
+  {% if settings.animation_button_bg != blank %}
+    --btn-animation-bg: {{ settings.animation_button_bg }};
+  {% endif %}
+  {% if settings.animation_button_hover_bg != blank %}
+    --btn-animation-hover-bg: {{ settings.animation_button_hover_bg }};
+  {% endif %}
+  --btn-animation-border: {{ settings.animation_button_border }};
+  --btn-animation-border-hover: {{ settings.animation_button_hover_border }};
+  --btn-animation-label: {{ settings.animation_button_label }};
+  --btn-animation-hover-label: {{ settings.animation_button_hover_label }};
+  --btn-animation-font: {{ settings.animation_button_font.family }}, {{ settings.animation_button_font.fallback_families }};
+  --btn-animation-font-size: {{ settings.animation_button_font_size }}px;
+  --btn-animation-letter-space: {{ settings.animation_button_letter_space }}px;
+
+  /* Content Card */
+  --border-radius-style-one: {{ settings.corner-radius-style-one }}px;
+  --border-radius-style-two: {{ settings.corner-radius-style-two }}px;
+}
+
+{% endstyle %}
