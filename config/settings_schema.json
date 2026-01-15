@@ -1,10 +1,10 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Noor",
+    "theme_name": "Noksha",
     "theme_version": "2.1.0",
     "theme_author": "Mehedi",
-    "theme_documentation_url": "https://shopify.codecraftmehedi.com/theme-noor/documentation",
+    "theme_documentation_url": "https://shopify.codecraftmehedi.com/theme-noksha/documentation",
     "theme_support_url": "https://shopify.codecraftmehedi.com/"
   },
   {
@@ -769,7 +769,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "[Watch tutorial](https://codecraftmehedi.com/noor)"
+        "content": "[Watch tutorial](https://codecraftmehedi.com/noksha)"
       },
       {
         "type": "text",
