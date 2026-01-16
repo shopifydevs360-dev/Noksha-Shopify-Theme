@@ -67,15 +67,13 @@ function initVariantAjaxAddToCart() {
    CART COUNT UPDATE
 ---------------------------------- */
 function updateCartCount() {
-.then(() => {
   fetch('/cart.js')
     .then(res => res.json())
     .then(cart => {
-      renderAllCarts(cart); // This updates the cart items list
-      updateCartCount();
-      if (isDrawer) openBagDrawer();
+      document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = cart.item_count;
+      });
     });
-});
 }
 
 /* ---------------------------------
