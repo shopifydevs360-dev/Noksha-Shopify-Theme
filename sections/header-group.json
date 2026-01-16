@@ -54,7 +54,7 @@
       "name": "Sidebar",
       "settings": {
         "white_logo": "shopify://shop_images/Halla_Hijab_white.png",
-        "color_scheme": "",
+        "color_scheme": "default",
         "brand_text": "Halla Hijab"
       }
     }
