@@ -19,7 +19,7 @@
         width: 45%;
     }
 }
-.cart-list-items,
+.cart-template-left,
 .cart-template-right{
     max-width: 32rem;
     margin: auto;
