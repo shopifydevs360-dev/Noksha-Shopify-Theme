@@ -1,58 +1,67 @@
 {{ 'cart-template.css' | asset_url | stylesheet_tag }}
-
-{% assign free_shipping_threshold = 10000 %}
-
-<div
-  class="cart-template"
-  data-cart-root
-  data-free-shipping-threshold="{{ free_shipping_threshold }}"
->
+<div class="cart-template" data-cart-root>
   <div class="container">
     <form action="{{ routes.cart_url }}" method="post" novalidate>
       <div class="cart-template__inner">
 
-        <!-- LEFT -->
+        <!-- =====================
+             LEFT SIDE – CART ITEMS
+        ====================== -->
         <div class="cart-template-left">
 
           <h4 class="cart-title">Your Bag</h4>
-
-          <!-- FREE SHIPPING -->
           <div class="cart-shipping-wrapper">
+            {% assign free_shipping_threshold = 10000 %}
+            {% if cart.total_price < free_shipping_threshold %}
+              {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
+              {% if progress > 100 %}
+                {% assign progress = 100 %}
+              {% endif %}
 
-            {% assign remaining = free_shipping_threshold | minus: cart.total_price %}
-            {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
-            {% if progress > 100 %}{% assign progress = 100 %}{% endif %}
 
-            <p class="cart-shipping-text cart-shipping-default">
-              You are
-              <span class="cart-shipping-remaining">
-                {{ remaining | money }}
-              </span>
-              away from free shipping
-            </p>
+            <div class="cart-free-shipping">
+              <p>
+                You are {{ free_shipping_threshold | minus: cart.total_price | money }}
+                away from free shipping
+              </p>
 
-            <p class="cart-shipping-text cart-shipping-success">
-              🎉 You’ve unlocked free shipping!
-            </p>
-
-            <div class="shipping-progress">
-              <div
-                class="shipping-progress-bar"
-                style="width: {{ progress }}%;"
-              ></div>
+              <div class="shipping-progress">
+                <span
+                  class="shipping-progress-bar"
+                  style="width: {{ progress }}%;">
+                </span>
+              </div>
             </div>
 
+            {% else %}
+              <p class="cart-free-shipping success">
+                🎉 You’ve unlocked free shipping!
+              </p>
+            {% endif %}
           </div>
-
-          <!-- ITEMS -->
           {% if cart.item_count > 0 %}
             <div class="cart-list-items">
+
               {% for item in cart.items %}
-                <div class="cart-item" data-key="{{ item.key }}">
+              <div class="cart-item" data-key="{{ item.key }}">
 
-                  <div class="cart-item-info">
-                    <p class="cart-item-title">{{ item.product.title }}</p>
+                <div class="cart-item-image">
+                  <div class="image-warpper cropped-image-wrapper cropped-image--portrait">
+                    <a href="{{ item.url }}">
+                      {{ item.image | image_url: width: 200 | image_tag }}
+                    </a>
+                  </div>
+                </div>
 
+                <div class="cart-item-info">
+                  <div class="info-left">
+                    <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
+
+                    {% if item.variant.title != 'Default Title' %}
+                      <p class="cart-item-variant">{{ item.variant.title }}</p>
+                    {% endif %}
+
+                    <!-- Quantity -->
                     <div class="cart-item-qty">
                       <button type="button" class="qty-btn qty-minus">−</button>
                       <input type="number" value="{{ item.quantity }}" min="1">
@@ -60,21 +69,24 @@
                     </div>
                   </div>
 
-                  <div class="cart-item-meta">
+                  <div class="info-right">
                     <p class="cart-item-price">{{ item.final_line_price | money }}</p>
                     <button type="button" class="cart-item-remove">Remove</button>
                   </div>
-
                 </div>
+
+              </div>
               {% endfor %}
+
             </div>
           {% else %}
             <p>Your cart is empty.</p>
           {% endif %}
-
         </div>
 
-        <!-- RIGHT -->
+        <!-- =====================
+             RIGHT SIDE – SUMMARY
+        ====================== -->
         <div class="cart-template-right">
 
           <h4>Order Summary</h4>
@@ -100,5 +112,4 @@
     </form>
   </div>
 </div>
-
 <script src="{{ 'cart-template.js' | asset_url }}" defer></script>
