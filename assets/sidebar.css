@@ -130,6 +130,9 @@ body.has-promo-bar .m-sidebar__content {
     align-items: center;
     border-radius: 50%;
 }
+.m-sidebar__nav a .js-open-icon-text .text{
+    padding: 6px 0;
+}
 .expended .m-sidebar__nav a .js-open-icon-text .icon{
     display: none;
 }
