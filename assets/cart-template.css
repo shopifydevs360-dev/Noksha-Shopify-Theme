@@ -28,7 +28,7 @@
     border-top: 1px solid rgb(var(--color-border));
 }
 .cart-item-image {
-    width: 6rem;
+    width: 100%;
 }
 .cart-item-info {
     display: flex;
