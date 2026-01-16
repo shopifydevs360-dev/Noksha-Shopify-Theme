@@ -1,4 +1,13 @@
 /* Cart Style */
-.cart-page {
-    padding-left: 12rem;
+@media (min-width: 992px){
+    .cart-page {
+        padding-left: 12rem;
+    }
+    .cart-template__inner {
+        display: flex;
+        margin: auto;
+        width: 100%;
+        gap: 10rem;
+    }
 }
+
