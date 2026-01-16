@@ -28,16 +28,22 @@
 /* ============================
    FREE SHIPPING PROGRESS BAR
 ============================ */
-/* ===== Shipping ===== */
-.cart-shipping-wrapper {
-  margin-bottom: 24px;
+/* Progress bar */
+.shipping-progress {
+  background: gray;
+  height: 14px;
+  width: 100%;
+  margin-top: 8px;
 }
 
-.cart-shipping-text {
-  font-size: 14px;
-  margin-bottom: 6px;
+.shipping-progress-bar {
+  background: green;
+  height: 100%;
+  width: 0;
+  transition: width 0.3s ease;
 }
 
+/* Toggle text */
 .cart-shipping-success {
   display: none;
 }
@@ -48,20 +54,6 @@
 
 .cart-shipping-wrapper.is-success .cart-shipping-success {
   display: block;
-}
-
-/* Progress bar (your example) */
-.shipping-progress {
-  background: #ccc;
-  height: 14px;
-  width: 100%;
-}
-
-.shipping-progress-bar {
-  background: green;
-  height: 100%;
-  width: 0;
-  transition: width 0.3s ease;
 }
 
 
