@@ -51,3 +51,93 @@ function initAccordion() {
   });
 }
 
+/* ===============================
+   SHARED CART RENDER FUNCTIONS
+================================ */
+function renderAllCarts(cart) {
+  document.querySelectorAll("[data-cart-root]").forEach((root) => {
+    renderSingleCart(cart, root);
+  });
+}
+
+function renderSingleCart(cart, root) {
+  updateSubtotal(cart, root);
+  updateFreeShipping(cart, root);
+  updateLineItems(cart, root);
+  removeDeletedItems(cart, root);
+}
+
+function updateSubtotal(cart, root) {
+  const subtotalEl = root.querySelector(".cart-subtotal");
+  if (!subtotalEl) return;
+
+  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
+}
+
+function updateFreeShipping(cart, root) {
+  const wrapper = root.querySelector(".cart-shipping-wrapper");
+  if (!wrapper) return;
+
+  const bar = wrapper.querySelector(".shipping-progress-bar");
+  const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
+  const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
+
+  const progress = Math.min(
+    (cart.total_price / threshold) * 100,
+    100
+  );
+
+  if (bar) {
+    bar.style.width = progress + "%";
+  }
+
+  if (cart.total_price >= threshold) {
+    wrapper.classList.add("is-success");
+  } else {
+    wrapper.classList.remove("is-success");
+    if (remainingEl) {
+      remainingEl.textContent = formatMoney(
+        threshold - cart.total_price
+      );
+    }
+  }
+}
+
+function updateLineItems(cart, root) {
+  cart.items.forEach((item) => {
+    const row = root.querySelector(
+      `.cart-item[data-key="${item.key}"]`
+    );
+    if (!row) return;
+
+    const priceEl = row.querySelector(".cart-item-price");
+    const qtyInput = row.querySelector("input");
+
+    if (priceEl) {
+      priceEl.textContent = formatMoney(item.final_line_price);
+    }
+
+    if (qtyInput) {
+      qtyInput.value = item.quantity;
+    }
+  });
+}
+
+function removeDeletedItems(cart, root) {
+  root.querySelectorAll(".cart-item").forEach((row) => {
+    const key = row.dataset.key;
+    const exists = cart.items.some((item) => item.key === key);
+
+    if (!exists) {
+      row.remove();
+    }
+  });
+}
+
+function formatMoney(cents) {
+  return (cents / 100).toLocaleString(undefined, {
+    style: "currency",
+    currency: Shopify.currency.active,
+  });
+}
+
