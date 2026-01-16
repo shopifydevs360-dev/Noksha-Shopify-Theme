@@ -3,11 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartQuantity();
   initCartRemove();
   initCartInitialSync();
-  interceptAddToCart(); // ✅ NEW (important)
 });
 
 /* ============================
-   CART AJAX CORE (QTY / REMOVE)
+   CART AJAX CORE
 ============================ */
 function initCartAjax() {
   window.updateCartAjax = function (updates) {
@@ -19,53 +18,9 @@ function initCartAjax() {
       .then(res => res.json())
       .then(cart => {
         renderAllCarts(cart);
-        updateCartCount(); // existing header sync
+        updateCartCount(); // ✅ sync header counter
       });
   };
-}
-
-/* ============================
-   INTERCEPT ADD TO CART
-   (keeps old Liquid logic)
-============================ */
-function interceptAddToCart() {
-  const originalFetch = window.fetch;
-
-  window.fetch = function (...args) {
-    const [url] = args;
-
-    if (typeof url === "string" && url.includes("/cart/add")) {
-      return originalFetch(...args).then((response) => {
-        reloadCartSection(); // ✅ update cart page
-        updateCartCount();
-        return response;
-      });
-    }
-
-    return originalFetch(...args);
-  };
-}
-
-/* ============================
-   RELOAD CART SECTION (SERVER)
-============================ */
-function reloadCartSection() {
-  fetch(`${window.location.pathname}?sections=cart-template`)
-    .then(res => res.json())
-    .then(sections => {
-      const html = sections["cart-template"];
-      if (!html) return;
-
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-
-      const newCart = doc.querySelector("#CartTemplate");
-      const oldCart = document.querySelector("#CartTemplate");
-
-      if (newCart && oldCart) {
-        oldCart.replaceWith(newCart);
-      }
-    });
 }
 
 /* ============================
@@ -113,7 +68,9 @@ function updateFreeShipping(cart, root) {
     100
   );
 
-  if (bar) bar.style.width = progress + "%";
+  if (bar) {
+    bar.style.width = progress + "%";
+  }
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
@@ -156,11 +113,11 @@ function updateLineItems(cart, root) {
 function removeDeletedItems(cart, root) {
   root.querySelectorAll(".cart-item").forEach((row) => {
     const key = row.dataset.key;
-    const exists = cart.items.some(
-      (item) => item.key === key
-    );
+    const exists = cart.items.some((item) => item.key === key);
 
-    if (!exists) row.remove();
+    if (!exists) {
+      row.remove();
+    }
   });
 }
 
@@ -205,8 +162,8 @@ function initCartRemove() {
 ============================ */
 function initCartInitialSync() {
   fetch("/cart.js")
-    .then(res => res.json())
-    .then(cart => {
+    .then((res) => res.json())
+    .then((cart) => {
       renderAllCarts(cart);
     });
 }
@@ -220,3 +177,6 @@ function formatMoney(cents) {
     currency: Shopify.currency.active,
   });
 }
+
+
+
