@@ -38,40 +38,26 @@
 
                   <!-- Product info -->
                   <div class="cart-item-info">
-                    <a href="{{ item.url }}" class="cart-item-title">
-                      {{ item.product.title }}
-                    </a>
-
-                    {% if item.variant.title != 'Default Title' %}
-                      <p class="cart-item-variant">{{ item.variant.title }}</p>
-                    {% endif %}
-
-                    <p class="cart-item-price">
-                      {{ item.final_line_price | money }}
-                    </p>
-
+                    <div class="info-left">
+                      <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
+                      {% if item.variant.title != 'Default Title' %}
+                        <p class="cart-item-variant">{{ item.variant.title }}</p>
+                      {% endif %}
                     <!-- Quantity selector -->
-                    <div class="cart-item-qty">
-                      <input
-                        type="number"
-                        name="updates[]"
-                        value="{{ item.quantity }}"
-                        min="0"
-                      >
+                      <div class="cart-item-qty">
+                        <input type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+                      </div>
                     </div>
-
-                    <!-- Remove -->
-                    <a
-                      href="{{ item.url_to_remove }}"
-                      class="cart-item-remove"
-                    >
-                      Remove
-                    </a>
+                    <div class="info-right">
+                      <p class="cart-item-price">
+                        {{ item.final_line_price | money }}
+                      </p>
+                      <!-- Remove -->
+                    <a href="{{ item.url_to_remove }}" class="cart-item-remove">Remove</a>
+                    </div>
                   </div>
-
                 </div>
               {% endfor %}
-
             </div>
           {% else %}
             <p>Your cart is empty.</p>
