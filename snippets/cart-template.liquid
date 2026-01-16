@@ -38,41 +38,41 @@
           {% if cart.item_count > 0 %}
             <div class="cart-list-items">
 
-{% for item in cart.items %}
-<div class="cart-item" data-key="{{ item.key }}">
+              {% for item in cart.items %}
+              <div class="cart-item" data-key="{{ item.key }}">
 
-  <div class="cart-item-image">
-    <div class="image-warpper cropped-image-wrapper cropped-image--portrait">
-      <a href="{{ item.url }}">
-        {{ item.image | image_url: width: 200 | image_tag }}
-      </a>
-    </div>
-  </div>
+                <div class="cart-item-image">
+                  <div class="image-warpper cropped-image-wrapper cropped-image--portrait">
+                    <a href="{{ item.url }}">
+                      {{ item.image | image_url: width: 200 | image_tag }}
+                    </a>
+                  </div>
+                </div>
 
-  <div class="cart-item-info">
-    <div class="info-left">
-      <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
+                <div class="cart-item-info">
+                  <div class="info-left">
+                    <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
 
-      {% if item.variant.title != 'Default Title' %}
-        <p class="cart-item-variant">{{ item.variant.title }}</p>
-      {% endif %}
+                    {% if item.variant.title != 'Default Title' %}
+                      <p class="cart-item-variant">{{ item.variant.title }}</p>
+                    {% endif %}
 
-      <!-- Quantity -->
-      <div class="cart-item-qty">
-        <button type="button" class="qty-btn qty-minus">−</button>
-        <input type="number" value="{{ item.quantity }}" min="1">
-        <button type="button" class="qty-btn qty-plus">+</button>
-      </div>
-    </div>
+                    <!-- Quantity -->
+                    <div class="cart-item-qty">
+                      <button type="button" class="qty-btn qty-minus">−</button>
+                      <input type="number" value="{{ item.quantity }}" min="1">
+                      <button type="button" class="qty-btn qty-plus">+</button>
+                    </div>
+                  </div>
 
-    <div class="info-right">
-      <p class="cart-item-price">{{ item.final_line_price | money }}</p>
-      <button type="button" class="cart-item-remove">Remove</button>
-    </div>
-  </div>
+                  <div class="info-right">
+                    <p class="cart-item-price">{{ item.final_line_price | money }}</p>
+                    <button type="button" class="cart-item-remove">Remove</button>
+                  </div>
+                </div>
 
-</div>
-{% endfor %}
+              </div>
+              {% endfor %}
 
             </div>
           {% else %}
@@ -89,39 +89,21 @@
 
           <div class="cart-summary-row">
             <span>Subtotal</span>
-            <span>{{ cart.items_subtotal_price | money }}</span>
-          </div>
-
-          <div class="cart-summary-row">
-            <span>Shipping</span>
-            <span>
-              {% if cart.total_price >= free_shipping_threshold %}
-                Free
-              {% else %}
-                Calculated at checkout
-              {% endif %}
+            <span class="cart-subtotal">
+              {{ cart.items_subtotal_price | money }}
             </span>
           </div>
 
-          <div class="cart-summary-row">
-            <span>Taxes</span>
-            <span>Calculated at checkout</span>
-          </div>
-
-          <div class="cart-summary-row total">
-            <strong>Total</strong>
-            <strong>{{ cart.total_price | money }}</strong>
-          </div>
-
-          <button
-            type="submit"
-            name="checkout"
-            class="cart-checkout-btn"
-          >
+          <button type="submit" name="checkout" class="cart-checkout-btn">
             Checkout
           </button>
 
+          <p class="cart-note">
+            Shipping and taxes calculated at checkout.
+          </p>
+
         </div>
+
       </div>
     </form>
   </div>
