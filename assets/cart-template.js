@@ -24,9 +24,12 @@ function initCartAjax() {
 }
 
 /* ============================
-   ADD TO CART AJAX
+   ADD TO CART AJAX (SAFE)
 ============================ */
 function initAddToCartAjax() {
+  let isAdding = false;
+
+  /* ---- Single-variant form ---- */
   document.addEventListener("submit", (e) => {
     const form = e.target.closest(
       'form[action="/cart/add"], form[action*="/cart/add"]'
@@ -34,21 +37,45 @@ function initAddToCartAjax() {
     if (!form) return;
 
     e.preventDefault();
-    addVariantToCart(new FormData(form));
+    e.stopImmediatePropagation();
+
+    if (isAdding) return;
+    isAdding = true;
+
+    addVariantToCart(new FormData(form), () => {
+      isAdding = false;
+    });
   });
 
+  /* ---- Multi-variant buttons ---- */
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".card-variant-btn");
     if (!btn) return;
 
-    addVariantToCart({
-      id: btn.dataset.variantId,
-      quantity: 1,
-    });
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    if (btn.classList.contains("disabled")) return;
+    if (isAdding) return;
+
+    isAdding = true;
+
+    addVariantToCart(
+      {
+        id: btn.dataset.variantId,
+        quantity: 1,
+      },
+      () => {
+        isAdding = false;
+      }
+    );
   });
 }
 
-function addVariantToCart(data) {
+/* ============================
+   ADD VARIANT HELPER
+============================ */
+function addVariantToCart(data, done) {
   fetch("/cart/add.js", {
     method: "POST",
     headers:
@@ -64,6 +91,9 @@ function addVariantToCart(data) {
     .then((res) => res.json())
     .then((cart) => {
       renderAllCarts(cart);
+    })
+    .finally(() => {
+      if (typeof done === "function") done();
     });
 }
 
@@ -82,7 +112,7 @@ function renderAllCarts(cart) {
 function renderSingleCart(cart, root) {
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
-  renderCartItems(cart, root); // 🔥 FIX
+  renderCartItems(cart, root);
 }
 
 /* ============================
@@ -94,7 +124,7 @@ function updateSubtotal(cart, root) {
 }
 
 /* ============================
-   FREE SHIPPING
+   FREE SHIPPING PROGRESS
 ============================ */
 function updateFreeShipping(cart, root) {
   const wrapper = root.querySelector(".cart-shipping-wrapper");
@@ -158,7 +188,9 @@ function renderCartItems(cart, root) {
           <p class="cart-item-price">
             ${formatMoney(item.final_line_price)}
           </p>
-          <button type="button" class="cart-item-remove">Remove</button>
+          <button type="button" class="cart-item-remove">
+            Remove
+          </button>
         </div>
       </div>
     `;
@@ -175,6 +207,8 @@ function initCartQuantity() {
     if (!e.target.classList.contains("qty-btn")) return;
 
     const item = e.target.closest(".cart-item");
+    if (!item) return;
+
     const input = item.querySelector("input");
     let qty = parseInt(input.value, 10);
 
