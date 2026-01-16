@@ -22,11 +22,8 @@ function initAjaxAddToCart() {
         body: new FormData(this)
       })
         .then(res => res.json())
-        .then(cart => {
-          document.querySelectorAll('.cart-count').forEach(el => {
-            el.textContent = cart.item_count;
-          });
-          renderAllCarts(cart);
+        .then(() => {
+          updateCartCount();
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error(err));
@@ -57,11 +54,8 @@ function initVariantAjaxAddToCart() {
         })
       })
         .then(res => res.json())
-        .then(cart => {
-          document.querySelectorAll('.cart-count').forEach(el => {
-            el.textContent = cart.item_count;
-          });
-          renderAllCarts(cart);
+        .then(() => {
+          updateCartCount();
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error(err));
@@ -86,16 +80,11 @@ function updateCartCount() {
    OPEN BAG DRAWER (EXISTING SYSTEM)
 ---------------------------------- */
 function openBagDrawer() {
-  const drawer = document.querySelector('[data-open-section="bag-drawer"]');
-  const overlay = document.getElementById("js-open-overlay");
-  const expandedArea = document.getElementById("area-expended");
+  const trigger = document.querySelector(
+    '[data-trigger-section="bag-drawer"]'
+  );
 
-  if (!drawer) return;
-
-  drawer.classList.add('bag-drawer-open', "is-open");
-  if (overlay) overlay.classList.remove("hide");
-  if (expandedArea) expandedArea.classList.add("expended-area-active");
-
-  // Add body states
-  document.body.classList.add("drawer-flyout", "disable-scrollbars");
+  if (trigger) {
+    trigger.click();
+  }
 }
