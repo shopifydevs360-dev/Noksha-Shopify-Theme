@@ -2,7 +2,7 @@
 
 {% assign free_shipping_threshold = 10000 %}
 
-<div class="cart-template" data-cart-root data-free-shipping-threshold="{{ free_shipping_threshold }}">
+<div id="CartTemplate" class="cart-template" data-cart-root data-free-shipping-threshold="{{ free_shipping_threshold }}">
   <div class="container">
     <form action="{{ routes.cart_url }}" method="post" novalidate>
       <div class="cart-template__inner">
