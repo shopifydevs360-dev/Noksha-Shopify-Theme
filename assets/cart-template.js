@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartAjax();
   initCartQuantity();
   initCartRemove();
+  initAddToCartAjax();
   initCartInitialSync();
 });
 
@@ -20,6 +21,65 @@ function initCartAjax() {
         renderAllCarts(cart);
       });
   };
+}
+
+/* ============================
+   ADD TO CART AJAX (ALL CASES)
+============================ */
+function initAddToCartAjax() {
+
+  /* ---- Single variant (form submit) ---- */
+  document.addEventListener("submit", (e) => {
+    const form = e.target.closest(
+      'form[action="/cart/add"], form[action*="/cart/add"]'
+    );
+    if (!form) return;
+
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    addVariantToCart(formData);
+  });
+
+  /* ---- Multi-variant buttons ---- */
+  document.addEventListener("click", (e) => {
+    const variantBtn = e.target.closest(".card-variant-btn");
+    if (!variantBtn) return;
+
+    const variantId = variantBtn.dataset.variantId;
+    if (!variantId) return;
+
+    addVariantToCart({
+      id: variantId,
+      quantity: 1,
+    });
+  });
+}
+
+/* ============================
+   ADD VARIANT HELPER
+============================ */
+function addVariantToCart(data) {
+  fetch("/cart/add.js", {
+    method: "POST",
+    headers:
+      data instanceof FormData
+        ? undefined
+        : { "Content-Type": "application/json" },
+    body:
+      data instanceof FormData
+        ? data
+        : JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .then(() => fetch("/cart.js"))
+    .then((res) => res.json())
+    .then((cart) => {
+      renderAllCarts(cart);
+    })
+    .catch((err) => {
+      console.error("Add to cart failed", err);
+    });
 }
 
 /* ============================
@@ -67,18 +127,15 @@ function updateFreeShipping(cart, root) {
     100
   );
 
-  if (bar) {
-    bar.style.width = progress + "%";
-  }
+  if (bar) bar.style.width = progress + "%";
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
   } else {
     wrapper.classList.remove("is-success");
     if (remainingEl) {
-      remainingEl.textContent = formatMoney(
-        threshold - cart.total_price
-      );
+      remainingEl.textContent =
+        formatMoney(threshold - cart.total_price);
     }
   }
 }
