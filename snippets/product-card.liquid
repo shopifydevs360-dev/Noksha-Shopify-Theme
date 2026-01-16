@@ -83,7 +83,7 @@
       {% else %}
 
         {% assign variant = product.variants.first %}
-        <form method="post" action="{{ routes.cart_add_url }}" class="product-form" data-add-to-cart-form>
+        <form method="post" action="{{ routes.cart_add_url }}" class="product-form">
           <input type="hidden" name="id" value="{{ variant.id }}">
 
           <button
