@@ -100,6 +100,23 @@
   background: none;
   cursor: pointer;
 }
+.cart-item-qty input {
+  width: 42px;
+  height: 32px;
+  text-align: center;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #000;
+  font-size: 14px;
+  appearance: none;
+  -moz-appearance: textfield;
+}
+
+.cart-item-qty input::-webkit-inner-spin-button,
+.cart-item-qty input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 /* Note */
 .cart-note {
