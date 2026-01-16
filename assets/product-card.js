@@ -62,3 +62,18 @@ function initVariantAjaxAddToCart() {
     });
   });
 }
+
+
+
+/* ---------------------------------
+   OPEN BAG DRAWER (EXISTING SYSTEM)
+---------------------------------- */
+function openBagDrawer() {
+  const trigger = document.querySelector(
+    '[data-trigger-section="bag-drawer"]'
+  );
+
+  if (trigger) {
+    trigger.click();
+  }
+}
