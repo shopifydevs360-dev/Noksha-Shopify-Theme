@@ -10,7 +10,8 @@
         display: flex;
         margin: auto;
         width: 100%;
-        gap: 10rem;
+        gap: 6rem;
+        max-width: 68rem;
     }
     .cart-template-left {
         width: 55%;
