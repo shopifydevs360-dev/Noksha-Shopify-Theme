@@ -161,19 +161,11 @@ function initCartRemove() {
    INITIAL SYNC
 ============================ */
 function initCartInitialSync() {
-fetch("/cart/add.js", {
-  method: "POST",
-  body: new FormData(form),
-})
-.then(() => {
-  return fetch("/cart.js");
-})
-.then(res => res.json())
-.then(cart => {
-  renderAllCarts(cart);
-  updateCartCount();
-});
-
+  fetch("/cart.js")
+    .then((res) => res.json())
+    .then((cart) => {
+      renderAllCarts(cart);
+    });
 }
 
 /* ============================
