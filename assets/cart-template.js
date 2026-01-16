@@ -15,9 +15,10 @@ function initCartAjax() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ updates }),
     })
-      .then((res) => res.json())
-      .then((cart) => {
+      .then(res => res.json())
+      .then(cart => {
         renderAllCarts(cart);
+        updateCartCount(); // ✅ sync header counter
       });
   };
 }
@@ -178,21 +179,4 @@ function formatMoney(cents) {
 }
 
 
-/* ============================
-   CART COUNT UPDATE
-============================ */
 
-function initCartAjax() {
-  window.updateCartAjax = function (updates) {
-    fetch("/cart/update.js", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ updates }),
-    })
-      .then(res => res.json())
-      .then(cart => {
-        renderAllCarts(cart);
-        updateCartCount(); // ✅ sync header counter
-      });
-  };
-}
