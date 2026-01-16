@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* =====================
+     UTIL
+  ===================== */
   function formatMoney(cents) {
     return (cents / 100).toLocaleString(undefined, {
       style: 'currency',
@@ -7,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* =====================
+     CART API
+  ===================== */
   function updateCart(updates) {
     fetch('/cart/update.js', {
       method: 'POST',
@@ -14,28 +20,46 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify({ updates })
     })
       .then(res => res.json())
-      .then(cart => renderAllCarts(cart));
+      .then(cart => {
+        renderAllCarts(cart);
+      });
   }
 
+  /* =====================
+     RENDER
+  ===================== */
   function renderAllCarts(cart) {
     document.querySelectorAll('[data-cart-root]').forEach(root => {
+      renderCart(cart, root);
+    });
+  }
 
-      const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
-      const wrapper = root.querySelector('.cart-shipping-wrapper');
-      const bar = root.querySelector('.shipping-progress-bar');
-      const remainingEl = root.querySelector('.cart-shipping-remaining');
-      const subtotalEl = root.querySelector('.cart-subtotal');
+  function renderCart(cart, root) {
+    const threshold = parseInt(
+      root.dataset.freeShippingThreshold,
+      10
+    );
 
-      /* Subtotal */
-      if (subtotalEl) {
-        subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
-      }
+    /* ---------- Subtotal ---------- */
+    const subtotalEl = root.querySelector('.cart-subtotal');
+    if (subtotalEl) {
+      subtotalEl.textContent =
+        formatMoney(cart.items_subtotal_price);
+    }
 
-      /* Progress */
-      const progress = Math.min((cart.total_price / threshold) * 100, 100);
+    /* ---------- Free shipping progress ---------- */
+    const wrapper = root.querySelector('.cart-shipping-wrapper');
+    const bar = root.querySelector('.shipping-progress-bar');
+    const remainingEl = root.querySelector('.cart-shipping-remaining');
+
+    if (wrapper && bar && remainingEl) {
+      const progress = Math.min(
+        (cart.total_price / threshold) * 100,
+        100
+      );
+
       bar.style.width = progress + '%';
 
-      /* Toggle text ONLY */
       if (cart.total_price >= threshold) {
         wrapper.classList.add('is-success');
       } else {
@@ -43,37 +67,77 @@ document.addEventListener('DOMContentLoaded', () => {
         remainingEl.textContent =
           formatMoney(threshold - cart.total_price);
       }
+    }
 
-      /* Sync quantities */
-      cart.items.forEach(item => {
-        const row = root.querySelector(`.cart-item[data-key="${item.key}"]`);
-        if (row) {
-          row.querySelector('input').value = item.quantity;
-        }
-      });
+    /* ---------- Line prices + quantities ---------- */
+    cart.items.forEach(item => {
+      const row = root.querySelector(
+        `.cart-item[data-key="${item.key}"]`
+      );
+      if (!row) return;
+
+      const priceEl = row.querySelector('.cart-item-price');
+      const qtyInput = row.querySelector('input');
+
+      if (priceEl) {
+        priceEl.textContent =
+          formatMoney(item.final_line_price);
+      }
+
+      if (qtyInput) {
+        qtyInput.value = item.quantity;
+      }
+    });
+
+    /* ---------- Remove deleted items ---------- */
+    root.querySelectorAll('.cart-item').forEach(row => {
+      const key = row.dataset.key;
+      const exists = cart.items.some(item => item.key === key);
+      if (!exists) {
+        row.remove();
+      }
     });
   }
 
+  /* =====================
+     EVENTS
+  ===================== */
+
+  // Quantity buttons
   document.addEventListener('click', e => {
-    if (e.target.classList.contains('qty-btn')) {
-      const item = e.target.closest('.cart-item');
-      const input = item.querySelector('input');
-      let qty = parseInt(input.value, 10);
+    if (!e.target.classList.contains('qty-btn')) return;
 
-      if (e.target.classList.contains('qty-plus')) qty++;
-      if (e.target.classList.contains('qty-minus')) qty--;
-      if (qty < 1) qty = 1;
+    const item = e.target.closest('.cart-item');
+    if (!item) return;
 
-      updateCart({ [item.dataset.key]: qty });
-    }
+    const input = item.querySelector('input');
+    let qty = parseInt(input.value, 10);
 
-    if (e.target.classList.contains('cart-item-remove')) {
-      const item = e.target.closest('.cart-item');
-      updateCart({ [item.dataset.key]: 0 });
-    }
+    if (e.target.classList.contains('qty-plus')) qty++;
+    if (e.target.classList.contains('qty-minus')) qty--;
+
+    if (qty < 1) qty = 1;
+
+    updateCart({ [item.dataset.key]: qty });
   });
 
+  // Remove item
+  document.addEventListener('click', e => {
+    if (!e.target.classList.contains('cart-item-remove')) return;
+
+    const item = e.target.closest('.cart-item');
+    if (!item) return;
+
+    updateCart({ [item.dataset.key]: 0 });
+  });
+
+  /* =====================
+     INIT
+  ===================== */
   fetch('/cart.js')
     .then(res => res.json())
-    .then(cart => renderAllCarts(cart));
+    .then(cart => {
+      renderAllCarts(cart);
+    });
+
 });
