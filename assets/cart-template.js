@@ -1,128 +1,71 @@
 document.addEventListener("DOMContentLoaded", () => {
-  initCartAjax();
   initCartQuantity();
   initCartRemove();
-  initCartInitialSync();
+  interceptAddToCart();
 });
 
 /* ============================
-   CART AJAX CORE
+   INTERCEPT ADD TO CART
+   (works everywhere)
 ============================ */
-function initCartAjax() {
-  window.updateCartAjax = function (updates) {
-    fetch("/cart/update.js", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ updates }),
-    })
-      .then(res => res.json())
-      .then(cart => {
-        renderAllCarts(cart);
-        updateCartCount(); // ✅ sync header counter
+function interceptAddToCart() {
+  const originalFetch = window.fetch;
+
+  window.fetch = function (...args) {
+    const [url] = args;
+
+    if (typeof url === "string" && url.includes("/cart/add")) {
+      return originalFetch(...args).then((response) => {
+        reloadCartSection();
+        updateCartCount();
+        return response;
       });
+    }
+
+    return originalFetch(...args);
   };
 }
 
 /* ============================
-   RENDER ALL CARTS
+   UPDATE CART (QTY / REMOVE)
 ============================ */
-function renderAllCarts(cart) {
-  document.querySelectorAll("[data-cart-root]").forEach((root) => {
-    renderSingleCart(cart, root);
-  });
+function updateCartAjax(updates) {
+  fetch("/cart/update.js", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ updates }),
+  })
+    .then(() => {
+      reloadCartSection();
+      updateCartCount();
+    });
 }
 
 /* ============================
-   RENDER SINGLE CART
+   RELOAD CART SECTION
+   (Shopify official way)
 ============================ */
-function renderSingleCart(cart, root) {
-  updateSubtotal(cart, root);
-  updateFreeShipping(cart, root);
-  updateLineItems(cart, root);
-  removeDeletedItems(cart, root);
+function reloadCartSection() {
+  fetch(`${window.location.pathname}?sections=cart-template`)
+    .then((res) => res.json())
+    .then((sections) => {
+      const html = sections["cart-template"];
+      if (!html) return;
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+
+      const newCart = doc.querySelector("#CartTemplate");
+      const oldCart = document.querySelector("#CartTemplate");
+
+      if (newCart && oldCart) {
+        oldCart.replaceWith(newCart);
+      }
+    });
 }
 
 /* ============================
-   SUBTOTAL
-============================ */
-function updateSubtotal(cart, root) {
-  const subtotalEl = root.querySelector(".cart-subtotal");
-  if (!subtotalEl) return;
-
-  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
-}
-
-/* ============================
-   FREE SHIPPING PROGRESS
-============================ */
-function updateFreeShipping(cart, root) {
-  const wrapper = root.querySelector(".cart-shipping-wrapper");
-  if (!wrapper) return;
-
-  const bar = wrapper.querySelector(".shipping-progress-bar");
-  const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
-  const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
-
-  const progress = Math.min(
-    (cart.total_price / threshold) * 100,
-    100
-  );
-
-  if (bar) {
-    bar.style.width = progress + "%";
-  }
-
-  if (cart.total_price >= threshold) {
-    wrapper.classList.add("is-success");
-  } else {
-    wrapper.classList.remove("is-success");
-    if (remainingEl) {
-      remainingEl.textContent = formatMoney(
-        threshold - cart.total_price
-      );
-    }
-  }
-}
-
-/* ============================
-   LINE ITEMS (PRICE + QTY)
-============================ */
-function updateLineItems(cart, root) {
-  cart.items.forEach((item) => {
-    const row = root.querySelector(
-      `.cart-item[data-key="${item.key}"]`
-    );
-    if (!row) return;
-
-    const priceEl = row.querySelector(".cart-item-price");
-    const qtyInput = row.querySelector("input");
-
-    if (priceEl) {
-      priceEl.textContent = formatMoney(item.final_line_price);
-    }
-
-    if (qtyInput) {
-      qtyInput.value = item.quantity;
-    }
-  });
-}
-
-/* ============================
-   REMOVE DELETED ITEMS
-============================ */
-function removeDeletedItems(cart, root) {
-  root.querySelectorAll(".cart-item").forEach((row) => {
-    const key = row.dataset.key;
-    const exists = cart.items.some((item) => item.key === key);
-
-    if (!exists) {
-      row.remove();
-    }
-  });
-}
-
-/* ============================
-   QUANTITY EVENTS
+   QUANTITY BUTTONS
 ============================ */
 function initCartQuantity() {
   document.addEventListener("click", (e) => {
@@ -144,7 +87,7 @@ function initCartQuantity() {
 }
 
 /* ============================
-   REMOVE EVENT
+   REMOVE ITEM
 ============================ */
 function initCartRemove() {
   document.addEventListener("click", (e) => {
@@ -154,26 +97,5 @@ function initCartRemove() {
     if (!item) return;
 
     updateCartAjax({ [item.dataset.key]: 0 });
-  });
-}
-
-/* ============================
-   INITIAL SYNC
-============================ */
-function initCartInitialSync() {
-  fetch("/cart.js")
-    .then((res) => res.json())
-    .then((cart) => {
-      renderAllCarts(cart);
-    });
-}
-
-/* ============================
-   UTIL
-============================ */
-function formatMoney(cents) {
-  return (cents / 100).toLocaleString(undefined, {
-    style: "currency",
-    currency: Shopify.currency.active,
   });
 }
