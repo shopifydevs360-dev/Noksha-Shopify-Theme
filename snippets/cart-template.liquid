@@ -43,16 +43,12 @@
 
           </div>
 
-          {% if cart.item_count > 0 %}
-<div class="cart-list-items">
-  {% for item in cart.items %}
-    <div class="cart-item" data-key="{{ item.key }}">
-      ...
-    </div>
-  {% endfor %}
-</div>
+{% if cart.item_count > 0 %}
+  <div class="cart-list-items">
+    ...
+  </div>
+{% endif %}
 
-          {% endif %}
         </div>
 
         <!-- RIGHT -->
