@@ -2,11 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const FREE_SHIPPING_THRESHOLD = 10000;
   let isUpdating = false;
 
+  /* ============================
+     UTIL
+  ============================ */
   function formatMoney(cents) {
     return (cents / 100).toLocaleString(undefined, {
       style: 'currency',
       currency: Shopify.currency.active
     });
+  }
+
+  /* ============================
+     CART API
+  ============================ */
+  function fetchCart() {
+    return fetch('/cart.js').then(res => res.json());
   }
 
   function updateCart(updates) {
@@ -20,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then(res => res.json())
       .then(cart => {
-        renderCart(cart);
+        renderAllCarts(cart);
         isUpdating = false;
       })
       .catch(() => {
@@ -28,15 +38,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  function renderCart(cart) {
-    /* ---------- Subtotal ---------- */
-    const subtotalEl = document.querySelector('.cart-subtotal');
+  /* ============================
+     RENDER
+  ============================ */
+  function renderAllCarts(cart) {
+    document.querySelectorAll('[data-cart-root]').forEach(cartRoot => {
+      renderCart(cart, cartRoot);
+    });
+  }
+
+  function renderCart(cart, root) {
+    /* ----- Subtotal ----- */
+    const subtotalEl = root.querySelector('.cart-subtotal');
     if (subtotalEl) {
       subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
     }
 
-    /* ---------- Shipping Message ---------- */
-    const shippingWrapper = document.querySelector('.cart-shipping-wrapper');
+    /* ----- Free Shipping ----- */
+    const shippingWrapper = root.querySelector('.cart-shipping-wrapper');
     if (shippingWrapper) {
       if (cart.total_price >= FREE_SHIPPING_THRESHOLD) {
         shippingWrapper.innerHTML = `
@@ -64,9 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    /* ---------- Update Items ---------- */
+    /* ----- Items ----- */
     cart.items.forEach(item => {
-      const row = document.querySelector(`.cart-item[data-key="${item.key}"]`);
+      const row = root.querySelector(`.cart-item[data-key="${item.key}"]`);
       if (!row) return;
 
       row.querySelector('.cart-item-price').textContent =
@@ -75,15 +94,20 @@ document.addEventListener('DOMContentLoaded', () => {
       row.querySelector('input').value = item.quantity;
     });
 
-    /* ---------- Remove missing items ---------- */
-    document.querySelectorAll('.cart-item').forEach(itemEl => {
-      const key = itemEl.dataset.key;
-      const exists = cart.items.some(i => i.key === key);
-      if (!exists) itemEl.remove();
+    /* ----- Remove deleted ----- */
+    root.querySelectorAll('.cart-item').forEach(el => {
+      const key = el.dataset.key;
+      if (!cart.items.some(i => i.key === key)) {
+        el.remove();
+      }
     });
   }
 
-  /* ---------- Quantity buttons ---------- */
+  /* ============================
+     EVENTS
+  ============================ */
+
+  // + / − buttons
   document.addEventListener('click', e => {
     if (!e.target.classList.contains('qty-btn')) return;
 
@@ -94,16 +118,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.classList.contains('qty-plus')) qty++;
     if (e.target.classList.contains('qty-minus')) qty--;
 
-    if (qty < 1) return;
+    if (qty < 1) qty = 1;
 
     updateCart({ [item.dataset.key]: qty });
   });
 
-  /* ---------- Remove item ---------- */
+  // Manual quantity input
+  document.addEventListener('change', e => {
+    if (!e.target.closest('.cart-item-qty input')) return;
+
+    const input = e.target;
+    const item = input.closest('.cart-item');
+    let qty = parseInt(input.value, 10);
+
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    updateCart({ [item.dataset.key]: qty });
+  });
+
+  // Remove item
   document.addEventListener('click', e => {
     if (!e.target.classList.contains('cart-item-remove')) return;
 
     const item = e.target.closest('.cart-item');
     updateCart({ [item.dataset.key]: 0 });
+  });
+
+  /* ============================
+     INIT
+  ============================ */
+  fetchCart().then(cart => {
+    renderAllCarts(cart);
   });
 });
