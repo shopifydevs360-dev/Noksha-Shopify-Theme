@@ -55,47 +55,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ----- Free Shipping ----- */
-  /* ---------- Free Shipping (NO innerHTML) ---------- */
-  const shippingWrapper = root.querySelector('.cart-shipping-wrapper');
-  if (shippingWrapper) {
-    const threshold = parseInt(
-      shippingWrapper.dataset.freeShippingThreshold,
-      10
-    );
+    const shippingWrapper = root.querySelector('.cart-shipping-wrapper');
+    if (shippingWrapper) {
+      if (cart.total_price >= FREE_SHIPPING_THRESHOLD) {
+        shippingWrapper.innerHTML = `
+          <p class="cart-free-shipping success">
+            🎉 You’ve unlocked free shipping!
+          </p>
+        `;
+      } else {
+        const remaining = FREE_SHIPPING_THRESHOLD - cart.total_price;
+        const progress = Math.min(
+          (cart.total_price / FREE_SHIPPING_THRESHOLD) * 100,
+          100
+        );
 
-    const messageEl = shippingWrapper.querySelector('.cart-free-shipping p');
-    const barEl = shippingWrapper.querySelector('.shipping-progress-bar');
-    const successEl = shippingWrapper.querySelector('.cart-free-shipping.success');
-
-    if (cart.total_price >= threshold) {
-      // Success state
-      shippingWrapper.classList.add('is-success');
-
-      if (messageEl) {
-        messageEl.textContent = '🎉 You’ve unlocked free shipping!';
-      }
-      if (barEl) {
-        barEl.style.width = '100%';
-      }
-    } else {
-      // Normal state
-      const remaining = threshold - cart.total_price;
-      const progress = Math.min(
-        (cart.total_price / threshold) * 100,
-        100
-      );
-
-      shippingWrapper.classList.remove('is-success');
-
-      if (messageEl) {
-        messageEl.textContent =
-          `You are ${formatMoney(remaining)} away from free shipping`;
-      }
-      if (barEl) {
-        barEl.style.width = `${progress}%`;
+        shippingWrapper.innerHTML = `
+          <div class="cart-free-shipping">
+            <p>
+              You are ${formatMoney(remaining)} away from free shipping
+            </p>
+            <div class="shipping-progress">
+              <span class="shipping-progress-bar" style="width:${progress}%"></span>
+            </div>
+          </div>
+        `;
       }
     }
-  }
 
     /* ----- Items ----- */
     cart.items.forEach(item => {
