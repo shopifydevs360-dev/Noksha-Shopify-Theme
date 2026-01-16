@@ -16,7 +16,7 @@
                       {% endif %}
                       <div class="cart-item-qty">
                         <button type="button" class="qty-btn qty-minus">−</button>
-                        <input type="number" value="{{ item.quantity }}" min="1">
+                        <input type="number" name="updates[]" value="{{ item.quantity }}" min="1">
                         <button type="button" class="qty-btn qty-plus">+</button>
                       </div>
                     </div>
