@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartAjax();
   initCartQuantity();
   initCartRemove();
-  initAddToCartAjax();      // ✅ NEW
   initCartInitialSync();
 });
 
@@ -21,31 +20,6 @@ function initCartAjax() {
         renderAllCarts(cart);
       });
   };
-}
-
-/* ============================
-   ADD TO CART AJAX (NEW)
-============================ */
-function initAddToCartAjax() {
-  document.addEventListener("submit", (e) => {
-    const form = e.target.closest('form[action="/cart/add"]');
-    if (!form) return;
-
-    e.preventDefault();
-
-    const formData = new FormData(form);
-
-    fetch("/cart/add.js", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(() => fetch("/cart.js"))
-      .then((res) => res.json())
-      .then((cart) => {
-        renderAllCarts(cart);
-      });
-  });
 }
 
 /* ============================
@@ -93,7 +67,9 @@ function updateFreeShipping(cart, root) {
     100
   );
 
-  if (bar) bar.style.width = progress + "%";
+  if (bar) {
+    bar.style.width = progress + "%";
+  }
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
