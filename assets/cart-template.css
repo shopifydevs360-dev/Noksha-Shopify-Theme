@@ -1,4 +1,7 @@
 /* Cart Style */
+.cart-page {
+    padding-top: 8rem;
+}
 @media (min-width: 992px){
     .cart-page {
         padding-left: 12rem;
