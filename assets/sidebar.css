@@ -141,11 +141,11 @@ body.has-promo-bar .m-sidebar__content {
 }
 .minimal .drawer-flyout .m-sidebar__nav a .js-open-icon-text .icon{
     display: none;
-        transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
 }
 .minimal .drawer-flyout .m-sidebar__nav a .js-open-icon-text .text{
     display: block !important; 
-        transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
 }
 .sidebar-overlay {
     position: fixed;
