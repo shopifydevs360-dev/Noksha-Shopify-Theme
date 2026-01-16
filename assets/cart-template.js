@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartQuantity();
   initCartRemove();
   initCartInitialSync();
+  initAddToCartAjax();
 });
 
 /* ============================
