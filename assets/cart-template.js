@@ -176,3 +176,17 @@ function formatMoney(cents) {
     currency: Shopify.currency.active,
   });
 }
+function initCartAjax() {
+  window.updateCartAjax = function (updates) {
+    fetch("/cart/update.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ updates }),
+    })
+      .then(res => res.json())
+      .then(cart => {
+        renderAllCarts(cart);
+        updateCartCount(); // ✅ sync header counter
+      });
+  };
+}
