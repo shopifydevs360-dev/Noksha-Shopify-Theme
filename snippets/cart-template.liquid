@@ -59,7 +59,9 @@
                       <a href="{{ item.url }}" class="cart-item-title">
                         {{ item.product.title }}
                       </a>
-
+                      {% if item.variant.title != 'Default Title' %}
+                        <p class="cart-item-variant">{{ item.variant.title }}</p>
+                      {% endif %}
                       <div class="cart-item-qty">
                         <button type="button" class="qty-btn qty-minus">−</button>
                         <input type="number" value="{{ item.quantity }}" min="1">
