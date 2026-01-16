@@ -30,8 +30,8 @@
                 <div class="cart-item">
 
                   <!-- Product image -->
-                  <div class="cart-item-image">
-                    <a href="{{ item.url }}" class="cropped-image-wrapper cropped-image--portrait">
+                  <div class="cart-item-image cropped-image-wrapper cropped-image--portrait">
+                    <a href="{{ item.url }}" class="">
                       {{ item.image | image_url: width: 200 | image_tag }}
                     </a>
                   </div>
