@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartQuantity();
   initCartRemove();
   initCartInitialSync();
-  interceptAddToCart(); // ✅ NEW
 });
 
 /* ============================
@@ -19,44 +18,9 @@ function initCartAjax() {
       .then(res => res.json())
       .then(cart => {
         renderAllCarts(cart);
-        updateCartCount();
+        updateCartCount(); // ✅ sync header counter
       });
   };
-}
-
-/* ============================
-   INTERCEPT ADD TO CART (NEW)
-============================ */
-function interceptAddToCart() {
-  const originalFetch = window.fetch;
-
-  window.fetch = function (...args) {
-    const [url, options] = args;
-
-    if (
-      typeof url === "string" &&
-      url.includes("/cart/add")
-    ) {
-      return originalFetch(...args).then((response) => {
-        refreshCartUI(); // ✅ update cart after add
-        return response;
-      });
-    }
-
-    return originalFetch(...args);
-  };
-}
-
-/* ============================
-   REFRESH CART UI
-============================ */
-function refreshCartUI() {
-  fetch("/cart.js")
-    .then(res => res.json())
-    .then(cart => {
-      renderAllCarts(cart);
-      updateCartCount();
-    });
 }
 
 /* ============================
@@ -104,7 +68,9 @@ function updateFreeShipping(cart, root) {
     100
   );
 
-  if (bar) bar.style.width = progress + "%";
+  if (bar) {
+    bar.style.width = progress + "%";
+  }
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
@@ -147,11 +113,11 @@ function updateLineItems(cart, root) {
 function removeDeletedItems(cart, root) {
   root.querySelectorAll(".cart-item").forEach((row) => {
     const key = row.dataset.key;
-    const exists = cart.items.some(
-      (item) => item.key === key
-    );
+    const exists = cart.items.some((item) => item.key === key);
 
-    if (!exists) row.remove();
+    if (!exists) {
+      row.remove();
+    }
   });
 }
 
@@ -196,8 +162,8 @@ function initCartRemove() {
 ============================ */
 function initCartInitialSync() {
   fetch("/cart.js")
-    .then(res => res.json())
-    .then(cart => {
+    .then((res) => res.json())
+    .then((cart) => {
       renderAllCarts(cart);
     });
 }
