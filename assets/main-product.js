@@ -190,9 +190,11 @@ function initMainProductCart() {
       body: formData
     })
       .then(res => res.json())
-      .then(() => {
-        updateCartCount();
-
+      .then(cart => {
+        document.querySelectorAll('.cart-count').forEach(el => {
+          el.textContent = cart.item_count;
+        });
+        renderAllCarts(cart);
         if (behavior === 'ajax_drawer') {
           openBagDrawer();
         }
