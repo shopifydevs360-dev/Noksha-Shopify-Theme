@@ -62,29 +62,3 @@ function initVariantAjaxAddToCart() {
     });
   });
 }
-
-/* ---------------------------------
-   CART COUNT UPDATE
----------------------------------- */
-function updateCartCount() {
-  fetch('/cart.js')
-    .then(res => res.json())
-    .then(cart => {
-      document.querySelectorAll('.cart-count').forEach(el => {
-        el.textContent = cart.item_count;
-      });
-    });
-}
-
-/* ---------------------------------
-   OPEN BAG DRAWER (EXISTING SYSTEM)
----------------------------------- */
-function openBagDrawer() {
-  const trigger = document.querySelector(
-    '[data-trigger-section="bag-drawer"]'
-  );
-
-  if (trigger) {
-    trigger.click();
-  }
-}
