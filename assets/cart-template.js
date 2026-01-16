@@ -88,24 +88,12 @@ function updateFreeShipping(cart, root) {
    LINE ITEMS (PRICE + QTY)
 ============================ */
 function updateLineItems(cart, root) {
-  const list = root.querySelector(".cart-list-items");
-  if (!list) return;
-
   cart.items.forEach((item) => {
-    let row = list.querySelector(
+    const row = root.querySelector(
       `.cart-item[data-key="${item.key}"]`
     );
+    if (!row) return;
 
-    // 🆕 Item does not exist → create it
-    if (!row) {
-      list.insertAdjacentHTML(
-        "beforeend",
-        createCartItem(item)
-      );
-      return;
-    }
-
-    // Existing item → update
     const priceEl = row.querySelector(".cart-item-price");
     const qtyInput = row.querySelector("input");
 
@@ -118,7 +106,6 @@ function updateLineItems(cart, root) {
     }
   });
 }
-
 
 /* ============================
    REMOVE DELETED ITEMS
