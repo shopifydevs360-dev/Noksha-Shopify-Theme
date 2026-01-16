@@ -43,10 +43,46 @@
 
           </div>
 
-<div id="CartItemsSection">
-  {% section 'cart-items' %}
-</div>
+          {% if cart.item_count > 0 %}
+            <div class="cart-list-items">
+              {% for item in cart.items %}
+                <div class="cart-item" data-key="{{ item.key }}">
 
+                  <div class="cart-item-image">
+                    <a href="{{ item.url }}">
+                      {{ item.image | image_url: width: 200 | image_tag }}
+                    </a>
+                  </div>
+
+                  <div class="cart-item-info">
+                    <div class="info-left">
+                      <a href="{{ item.url }}" class="cart-item-title">
+                        {{ item.product.title }}
+                      </a>
+                      {% if item.variant.title != 'Default Title' %}
+                        <p class="cart-item-variant">{{ item.variant.title }}</p>
+                      {% endif %}
+                      <div class="cart-item-qty">
+                        <button type="button" class="qty-btn qty-minus">−</button>
+                        <input type="number" value="{{ item.quantity }}" min="1">
+                        <button type="button" class="qty-btn qty-plus">+</button>
+                      </div>
+                    </div>
+
+                    <div class="info-right">
+                      <p class="cart-item-price">
+                        {{ item.final_line_price | money }}
+                      </p>
+                      <button type="button" class="cart-item-remove">
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
 
         <!-- RIGHT -->
