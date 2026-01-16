@@ -80,3 +80,30 @@
 .info-right {
     width: 25%;
 }
+/* Quantity buttons */
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-item-qty input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ccc;
+  background: none;
+  cursor: pointer;
+}
+
+/* Note */
+.cart-note {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #666;
+}
