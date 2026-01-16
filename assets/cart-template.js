@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ============================
-   CART AJAX CORE (QTY / REMOVE)
+   CART AJAX CORE
 ============================ */
 function initCartAjax() {
   window.updateCartAjax = function (updates) {
@@ -15,85 +15,116 @@ function initCartAjax() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ updates }),
     })
-      .then(res => res.json())
-      .then(cart => {
-        updateCartUI(cart);
-        reloadCartItemsSection(); // 🔥 Liquid refresh
-      })
-      .catch(err => console.error("Cart update failed", err));
+      .then((res) => res.json())
+      .then((cart) => {
+        renderAllCarts(cart);
+      });
   };
 }
 
 /* ============================
-   UPDATE NON-LIST UI
+   RENDER ALL CARTS
 ============================ */
-function updateCartUI(cart) {
-  document.querySelectorAll("[data-cart-root]").forEach(root => {
-    updateSubtotal(cart, root);
-    updateFreeShipping(cart, root);
+function renderAllCarts(cart) {
+  document.querySelectorAll("[data-cart-root]").forEach((root) => {
+    renderSingleCart(cart, root);
   });
+}
+
+/* ============================
+   RENDER SINGLE CART
+============================ */
+function renderSingleCart(cart, root) {
+  updateSubtotal(cart, root);
+  updateFreeShipping(cart, root);
+  updateLineItems(cart, root);
+  removeDeletedItems(cart, root);
 }
 
 /* ============================
    SUBTOTAL
 ============================ */
 function updateSubtotal(cart, root) {
-  const el = root.querySelector(".cart-subtotal");
-  if (el) {
-    el.textContent = formatMoney(cart.items_subtotal_price);
-  }
+  const subtotalEl = root.querySelector(".cart-subtotal");
+  if (!subtotalEl) return;
+
+  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
 }
 
 /* ============================
-   FREE SHIPPING
+   FREE SHIPPING PROGRESS
 ============================ */
 function updateFreeShipping(cart, root) {
   const wrapper = root.querySelector(".cart-shipping-wrapper");
   if (!wrapper) return;
 
   const bar = wrapper.querySelector(".shipping-progress-bar");
-  const remaining = wrapper.querySelector(".cart-shipping-remaining");
+  const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
   const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
 
-  const progress = Math.min((cart.total_price / threshold) * 100, 100);
-  if (bar) bar.style.width = progress + "%";
+  const progress = Math.min(
+    (cart.total_price / threshold) * 100,
+    100
+  );
+
+  if (bar) {
+    bar.style.width = progress + "%";
+  }
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
   } else {
     wrapper.classList.remove("is-success");
-    if (remaining) {
-      remaining.textContent = formatMoney(threshold - cart.total_price);
+    if (remainingEl) {
+      remainingEl.textContent = formatMoney(
+        threshold - cart.total_price
+      );
     }
   }
 }
 
 /* ============================
-   RELOAD CART ITEMS (LIQUID)
+   LINE ITEMS (PRICE + QTY)
 ============================ */
-function reloadCartItemsSection() {
-  fetch(`/?section_id=cart-template`)
-    .then(res => res.text())
-    .then(html => {
-      const doc = new DOMParser().parseFromString(html, "text/html");
-      const newItems = doc.querySelector("#CartItemsWrapper");
-      const currentItems = document.querySelector("#CartItemsWrapper");
+function updateLineItems(cart, root) {
+  cart.items.forEach((item) => {
+    const row = root.querySelector(
+      `.cart-item[data-key="${item.key}"]`
+    );
+    if (!row) return;
 
-      if (!newItems || !currentItems) {
-        console.warn("CartItemsWrapper not found");
-        return;
-      }
+    const priceEl = row.querySelector(".cart-item-price");
+    const qtyInput = row.querySelector("input");
 
-      currentItems.innerHTML = newItems.innerHTML;
-    })
-    .catch(err => console.error("Cart reload failed", err));
+    if (priceEl) {
+      priceEl.textContent = formatMoney(item.final_line_price);
+    }
+
+    if (qtyInput) {
+      qtyInput.value = item.quantity;
+    }
+  });
 }
 
 /* ============================
-   QUANTITY BUTTONS
+   REMOVE DELETED ITEMS
+============================ */
+function removeDeletedItems(cart, root) {
+  root.querySelectorAll(".cart-item").forEach((row) => {
+    const key = row.dataset.key;
+    const exists = cart.items.some((item) => item.key === key);
+
+    if (!exists) {
+      row.remove();
+    }
+  });
+}
+
+/* ============================
+   QUANTITY EVENTS
 ============================ */
 function initCartQuantity() {
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!e.target.classList.contains("qty-btn")) return;
 
     const item = e.target.closest(".cart-item");
@@ -112,10 +143,10 @@ function initCartQuantity() {
 }
 
 /* ============================
-   REMOVE ITEM
+   REMOVE EVENT
 ============================ */
 function initCartRemove() {
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!e.target.classList.contains("cart-item-remove")) return;
 
     const item = e.target.closest(".cart-item");
@@ -130,10 +161,9 @@ function initCartRemove() {
 ============================ */
 function initCartInitialSync() {
   fetch("/cart.js")
-    .then(res => res.json())
-    .then(cart => {
-      updateCartUI(cart);
-      reloadCartItemsSection();
+    .then((res) => res.json())
+    .then((cart) => {
+      renderAllCarts(cart);
     });
 }
 
@@ -147,3 +177,22 @@ function formatMoney(cents) {
   });
 }
 
+
+/* ============================
+   CART COUNT UPDATE
+============================ */
+
+function initCartAjax() {
+  window.updateCartAjax = function (updates) {
+    fetch("/cart/update.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ updates }),
+    })
+      .then(res => res.json())
+      .then(cart => {
+        renderAllCarts(cart);
+        updateCartCount(); // ✅ sync header counter
+      });
+  };
+}
