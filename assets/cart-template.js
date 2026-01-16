@@ -204,13 +204,17 @@ function formatMoney(cents) {
 /* ============================
    CART COUNT UPDATE
 ============================ */
-function updateCartCount() {
-  fetch('/cart.js')
-    .then(res => res.json())
-    .then(cart => {
-      document.querySelectorAll('.cart-count').forEach(el => {
-        el.textContent = cart.item_count;
-      });
+function initCartAjax() {
+  window.updateCartAjax = function (updates) {
+    fetch("/cart/update.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ updates }),
     })
-    .catch(err => console.error(err));
+      .then(res => res.json())
+      .then(cart => {
+        renderAllCarts(cart);
+        updateCartCount(); // ✅ sync header counter
+      });
+  };
 }
