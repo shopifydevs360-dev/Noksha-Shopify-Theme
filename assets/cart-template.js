@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ updates })
     })
-      .then(r => r.json())
+      .then(res => res.json())
       .then(cart => renderAllCarts(cart));
   }
 
   function renderAllCarts(cart) {
     document.querySelectorAll('[data-cart-root]').forEach(root => {
-      const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
 
+      const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
       const wrapper = root.querySelector('.cart-shipping-wrapper');
       const bar = root.querySelector('.shipping-progress-bar');
       const remainingEl = root.querySelector('.cart-shipping-remaining');
@@ -28,18 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       /* Subtotal */
       if (subtotalEl) {
-        subtotalEl.textContent =
-          formatMoney(cart.items_subtotal_price);
+        subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
       }
 
       /* Progress */
-      const progress = Math.min(
-        (cart.total_price / threshold) * 100,
-        100
-      );
+      const progress = Math.min((cart.total_price / threshold) * 100, 100);
       bar.style.width = progress + '%';
 
-      /* Toggle message */
+      /* Toggle text ONLY */
       if (cart.total_price >= threshold) {
         wrapper.classList.add('is-success');
       } else {
@@ -48,11 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
           formatMoney(threshold - cart.total_price);
       }
 
-      /* Sync qty */
+      /* Sync quantities */
       cart.items.forEach(item => {
-        const row = root.querySelector(
-          `.cart-item[data-key="${item.key}"]`
-        );
+        const row = root.querySelector(`.cart-item[data-key="${item.key}"]`);
         if (row) {
           row.querySelector('input').value = item.quantity;
         }
@@ -80,6 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   fetch('/cart.js')
-    .then(r => r.json())
+    .then(res => res.json())
     .then(cart => renderAllCarts(cart));
 });
