@@ -13,10 +13,18 @@
         gap: 10rem;
     }
     .cart-template-left {
-        width: 60%;
+        width: 55%;
     }
     .cart-template-right {
-        width: 60%;
+        width: 45%;
     }
 }
 
+.cart-item {
+    display: flex;
+    width: 100%;
+    gap: 2rem;
+}
+.cart-item-image {
+    width: 6rem;
+}
