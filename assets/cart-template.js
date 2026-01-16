@@ -176,3 +176,29 @@ function formatMoney(cents) {
     currency: Shopify.currency.active,
   });
 }
+
+
+
+function initAddToCartAjax() {
+  document.addEventListener("submit", (e) => {
+    const form = e.target.closest("[data-add-to-cart-form]");
+    if (!form) return;
+
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    fetch("/cart/add.js", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then(() => {
+        return fetch("/cart.js");
+      })
+      .then((res) => res.json())
+      .then((cart) => {
+        renderAllCarts(cart);
+      });
+  });
+}
