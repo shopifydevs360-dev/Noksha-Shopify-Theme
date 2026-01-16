@@ -199,5 +199,3 @@ function formatMoney(cents) {
     currency: Shopify.currency.active,
   });
 }
-
-
