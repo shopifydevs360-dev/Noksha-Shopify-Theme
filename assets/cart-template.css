@@ -56,6 +56,13 @@
 .cart-free-shipping.success .shipping-progress-bar {
   background: #000;
 }
+.cart-shipping-wrapper.is-success .shipping-progress-bar {
+  width: 100%;
+}
+
+.cart-shipping-wrapper.is-success p {
+  font-weight: 600;
+}
 
 .cart-item {
     display: flex;
