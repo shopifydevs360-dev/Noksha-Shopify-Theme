@@ -25,6 +25,38 @@
     max-width: 32rem;
     margin: auto;
 }
+/* ============================
+   FREE SHIPPING PROGRESS BAR
+============================ */
+.cart-free-shipping {
+  margin-bottom: 2rem;
+}
+
+.cart-free-shipping p {
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.shipping-progress {
+  width: 100%;
+  height: 4px;
+  background: #d8d8d8;
+  position: relative;
+  overflow: hidden;
+}
+
+.shipping-progress-bar {
+  height: 100%;
+  background: #000;
+  width: 0;
+  transition: width 0.4s ease;
+}
+
+/* Success state */
+.cart-free-shipping.success .shipping-progress-bar {
+  background: #000;
+}
+
 .cart-item {
     display: flex;
     width: 100%;
