@@ -199,3 +199,18 @@ function formatMoney(cents) {
     currency: Shopify.currency.active,
   });
 }
+
+
+/* ============================
+   CART COUNT UPDATE
+============================ */
+function updateCartCount() {
+  fetch('/cart.js')
+    .then(res => res.json())
+    .then(cart => {
+      document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = cart.item_count;
+      });
+    })
+    .catch(err => console.error(err));
+}
