@@ -12,16 +12,6 @@ function initSidebarScrollBehavior() {
   const sidebar = document.getElementById("js-sidebar");
   if (!sidebar) return;
 
-  const isIndexTemplate = document.body.classList.contains("template-index");
-
-  // If NOT homepage → always minimal
-  if (!isIndexTemplate) {
-    sidebar.classList.remove("expended");
-    sidebar.classList.add("minimal");
-    return;
-  }
-
-  // Homepage behavior → toggle on scroll
   window.addEventListener("scroll", () => {
     if (window.scrollY > 100) {
       sidebar.classList.remove("expended");
@@ -32,7 +22,6 @@ function initSidebarScrollBehavior() {
     }
   });
 }
-
 
 /* ===============================
    HAMBURGER: LOAD ANIMATION
