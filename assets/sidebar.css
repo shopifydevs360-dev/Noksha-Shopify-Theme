@@ -139,7 +139,7 @@ body.has-promo-bar .m-sidebar__content {
 .minimal .m-sidebar__nav a .js-open-icon-text .text{
     display: none;
 }
-.minimal .expended-area-active .m-sidebar__nav a .js-open-icon-text .text{
+.expended-area-active .minimal .m-sidebar__nav a .js-open-icon-text .text{
     display: block;
 }
 .minimal .drawer-flyout .m-sidebar__nav a .js-open-icon-text .icon{
