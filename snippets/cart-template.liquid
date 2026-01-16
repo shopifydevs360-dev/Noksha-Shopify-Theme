@@ -1,5 +1,5 @@
 {{ 'cart-template.css' | asset_url | stylesheet_tag }}
-<div class="cart-template">
+<div class="cart-template" data-cart-root>
   <div class="container">
     <form action="{{ routes.cart_url }}" method="post" novalidate>
       <div class="cart-template__inner">
