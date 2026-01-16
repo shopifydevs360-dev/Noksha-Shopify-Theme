@@ -10,31 +10,29 @@
         <div class="cart-template-left">
 
           <h4 class="cart-title">Your Bag</h4>
+          <div class="cart-shipping-wrapper">
+            {% if cart.total_price < free_shipping_threshold %}
+              {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
+              {% if progress > 100 %}
+                {% assign progress = 100 %}
+              {% endif %}
 
-          {% assign free_shipping_threshold = 10000 %}
-          {% if cart.total_price < free_shipping_threshold %}
-          {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
-          {% if progress > 100 %}
-            {% assign progress = 100 %}
-          {% endif %}
+              <div class="cart-free-shipping">
+                <p>
+                  You are {{ free_shipping_threshold | minus: cart.total_price | money }}
+                  away from free shipping
+                </p>
 
-          <div class="cart-free-shipping">
-            <p>
-              You are {{ free_shipping_threshold | minus: cart.total_price | money }}
-              away from free shipping
-            </p>
-
-            <div class="shipping-progress">
-              <span class="shipping-progress-bar" style="width: {{ progress }}%;"></span>
-            </div>
+                <div class="shipping-progress">
+                  <span class="shipping-progress-bar" style="width: {{ progress }}%;"></span>
+                </div>
+              </div>
+            {% else %}
+              <p class="cart-free-shipping success">
+                🎉 You’ve unlocked free shipping!
+              </p>
+            {% endif %}
           </div>
-
-          {% else %}
-            <p class="cart-free-shipping success">
-              🎉 You’ve unlocked free shipping!
-            </p>
-          {% endif %}
-
           {% if cart.item_count > 0 %}
             <div class="cart-list-items">
 
