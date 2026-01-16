@@ -6,37 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ============================
-   GLOBAL CART REFRESH
-============================ */
-window.refreshCart = function (cart = null) {
-  if (cart) {
-    renderAllCarts(cart);
-    updateCartCount(cart);
-    return;
-  }
-
-  fetch("/cart.js")
-    .then(res => res.json())
-    .then(cartData => {
-      renderAllCarts(cartData);
-      updateCartCount(cartData);
-    })
-    .catch(err => console.error("Cart refresh error:", err));
-};
-
-/* ============================
-   CART COUNT (GLOBAL)
-============================ */
-function updateCartCount(cart) {
-  if (!cart || typeof cart.item_count !== "number") return;
-
-  document.querySelectorAll(".cart-count").forEach(el => {
-    el.textContent = cart.item_count;
-  });
-}
-
-/* ============================
-   CART AJAX UPDATE (QTY / REMOVE)
+   CART AJAX CORE
 ============================ */
 function initCartAjax() {
   window.updateCartAjax = function (updates) {
@@ -47,9 +17,9 @@ function initCartAjax() {
     })
       .then(res => res.json())
       .then(cart => {
-        refreshCart(cart);
-      })
-      .catch(err => console.error("Cart update error:", err));
+        renderAllCarts(cart);
+        updateCartCount(); // ✅ sync header counter
+      });
   };
 }
 
@@ -57,7 +27,7 @@ function initCartAjax() {
    RENDER ALL CARTS
 ============================ */
 function renderAllCarts(cart) {
-  document.querySelectorAll("[data-cart-root]").forEach(root => {
+  document.querySelectorAll("[data-cart-root]").forEach((root) => {
     renderSingleCart(cart, root);
   });
 }
@@ -76,12 +46,14 @@ function renderSingleCart(cart, root) {
    SUBTOTAL
 ============================ */
 function updateSubtotal(cart, root) {
-  const el = root.querySelector(".cart-subtotal");
-  if (el) el.textContent = formatMoney(cart.items_subtotal_price);
+  const subtotalEl = root.querySelector(".cart-subtotal");
+  if (!subtotalEl) return;
+
+  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
 }
 
 /* ============================
-   FREE SHIPPING
+   FREE SHIPPING PROGRESS
 ============================ */
 function updateFreeShipping(cart, root) {
   const wrapper = root.querySelector(".cart-shipping-wrapper");
@@ -91,33 +63,47 @@ function updateFreeShipping(cart, root) {
   const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
   const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
 
-  const progress = Math.min((cart.total_price / threshold) * 100, 100);
+  const progress = Math.min(
+    (cart.total_price / threshold) * 100,
+    100
+  );
 
-  if (bar) bar.style.width = progress + "%";
+  if (bar) {
+    bar.style.width = progress + "%";
+  }
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
   } else {
     wrapper.classList.remove("is-success");
     if (remainingEl) {
-      remainingEl.textContent = formatMoney(threshold - cart.total_price);
+      remainingEl.textContent = formatMoney(
+        threshold - cart.total_price
+      );
     }
   }
 }
 
 /* ============================
-   LINE ITEMS (UPDATE EXISTING)
+   LINE ITEMS (PRICE + QTY)
 ============================ */
 function updateLineItems(cart, root) {
-  cart.items.forEach(item => {
-    const row = root.querySelector(`.cart-item[data-key="${item.key}"]`);
+  cart.items.forEach((item) => {
+    const row = root.querySelector(
+      `.cart-item[data-key="${item.key}"]`
+    );
     if (!row) return;
 
-    const price = row.querySelector(".cart-item-price");
-    const qty = row.querySelector("input");
+    const priceEl = row.querySelector(".cart-item-price");
+    const qtyInput = row.querySelector("input");
 
-    if (price) price.textContent = formatMoney(item.final_line_price);
-    if (qty) qty.value = item.quantity;
+    if (priceEl) {
+      priceEl.textContent = formatMoney(item.final_line_price);
+    }
+
+    if (qtyInput) {
+      qtyInput.value = item.quantity;
+    }
   });
 }
 
@@ -125,10 +111,13 @@ function updateLineItems(cart, root) {
    REMOVE DELETED ITEMS
 ============================ */
 function removeDeletedItems(cart, root) {
-  root.querySelectorAll(".cart-item").forEach(row => {
+  root.querySelectorAll(".cart-item").forEach((row) => {
     const key = row.dataset.key;
-    const exists = cart.items.some(item => item.key === key);
-    if (!exists) row.remove();
+    const exists = cart.items.some((item) => item.key === key);
+
+    if (!exists) {
+      row.remove();
+    }
   });
 }
 
@@ -136,7 +125,7 @@ function removeDeletedItems(cart, root) {
    QUANTITY EVENTS
 ============================ */
 function initCartQuantity() {
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!e.target.classList.contains("qty-btn")) return;
 
     const item = e.target.closest(".cart-item");
@@ -155,10 +144,10 @@ function initCartQuantity() {
 }
 
 /* ============================
-   REMOVE ITEM
+   REMOVE EVENT
 ============================ */
 function initCartRemove() {
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!e.target.classList.contains("cart-item-remove")) return;
 
     const item = e.target.closest(".cart-item");
@@ -169,12 +158,14 @@ function initCartRemove() {
 }
 
 /* ============================
-   INITIAL LOAD
+   INITIAL SYNC
 ============================ */
 function initCartInitialSync() {
   fetch("/cart.js")
-    .then(res => res.json())
-    .then(cart => refreshCart(cart));
+    .then((res) => res.json())
+    .then((cart) => {
+      renderAllCarts(cart);
+    });
 }
 
 /* ============================
@@ -186,3 +177,6 @@ function formatMoney(cents) {
     currency: Shopify.currency.active,
   });
 }
+
+
+
