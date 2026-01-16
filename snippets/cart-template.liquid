@@ -11,6 +11,7 @@
 
           <h4 class="cart-title">Your Bag</h4>
           <div class="cart-shipping-wrapper">
+            {% assign free_shipping_threshold = 10000 %}
             {% if cart.total_price < free_shipping_threshold %}
               {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
               {% if progress > 1000 %}
