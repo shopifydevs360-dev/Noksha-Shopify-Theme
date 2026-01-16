@@ -12,5 +12,11 @@
         width: 100%;
         gap: 10rem;
     }
+    .cart-template-left {
+        width: 60%;
+    }
+    .cart-template-right {
+        width: 60%;
+    }
 }
 
