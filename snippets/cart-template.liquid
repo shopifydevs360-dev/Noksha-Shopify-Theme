@@ -44,7 +44,7 @@
           </div>
 
           {% if cart.item_count > 0 %}
-            <div class="cart-list-items">
+            <template id="cart-item-template" class="cart-list-items">
               {% for item in cart.items %}
                 <div class="cart-item" data-key="{{ item.key }}">
 
@@ -81,7 +81,7 @@
 
                 </div>
               {% endfor %}
-            </div>
+            </template>
           {% endif %}
         </div>
 
