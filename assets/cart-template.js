@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartQuantity();
   initCartRemove();
   initCartInitialSync();
-  initCartChangeListener(); // ✅ NEW
+  initCartChangeListener();
 });
 
 /* ============================
@@ -16,9 +16,10 @@ function initCartAjax() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ updates }),
     })
-      .then((res) => res.json())
-      .then((cart) => {
+      .then(res => res.json())
+      .then(cart => {
         renderAllCarts(cart);
+        reloadCartItemsSection(); // 🔥 LIQUID RELOAD
       });
   };
 }
@@ -28,47 +29,18 @@ function initCartAjax() {
 ============================ */
 function initCartChangeListener() {
   document.addEventListener("cart:refresh", () => {
-    fetch("/cart.js")
-      .then((res) => res.json())
-      .then((cart) => {
-        renderAllCarts(cart);
-      });
+    reloadCartItemsSection();
   });
-
-  /* Fallback: poll once after page interactions */
-  document.addEventListener("click", () => {
-    debounceCartRefresh();
-  });
-}
-
-let cartRefreshTimeout = null;
-function debounceCartRefresh() {
-  clearTimeout(cartRefreshTimeout);
-  cartRefreshTimeout = setTimeout(() => {
-    fetch("/cart.js")
-      .then((res) => res.json())
-      .then((cart) => {
-        renderAllCarts(cart);
-      });
-  }, 400);
 }
 
 /* ============================
-   RENDER ALL CARTS
+   RENDER ALL CART DATA (NON-LIST)
 ============================ */
 function renderAllCarts(cart) {
-  document.querySelectorAll("[data-cart-root]").forEach((root) => {
-    renderSingleCart(cart, root);
+  document.querySelectorAll("[data-cart-root]").forEach(root => {
+    updateSubtotal(cart, root);
+    updateFreeShipping(cart, root);
   });
-}
-
-/* ============================
-   RENDER SINGLE CART
-============================ */
-function renderSingleCart(cart, root) {
-  updateSubtotal(cart, root);
-  updateFreeShipping(cart, root);
-  renderCartItems(cart, root);
 }
 
 /* ============================
@@ -76,7 +48,9 @@ function renderSingleCart(cart, root) {
 ============================ */
 function updateSubtotal(cart, root) {
   const el = root.querySelector(".cart-subtotal");
-  if (el) el.textContent = formatMoney(cart.items_subtotal_price);
+  if (el) {
+    el.textContent = formatMoney(cart.items_subtotal_price);
+  }
 }
 
 /* ============================
@@ -97,14 +71,16 @@ function updateFreeShipping(cart, root) {
     wrapper.classList.add("is-success");
   } else {
     wrapper.classList.remove("is-success");
-    remaining.textContent = formatMoney(threshold - cart.total_price);
+    if (remaining) {
+      remaining.textContent = formatMoney(threshold - cart.total_price);
+    }
   }
 }
 
 /* ============================
-   CART ITEMS (FULL RENDER)
+   RELOAD CART ITEMS (LIQUID)
 ============================ */
-function renderCartItems() {
+function reloadCartItemsSection() {
   fetch(`/cart?section_id=cart-template`)
     .then(res => res.text())
     .then(html => {
@@ -120,10 +96,10 @@ function renderCartItems() {
 }
 
 /* ============================
-   QUANTITY
+   QUANTITY EVENTS
 ============================ */
 function initCartQuantity() {
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", e => {
     if (!e.target.classList.contains("qty-btn")) return;
 
     const item = e.target.closest(".cart-item");
@@ -142,13 +118,15 @@ function initCartQuantity() {
 }
 
 /* ============================
-   REMOVE
+   REMOVE ITEM
 ============================ */
 function initCartRemove() {
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", e => {
     if (!e.target.classList.contains("cart-item-remove")) return;
 
     const item = e.target.closest(".cart-item");
+    if (!item) return;
+
     updateCartAjax({ [item.dataset.key]: 0 });
   });
 }
@@ -158,8 +136,11 @@ function initCartRemove() {
 ============================ */
 function initCartInitialSync() {
   fetch("/cart.js")
-    .then((res) => res.json())
-    .then((cart) => renderAllCarts(cart));
+    .then(res => res.json())
+    .then(cart => {
+      renderAllCarts(cart);
+      reloadCartItemsSection();
+    });
 }
 
 /* ============================
