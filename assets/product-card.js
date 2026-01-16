@@ -22,8 +22,11 @@ function initAjaxAddToCart() {
         body: new FormData(this)
       })
         .then(res => res.json())
-        .then(() => {
-          updateCartCount();
+        .then(cart => {
+          document.querySelectorAll('.cart-count').forEach(el => {
+            el.textContent = cart.item_count;
+          });
+          renderAllCarts(cart);
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error(err));
@@ -54,8 +57,11 @@ function initVariantAjaxAddToCart() {
         })
       })
         .then(res => res.json())
-        .then(() => {
-          updateCartCount();
+        .then(cart => {
+          document.querySelectorAll('.cart-count').forEach(el => {
+            el.textContent = cart.item_count;
+          });
+          renderAllCarts(cart);
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error(err));
