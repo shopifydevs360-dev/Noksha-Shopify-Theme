@@ -24,11 +24,9 @@ function initCartAjax() {
 }
 
 /* ============================
-   ADD TO CART AJAX (ALL CASES)
+   ADD TO CART AJAX
 ============================ */
 function initAddToCartAjax() {
-
-  /* ---- Single variant (form submit) ---- */
   document.addEventListener("submit", (e) => {
     const form = e.target.closest(
       'form[action="/cart/add"], form[action*="/cart/add"]'
@@ -36,29 +34,20 @@ function initAddToCartAjax() {
     if (!form) return;
 
     e.preventDefault();
-
-    const formData = new FormData(form);
-    addVariantToCart(formData);
+    addVariantToCart(new FormData(form));
   });
 
-  /* ---- Multi-variant buttons ---- */
   document.addEventListener("click", (e) => {
-    const variantBtn = e.target.closest(".card-variant-btn");
-    if (!variantBtn) return;
-
-    const variantId = variantBtn.dataset.variantId;
-    if (!variantId) return;
+    const btn = e.target.closest(".card-variant-btn");
+    if (!btn) return;
 
     addVariantToCart({
-      id: variantId,
+      id: btn.dataset.variantId,
       quantity: 1,
     });
   });
 }
 
-/* ============================
-   ADD VARIANT HELPER
-============================ */
 function addVariantToCart(data) {
   fetch("/cart/add.js", {
     method: "POST",
@@ -71,14 +60,10 @@ function addVariantToCart(data) {
         ? data
         : JSON.stringify(data),
   })
-    .then((res) => res.json())
     .then(() => fetch("/cart.js"))
     .then((res) => res.json())
     .then((cart) => {
       renderAllCarts(cart);
-    })
-    .catch((err) => {
-      console.error("Add to cart failed", err);
     });
 }
 
@@ -97,83 +82,88 @@ function renderAllCarts(cart) {
 function renderSingleCart(cart, root) {
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
-  updateLineItems(cart, root);
-  removeDeletedItems(cart, root);
+  renderCartItems(cart, root); // 🔥 FIX
 }
 
 /* ============================
    SUBTOTAL
 ============================ */
 function updateSubtotal(cart, root) {
-  const subtotalEl = root.querySelector(".cart-subtotal");
-  if (!subtotalEl) return;
-
-  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
+  const el = root.querySelector(".cart-subtotal");
+  if (el) el.textContent = formatMoney(cart.items_subtotal_price);
 }
 
 /* ============================
-   FREE SHIPPING PROGRESS
+   FREE SHIPPING
 ============================ */
 function updateFreeShipping(cart, root) {
   const wrapper = root.querySelector(".cart-shipping-wrapper");
   if (!wrapper) return;
 
   const bar = wrapper.querySelector(".shipping-progress-bar");
-  const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
+  const remaining = wrapper.querySelector(".cart-shipping-remaining");
   const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
 
-  const progress = Math.min(
-    (cart.total_price / threshold) * 100,
-    100
-  );
-
-  if (bar) bar.style.width = progress + "%";
+  const progress = Math.min((cart.total_price / threshold) * 100, 100);
+  bar.style.width = progress + "%";
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
   } else {
     wrapper.classList.remove("is-success");
-    if (remainingEl) {
-      remainingEl.textContent =
-        formatMoney(threshold - cart.total_price);
-    }
+    remaining.textContent = formatMoney(threshold - cart.total_price);
   }
 }
 
 /* ============================
-   LINE ITEMS (PRICE + QTY)
+   CART ITEMS (FULL RENDER)
 ============================ */
-function updateLineItems(cart, root) {
+function renderCartItems(cart, root) {
+  const list = root.querySelector(".cart-list-items");
+  if (!list) return;
+
+  list.innerHTML = "";
+
   cart.items.forEach((item) => {
-    const row = root.querySelector(
-      `.cart-item[data-key="${item.key}"]`
-    );
-    if (!row) return;
+    const el = document.createElement("div");
+    el.className = "cart-item";
+    el.dataset.key = item.key;
 
-    const priceEl = row.querySelector(".cart-item-price");
-    const qtyInput = row.querySelector("input");
+    el.innerHTML = `
+      <div class="cart-item-image">
+        <a href="${item.url}">
+          <img src="${item.image}" alt="${item.product_title}">
+        </a>
+      </div>
 
-    if (priceEl) {
-      priceEl.textContent = formatMoney(item.final_line_price);
-    }
+      <div class="cart-item-info">
+        <div class="info-left">
+          <a href="${item.url}" class="cart-item-title">
+            ${item.product_title}
+          </a>
+          ${
+            item.variant_title !== "Default Title"
+              ? `<p class="cart-item-variant">${item.variant_title}</p>`
+              : ""
+          }
 
-    if (qtyInput) {
-      qtyInput.value = item.quantity;
-    }
-  });
-}
+          <div class="cart-item-qty">
+            <button type="button" class="qty-btn qty-minus">−</button>
+            <input type="number" value="${item.quantity}" min="1">
+            <button type="button" class="qty-btn qty-plus">+</button>
+          </div>
+        </div>
 
-/* ============================
-   REMOVE DELETED ITEMS
-============================ */
-function removeDeletedItems(cart, root) {
-  root.querySelectorAll(".cart-item").forEach((row) => {
-    const key = row.dataset.key;
-    const exists = cart.items.some((item) => item.key === key);
+        <div class="info-right">
+          <p class="cart-item-price">
+            ${formatMoney(item.final_line_price)}
+          </p>
+          <button type="button" class="cart-item-remove">Remove</button>
+        </div>
+      </div>
+    `;
 
-    if (!exists) {
-      row.remove();
-    }
+    list.appendChild(el);
   });
 }
 
@@ -185,14 +175,11 @@ function initCartQuantity() {
     if (!e.target.classList.contains("qty-btn")) return;
 
     const item = e.target.closest(".cart-item");
-    if (!item) return;
-
     const input = item.querySelector("input");
     let qty = parseInt(input.value, 10);
 
     if (e.target.classList.contains("qty-plus")) qty++;
     if (e.target.classList.contains("qty-minus")) qty--;
-
     if (qty < 1) qty = 1;
 
     updateCartAjax({ [item.dataset.key]: qty });
@@ -207,8 +194,6 @@ function initCartRemove() {
     if (!e.target.classList.contains("cart-item-remove")) return;
 
     const item = e.target.closest(".cart-item");
-    if (!item) return;
-
     updateCartAjax({ [item.dataset.key]: 0 });
   });
 }
@@ -219,9 +204,7 @@ function initCartRemove() {
 function initCartInitialSync() {
   fetch("/cart.js")
     .then((res) => res.json())
-    .then((cart) => {
-      renderAllCarts(cart);
-    });
+    .then((cart) => renderAllCarts(cart));
 }
 
 /* ============================
