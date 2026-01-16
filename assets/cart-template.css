@@ -21,7 +21,6 @@
 }
 .cart-list-items{
     max-width: 32rem;
-    margin: auto;
 }
 .cart-item {
     display: flex;
