@@ -3,11 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartQuantity();
   initCartRemove();
   initCartInitialSync();
-  initCartChangeListener(); // ✅ NEW
 });
 
 /* ============================
-   CART AJAX CORE (QTY / REMOVE)
+   CART AJAX CORE
 ============================ */
 function initCartAjax() {
   window.updateCartAjax = function (updates) {
@@ -21,36 +20,6 @@ function initCartAjax() {
         renderAllCarts(cart);
       });
   };
-}
-
-/* ============================
-   LISTEN FOR CART CHANGES
-============================ */
-function initCartChangeListener() {
-  document.addEventListener("cart:refresh", () => {
-    fetch("/cart.js")
-      .then((res) => res.json())
-      .then((cart) => {
-        renderAllCarts(cart);
-      });
-  });
-
-  /* Fallback: poll once after page interactions */
-  document.addEventListener("click", () => {
-    debounceCartRefresh();
-  });
-}
-
-let cartRefreshTimeout = null;
-function debounceCartRefresh() {
-  clearTimeout(cartRefreshTimeout);
-  cartRefreshTimeout = setTimeout(() => {
-    fetch("/cart.js")
-      .then((res) => res.json())
-      .then((cart) => {
-        renderAllCarts(cart);
-      });
-  }, 400);
 }
 
 /* ============================
@@ -68,87 +37,91 @@ function renderAllCarts(cart) {
 function renderSingleCart(cart, root) {
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
-  renderCartItems(cart, root);
+  updateLineItems(cart, root);
+  removeDeletedItems(cart, root);
 }
 
 /* ============================
    SUBTOTAL
 ============================ */
 function updateSubtotal(cart, root) {
-  const el = root.querySelector(".cart-subtotal");
-  if (el) el.textContent = formatMoney(cart.items_subtotal_price);
+  const subtotalEl = root.querySelector(".cart-subtotal");
+  if (!subtotalEl) return;
+
+  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
 }
 
 /* ============================
-   FREE SHIPPING
+   FREE SHIPPING PROGRESS
 ============================ */
 function updateFreeShipping(cart, root) {
   const wrapper = root.querySelector(".cart-shipping-wrapper");
   if (!wrapper) return;
 
   const bar = wrapper.querySelector(".shipping-progress-bar");
-  const remaining = wrapper.querySelector(".cart-shipping-remaining");
+  const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
   const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
 
-  const progress = Math.min((cart.total_price / threshold) * 100, 100);
-  bar.style.width = progress + "%";
+  const progress = Math.min(
+    (cart.total_price / threshold) * 100,
+    100
+  );
+
+  if (bar) {
+    bar.style.width = progress + "%";
+  }
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
   } else {
     wrapper.classList.remove("is-success");
-    remaining.textContent = formatMoney(threshold - cart.total_price);
+    if (remainingEl) {
+      remainingEl.textContent = formatMoney(
+        threshold - cart.total_price
+      );
+    }
   }
 }
 
 /* ============================
-   CART ITEMS (FULL RENDER)
+   LINE ITEMS (PRICE + QTY)
 ============================ */
-function renderCartItems(cart, root) {
-  const list = root.querySelector(".cart-list-items");
-  if (!list) return;
-
-  list.innerHTML = "";
-
+function updateLineItems(cart, root) {
   cart.items.forEach((item) => {
-    const el = document.createElement("div");
-    el.className = "cart-item";
-    el.dataset.key = item.key;
+    const row = root.querySelector(
+      `.cart-item[data-key="${item.key}"]`
+    );
+    if (!row) return;
 
-    el.innerHTML = `
-      <div class="cart-item-info">
-        <div class="info-left">
-          <a href="${item.url}" class="cart-item-title">
-            ${item.product_title}
-          </a>
-          ${
-            item.variant_title !== "Default Title"
-              ? `<p class="cart-item-variant">${item.variant_title}</p>`
-              : ""
-          }
+    const priceEl = row.querySelector(".cart-item-price");
+    const qtyInput = row.querySelector("input");
 
-          <div class="cart-item-qty">
-            <button type="button" class="qty-btn qty-minus">−</button>
-            <input type="number" value="${item.quantity}" min="1">
-            <button type="button" class="qty-btn qty-plus">+</button>
-          </div>
-        </div>
+    if (priceEl) {
+      priceEl.textContent = formatMoney(item.final_line_price);
+    }
 
-        <div class="info-right">
-          <p class="cart-item-price">
-            ${formatMoney(item.final_line_price)}
-          </p>
-          <button type="button" class="cart-item-remove">Remove</button>
-        </div>
-      </div>
-    `;
-
-    list.appendChild(el);
+    if (qtyInput) {
+      qtyInput.value = item.quantity;
+    }
   });
 }
 
 /* ============================
-   QUANTITY
+   REMOVE DELETED ITEMS
+============================ */
+function removeDeletedItems(cart, root) {
+  root.querySelectorAll(".cart-item").forEach((row) => {
+    const key = row.dataset.key;
+    const exists = cart.items.some((item) => item.key === key);
+
+    if (!exists) {
+      row.remove();
+    }
+  });
+}
+
+/* ============================
+   QUANTITY EVENTS
 ============================ */
 function initCartQuantity() {
   document.addEventListener("click", (e) => {
@@ -170,13 +143,15 @@ function initCartQuantity() {
 }
 
 /* ============================
-   REMOVE
+   REMOVE EVENT
 ============================ */
 function initCartRemove() {
   document.addEventListener("click", (e) => {
     if (!e.target.classList.contains("cart-item-remove")) return;
 
     const item = e.target.closest(".cart-item");
+    if (!item) return;
+
     updateCartAjax({ [item.dataset.key]: 0 });
   });
 }
@@ -187,7 +162,9 @@ function initCartRemove() {
 function initCartInitialSync() {
   fetch("/cart.js")
     .then((res) => res.json())
-    .then((cart) => renderAllCarts(cart));
+    .then((cart) => {
+      renderAllCarts(cart);
+    });
 }
 
 /* ============================
@@ -198,23 +175,4 @@ function formatMoney(cents) {
     style: "currency",
     currency: Shopify.currency.active,
   });
-}
-
-
-/* ============================
-   CART COUNT UPDATE
-============================ */
-function initCartAjax() {
-  window.updateCartAjax = function (updates) {
-    fetch("/cart/update.js", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ updates }),
-    })
-      .then(res => res.json())
-      .then(cart => {
-        renderAllCarts(cart);
-        updateCartCount(); // ✅ sync header counter
-      });
-  };
 }
