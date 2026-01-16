@@ -104,47 +104,19 @@ function updateFreeShipping(cart, root) {
 /* ============================
    CART ITEMS (FULL RENDER)
 ============================ */
-function renderCartItems(cart, root) {
-  const list = root.querySelector(".cart-list-items");
-  if (!list) return;
+function renderCartItems() {
+  fetch(`/cart?section_id=cart-template`)
+    .then(res => res.text())
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, "text/html");
 
-  list.innerHTML = "";
+      const newItems = doc.querySelector("#CartItemsWrapper");
+      const currentItems = document.querySelector("#CartItemsWrapper");
 
-  cart.items.forEach((item) => {
-    const el = document.createElement("div");
-    el.className = "cart-item";
-    el.dataset.key = item.key;
-
-    el.innerHTML = `
-      <div class="cart-item-info">
-        <div class="info-left">
-          <a href="${item.url}" class="cart-item-title">
-            ${item.product_title}
-          </a>
-          ${
-            item.variant_title !== "Default Title"
-              ? `<p class="cart-item-variant">${item.variant_title}</p>`
-              : ""
-          }
-
-          <div class="cart-item-qty">
-            <button type="button" class="qty-btn qty-minus">−</button>
-            <input type="number" value="${item.quantity}" min="1">
-            <button type="button" class="qty-btn qty-plus">+</button>
-          </div>
-        </div>
-
-        <div class="info-right">
-          <p class="cart-item-price">
-            ${formatMoney(item.final_line_price)}
-          </p>
-          <button type="button" class="cart-item-remove">Remove</button>
-        </div>
-      </div>
-    `;
-
-    list.appendChild(el);
-  });
+      if (newItems && currentItems) {
+        currentItems.innerHTML = newItems.innerHTML;
+      }
+    });
 }
 
 /* ============================
