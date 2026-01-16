@@ -1,6 +1,6 @@
 {{ 'bag-drawer.css' | asset_url | stylesheet_tag: preload: true }}
 <div id="js-bag-drawer" class="shopify-section-bag add-to-cart-action" data-open-section="bag-drawer">
     <div class="inner-section sidebar-space">
-        {% section 'cart-template' %}
+        {% render 'cart-template' %}
     </div>
 </div>
