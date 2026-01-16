@@ -14,7 +14,7 @@
             {% if cart.total_price < free_shipping_threshold %}
               {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
               {% if progress > 100 %}
-                {% assign progress = 10000 %}
+                {% assign progress = 10000000 %}
               {% endif %}
 
               <div class="cart-free-shipping">
