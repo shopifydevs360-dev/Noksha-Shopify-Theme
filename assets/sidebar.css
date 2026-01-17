@@ -251,6 +251,18 @@ body.disable-scrollbars {
 /* ==================
  Mobile Header Style 
  ===================*/
- .noksha-drawer{
-    
- }
+ .noksha-drawer {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 9;
+  transform: translateX(-100%);
+  transition: all 0.4s cubic-bezier(.32,.24,.15,1);
+  visibility: hidden;
+  pointer-events: none;
+}
+ .noksha-drawer.bag-drawer-open {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+}
