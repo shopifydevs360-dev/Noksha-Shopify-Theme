@@ -36,25 +36,17 @@ function renderAllCarts(cart) {
    RENDER SINGLE CART
 ============================ */
 function renderSingleCart(cart, root) {
-  const hasDomItems = root.querySelector(".cart-item");
-
-  // Bootstrap DOM when cart was empty after refresh
-  if (!hasDomItems && cart.items.length > 0) {
-    refreshCartItemList(root);
-  }
-
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
 
+  // ✅ If cart has NEW items, refresh HTML list
   const domItems = root.querySelectorAll(".cart-item").length;
-
   if (cart.items.length > domItems) {
     refreshCartItemList(root);
   }
 }
-
 
 
 /* ============================
