@@ -40,7 +40,14 @@ function renderSingleCart(cart, root) {
   updateFreeShipping(cart, root);
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
+
+  // ✅ If cart has NEW items, refresh HTML list
+  const domItems = root.querySelectorAll(".cart-item").length;
+  if (cart.items.length > domItems) {
+    refreshCartItemList(root);
+  }
 }
+
 
 /* ============================
    SUBTOTAL
