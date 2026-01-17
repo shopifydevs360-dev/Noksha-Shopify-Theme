@@ -21,7 +21,12 @@
         <div class="right-content">
             <div class="serch-results">
                 <h4>Search Results</h4>
-                <div class="products-results"></div>
+                <div class="products-results">
+                    {% for item in cart.items %}
+                        {% render 'predictive-product-item', item: item %}
+                    {% endfor %}
+                    </div>
+                </div>
                 <div class="pages-results"></div>
                 <div class="posts-results"></div>
             </div>
