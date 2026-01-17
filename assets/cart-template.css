@@ -67,11 +67,6 @@
     font-size: 1em;
     text-transform: uppercase;
     margin-bottom: 1.2rem;
-}
-.cart-page .cart-template__inner h4 {
-    color: rgb(var(--color-heading));
-}
-.shopify-section-bag .cart-template__inner h4 {
     color: rgb(var(--color-heading));
 }
 
