@@ -196,9 +196,14 @@ function refreshCartItemList(root) {
       const newList = temp.querySelector(".cart-list-items");
       const currentList = root.querySelector(".cart-list-items");
 
-      if (newList && currentList) {
-        currentList.innerHTML = newList.innerHTML;
-      }
+if (newList && currentList) {
+  currentList.innerHTML = newList.innerHTML;
+} else if (newList && !currentList) {
+  // If current list missing, insert it inside left cart column
+  const left = root.querySelector(".cart-template-left");
+  if (left) left.insertAdjacentElement("beforeend", newList);
+}
+
     });
 }
 
