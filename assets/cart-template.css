@@ -1,6 +1,7 @@
 /* Cart Style */
 .cart-page {
     padding-top: 8rem;
+    padding-bottom: 5rem;
     min-height: 80vh;
 }
 .cart-page .background-image {
@@ -35,6 +36,12 @@
         width: 100%;
         gap: 6rem;
         max-width: 68rem;
+    }
+    .cart-page .cart-template__inner{
+      background: rgba(var(--color-background), 0.2);
+      backdrop-filter: blur(4px);
+      border-radius: 0.5rem;
+      padding: 2rem;
     }
     .cart-template-left {
         width: 55%;
