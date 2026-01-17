@@ -265,8 +265,7 @@
     transition: all 0.3s ease;
 }
 .cart-template .cart-checkout-btn:hover {
-    background: rgb(var(--color-background));
-    border-color: rgb(var(--color-background));
+    background: transparent;
     color: rgb(var(--color-heading));
 
 }
