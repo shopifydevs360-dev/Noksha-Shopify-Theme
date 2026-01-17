@@ -271,7 +271,7 @@
 }
 .cart-template .cart-empty-message {
     font-size: 1.2em;
-    margin-top: 1rem;
+    margin-top: 4rem;
     color: rgb(var(--color-text));
 }
 .cart-template .continue-shopping {
