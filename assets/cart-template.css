@@ -203,7 +203,8 @@
     color: rgb(var(--color-heading));
 }
 .cart-template .cart-item-remove {
-    color: rgb(var(--color-background));
+  background: transparent;
+    color: rgb(var(--color-heading));
     text-decoration: underline;
 }
 
