@@ -104,3 +104,38 @@ function initSearchDrawerSuggestions() {
   });
 }
 
+
+function initSearchDrawerAjax() {
+  const input = document.getElementById("SearchDrawerInput");
+  const results = document.getElementById("SearchProducts");
+
+  if (!input || !results) return;
+
+  let controller;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim();
+
+    if (query.length < 2) {
+      results.innerHTML = "";
+      return;
+    }
+
+    if (controller) controller.abort();
+    controller = new AbortController();
+
+    fetch(
+      `/?section_id=predictive-search&q=${encodeURIComponent(query)}`,
+      { signal: controller.signal }
+    )
+      .then(res => res.text())
+      .then(html => {
+        results.innerHTML = html;
+      })
+      .catch(err => {
+        if (err.name !== "AbortError") {
+          console.error("Search error", err);
+        }
+      });
+  });
+}
