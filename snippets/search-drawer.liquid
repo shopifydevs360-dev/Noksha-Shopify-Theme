@@ -1,6 +1,6 @@
 {{ 'search-drawer.css' | asset_url | stylesheet_tag: preload: true }}
 
-{% assign keywords = section.settings.search_keywords | split: ',' %}
+{% assign keywords = block.settings.search_keywords | split: ',' %}
 
 <div
   id="js-search-drawer"
