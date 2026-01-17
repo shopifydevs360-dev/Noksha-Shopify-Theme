@@ -1,6 +1,81 @@
 document.addEventListener("DOMContentLoaded", () => {
   initSearchDrawerSuggestions();
+  initPredictiveSearch();
+  initSearchSubmit();
 });
+
+/* ===============================
+   SEARCH DRAWER: PREDICTIVE SEARCH
+================================ */
+function initPredictiveSearch() {
+  const input = document.getElementById("SearchDrawerInput");
+  const predictiveContainer = document.getElementById("search-predictive");
+  const suggestionsList = document.getElementById("predictive-suggestions-list");
+  const productsList = document.getElementById("predictive-products-list");
+
+  if (!input || !predictiveContainer) return;
+
+  let timeout;
+
+  function loadPredictiveSearch(query) {
+    if (!query) {
+      predictiveContainer.classList.add("hidden");
+      return;
+    }
+
+    fetch(`/search?q=${encodeURIComponent(query)}&view=predictive`)
+      .then(response => response.text())
+      .then(html => {
+        productsList.innerHTML = html;
+        predictiveContainer.classList.remove("hidden");
+      })
+      .catch(error => {
+        console.error("Predictive search error:", error);
+        productsList.innerHTML = "<p>Error loading results.</p>";
+        predictiveContainer.classList.remove("hidden");
+      });
+  }
+
+  input.addEventListener("input", e => {
+    const query = e.target.value.trim();
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      loadPredictiveSearch(query);
+    }, 300);
+  });
+}
+
+/* ===============================
+   SEARCH DRAWER: SUBMIT HANDLER
+================================ */
+function initSearchSubmit() {
+  const form = document.getElementById("SearchDrawerForm");
+  const resultsContainer = document.getElementById("search-results");
+  const resultsList = document.getElementById("search-results-list");
+  const predictiveContainer = document.getElementById("search-predictive");
+
+  if (!form || !resultsContainer) return;
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const query = form.querySelector('input[name="q"]').value.trim();
+    if (!query) return;
+
+    fetch(`/search?q=${encodeURIComponent(query)}&view=ajax`)
+      .then(response => response.text())
+      .then(html => {
+        resultsList.innerHTML = html;
+        predictiveContainer.classList.add("hidden");
+        resultsContainer.classList.remove("hidden");
+      })
+      .catch(error => {
+        console.error("Search error:", error);
+        resultsList.innerHTML = "<p>Error loading results.</p>";
+        predictiveContainer.classList.add("hidden");
+        resultsContainer.classList.remove("hidden");
+      });
+  });
+}
 
 /* ===============================
    SEARCH DRAWER: SUGGESTIONS
