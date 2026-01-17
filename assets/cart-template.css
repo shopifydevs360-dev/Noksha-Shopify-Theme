@@ -139,7 +139,7 @@
     margin-bottom: 0.1rem;
     color: rgb(var(--color-heading));
 }
-.cart-template .info-left a{
+.cart-template .info-left p{
     font-size: 0.7em;
     display: block;
     margin-bottom: 0.5rem;
