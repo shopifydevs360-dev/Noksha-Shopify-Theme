@@ -36,6 +36,22 @@
   box-sizing: border-box;
   margin: 0;
 }
+/* ===============================
+   HIDE SCROLLBAR ARROWS (GLOBAL)
+================================ */
+
+/* Chrome / Edge / Safari */
+*::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* Firefox (no arrows by default, but keep clean) */
+* {
+  scrollbar-width: thin;
+}
+
 ::selection{
   background: #AF6B3E;
   color: #ffffff;
