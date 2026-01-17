@@ -1,4 +1,4 @@
-<section class="cart-page section-light">
+<section class="cart-page section-light m-color-{{ section.settings.cart_page_color }}">
   <div class="background-image">
     {% if section.settings.background_image %}
       {{ section.settings.background_image | img_url: 'master' | img_tag: alt: 'Password Background', class: 'password-bg-image' }}
