@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ============================
-   CART AJAX CORE
+   CART AJAX CORE (UPDATE + REMOVE)
 ============================ */
 function initCartAjax() {
   window.updateCartAjax = function (updates) {
@@ -15,16 +15,37 @@ function initCartAjax() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ updates }),
     })
-      .then(res => res.json())
-      .then(cart => {
-        renderAllCarts(cart);
-        updateCartCount();
-      });
+      .then((res) => res.json())
+      .then((cart) => {
+        updateAllCartUI(cart);
+      })
+      .catch((err) => console.error("Cart update error:", err));
   };
 }
 
 /* ============================
-   RENDER ALL CARTS
+   GLOBAL CART UI REFRESH
+   ✅ Call this after /cart/add.js too
+============================ */
+window.refreshAllCartsUI = function () {
+  fetch("/cart.js")
+    .then((res) => res.json())
+    .then((cart) => {
+      updateAllCartUI(cart);
+    })
+    .catch((err) => console.error("Cart refresh error:", err));
+};
+
+/* ============================
+   UPDATE ALL CART UI
+============================ */
+function updateAllCartUI(cart) {
+  renderAllCarts(cart);
+  updateCartCount(cart);
+}
+
+/* ============================
+   RENDER ALL CARTS (Page + Drawer)
 ============================ */
 function renderAllCarts(cart) {
   document.querySelectorAll("[data-cart-root]").forEach((root) => {
@@ -38,16 +59,19 @@ function renderAllCarts(cart) {
 function renderSingleCart(cart, root) {
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
+
+  // ✅ Update existing rows
   updateLineItems(cart, root);
+
+  // ✅ Remove deleted items
   removeDeletedItems(cart, root);
 
-  // ✅ If cart has NEW items, refresh HTML list
+  // ✅ Add new items instantly (refresh HTML list)
   const domItems = root.querySelectorAll(".cart-item").length;
-  if (cart.items.length > domItems) {
+  if (cart.items.length !== domItems) {
     refreshCartItemList(root);
   }
 }
-
 
 /* ============================
    SUBTOTAL
@@ -68,12 +92,11 @@ function updateFreeShipping(cart, root) {
 
   const bar = wrapper.querySelector(".shipping-progress-bar");
   const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
-  const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
 
-  const progress = Math.min(
-    (cart.total_price / threshold) * 100,
-    100
-  );
+  const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
+  if (!threshold || threshold <= 0) return;
+
+  const progress = Math.min((cart.total_price / threshold) * 100, 100);
 
   if (bar) {
     bar.style.width = progress + "%";
@@ -84,9 +107,7 @@ function updateFreeShipping(cart, root) {
   } else {
     wrapper.classList.remove("is-success");
     if (remainingEl) {
-      remainingEl.textContent = formatMoney(
-        threshold - cart.total_price
-      );
+      remainingEl.textContent = formatMoney(threshold - cart.total_price);
     }
   }
 }
@@ -96,13 +117,11 @@ function updateFreeShipping(cart, root) {
 ============================ */
 function updateLineItems(cart, root) {
   cart.items.forEach((item) => {
-    const row = root.querySelector(
-      `.cart-item[data-key="${item.key}"]`
-    );
+    const row = root.querySelector(`.cart-item[data-key="${item.key}"]`);
     if (!row) return;
 
     const priceEl = row.querySelector(".cart-item-price");
-    const qtyInput = row.querySelector("input");
+    const qtyInput = row.querySelector("input[type='number']");
 
     if (priceEl) {
       priceEl.textContent = formatMoney(item.final_line_price);
@@ -135,10 +154,12 @@ function initCartQuantity() {
   document.addEventListener("click", (e) => {
     if (!e.target.classList.contains("qty-btn")) return;
 
-    const item = e.target.closest(".cart-item");
-    if (!item) return;
+    const itemRow = e.target.closest(".cart-item");
+    if (!itemRow) return;
 
-    const input = item.querySelector("input");
+    const input = itemRow.querySelector("input[type='number']");
+    if (!input) return;
+
     let qty = parseInt(input.value, 10);
 
     if (e.target.classList.contains("qty-plus")) qty++;
@@ -146,7 +167,7 @@ function initCartQuantity() {
 
     if (qty < 1) qty = 1;
 
-    updateCartAjax({ [item.dataset.key]: qty });
+    updateCartAjax({ [itemRow.dataset.key]: qty });
   });
 }
 
@@ -157,10 +178,10 @@ function initCartRemove() {
   document.addEventListener("click", (e) => {
     if (!e.target.classList.contains("cart-item-remove")) return;
 
-    const item = e.target.closest(".cart-item");
-    if (!item) return;
+    const itemRow = e.target.closest(".cart-item");
+    if (!itemRow) return;
 
-    updateCartAjax({ [item.dataset.key]: 0 });
+    updateCartAjax({ [itemRow.dataset.key]: 0 });
   });
 }
 
@@ -168,24 +189,13 @@ function initCartRemove() {
    INITIAL SYNC
 ============================ */
 function initCartInitialSync() {
-  fetch("/cart.js")
-    .then((res) => res.json())
-    .then((cart) => {
-      renderAllCarts(cart);
-    });
+  refreshAllCartsUI();
 }
 
 /* ============================
-   UTIL
+   REFRESH CART ITEM LIST HTML
+   ✅ This is what makes NEW items show instantly
 ============================ */
-function formatMoney(cents) {
-  return (cents / 100).toLocaleString(undefined, {
-    style: "currency",
-    currency: Shopify.currency.active,
-  });
-}
-
-
 function refreshCartItemList(root) {
   fetch("/cart?view=ajax")
     .then((res) => res.text())
@@ -199,8 +209,38 @@ function refreshCartItemList(root) {
       if (newList && currentList) {
         currentList.innerHTML = newList.innerHTML;
       }
+    })
+    .catch((err) => console.error("Refresh cart items error:", err));
+}
+
+/* ============================
+   CART COUNT UPDATE
+============================ */
+function updateCartCount(cart = null) {
+  // If cart object already available, no need to fetch again
+  if (cart && typeof cart.item_count !== "undefined") {
+    document.querySelectorAll(".cart-count").forEach((el) => {
+      el.textContent = cart.item_count;
+    });
+    return;
+  }
+
+  // fallback
+  fetch("/cart.js")
+    .then((res) => res.json())
+    .then((cartData) => {
+      document.querySelectorAll(".cart-count").forEach((el) => {
+        el.textContent = cartData.item_count;
+      });
     });
 }
 
-
-
+/* ============================
+   UTIL
+============================ */
+function formatMoney(cents) {
+  return (cents / 100).toLocaleString(undefined, {
+    style: "currency",
+    currency: Shopify.currency.active,
+  });
+}
