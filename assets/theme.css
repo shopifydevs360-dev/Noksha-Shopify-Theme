@@ -19,7 +19,7 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: red;
+  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
