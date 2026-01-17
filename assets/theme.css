@@ -14,6 +14,7 @@
 
 /* Webkit browsers */
 *::-webkit-scrollbar {
+  background: red;
   width: 8px;
   height: 8px;
 }
