@@ -7,7 +7,7 @@
         <div class="search-template">
             <div class="left-content">
                 <div class="serch-box">
-                    <form action="/search" method="get" role="search">
+                    <form action="{{ routes.search_url }}" method="get" role="search" id="SearchDrawerForm">
                         <input type="search" id="SearchDrawerInput" name="q" placeholder="What you are looking for?" autocomplete="off" aria-label="Search">
                         <button type="submit">Search</button>
                     </form>
@@ -18,31 +18,19 @@
                 </div>
             </div>
             <div class="right-content">
-                <div class="serch-results">
+                <div id="search-predictive" class="hidden">
+                    <div id="predictive-suggestions">
+                        <h4>Suggestions</h4>
+                        <ul id="predictive-suggestions-list"></ul>
+                    </div>
+                    <div id="predictive-products">
+                        <h4>Products</h4>
+                        <div id="predictive-products-list"></div>
+                    </div>
+                </div>
+                <div id="search-results" class="hidden">
                     <h4>Search Results</h4>
-                    <div class="products-results">
-                        <h5 class="related-pages">Products</h5>
-                        <div class="products-results" id="SearchProducts">
-                        {% for product in collections.all.products %}
-                            {% render 'predictive-product-item',
-                            product: product,
-                            enable_search_data: true
-                            %}
-                        {% endfor %}
-                        </div>
-                    </div>
-                    <div class="pages-results">
-                        <h5 class="related-pages">Pages</h5>
-                        {% for item in page.items %}
-                        {% render 'predictive-page-item', item: page %}
-                        {% endfor %}
-                    </div>
-                    <div class="posts-results">
-                        <h5 class="related-posts">Posts</h5>
-                        {% for item in posts.items %}
-                        {% render 'predictive-posts-item', item: posts %}
-                        {% endfor %}
-                    </div>
+                    <div id="search-results-list"></div>
                 </div>
             </div>
         </div>
