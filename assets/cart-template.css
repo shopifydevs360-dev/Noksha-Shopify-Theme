@@ -192,8 +192,13 @@
 .cart-template .cart-item-price {
     font-size: 0.9em;
     display: block;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.8rem;
     color: rgb(var(--color-heading));
+}
+.cart-template .cart-item-remove {
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-background));
+    padding: 0.4rem 1rem;
 }
 /* Note */
 .cart-template .cart-note {
