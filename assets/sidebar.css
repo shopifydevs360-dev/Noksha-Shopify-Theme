@@ -249,7 +249,7 @@ body.disable-scrollbars {
 
 
 /* ==================
- Mobile Header Style 
+ Drawer Common Style
  ===================*/
  .noksha-drawer {
   position: fixed;
@@ -270,3 +270,4 @@ body.disable-scrollbars {
   visibility: visible;
   pointer-events: auto;
 }
+
