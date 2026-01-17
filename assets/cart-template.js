@@ -36,17 +36,25 @@ function renderAllCarts(cart) {
    RENDER SINGLE CART
 ============================ */
 function renderSingleCart(cart, root) {
+  const hasDomItems = root.querySelector(".cart-item");
+
+  // Bootstrap DOM when cart was empty after refresh
+  if (!hasDomItems && cart.items.length > 0) {
+    refreshCartItemList(root);
+  }
+
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
 
-  // ✅ If cart has NEW items, refresh HTML list
   const domItems = root.querySelectorAll(".cart-item").length;
+
   if (cart.items.length > domItems) {
     refreshCartItemList(root);
   }
 }
+
 
 
 /* ============================
@@ -188,19 +196,25 @@ function formatMoney(cents) {
 
 function refreshCartItemList(root) {
   fetch("/cart?view=ajax")
-    .then((res) => res.text())
-    .then((html) => {
+    .then(res => res.text())
+    .then(html => {
       const temp = document.createElement("div");
       temp.innerHTML = html;
 
       const newList = temp.querySelector(".cart-list-items");
       const currentList = root.querySelector(".cart-list-items");
 
-      if (newList && currentList) {
-        currentList.innerHTML = newList.innerHTML;
+      if (!newList) return;
+
+      if (!currentList) {
+        root.appendChild(newList);
+        return;
       }
+
+      currentList.innerHTML = newList.innerHTML;
     });
 }
+
 
 
 
