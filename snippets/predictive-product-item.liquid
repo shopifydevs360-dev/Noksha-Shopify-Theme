@@ -14,11 +14,12 @@
         data-product-image
       >
     </div>
+
     <div class="product-card__info">
       <h5 data-product-title>{{ product.title }}</h5>
-      <span class="price" data-product-price>{{ product.price | money }}</span>
+      <span class="price" data-product-price>
+        {{ product.price | money }}
+      </span>
     </div>
   </a>
 </div>
-
-
