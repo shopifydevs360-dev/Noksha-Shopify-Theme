@@ -81,14 +81,16 @@
     color: rgb(var(--color-text));
 }
 .shipping-progress {
-  background: gray;
-  height: 14px;
-  width: 100%;
-  margin-top: 8px;
+    background: rgb(var(--color-additional-1));
+    height: 0.5rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    border-radius: 1rem;
+    overflow: hidden;
 }
 
 .shipping-progress-bar {
-  background: green;
+  background: rgb(var(--color-additional-2));
   height: 100%;
   width: 0;
   transition: width 0.3s ease;
