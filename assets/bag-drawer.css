@@ -5,6 +5,7 @@
 .shopify-section-bag .cart-list-items {
     overflow-y: scroll;
     height: 34vh;
+    padding-right: 0.5rem;
 }
 @media (min-width: 991px){
   .shopify-section-bag .cart-list-items {
