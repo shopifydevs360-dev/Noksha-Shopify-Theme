@@ -14,8 +14,8 @@
       "settings": {
         "cart_page_color": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "background_image": "shopify://shop_images/shopping-bag-cart.jpg",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0.5
+        "overlay_color": "#ffffff",
+        "overlay_opacity": 0.7
       }
     }
   },
