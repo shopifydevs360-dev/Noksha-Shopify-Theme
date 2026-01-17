@@ -182,7 +182,7 @@
 }
 .cart-template .cart-item-qty input {
     width: 42px;
-    height: 26px;
+    height: 28px;
     text-align: center;
     border: 1px solid rgb(var(--color-heading));
     background: transparent;
