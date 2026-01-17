@@ -2,23 +2,12 @@
 
 {% assign keywords = block.settings.search_keywords | split: ',' %}
 
-<div
-  id="js-search-drawer"
-  class="shopify-section-search noksha-drawer"
-  data-open-section="search-drawer"
->
+<div id="js-search-drawer" class="shopify-section-search noksha-drawer" data-open-section="search-drawer">
   <div class="inner-section drawer-space">
 
     <div class="serch-box">
       <form action="/search" method="get" role="search">
-        <input
-          type="search"
-          id="SearchDrawerInput"
-          name="q"
-          placeholder="Search..."
-          autocomplete="off"
-          aria-label="Search"
-        >
+        <input type="search" id="SearchDrawerInput" name="q" placeholder="Search..." autocomplete="off" aria-label="Search">
         <button type="submit">Search</button>
       </form>
     </div>
