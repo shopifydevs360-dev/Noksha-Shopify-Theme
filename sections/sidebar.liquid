@@ -20,6 +20,9 @@
         </button>
       <!-- Navigation -->
       <nav class="m-sidebar__nav">
+        {% for block in section.blocks %}
+        {% case block.type %}
+        {% when 'search_drawer' %}
         <!-- Search -->
         <a href="#" class="js-open-section nav-icon-text-wrap color-control"
             data-trigger-section="search-drawer" aria-label="Site search">
@@ -34,6 +37,7 @@
                 <strong class="text">Close</strong>
             </span>
         </a>
+        {% when 'account_drawer' %}
         <!-- ACCOUNT LINKS -->
         <a href="#" class="js-open-section nav-icon-text-wrap color-control"
             data-trigger-section="account-drawer" aria-label="Site account">
@@ -48,6 +52,7 @@
                 <strong class="text">Close</strong>
             </span>
         </a>
+        {% when 'bag_drawer' %}
         <!-- Bag -->
         <a href="#" class="js-open-section nav-icon-text-wrap color-control"
             data-trigger-section="bag-drawer" aria-label="Site bag">
@@ -63,6 +68,8 @@
                 <strong class="text">Close</strong>
             </span>
         </a>
+        {% endcase %}
+        {% endfor %}
       </nav>
 
 
@@ -81,6 +88,9 @@
       <!-- Navigation -->
       <nav class="m-mobile-header__nav">
         <!-- Search -->
+        {% for block in section.blocks %}
+        {% case block.type %}
+        {% when 'search_drawer' %}
         <a href="#" class="js-open-section nav-icon-text-wrap color-control"
             data-trigger-section="search-drawer" aria-label="Site search">
             <span class="js-open-icon-text" data-open-item="search-drawer-open-item">
@@ -93,6 +103,7 @@
               {%- render 'theme-icon', icon: 'close' -%}
             </span>
         </a>
+        {% when 'account_drawer' %}
         <!-- ACCOUNT LINKS -->
         <a href="#" class="js-open-section nav-icon-text-wrap color-control"
             data-trigger-section="account-drawer" aria-label="Site account">
@@ -106,6 +117,7 @@
               {%- render 'theme-icon', icon: 'close' -%}
             </span>
         </a>
+        {% when 'bag_drawer' %}
         <!-- Bag -->
         <a href="#" class="js-open-section nav-icon-text-wrap color-control"
             data-trigger-section="bag-drawer" aria-label="Site bag">
@@ -120,6 +132,8 @@
               {%- render 'theme-icon', icon: 'close' -%}
             </span>
         </a>
+        {% endcase %}
+        {% endfor %}
       </nav>
       <!--   HAMBURGER   -->
       <button type="button" class="hamburger color-control" aria-label="Open nav menu" data-trigger-section="nav-drawer">
@@ -134,9 +148,16 @@
 </div>
 <div id="js-open-overlay" class="sidebar-overlay hide"></div>
 {% render 'nav-drawer' %}
-{% render 'search-drawer' %}
-{% render 'account-drawer' %}
-{% render 'bag-drawer' %}
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'search_drawer' %}
+      {% render 'search-drawer' %}
+    {% when 'account_drawer' %}
+      {% render 'account-drawer' %}
+    {% when 'bag_drawer' %}
+      {% render 'bag-drawer' %}
+  {% endcase %}
+{% endfor %}
 <script src="{{ 'sidebar.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
@@ -166,7 +187,28 @@
   ],
   "blocks": [
     {
-      "type": "@theme"
+      "type": "search_drawer",
+      "name": "Search Drawer",
+      "limit": 1,
+      "settings": [
+
+      ]
+    },
+    {
+      "type": "account_drawer",
+      "name": "Account Drawer",
+      "limit": 1,
+      "settings": [
+
+      ]
+    },
+    {
+      "type": "bag_drawer",
+      "name": "Bag Drawer",
+      "limit": 1,
+      "settings": [
+
+      ]
     }
   ],
   "presets": [
