@@ -49,6 +49,11 @@
               {% render 'cart-items', item: item %}
             {% endfor %}
             </div>
+          {% else %}
+            <p class="cart-empty-message">Your cart is currently empty.</p>
+            <a href="{{ shop.url }}" class="continue-shopping">
+              Continue Shopping
+            </a>
           {% endif %}
         </div>
 
