@@ -51,6 +51,25 @@
     },
     "sidebar_j78B4r": {
       "type": "sidebar",
+      "blocks": {
+        "search_drawer_BWxUax": {
+          "type": "search_drawer",
+          "settings": {}
+        },
+        "account_drawer_TazcYX": {
+          "type": "account_drawer",
+          "settings": {}
+        },
+        "bag_drawer_czpN4Y": {
+          "type": "bag_drawer",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "search_drawer_BWxUax",
+        "account_drawer_TazcYX",
+        "bag_drawer_czpN4Y"
+      ],
       "name": "Sidebar",
       "settings": {
         "white_logo": "shopify://shop_images/Halla_Hijab_white.png",
