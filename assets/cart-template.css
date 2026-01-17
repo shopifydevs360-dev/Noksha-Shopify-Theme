@@ -28,7 +28,7 @@
 }
   .cart-page .cart-template__inner{
     background: rgba(var(--color-background), 0.2);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(3px);
     border-radius: 0.5rem;
     padding: 2rem;
   }
