@@ -250,3 +250,23 @@
   font-size: 0.8rem;
   color: #666;
 }
+.cart-template .cart-checkout-btn {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    text-align: center;
+    border: 1px solid rgb(var(--color-heading));
+    padding: 0.9rem;
+    width: 100%;
+    max-width: 18rem;
+    font-size: 1em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.cart-template .cart-checkout-btn:hover {
+    background: rgb(var(--color-background));
+    border-color: rgb(var(--color-background));
+    color: rgb(var(--color-heading));
+
+}
