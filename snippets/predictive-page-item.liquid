@@ -1,0 +1,21 @@
+{%- comment -%}
+  Predictive Page Item
+  Used for search drawer, nav, etc.
+{%- endcomment -%}
+
+{% assign enable_search_data = enable_search_data | default: false %}
+
+{% if enable_search_data %}
+  {% assign title = page.title | downcase %}
+{% endif %}
+
+<div
+  class="search-page-item"
+  {% if enable_search_data %}
+    data-title="{{ title }}"
+  {% endif %}
+>
+  <a href="{{ page.url }}" class="search-page-link">
+    {{ page.title }}
+  </a>
+</div>
