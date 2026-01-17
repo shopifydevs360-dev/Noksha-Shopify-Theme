@@ -74,6 +74,12 @@
    FREE SHIPPING PROGRESS BAR
 ============================ */
 /* Progress bar */
+.cart-shipping-wrapper {
+    font-size: 0.7em;
+    margin-bottom: 1.6rem;
+    max-width: 22rem;
+    color: rgb(var(--color-text));
+}
 .shipping-progress {
   background: gray;
   height: 14px;
