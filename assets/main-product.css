@@ -8,9 +8,14 @@
   color: rgb(var(--color-text));
 }
 
-@media (max-width: 991px) {
+@media (max-width: 440px) {
   .main-product {
-    padding-top: 4rem;
+    padding-top: 4.2rem;
+  }
+}
+@media (min-width: 441px) and (max-width: 991px) {
+  .main-product {
+    padding-top: 5.2rem;
   }
 }
 
