@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initSearchDrawerSuggestions();
+});
+
+/* ===============================
+   SEARCH DRAWER: SUGGESTIONS
+================================ */
+function initSearchDrawerSuggestions() {
   const input = document.getElementById("SearchDrawerInput");
   const list = document.getElementById("SearchSuggestionList");
 
@@ -13,16 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Levenshtein Distance (edit distance)
   function levenshtein(a, b) {
-    if (!a.length) return b.length;
-    if (!b.length) return a.length;
-
-    const matrix = [];
-
-    for (let i = 0; i <= b.length; i++) {
-      matrix[i] = [i];
-    }
+    const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
 
     for (let j = 0; j <= a.length; j++) {
       matrix[0][j] = j;
@@ -30,67 +29,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let i = 1; i <= b.length; i++) {
       for (let j = 1; j <= a.length; j++) {
-        if (b.charAt(i - 1) === a.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1, // substitution
-            matrix[i][j - 1] + 1,     // insertion
-            matrix[i - 1][j] + 1      // deletion
-          );
-        }
+        matrix[i][j] = b[i - 1] === a[j - 1]
+          ? matrix[i - 1][j - 1]
+          : Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
       }
     }
 
     return matrix[b.length][a.length];
   }
 
+  function getScore(word, query) {
+    const w = word.toLowerCase();
+    const q = query.toLowerCase();
+
+    // Highest priority: starts with query
+    if (w.startsWith(q)) return 0;
+
+    // Word boundary match (t → t-shirt)
+    if (w.split(/[\s-]/).some(part => part.startsWith(q))) return 1;
+
+    // Contains query
+    if (w.includes(q)) return 2;
+
+    // Fuzzy match (limit tolerance)
+    const distance = levenshtein(q, w);
+    if (distance <= 2) return 3 + distance;
+
+    // Too unrelated → exclude
+    return null;
+  }
+
   function renderSuggestions(query = "") {
     list.innerHTML = "";
 
     if (!query) {
-      // Default: first 5
       keywords.slice(0, 5).forEach(word => {
-        list.insertAdjacentHTML(
-          "beforeend",
-          `<li><a href="/search?q=${encodeURIComponent(word)}">${word}</a></li>`
-        );
+        appendItem(word);
       });
       return;
     }
 
-    const q = query.toLowerCase();
-
-    const scored = keywords.map(word => {
-      const w = word.toLowerCase();
-
-      let score = 999;
-
-      if (w.includes(q)) {
-        score = 0; // best
-      } else {
-        score = levenshtein(q, w);
-      }
-
-      return { word, score };
-    });
-
-    scored
+    const results = keywords
+      .map(word => {
+        const score = getScore(word, query);
+        return score !== null ? { word, score } : null;
+      })
+      .filter(Boolean)
       .sort((a, b) => a.score - b.score)
-      .slice(0, 5)
-      .forEach(item => {
-        list.insertAdjacentHTML(
-          "beforeend",
-          `<li><a href="/search?q=${encodeURIComponent(item.word)}">${item.word}</a></li>`
-        );
-      });
+      .slice(0, 5);
+
+    results.forEach(item => {
+      appendItem(item.word);
+    });
   }
 
-  // Initial
+  function appendItem(word) {
+    list.insertAdjacentHTML(
+      "beforeend",
+      `<li><a href="/search?q=${encodeURIComponent(word)}">${word}</a></li>`
+    );
+  }
+
+  // Initial render
   renderSuggestions();
 
   // On typing
   input.addEventListener("input", e => {
     renderSuggestions(e.target.value.trim());
   });
-});
+}
+
