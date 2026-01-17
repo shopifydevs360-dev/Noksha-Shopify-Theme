@@ -16,35 +16,24 @@
 
         <div class="search-suggestions" id="SearchSuggestions">
         <h4>Top Suggested</h4>
-        <ul id="SearchSuggestionList" data-keywords='[{% for word in keywords %}
-                "{{ word | strip | escape }}"{% unless forloop.last %},{% endunless %}
-            {% endfor %}]'
-        ></ul>
+        <ul id="SearchSuggestionList" data-keywords='[{% if block.settings.search_keywords != blank %}{% for keyword in block.settings.search_keywords | split: ',' %}"{{ keyword | strip }}"{% unless forloop.last %}, {% endunless %}{% endfor %}{% else %}"Dress", "Hoodie", "Jacket", "Jeans", "Shoes"{% endif %}]'>
+        </ul>
         </div>
     </div>
 </div>
-{{ 'search-drawer.css' | asset_url | stylesheet_tag: preload: true }}
-<div id="js-search-drawer" class="shopify-section-search noksha-drawer" data-open-section="search-drawer">
-    <div class="inner-section drawer-space">
-        <div class="serch-box">
-        <form action="/search" method="get" role="search">
-            <input
-            type="search"
-            name="q"
-            id="SearchDrawerInput"
-            placeholder="Search..."
-            autocomplete="off"
-            aria-label="Search"
-            >
-        </form>
-        </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('SearchDrawerInput');
+        const suggestionList = document.getElementById('SearchSuggestionList');
+        const keywords = JSON.parse(suggestionList.getAttribute('data-keywords'));
 
-        <div class="search-suggestions" id="SearchSuggestions">
-        <h4>Top Suggested</h4>
-        <ul id="SearchSuggestionList" data-keywords='[{% for word in keywords %}
-                "{{ word | strip | escape }}"{% unless forloop.last %},{% endunless %}
-            {% endfor %}]'
-        ></ul>
-        </div>
-    </div>
-</div>
+        keywords.forEach(function(keyword) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `/search?q=${encodeURIComponent(keyword)}`;
+            a.textContent = keyword;
+            li.appendChild(a);
+            suggestionList.appendChild(li);
+        });
+    });
+</script>
