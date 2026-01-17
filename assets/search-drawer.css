@@ -1,5 +1,6 @@
 .shopify-section-search {
   background: #f0eee8;
+  max-width: auto;
 }
 .shopify-section-search .inner-section{
   min-width: 35rem;
