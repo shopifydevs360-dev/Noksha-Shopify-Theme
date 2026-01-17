@@ -23,7 +23,7 @@
                     <div class="products-results">
                         <h5 class="related-pages">Products</h5>
                         <div class="products-results" id="SearchProducts">
-                        {% for product in collections.all.products limit: 50 %}
+                        {% for product in collections.all.products %}
                             {% render 'predictive-product-item',
                             product: product,
                             enable_search_data: true
