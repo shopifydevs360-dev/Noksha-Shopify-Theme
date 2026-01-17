@@ -1,163 +1,96 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const drawerToggleButtons = document.querySelectorAll("[data-drawer-toggle='search-drawer']");
-  const drawer = document.getElementById("search-drawer");
-  const overlay = document.getElementById("search-drawer-overlay");
-  const closeButton = drawer.querySelector(".search-drawer__close");
-  const inputField = drawer.querySelector("#search-input");
-  const submitButton = drawer.querySelector(".search-drawer__submit");
+  const input = document.getElementById("SearchDrawerInput");
+  const list = document.getElementById("SearchSuggestionList");
 
-  /* Predictive Search Elements */
-  const predictiveContainer = document.getElementById("search-predictive");
-  const suggestionsList = document.getElementById("predictive-suggestions-list");
-  const productsList = document.getElementById("predictive-products-list");
-  const queryText = document.getElementById("predictive-query-text");
+  if (!input || !list) return;
 
-  let predictiveTimer = null;
+  let keywords = [];
 
-  /* =========================
-     OPEN DRAWER
-  ========================= */
-  function openDrawer() {
-    drawer.classList.add("active");
-    overlay.classList.add("active");
-
-    // focus after animation
-    setTimeout(() => inputField?.focus(), 200);
+  try {
+    keywords = JSON.parse(list.dataset.keywords);
+  } catch (e) {
+    console.error("Search keywords JSON error", e);
+    return;
   }
 
-  /* =========================
-     CLOSE DRAWER
-  ========================= */
-  function closeDrawer() {
-    drawer.classList.remove("active");
-    overlay.classList.remove("active");
+  // Levenshtein Distance (edit distance)
+  function levenshtein(a, b) {
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
 
-    // hide predictive dropdown
-    predictiveContainer?.classList.add("hidden");
-  }
+    const matrix = [];
 
-  /* =========================
-     SEARCH REDIRECT FUNCTION
-  ========================= */
-  function handleSearchSubmit() {
-    const query = inputField.value.trim();
-    if (!query) return;
-
-    const url = `/search?q=${encodeURIComponent(query)}`;
-    window.location.href = url;
-  }
-
-  /* =========================
-     LOAD PREDICTIVE RESULTS
-  ========================= */
-function loadPredictiveSearch(query) {
-  const url = `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=5`;
-
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      predictiveContainer.classList.remove("hidden");
-      queryText.textContent = query;
-
-      /* ---------- Suggestions ---------- */
-      suggestionsList.innerHTML = "";
-
-      const products = data?.resources?.results?.products || [];
-
-      // Collect single words only from product titles that match the typed query
-      let wordsSet = new Set();
-
-      products.forEach(p => {
-        p.title.split(/\s+/).forEach(word => {
-          if (word.toLowerCase().startsWith(query.toLowerCase())) {
-            wordsSet.add(word);
-          }
-        });
-      });
-
-      // Limit to maximum 6 words
-      const suggestionWords = Array.from(wordsSet).slice(0, 6);
-
-      // Render suggestions
-      suggestionWords.forEach(word => {
-        const li = document.createElement("li");
-        li.textContent = word;
-
-        li.addEventListener("click", () => {
-          window.location.href = `/search?q=${encodeURIComponent(word)}`;
-        });
-
-        suggestionsList.appendChild(li);
-      });
-
-      /* ---------- Products ---------- */
-      productsList.innerHTML = "";
-
-      products.forEach(p => {
-        const item = document.createElement("div");
-        item.className = "predictive-product-item";
-
-        item.innerHTML = `
-          <img src="${p.image}" alt="${p.title}">
-          <div class="predictive-product-info">
-            <a href="${p.url}">${p.title}</a>
-            <div class="price">${p.price}</div>
-          </div>
-        `;
-
-        productsList.appendChild(item);
-      });
-
-      // If no suggestions, hide suggestions column
-      if (suggestionWords.length === 0) {
-        suggestionsList.innerHTML = `<li>No suggestions</li>`;
-      }
-    });
-}
-
-  /* =========================
-     EVENT LISTENERS
-  ========================= */
-
-  // Open drawer on trigger
-  drawerToggleButtons.forEach(btn => {
-    btn.addEventListener("click", openDrawer);
-  });
-
-  // Close drawer
-  closeButton.addEventListener("click", closeDrawer);
-  overlay.addEventListener("click", closeDrawer);
-
-  // Submit button click
-  submitButton.addEventListener("click", handleSearchSubmit);
-
-  // Enter key in input field
-  inputField.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleSearchSubmit();
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
     }
-  });
 
-  // Escape key to close
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDrawer();
-  });
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
 
-  /* =========================
-     INPUT: TRIGGER PREDICTIVE SEARCH
-  ========================= */
-  inputField.addEventListener("input", function () {
-    const query = this.value.trim();
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            matrix[i][j - 1] + 1,     // insertion
+            matrix[i - 1][j] + 1      // deletion
+          );
+        }
+      }
+    }
 
-    if (query.length < 1) {
-      predictiveContainer.classList.add("hidden");
+    return matrix[b.length][a.length];
+  }
+
+  function renderSuggestions(query = "") {
+    list.innerHTML = "";
+
+    if (!query) {
+      // Default: first 5
+      keywords.slice(0, 5).forEach(word => {
+        list.insertAdjacentHTML(
+          "beforeend",
+          `<li><a href="/search?q=${encodeURIComponent(word)}">${word}</a></li>`
+        );
+      });
       return;
     }
 
-    clearTimeout(predictiveTimer);
-    predictiveTimer = setTimeout(() => {
-      loadPredictiveSearch(query);
-    }, 250);
+    const q = query.toLowerCase();
+
+    const scored = keywords.map(word => {
+      const w = word.toLowerCase();
+
+      let score = 999;
+
+      if (w.includes(q)) {
+        score = 0; // best
+      } else {
+        score = levenshtein(q, w);
+      }
+
+      return { word, score };
+    });
+
+    scored
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 5)
+      .forEach(item => {
+        list.insertAdjacentHTML(
+          "beforeend",
+          `<li><a href="/search?q=${encodeURIComponent(item.word)}">${item.word}</a></li>`
+        );
+      });
+  }
+
+  // Initial
+  renderSuggestions();
+
+  // On typing
+  input.addEventListener("input", e => {
+    renderSuggestions(e.target.value.trim());
   });
 });
