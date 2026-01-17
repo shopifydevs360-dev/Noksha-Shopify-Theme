@@ -4,7 +4,7 @@
   using: {% render 'predictive-product-item', product: product, enable_search_data: true %}
 
 {%- endcomment -%}
-{% assign enable_search_data = enable_search_data | default: false %}
+{% comment %} {% assign enable_search_data = enable_search_data | default: false %}
 
 {% if enable_search_data %}
   {% assign collections_titles = product.collections | map: 'title' | join: ',' | downcase %}
@@ -26,4 +26,15 @@
       </span>
     </div>
   </a>
-</div>
+</div> {% endcomment %}
+
+<a href="{{ product.url }}" class="predictive-product-item">
+  <div class="product-image">
+    {{ product.featured_image | image_url: width: 120 | image_tag }}
+  </div>
+  <div class="product-info">
+    <p class="product-title">{{ product.title }}</p>
+    <p class="product-price">{{ product.price | money }}</p>
+  </div>
+</a>
+
