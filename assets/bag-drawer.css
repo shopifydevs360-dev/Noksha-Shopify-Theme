@@ -2,6 +2,14 @@
   max-width: 70rem;
   background: #f0eee8;
 }
-
+.shopify-section-bag .cart-list-items {
+    overflow-y: scroll;
+    height: 50vh;
+}
+@media (min-width: 991px){
+  .shopify-section-bag .cart-list-items {
+      height: 68vh;
+  }
+}
 
 
