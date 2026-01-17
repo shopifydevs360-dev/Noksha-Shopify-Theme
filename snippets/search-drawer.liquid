@@ -1,4 +1,20 @@
 {{ 'search-drawer.css' | asset_url | stylesheet_tag: preload: true }}
 <div id="js-search-drawer" class="shopify-section-search noksha-drawer" data-open-section="search-drawer">
-
+    <div class="inner-section drawer-space">
+        <div class="serch-box">
+            <form action="/search" method="get" role="search">
+                <input type="text" name="q" placeholder="Search..." aria-label="Search">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="search-suggestions">
+            <!-- Search suggestions can be added here -->
+            <h4>Suggested Searches</h4>
+            <ul>
+                <li><a href="/search?q=Product+1">Product 1</a></li>
+                <li><a href="/search?q=Product+2">Product 2</a></li>
+                <li><a href="/search?q=Product+3">Product 3</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
