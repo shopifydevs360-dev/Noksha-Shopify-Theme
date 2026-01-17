@@ -48,19 +48,3 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('SearchDrawerInput');
-        const suggestionList = document.getElementById('SearchSuggestionList');
-        const keywords = JSON.parse(suggestionList.getAttribute('data-keywords'));
-
-        keywords.forEach(function(keyword) {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `/search?q=${encodeURIComponent(keyword)}`;
-            a.textContent = keyword;
-            li.appendChild(a);
-            suggestionList.appendChild(li);
-        });
-    });
-</script>
