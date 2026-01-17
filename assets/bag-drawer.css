@@ -15,3 +15,6 @@
   visibility: visible;
   pointer-events: auto;
 }
+.shopify-section-bag .cart-template__inner h4 {
+    color: rgb(var(--color-heading));
+}
