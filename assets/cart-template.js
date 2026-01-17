@@ -18,7 +18,7 @@ function initCartAjax() {
       .then(res => res.json())
       .then(cart => {
         renderAllCarts(cart);
-        updateCartCount(); // ✅ sync header counter
+        updateCartCount();
       });
   };
 }
