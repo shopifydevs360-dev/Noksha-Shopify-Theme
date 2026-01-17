@@ -148,11 +148,11 @@
 .cart-template .info-left p {
     font-size: .7em;
     display: block;
-    margin-bottom: 0.8rem;
     color: rgb(var(--color-text));
 }
-/* Quantity buttons */
-.cart-item-qty {
+/* Quantity buttons */ 
+.cart-template .cart-item-qty {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   gap: 0;
