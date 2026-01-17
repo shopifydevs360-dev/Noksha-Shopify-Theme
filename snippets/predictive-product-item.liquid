@@ -1,3 +1,9 @@
+{%- comment -%}
+  Predictive product Item
+  Used for search drawer, nav, etc.
+  using: {% render 'predictive-product-item', product: product, enable_search_data: true %}
+
+{%- endcomment -%}
 {% assign enable_search_data = enable_search_data | default: false %}
 
 {% if enable_search_data %}
