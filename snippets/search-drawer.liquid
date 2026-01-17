@@ -4,19 +4,29 @@
 
 <div id="js-search-drawer" class="shopify-section-search noksha-drawer" data-open-section="search-drawer">
   <div class="inner-section drawer-space">
+    <div class="search-template">
+        <div class="left-content">
+            <div class="serch-box">
+                <form action="/search" method="get" role="search">
+                    <input type="search" id="SearchDrawerInput" name="q" placeholder="What you are looking for?" autocomplete="off" aria-label="Search">
+                    <button type="submit">Search</button>
+                </form>
+                </div>
 
-    <div class="serch-box">
-      <form action="/search" method="get" role="search">
-        <input type="search" id="SearchDrawerInput" name="q" placeholder="Search..." autocomplete="off" aria-label="Search">
-        <button type="submit">Search</button>
-      </form>
+                <div class="search-suggestions">
+                <h4>Suggested Searches</h4>
+                <ul id="SearchSuggestionList" data-keywords='[{% for word in keywords %} "{{ word | strip | escape }}"{% unless forloop.last %},{% endunless %}{% endfor %}]'></ul>
+            </div>
+        </div>
+        <div class="right-content">
+            <div class="serch-results">
+                <h4>Search Results</h4>
+                <div class="products-results"></div>
+                <div class="pages-results"></div>
+                <div class="posts-results"></div>
+            </div>
+        </div>
     </div>
-
-    <div class="search-suggestions">
-      <h4>Suggested Searches</h4>
-      <ul id="SearchSuggestionList" data-keywords='[{% for word in keywords %} "{{ word | strip | escape }}"{% unless forloop.last %},{% endunless %}{% endfor %}]'></ul>
-    </div>
-
   </div>
 </div>
 <script src="{{ 'search-drawer.js' | asset_url }}" defer="defer"></script>
