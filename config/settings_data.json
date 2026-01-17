@@ -124,8 +124,8 @@
           "tooltip": "#222222",
           "tooltip_label": "#ffffff",
           "border": "#222222",
-          "additional_color_1": "#ff0000",
-          "additional_color_2": "#00ff00"
+          "additional_color_1": "#bbbbbb",
+          "additional_color_2": "#228b22"
         }
       },
       "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f": {
