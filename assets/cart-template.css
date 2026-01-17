@@ -234,6 +234,10 @@
     margin-bottom: 2rem;
     color: rgb(var(--color-heading));
 }
+.cart-template .cart-summary-row h4{
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
 
 /* Note */
 .cart-template .cart-note {
