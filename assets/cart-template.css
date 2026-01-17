@@ -166,13 +166,13 @@
 }
 .cart-template .qty-btn {
   width: 32px;
-  height: 32px;
+  height: 28px;
   background-color: rgb(var(--color-background));
   color: rgb(var(--color-heading));
   border: 1px solid rgb(var(--color-heading));
   background: none;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1em;
   transition: all;
 }
 
@@ -182,7 +182,7 @@
 }
 .cart-template .cart-item-qty input {
     width: 42px;
-    height: 32px;
+    height: 26px;
     text-align: center;
     border: 1px solid rgb(var(--color-heading));
     background: transparent;
@@ -250,7 +250,7 @@
     color: rgb(var(--color-background));
     text-align: center;
     border: 2px solid rgb(var(--color-heading));
-    padding: 0.9rem;
+    padding: 0.7rem;
     width: 100%;
     max-width: 18rem;
     font-size: 1em;
@@ -281,7 +281,7 @@
     text-align: center;
     border: 2px solid rgb(var(--color-heading));
     font-size: 1em;
-    padding: .9rem 1.8rem;
+    padding: .7rem 1.8rem;
     margin-top: 1.5rem;
     display: block;
     width: fit-content;
