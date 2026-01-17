@@ -1,11 +1,49 @@
 <section class="cart-page section-light">
+  <div class="background-image">
+    {% if section.settings.background_image %}
+      {{ section.settings.background_image | img_url: 'master' | img_tag: alt: 'Password Background', class: 'password-bg-image' }}
+    {% endif %}
+  </div>
+  <div class="background-overlay"></div>
   {% render 'cart-template' %}
 </section>
-
+<style>
+  .cart-page .background-overlay {
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity }};
+  }
+</style>
 
 {% schema %}
 {
   "name": "Cart",
-  "settings": []
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "cart_page_color",
+      "label": "Cart page color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5
+    }
+  ]
 }
 {% endschema %}
