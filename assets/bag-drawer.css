@@ -2,13 +2,6 @@
   max-width: 70rem;
   background: #f0eee8;
 }
-.shopify-section-bag .inner-section {
-  padding: 4rem 0.4rem 0.8rem 0.4rem;
-}
-@media (min-width: 991px){
-.shopify-section-bag .inner-section {
-  padding: 7rem 1.5rem 1.5rem 1rem;
-}
-}
+
 
 
