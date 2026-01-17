@@ -16,52 +16,10 @@
 
         <div class="search-suggestions" id="SearchSuggestions">
         <h4>Top Suggested</h4>
-        <ul></ul>
+        <ul id="SearchSuggestionList" data-keywords='[{% for word in keywords %}
+                "{{ word | strip | escape }}"{% unless forloop.last %},{% endunless %}
+            {% endfor %}]'
+        ></ul>
         </div>
     </div>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("SearchDrawerInput");
-  const suggestionsBox = document.querySelector("#SearchSuggestions ul");
-
-  if (!input || !suggestionsBox) return;
-
-  let controller;
-
-  input.addEventListener("input", () => {
-    const query = input.value.trim();
-
-    if (query.length < 2) {
-      suggestionsBox.innerHTML = "";
-      return;
-    }
-
-    if (controller) controller.abort();
-    controller = new AbortController();
-
-    fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=5`, {
-      signal: controller.signal
-    })
-      .then(res => res.json())
-      .then(data => {
-        const products = data.resources.results.products;
-
-        suggestionsBox.innerHTML = "";
-
-        products.forEach(product => {
-          suggestionsBox.innerHTML += `
-            <li>
-              <a href="${product.url}">
-                ${product.title}
-              </a>
-            </li>
-          `;
-        });
-      })
-      .catch(err => {
-        if (err.name !== "AbortError") console.error(err);
-      });
-  });
-});
-</script>
