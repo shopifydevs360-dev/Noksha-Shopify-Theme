@@ -1,0 +1,23 @@
+{%- comment -%}
+  Predictive Post Item
+  Used for blog articles in search drawer
+{%- endcomment -%}
+
+{% assign enable_search_data = enable_search_data | default: false %}
+
+{% if enable_search_data %}
+  {% assign title = article.title | downcase %}
+  {% assign tags = article.tags | join: ',' | downcase %}
+{% endif %}
+
+<div
+  class="search-post-item"
+  {% if enable_search_data %}
+    data-title="{{ title }}"
+    data-tags="{{ tags }}"
+  {% endif %}
+>
+  <a href="{{ article.url }}" class="search-post-link">
+    {{ article.title }}
+  </a>
+</div>
