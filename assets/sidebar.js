@@ -63,16 +63,21 @@ function initSidebarDrawers() {
       if (isTransitioning) return;
 
       const sectionName = trigger.dataset.triggerSection;
-      const isActive = trigger.classList.contains("is-active");
+
+      const drawer = document.querySelector(
+        `[data-open-section="${sectionName}"]`
+      );
+
+      const isDrawerOpen = drawer?.classList.contains(`${sectionName}-open`);
       const hasOpenDrawer = document.querySelector("[data-open-section].is-open");
 
-      // Close if clicking active trigger
-      if (isActive) {
+      // ✅ Close ONLY if drawer itself is open
+      if (isDrawerOpen) {
         closeAllDrawers(overlay, expandedArea);
         return;
       }
 
-      // Switch drawers with delay
+      // Switch drawers
       if (hasOpenDrawer) {
         isTransitioning = true;
         closeAllDrawers(overlay, expandedArea);
