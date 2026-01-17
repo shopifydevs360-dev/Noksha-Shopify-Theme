@@ -1,7 +1,8 @@
 .shopify-section-search {
   background: #f0eee8;
-  max-width: auto;
+  max-width: fit-content;
 }
 .shopify-section-search .inner-section{
   min-width: 35rem;
+  transition: all .4s cubic-bezier(.32,.24,.15,1);
 }
