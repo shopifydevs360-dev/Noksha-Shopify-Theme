@@ -50,15 +50,11 @@
         gap: 6rem;
     }
     .cart-template-left {
-        width: 55%;
+        width: 65%;
     }
     .cart-template-right {
-        width: 45%;
+        width: 35%;
     }
-}
-.cart-template-left,
-.cart-template-right{
-    max-width: 32rem;
 }
 
 /* ============================
@@ -219,6 +215,13 @@
       background: rgba(var(--color-heading), 0.8);
   }
 }
+
+.cart-template .cart-summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
 /* Note */
 .cart-template .cart-note {
   margin-top: 1rem;
