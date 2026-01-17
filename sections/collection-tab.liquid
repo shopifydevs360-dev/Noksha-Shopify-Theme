@@ -101,6 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
       el: section.querySelector('.swiper-scrollbar'),
       draggable: true
     },
+    preventClicks: false,
+    preventClicksPropagation: false,
+    allowTouchMove: true,
     breakpoints: {
       580: { slidesPerView: 2.5 },
       991: { slidesPerView: 3 },
