@@ -23,6 +23,7 @@ function initAjaxAddToCart() {
       })
         .then(res => res.json())
         .then(() => {
+          refreshAllCartsUI();
           updateCartCount();
           if (isDrawer) openBagDrawer();
         })
