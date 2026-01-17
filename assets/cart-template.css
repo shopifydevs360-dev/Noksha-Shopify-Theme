@@ -203,7 +203,7 @@
 }
 
 .cart-template .cart-item-price {
-    font-size: 0.9em;
+    font-size: 0.8em;
     display: block;
     margin-bottom: 0.8rem;
     color: rgb(var(--color-heading));
