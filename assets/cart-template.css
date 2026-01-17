@@ -275,11 +275,13 @@
     color: rgb(var(--color-background));
     text-align: center;
     border: 2px solid rgb(var(--color-heading));
-    font-size: 0.9em;
-    padding: 0.9rem 1.8rem;
-    margin-top: 2rem;
+    font-size: 1em;
+    padding: .9rem 1.8rem;
+    margin-top: 1.5rem;
     display: block;
     width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 .cart-template .continue-shopping:hover {
     background: transparent;
