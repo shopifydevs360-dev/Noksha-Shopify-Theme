@@ -21,6 +21,7 @@
                 <div class="serch-results">
                     <h4>Search Results</h4>
                     <div class="products-results">
+                        <h5 class="related-pages">Products</h5>
                         <div class="products-results" id="SearchProducts">
                         {% for product in collections.all.products limit: 50 %}
                             {% render 'predictive-product-item',
@@ -31,11 +32,13 @@
                         </div>
                     </div>
                     <div class="pages-results">
+                        <h5 class="related-pages">Pages</h5>
                         {% for item in page.items %}
                         {% render 'predictive-page-item', item: page %}
                         {% endfor %}
                     </div>
                     <div class="posts-results">
+                        <h5 class="related-posts">Posts</h5>
                         {% for item in posts.items %}
                         {% render 'predictive-posts-item', item: posts %}
                         {% endfor %}
