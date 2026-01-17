@@ -270,4 +270,11 @@ body.disable-scrollbars {
   visibility: visible;
   pointer-events: auto;
 }
-
+@media (min-width: 441px) {
+    .drawer-space {
+        padding-left: 12rem;
+    }
+   .rtl .drawer-space {
+        padding-right: 12rem;
+    }
+}
