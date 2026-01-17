@@ -1,6 +1,106 @@
 document.addEventListener("DOMContentLoaded", () => {
   initSearchDrawerSuggestions();
+  initPredictiveSearch();
+  initSearchSubmit();
 });
+
+/* ===============================
+   SEARCH DRAWER: PREDICTIVE SEARCH
+================================ */
+function initPredictiveSearch() {
+  const input = document.getElementById("SearchDrawerInput");
+  const predictiveContainer = document.getElementById("search-predictive");
+  const suggestionsList = document.getElementById("predictive-suggestions-list");
+  const productsList = document.getElementById("predictive-products-list");
+
+  if (!input || !predictiveContainer) return;
+
+  let timeout;
+
+  function loadPredictiveSearch(query) {
+    if (!query) {
+      predictiveContainer.classList.add("hidden");
+      return;
+    }
+
+    fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=5&resources[options][unavailable_products]=hide`)
+      .then(response => response.json())
+      .then(data => {
+        renderPredictiveResults(data.resources.results.products);
+        predictiveContainer.classList.remove("hidden");
+      })
+      .catch(error => {
+        console.error("Predictive search error:", error);
+      });
+  }
+
+  function renderPredictiveResults(products) {
+    suggestionsList.innerHTML = "";
+    productsList.innerHTML = "";
+
+    if (products.length === 0) {
+      productsList.innerHTML = "<p>No products found.</p>";
+      return;
+    }
+
+    products.forEach(product => {
+      const item = document.createElement("div");
+      item.className = "search-product-item";
+      item.innerHTML = `
+        <a href="${product.url}" class="product-card">
+          <div class="product-card__image">
+            <img src="${product.image}" alt="${product.title}" width="300">
+          </div>
+          <div class="product-card__info">
+            <h5>${product.title}</h5>
+            <span class="price">${product.price}</span>
+          </div>
+        </a>
+      `;
+      productsList.appendChild(item);
+    });
+  }
+
+  input.addEventListener("input", e => {
+    const query = e.target.value.trim();
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      loadPredictiveSearch(query);
+    }, 300);
+  });
+}
+
+/* ===============================
+   SEARCH DRAWER: SUBMIT HANDLER
+================================ */
+function initSearchSubmit() {
+  const form = document.getElementById("SearchDrawerForm");
+  const resultsContainer = document.getElementById("search-results");
+  const resultsList = document.getElementById("search-results-list");
+  const predictiveContainer = document.getElementById("search-predictive");
+
+  if (!form || !resultsContainer) return;
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const query = form.querySelector('input[name="q"]').value.trim();
+    if (!query) return;
+
+    fetch(`/search?q=${encodeURIComponent(query)}&view=ajax`)
+      .then(response => response.text())
+      .then(html => {
+        resultsList.innerHTML = html;
+        predictiveContainer.classList.add("hidden");
+        resultsContainer.classList.remove("hidden");
+      })
+      .catch(error => {
+        console.error("Search error:", error);
+        resultsList.innerHTML = "<p>Error loading results.</p>";
+        predictiveContainer.classList.add("hidden");
+        resultsContainer.classList.remove("hidden");
+      });
+  });
+}
 
 /* ===============================
    SEARCH DRAWER: SUGGESTIONS
