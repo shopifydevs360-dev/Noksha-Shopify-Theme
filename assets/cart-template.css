@@ -59,9 +59,11 @@
         width: 35%;
     }
 }
-.cart-template-left,
+.cart-template-left{
+    max-width: 36rem;
+}
 .cart-template-right{
-    max-width: 32rem;
+    max-width: 28rem;
 }
 
 /* ============================
