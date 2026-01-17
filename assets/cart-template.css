@@ -56,6 +56,10 @@
         width: 35%;
     }
 }
+.cart-template-left,
+.cart-template-right{
+    max-width: 32rem;
+}
 
 /* ============================
    cart title
