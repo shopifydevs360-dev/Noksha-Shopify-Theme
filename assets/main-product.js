@@ -191,7 +191,7 @@ function initMainProductCart() {
     })
       .then(res => res.json())
       .then(() => {
-        updateCartCount();
+        refreshAllCartsUI();
 
         if (behavior === 'ajax_drawer') {
           openBagDrawer();
