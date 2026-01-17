@@ -188,25 +188,19 @@ function formatMoney(cents) {
 
 function refreshCartItemList(root) {
   fetch("/cart?view=ajax")
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       const temp = document.createElement("div");
       temp.innerHTML = html;
 
       const newList = temp.querySelector(".cart-list-items");
       const currentList = root.querySelector(".cart-list-items");
 
-      if (!newList) return;
-
-      if (!currentList) {
-        root.appendChild(newList);
-        return;
+      if (newList && currentList) {
+        currentList.innerHTML = newList.innerHTML;
       }
-
-      currentList.innerHTML = newList.innerHTML;
     });
 }
-
 
 
 
