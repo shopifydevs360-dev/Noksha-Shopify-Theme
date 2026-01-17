@@ -22,16 +22,10 @@
                     <h4>Search Results</h4>
                     <div class="products-results">
                         <h5 class="related-pages">Products</h5>
-                        <div class="products-results" id="SearchProducts">
-                        {% for product in collections.all.products %}
-                            {% render 'predictive-product-item',
-                            product: product,
-                            enable_search_data: true
-                            %}
-                        {% endfor %}
-                        </div>
+                        <template id="SearchProductTemplate">
+                        {% render 'predictive-product-item', product: all_products['placeholder'] %}
+                        </template>
 
-                        <p id="SearchNoResults" class="hide">No products found</p>
 
                     </div>
                     <div class="pages-results">
