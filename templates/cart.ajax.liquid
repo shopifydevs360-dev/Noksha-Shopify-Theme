@@ -1,7 +1,8 @@
-{% if cart.item_count > 0 %}
-  <div class="cart-list-items">
+<div class="cart-list-items">
+  {% if cart.item_count > 0 %}
     {% for item in cart.items %}
       {% render 'cart-items', item: item %}
     {% endfor %}
-  </div>
-{% endif %}
+  {% endif %}
+</div>
+
