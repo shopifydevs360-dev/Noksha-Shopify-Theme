@@ -133,6 +133,18 @@
 .info-right {
     width: 25%;
 }
+.cart-template .info-left a{
+    font-size: 0.9em;
+    display: block;
+    margin-bottom: 0.1rem;
+    color: rgb(var(--color-heading));
+}
+.cart-template .info-left a{
+    font-size: 0.7em;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: rgb(var(--color-text));
+}
 /* Quantity buttons */
 .cart-item-qty {
   display: flex;
