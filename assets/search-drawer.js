@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   initSearchDrawerSuggestions();
-  initSearchDrawerProductSearch();
 });
 
 /* ===============================
@@ -110,56 +109,3 @@ function initSearchDrawerSuggestions() {
 
 
 
-function initSearchDrawerProductSearch() {
-  const input = document.getElementById("SearchDrawerInput");
-  const productsWrap = document.getElementById("SearchProducts");
-  const noResults = document.getElementById("SearchNoResults");
-
-  if (!input || !productsWrap) return;
-
-  const products = Array.from(
-    productsWrap.querySelectorAll(".search-product-item")
-  );
-
-  function normalize(str) {
-    return (str || "").toLowerCase();
-  }
-
-  function filterProducts(query) {
-    let visibleCount = 0;
-    const q = normalize(query);
-
-    products.forEach(item => {
-      const title = normalize(item.dataset.title);
-      const tags = normalize(item.dataset.tags);
-      const collections = normalize(item.dataset.collection);
-
-      const match =
-        title.includes(q) ||
-        tags.includes(q) ||
-        collections.includes(q);
-
-      item.style.display = match ? "" : "none";
-      if (match) visibleCount++;
-    });
-
-    if (noResults) {
-      noResults.classList.toggle("hide", visibleCount > 0);
-    }
-  }
-
-  // Initial state (hide all until typing)
-  products.forEach(p => (p.style.display = "none"));
-
-  input.addEventListener("input", e => {
-    const value = e.target.value.trim();
-
-    if (!value) {
-      products.forEach(p => (p.style.display = "none"));
-      if (noResults) noResults.classList.add("hide");
-      return;
-    }
-
-    filterProducts(value);
-  });
-}
