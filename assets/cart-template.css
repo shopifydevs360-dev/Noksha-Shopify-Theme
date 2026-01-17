@@ -1,6 +1,7 @@
 /* Cart Style */
 .cart-page {
     padding-top: 8rem;
+    min-height: 75vh;
 }
 .cart-page .background-image {
     position: fixed;
