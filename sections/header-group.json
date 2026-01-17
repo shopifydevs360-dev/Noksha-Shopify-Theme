@@ -54,7 +54,9 @@
       "blocks": {
         "search_drawer_BWxUax": {
           "type": "search_drawer",
-          "settings": {}
+          "settings": {
+            "search_keywords": "Dress, Hoodie, Jacket, Jeans, Shoes, T shirt"
+          }
         },
         "account_drawer_TazcYX": {
           "type": "account_drawer",
