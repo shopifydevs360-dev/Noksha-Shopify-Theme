@@ -23,19 +23,10 @@
 <div class="products-results">
   <h5 class="related-pages">Products</h5>
 
-  <!-- AJAX results will be injected here -->
+  <!-- AJAX search results go here -->
   <div id="SearchProducts"></div>
 
-  <!-- No results message -->
   <p id="SearchNoResults" class="hide">No products found</p>
-
-  <!-- Template (uses a REAL product handle) -->
-  <template id="SearchProductTemplate">
-    {% assign demo_product = collections.all.products.first %}
-    {% if demo_product %}
-      {% render 'predictive-product-item', product: demo_product %}
-    {% endif %}
-  </template>
 </div>
 
                     <div class="pages-results">
