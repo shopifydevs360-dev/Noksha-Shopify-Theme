@@ -2,19 +2,66 @@
 <div id="js-search-drawer" class="shopify-section-search noksha-drawer" data-open-section="search-drawer">
     <div class="inner-section drawer-space">
         <div class="serch-box">
-            <form action="/search" method="get" role="search">
-                <input type="text" name="q" placeholder="Search..." aria-label="Search">
-                <button type="submit">Search</button>
-            </form>
+        <form action="/search" method="get" role="search">
+            <input
+            type="search"
+            name="q"
+            id="SearchDrawerInput"
+            placeholder="Search..."
+            autocomplete="off"
+            aria-label="Search"
+            >
+        </form>
         </div>
-        <div class="search-suggestions">
-            <!-- Search suggestions can be added here -->
-            <h4>Suggested Searches</h4>
-            <ul>
-                <li><a href="/search?q=Product+1">Product 1</a></li>
-                <li><a href="/search?q=Product+2">Product 2</a></li>
-                <li><a href="/search?q=Product+3">Product 3</a></li>
-            </ul>
+
+        <div class="search-suggestions" id="SearchSuggestions">
+        <h4>Top Suggested</h4>
+        <ul></ul>
         </div>
     </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("SearchDrawerInput");
+  const suggestionsBox = document.querySelector("#SearchSuggestions ul");
+
+  if (!input || !suggestionsBox) return;
+
+  let controller;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim();
+
+    if (query.length < 2) {
+      suggestionsBox.innerHTML = "";
+      return;
+    }
+
+    if (controller) controller.abort();
+    controller = new AbortController();
+
+    fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=5`, {
+      signal: controller.signal
+    })
+      .then(res => res.json())
+      .then(data => {
+        const products = data.resources.results.products;
+
+        suggestionsBox.innerHTML = "";
+
+        products.forEach(product => {
+          suggestionsBox.innerHTML += `
+            <li>
+              <a href="${product.url}">
+                ${product.title}
+              </a>
+            </li>
+          `;
+        });
+      })
+      .catch(err => {
+        if (err.name !== "AbortError") console.error(err);
+      });
+  });
+});
+</script>
