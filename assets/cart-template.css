@@ -159,17 +159,18 @@
   cursor: pointer;
 }
 .cart-item-qty input {
-  width: 42px;
-  height: 32px;
-  text-align: center;
-  border: 1px solid rgb(var(--color-heading));
-  background: transparent;
-  color: #000;
-  font-size: 14px;
-  -webkit-appearance: none;
-  appearance: none;
-  -moz-appearance: textfield;
-  pointer-events: none;
+    width: 42px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid rgb(var(--color-heading));
+    background: transparent;
+    color: #000;
+    font-size: 14px;
+    -webkit-appearance: none;
+    appearance: none;
+    -moz-appearance: textfield;
+    pointer-events: none;
+    border-radius: 0;
 }
 
 .cart-item-qty input::-webkit-inner-spin-button,
