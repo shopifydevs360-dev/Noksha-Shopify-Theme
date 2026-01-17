@@ -1,0 +1,11 @@
+{% layout none %}
+
+{% if search.performed and search.results_count > 0 %}
+  <div class="search-results-list">
+    {% for item in search.results %}
+      {% if item.object_type == 'product' %}
+        {% render 'predictive-product-item', product: item %}
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
