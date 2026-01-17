@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   initSearchDrawerSuggestions();
+  initSearchDrawerResults();
 });
 
 /* ===============================
@@ -101,5 +102,83 @@ function initSearchDrawerSuggestions() {
   input.addEventListener("input", e => {
     renderSuggestions(e.target.value.trim());
   });
+}
+
+
+/* ===============================
+   SEARCH DRAWER: RESULTS FILTER
+================================ */
+function initSearchDrawerResults() {
+  const input = document.getElementById("SearchDrawerInput");
+  const resultsWrapper = document.querySelector(".serch-results");
+
+  if (!input || !resultsWrapper) return;
+
+  const productItems = document.querySelectorAll(".search-product-item");
+  const pageItems = document.querySelectorAll(".search-page-item");
+  const postItems = document.querySelectorAll(".search-post-item");
+
+  // Hide results by default
+  resultsWrapper.style.display = "none";
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim().toLowerCase();
+
+    if (!query) {
+      resultsWrapper.style.display = "none";
+      hideAll(productItems);
+      hideAll(pageItems);
+      hideAll(postItems);
+      return;
+    }
+
+    resultsWrapper.style.display = "block";
+
+    filterGroup(productItems, query);
+    filterGroup(pageItems, query);
+    filterGroup(postItems, query);
+  });
+}
+
+/* ===============================
+   FILTER GROUP
+================================ */
+function filterGroup(items, query) {
+  if (!items.length) return;
+
+  let hasVisible = false;
+
+  items.forEach(item => {
+    const searchableText = Object.values(item.dataset)
+      .join(" ")
+      .toLowerCase();
+
+    if (searchableText.includes(query)) {
+      item.style.display = "";
+      hasVisible = true;
+    } else {
+      item.style.display = "none";
+    }
+  });
+
+  // Hide/show section wrapper
+  const section = items[0].closest(".products-results, .pages-results, .posts-results");
+  if (section) {
+    section.style.display = hasVisible ? "" : "none";
+  }
+}
+
+/* ===============================
+   HELPERS
+================================ */
+function hideAll(items) {
+  items.forEach(item => {
+    item.style.display = "none";
+  });
+
+  const section = items[0]?.closest(".products-results, .pages-results, .posts-results");
+  if (section) {
+    section.style.display = "none";
+  }
 }
 
