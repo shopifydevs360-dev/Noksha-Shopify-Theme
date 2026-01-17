@@ -59,6 +59,7 @@
 }
 .product-carousel .swiper-slide {
     height: auto;
+    padding: 0 0.5rem;
 }
 .product-carousel .swiper-container-product {
     padding-left: 1.2rem;
