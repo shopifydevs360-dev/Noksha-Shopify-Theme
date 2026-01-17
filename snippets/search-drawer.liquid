@@ -37,41 +37,5 @@
 
   </div>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("SearchDrawerInput");
-  const list = document.getElementById("SearchSuggestionList");
+<script src="{{ 'search-drawer.js' | asset_url }}" defer="defer"></script>
 
-  if (!input || !list) return;
-
-  const keywords = JSON.parse(list.dataset.keywords);
-
-  function renderSuggestions(query = "") {
-    list.innerHTML = "";
-
-    const results = keywords
-      .filter(word =>
-        word.toLowerCase().includes(query.toLowerCase())
-      )
-      .slice(0, 5);
-
-    results.forEach(word => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <a href="/search?q=${encodeURIComponent(word)}">
-          ${word}
-        </a>
-      `;
-      list.appendChild(li);
-    });
-  }
-
-  // Initial render (first 5)
-  renderSuggestions();
-
-  // Filter on typing
-  input.addEventListener("input", e => {
-    renderSuggestions(e.target.value.trim());
-  });
-});
-</script>
