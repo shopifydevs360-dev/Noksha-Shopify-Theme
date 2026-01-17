@@ -244,12 +244,6 @@
     font-size: 1em;
 }
 
-/* Note */
-.cart-template .cart-note {
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  color: #666;
-}
 .cart-template .cart-checkout-btn {
     background: rgb(var(--color-heading));
     color: rgb(var(--color-background));
@@ -267,5 +261,11 @@
 .cart-template .cart-checkout-btn:hover {
     background: transparent;
     color: rgb(var(--color-heading));
+}
 
+/* Note */
+.cart-template .cart-note {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: rgb(var(--color-text));
 }
