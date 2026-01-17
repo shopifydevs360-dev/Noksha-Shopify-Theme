@@ -188,24 +188,34 @@ function formatMoney(cents) {
 
 function refreshCartItemList(root) {
   fetch("/cart?view=ajax")
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       const temp = document.createElement("div");
       temp.innerHTML = html;
 
       const newList = temp.querySelector(".cart-list-items");
-      const currentList = root.querySelector(".cart-list-items");
-
       if (!newList) return;
 
+      let currentList = root.querySelector(".cart-list-items");
+      const emptyMessage = root.querySelector(".cart-empty-message");
+      const continueLink = root.querySelector(".continue-shopping");
+
+      // 🔥 CART WAS EMPTY → CREATE LIST
       if (!currentList) {
-        root.appendChild(newList);
+        if (emptyMessage) emptyMessage.remove();
+        if (continueLink) continueLink.remove();
+
+        root.querySelector(".cart-template-left")
+          .appendChild(newList);
+
         return;
       }
 
+      // 🔁 CART HAD ITEMS → UPDATE LIST
       currentList.innerHTML = newList.innerHTML;
     });
 }
+
 
 
 
