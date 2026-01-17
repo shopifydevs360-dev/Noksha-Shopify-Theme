@@ -47,7 +47,7 @@ function initSearchDrawerSuggestions() {
     const q = query.toLowerCase();
 
     if (w.startsWith(q)) return 0;
-    if (w.split(/[\s-]/).some(p => p.startsWith(q))) return 1;
+    if (w.split(/[\s-]/).some(part => part.startsWith(q))) return 1;
     if (w.includes(q)) return 2;
 
     const distance = levenshtein(q, w);
@@ -91,20 +91,19 @@ function initSearchDrawerSuggestions() {
 
 /* ===============================
    SEARCH DRAWER: AJAX PRODUCTS
-   (Template-based, no layout break)
+   (Liquid-rendered, cart-style)
 ================================ */
 function initSearchDrawerAjaxProducts() {
   const input = document.getElementById("SearchDrawerInput");
   const resultsWrap = document.getElementById("SearchProducts");
-  const template = document.getElementById("SearchProductTemplate");
   const noResults = document.getElementById("SearchNoResults");
 
-  if (!input || !resultsWrap || !template) return;
+  if (!input || !resultsWrap) return;
 
   let debounceTimer;
   let controller;
 
-  input.addEventListener("input", e => {
+  input.addEventListener("input", (e) => {
     const query = e.target.value.trim();
     clearTimeout(debounceTimer);
 
@@ -115,51 +114,32 @@ function initSearchDrawerAjaxProducts() {
         return;
       }
 
-      fetchProducts(query);
+      fetchSearchResults(query);
     }, 300);
   });
 
-  function fetchProducts(query) {
+  function fetchSearchResults(query) {
     if (controller) controller.abort();
     controller = new AbortController();
 
-    fetch(
-      `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6`,
-      { signal: controller.signal }
-    )
-      .then(res => res.json())
-      .then(data => {
-        const products = data.resources.results.products || [];
-        renderProducts(products);
+    fetch(`/search?view=ajax-search&q=${encodeURIComponent(query)}`, {
+      signal: controller.signal,
+    })
+      .then(res => res.text())
+      .then(html => {
+        if (!html || !html.trim()) {
+          resultsWrap.innerHTML = "";
+          noResults?.classList.remove("hide");
+          return;
+        }
+
+        resultsWrap.innerHTML = html;
+        noResults?.classList.add("hide");
       })
       .catch(err => {
         if (err.name !== "AbortError") {
-          console.error("Search error", err);
+          console.error("Search AJAX error:", err);
         }
       });
-  }
-
-  function renderProducts(products) {
-    resultsWrap.innerHTML = "";
-
-    if (!products.length) {
-      noResults?.classList.remove("hide");
-      return;
-    }
-
-    noResults?.classList.add("hide");
-
-    products.forEach(product => {
-      const clone = template.content.cloneNode(true);
-
-      clone.querySelector("[data-product-url]").href = product.url;
-      clone.querySelector("[data-product-title]").textContent = product.title;
-      clone.querySelector("[data-product-image]").src = product.image;
-      clone.querySelector("[data-product-image]").alt = product.title;
-      clone.querySelector("[data-product-price]").textContent =
-        Shopify.formatMoney(product.price);
-
-      resultsWrap.appendChild(clone);
-    });
   }
 }
