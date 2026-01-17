@@ -32,16 +32,21 @@
     border-radius: 0.5rem;
     padding: 2rem;
   }
+  .cart-template__inner {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 100%;
+    gap: 2rem;
+    max-width: 68rem;
+}
 @media (min-width: 992px){
     .cart-page {
         padding-left: 12rem;
     }
     .cart-template__inner {
-        display: flex;
-        margin: auto;
-        width: 100%;
+        flex-direction: row;
         gap: 6rem;
-        max-width: 68rem;
     }
     .cart-template-left {
         width: 55%;
