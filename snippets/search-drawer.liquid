@@ -25,15 +25,6 @@
                         <div class="products-results" id="SearchProducts">
                         <!-- AJAX RESULTS WILL APPEAR HERE -->
                         </div>
-                        {% if predictive_search.performed %}
-                        {% for product in predictive_search.resources.products %}
-                            {% render 'predictive-product-item',
-                            product: product,
-                            enable_search_data: true
-                            %}
-                        {% endfor %}
-                        {% endif %}
-
 
                     </div>
                     <div class="pages-results">
