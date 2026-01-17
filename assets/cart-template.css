@@ -32,6 +32,7 @@
     border-radius: 0.5rem;
     padding: 1rem;
     min-height: 50vh;
+    box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 10%);
   }
   .cart-template__inner {
     display: flex;
