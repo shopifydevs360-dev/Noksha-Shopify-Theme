@@ -209,12 +209,12 @@
 }
 .cart-template .cart-item-remove {
   background: transparent;
-    color: rgb(var(--color-heading));
-    text-decoration: underline;
+  color: rgb(var(--color-heading));
+  text-decoration: underline;
 }
 
 @media (min-width: 441px){
-  .cart-template .cart-item-remove {
+ .cart-page .cart-template .cart-item-remove {
     background: rgb(var(--color-heading));
     text-decoration: none;
     color: rgb(var(--color-background));
