@@ -269,7 +269,10 @@
   font-size: 0.8rem;
   color: rgb(var(--color-text));
 }
-
+.cart-template .cart-empty-message {
+    font-size: 1.2em;
+    color: rgb(var(--color-text));
+}
 .cart-template .continue-shopping {
     background: rgb(var(--color-heading));
     color: rgb(var(--color-background));
