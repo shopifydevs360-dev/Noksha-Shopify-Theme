@@ -56,7 +56,7 @@ function initVariantAjaxAddToCart() {
       })
         .then(res => res.json())
         .then(() => {
-          updateCartCount();
+          refreshAllCartsUI();
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error(err));
