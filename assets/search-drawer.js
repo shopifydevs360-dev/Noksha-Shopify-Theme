@@ -1,94 +1,105 @@
 document.addEventListener("DOMContentLoaded", () => {
-  initSearchDrawer();
+  initSearchDrawerSuggestions();
 });
 
 /* ===============================
-   SEARCH DRAWER: CORE
+   SEARCH DRAWER: SUGGESTIONS
 ================================ */
-function initSearchDrawer() {
+function initSearchDrawerSuggestions() {
   const input = document.getElementById("SearchDrawerInput");
-  const resultsWrapper = document.getElementById("SearchResults");
-  const suggestionList = document.getElementById("SearchSuggestionList");
+  const list = document.getElementById("SearchSuggestionList");
 
-  if (!input || !resultsWrapper) return;
+  if (!input || !list) return;
 
-  let isLoaded = false;
+  let keywords = [];
 
-  input.addEventListener("input", () => {
-    const query = input.value.trim().toLowerCase();
+  try {
+    keywords = JSON.parse(list.dataset.keywords);
+  } catch (e) {
+    console.error("Search keywords JSON error", e);
+    return;
+  }
+
+  function levenshtein(a, b) {
+    const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
+
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        matrix[i][j] = b[i - 1] === a[j - 1]
+          ? matrix[i - 1][j - 1]
+          : Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
+      }
+    }
+
+    return matrix[b.length][a.length];
+  }
+
+  function getScore(word, query) {
+    const w = word.toLowerCase();
+    const q = query.toLowerCase();
+
+    // Highest priority: starts with query
+    if (w.startsWith(q)) return 0;
+
+    // Word boundary match (t → t-shirt)
+    if (w.split(/[\s-]/).some(part => part.startsWith(q))) return 1;
+
+    // Contains query
+    if (w.includes(q)) return 2;
+
+    // Fuzzy match (limit tolerance)
+    const distance = levenshtein(q, w);
+    if (distance <= 2) return 3 + distance;
+
+    // Too unrelated → exclude
+    return null;
+  }
+
+  function renderSuggestions(query = "") {
+    list.innerHTML = "";
 
     if (!query) {
-      resultsWrapper.style.display = "none";
-      showSuggestions();
+      keywords.slice(0, 5).forEach(word => {
+        appendItem(word);
+      });
       return;
     }
 
-    hideSuggestions();
-    resultsWrapper.style.display = "block";
+    const results = keywords
+      .map(word => {
+        const score = getScore(word, query);
+        return score !== null ? { word, score } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 5);
 
-    if (!isLoaded) {
-      loadSearchResults(() => {
-        filterAll(query);
-        isLoaded = true;
-      });
-    } else {
-      filterAll(query);
-    }
-  });
-
-  function showSuggestions() {
-    document.querySelector(".search-suggestions")?.style.removeProperty("display");
-  }
-
-  function hideSuggestions() {
-    document.querySelector(".search-suggestions")?.style.setProperty("display", "none");
-  }
-}
-
-/* ===============================
-   LOAD SEARCH HTML (ONCE)
-================================ */
-function loadSearchResults(callback) {
-  fetch("/search?view=drawer")
-    .then(res => res.text())
-    .then(html => {
-      const temp = document.createElement("div");
-      temp.innerHTML = html;
-
-      const results = document.getElementById("SearchResults");
-      results.innerHTML += temp.innerHTML;
-
-      callback && callback();
+    results.forEach(item => {
+      appendItem(item.word);
     });
-}
-
-/* ===============================
-   FILTER ALL SECTIONS
-================================ */
-function filterAll(query) {
-  filterGroup(".search-product-item", query);
-  filterGroup(".search-page-item", query);
-  filterGroup(".search-post-item", query);
-}
-
-/* ===============================
-   FILTER GROUP
-================================ */
-function filterGroup(selector, query) {
-  const items = document.querySelectorAll(selector);
-  if (!items.length) return;
-
-  let visible = false;
-
-  items.forEach(item => {
-    const text = Object.values(item.dataset).join(" ").toLowerCase();
-    const match = text.includes(query);
-    item.style.display = match ? "" : "none";
-    if (match) visible = true;
-  });
-
-  const section = items[0].closest(".products-results, .pages-results, .posts-results");
-  if (section) {
-    section.style.display = visible ? "" : "none";
   }
+
+  function appendItem(word) {
+    list.insertAdjacentHTML(
+      "beforeend",
+      `<li><a href="/search?q=${encodeURIComponent(word)}">${word}</a></li>`
+    );
+  }
+
+  // Initial render
+  renderSuggestions();
+
+  // On typing
+  input.addEventListener("input", e => {
+    renderSuggestions(e.target.value.trim());
+  });
 }
+
