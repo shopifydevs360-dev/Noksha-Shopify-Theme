@@ -1,0 +1,6 @@
+{% layout none %}
+{% paginate search.results by 10 %}
+  {% for product in search.results %}
+    {% render 'predictive-product-item', product: product, enable_search_data: true %}
+  {% endfor %}
+{% endpaginate %}
