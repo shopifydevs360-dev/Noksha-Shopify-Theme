@@ -151,7 +151,7 @@
 {% for block in section.blocks %}
   {% case block.type %}
     {% when 'search_drawer' %}
-      {% render 'search-drawer' %}
+      {% render 'search-drawer', block: block %}
     {% when 'account_drawer' %}
       {% render 'account-drawer' %}
     {% when 'bag_drawer' %}
