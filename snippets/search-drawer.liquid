@@ -22,23 +22,21 @@
                     <h4>Search Results</h4>
                     <div class="products-results">
                         <h5 class="related-pages">Products</h5>
-<div class="products-results" id="SearchProducts">
-  <!-- AJAX injected -->
-</div>
-
-
+                        <div class="products-results" id="SearchProducts">
+                        {% for product in collections.all.products %}
+                            {% render 'predictive-product-item',
+                            product: product,
+                            enable_search_data: true
+                            %}
+                        {% endfor %}
+                        </div>
                     </div>
                     <div class="pages-results">
                         <h5 class="related-pages">Pages</h5>
-                        {% for item in page.items %}
-                        {% render 'predictive-page-item', item: page %}
-                        {% endfor %}
+                        {% comment %} I will work on it later {% endcomment %}
                     </div>
                     <div class="posts-results">
-                        <h5 class="related-posts">Posts</h5>
-                        {% for item in posts.items %}
-                        {% render 'predictive-posts-item', item: posts %}
-                        {% endfor %}
+                        {% comment %} I will work on it later {% endcomment %}
                     </div>
                 </div>
             </div>
