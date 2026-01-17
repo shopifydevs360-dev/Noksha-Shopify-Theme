@@ -4,7 +4,7 @@
   using: {% render 'predictive-product-item', product: product, enable_search_data: true %}
 
 {%- endcomment -%}
-<div class="search-product-item" data-product-item>
+<div class="search-product-item">
   <a href="{{ product.url }}" class="product-card" data-product-url>
     <div class="product-card__image">
       <img
@@ -14,12 +14,9 @@
         data-product-image
       >
     </div>
-
     <div class="product-card__info">
       <h5 data-product-title>{{ product.title }}</h5>
-      <span class="price" data-product-price>
-        {{ product.price | money }}
-      </span>
+      <span class="price" data-product-price>{{ product.price | money }}</span>
     </div>
   </a>
 </div>
