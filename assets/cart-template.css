@@ -74,6 +74,7 @@
     text-transform: uppercase;
     margin-bottom: 1.2rem;
     color: rgb(var(--color-heading));
+    font-weight: 600;
 }
 
 /* ============================
@@ -229,6 +230,9 @@
     display: flex;
     justify-content: space-between;
     gap: 2rem;
+    font-size: 0.85em;
+    margin-bottom: 2rem;
+    color: rgb(var(--color-heading));
 }
 
 /* Note */
