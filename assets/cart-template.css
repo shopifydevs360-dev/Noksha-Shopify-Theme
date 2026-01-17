@@ -45,6 +45,9 @@
     .cart-page {
         padding-left: 12rem;
     }
+   .cart-page .cart-template__inner{
+    padding: 2.5rem;
+  }
     .cart-template__inner {
         flex-direction: row;
         gap: 6rem;
