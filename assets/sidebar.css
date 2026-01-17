@@ -264,7 +264,7 @@ body.disable-scrollbars {
  .noksha-drawer.bag-drawer-open,
  .noksha-drawer.account-drawer-open,
  .noksha-drawer.search-drawer-open,
- .noksha-drawer.search-drawer-open
+ .noksha-drawer.nav-drawer-open
   {
   transform: translateX(0);
   visibility: visible;
