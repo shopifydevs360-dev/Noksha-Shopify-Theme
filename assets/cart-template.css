@@ -225,6 +225,9 @@
   .cart-template .cart-item-remove:hover {
       background: rgba(var(--color-heading), 0.8);
   }
+.shopify-section-bag .cart-item-remove:hover {
+      background: transparent;
+  }
 }
 
 .cart-template .cart-summary-row {
