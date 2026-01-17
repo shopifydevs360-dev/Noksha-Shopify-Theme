@@ -67,6 +67,7 @@
     font-size: 1em;
     text-transform: uppercase;
     margin-bottom: 1.2rem;
+    color: rgb(var(--heading-color));
 }
 
 /* ============================
