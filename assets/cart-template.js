@@ -208,7 +208,7 @@ function refreshAllCartsUI() {
   fetch("/cart.js")
     .then((res) => res.json())
     .then((cart) => {
-      renderAllCarts(cart);  // ✅ update cart page + drawer
-      updateCartCount();     // ✅ update header count
+      renderAllCarts(cart);
+      updateCartCount();
     });
 }
