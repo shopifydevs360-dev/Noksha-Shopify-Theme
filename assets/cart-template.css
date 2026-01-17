@@ -196,9 +196,12 @@
     color: rgb(var(--color-heading));
 }
 .cart-template .cart-item-remove {
-    background: rgb(var(--color-background));
+    background: rgb(var(--color-heading));
     color: rgb(var(--color-background));
     padding: 0.4rem 1rem;
+}
+.cart-template .cart-item-remove:hover {
+    background: rgba(var(--color-heading), 0.8);
 }
 /* Note */
 .cart-template .cart-note {
