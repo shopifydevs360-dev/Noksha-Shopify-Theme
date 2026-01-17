@@ -11,8 +11,8 @@
   {% assign tags = product.tags | join: ',' | downcase %}
   {% assign title = product.title | downcase %}
 {% endif %}
-<div class="product-grid">
-    <div
+
+<div
     class="search-product-item"
     {% if enable_search_data %} data-title="{{ title }}" data-tags="{{ tags }}" data-collection="{{ collections_titles }}" {% endif %}>
     <a href="{{ product.url }}" class="product-card">
@@ -26,6 +26,6 @@
         </span>
         </div>
     </a>
-    </div>
 </div>
+
 
