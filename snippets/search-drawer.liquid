@@ -21,9 +21,14 @@
                 <div class="serch-results">
                     <h4>Search Results</h4>
                     <div class="products-results">
-                        {% for item in product.items %}
-                            {% render 'predictive-product-item', item: product %}
+                        <div class="products-results" id="SearchProducts">
+                        {% for product in collections.all.products limit: 50 %}
+                            {% render 'predictive-product-item',
+                            product: product,
+                            enable_search_data: true
+                            %}
                         {% endfor %}
+                        </div>
                     </div>
                     <div class="pages-results">
                         {% for item in page.items %}
