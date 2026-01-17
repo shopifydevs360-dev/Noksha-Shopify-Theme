@@ -104,3 +104,89 @@ function initSearchDrawerSuggestions() {
   });
 }
 
+
+
+
+/* ===============================
+   PREDICTIVE SEARCH
+================================ */
+function initPredictiveSearch() {
+  const input = document.getElementById("SearchDrawerInput");
+  const resultsContainer = document.getElementById("SearchProducts");
+
+  if (!input || !resultsContainer) return;
+
+  let controller = null;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim();
+
+    if (query.length < 2) {
+      resultsContainer.innerHTML = "";
+      return;
+    }
+
+    if (controller) controller.abort();
+    controller = new AbortController();
+
+    fetchPredictiveResults(query, controller.signal);
+  });
+
+  function fetchPredictiveResults(query, signal) {
+    fetch(
+      `/search/suggest.json?q=${encodeURIComponent(
+        query
+      )}&resources[type]=product&resources[limit]=6`,
+      { signal }
+    )
+      .then(res => res.json())
+      .then(data => {
+        renderProducts(data.resources.results.products);
+      })
+      .catch(err => {
+        if (err.name !== "AbortError") {
+          console.error("Search error:", err);
+        }
+      });
+  }
+
+  function renderProducts(products) {
+    resultsContainer.innerHTML = "";
+
+    if (!products.length) {
+      resultsContainer.innerHTML =
+        "<p class='no-results'>No products found</p>";
+      return;
+    }
+
+    products.forEach(product => {
+      const el = document.createElement("a");
+      el.href = product.url;
+      el.className = "predictive-product-item";
+
+      el.innerHTML = `
+        <div class="product-image">
+          <img src="${product.image}" alt="${product.title}">
+        </div>
+        <div class="product-info">
+          <p class="product-title">${product.title}</p>
+          <p class="product-price">
+            ${formatMoney(product.price)}
+          </p>
+        </div>
+      `;
+
+      resultsContainer.appendChild(el);
+    });
+  }
+}
+
+/* ===============================
+   MONEY FORMAT
+================================ */
+function formatMoney(cents) {
+  return (cents / 100).toLocaleString(undefined, {
+    style: "currency",
+    currency: Shopify.currency.active
+  });
+}
