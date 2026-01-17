@@ -21,18 +21,18 @@
                 <div class="serch-results">
                     <h4>Search Results</h4>
                     <div class="products-results">
-                        {% for item in cart.items %}
+                        {% for item in product.items %}
                             {% render 'predictive-product-item', item: product %}
                         {% endfor %}
                     </div>
                     <div class="pages-results">
-                        {% for item in cart.items %}
+                        {% for item in page.items %}
                         {% render 'predictive-page-item', item: page %}
                         {% endfor %}
                     </div>
                     <div class="posts-results">
-                        {% for item in cart.items %}
-                        {% render 'predictive-post-item', item: post %}
+                        {% for item in posts.items %}
+                        {% render 'predictive-posts-item', item: posts %}
                         {% endfor %}
                     </div>
                 </div>
