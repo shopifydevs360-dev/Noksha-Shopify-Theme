@@ -1,5 +1,5 @@
 {{ 'bag-drawer.css' | asset_url | stylesheet_tag: preload: true }}
-<div id="js-bag-drawer" class="shopify-section-bag add-to-cart-action" data-open-section="bag-drawer">
+<div id="js-bag-drawer" class="shopify-section-bag add-to-cart-action m-color-{{ section.settings.sidebar_color_scheme }}" data-open-section="bag-drawer">
     <div class="inner-section sidebar-space">
         {% render 'cart-template' %}
     </div>
