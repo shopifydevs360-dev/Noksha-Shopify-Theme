@@ -145,8 +145,8 @@
           "tooltip": "#222222",
           "tooltip_label": "#ffffff",
           "border": "#c68b2f",
-          "additional_color_1": "#ff0000",
-          "additional_color_2": "#00ff00"
+          "additional_color_1": "#bbbbbb",
+          "additional_color_2": "#228b22"
         }
       }
     }
