@@ -261,7 +261,11 @@ body.disable-scrollbars {
   visibility: hidden;
   pointer-events: none;
 }
- .noksha-drawer.bag-drawer-open {
+ .noksha-drawer.bag-drawer-open,
+ .noksha-drawer.account-drawer-open,
+ .noksha-drawer.search-drawer-open,
+ .noksha-drawer.search-drawer-open
+  {
   transform: translateX(0);
   visibility: visible;
   pointer-events: auto;
