@@ -171,6 +171,8 @@
     -moz-appearance: textfield;
     pointer-events: none;
     border-radius: 0;
+    border-left: none;
+    border-right: none;
 }
 
 .cart-item-qty input::-webkit-inner-spin-button,
