@@ -30,7 +30,8 @@
     background: rgba(var(--color-background), 0.2);
     backdrop-filter: blur(3px);
     border-radius: 0.5rem;
-    padding: 2rem;
+    padding: 1rem;
+    min-height: 50vh;
   }
   .cart-template__inner {
     display: flex;
@@ -119,7 +120,12 @@
     max-width: 32rem;
 }
 .cart-item-image {
-    width: 6rem;
+    width: 4rem;
+}
+@media (min-width: 992px){
+    .cart-item-image {
+        width: 6rem;
+    }
 }
 .cart-item-info {
     display: flex;
