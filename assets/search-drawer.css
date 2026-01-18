@@ -42,6 +42,11 @@
     height: 93vh;
     overflow-y: scroll;
 }
+.shopify-section-search ul {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
 }
 
 /* ------------------------------
