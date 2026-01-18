@@ -1,8 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initSearchActiveState();
   initSearchDrawerSuggestions();
   initSearchDrawerAjaxProducts();
   initSearchDrawerAjaxPagesPosts();
 });
+/* ===============================
+   SEARCH ACTIVE STATE
+================================ */
+function initSearchActiveState() {
+  const input = document.getElementById("SearchDrawerInput");
+  const searchSection = document.querySelector(".shopify-section-search .inner-section");
+
+  if (!input || !searchSection) return;
+
+  input.addEventListener("input", (e) => {
+    const hasValue = e.target.value.trim().length > 0;
+    searchSection.classList.toggle("search-active", hasValue);
+  });
+}
 
 /* ===============================
    SEARCH DRAWER: SUGGESTIONS
