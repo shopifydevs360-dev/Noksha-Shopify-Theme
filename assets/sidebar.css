@@ -286,3 +286,15 @@ body.disable-scrollbars {
 }
 
 
+.sidebar-footer .social-icons-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.2rem;
+}
+.sidebar-footer .social-icons-list svg{
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.2rem;
+}
