@@ -2,125 +2,85 @@
 
   {% if customer %}
 
-    <!-- ======================
-         LOGGED-IN STATE
-    ======================= -->
+    <!-- LOGGED IN -->
     <div class="customer-logged-in">
-      <h4 class="sub-title">
-        Welcome, {{ customer.first_name }}
-      </h4>
-
-      <ul class="account-menu">
-        <li><a href="{{ routes.account_url }}">Account overview</a></li>
-        <li><a href="{{ routes.account_orders_url }}">Order history</a></li>
-        <li><a href="{{ routes.account_addresses_url }}">Manage addresses</a></li>
+      <h4 class="sub-title">Welcome, {{ customer.first_name }}</h4>
+      <ul>
+        <li><a href="{{ routes.account_url }}">Account</a></li>
+        <li><a href="{{ routes.account_orders_url }}">Orders</a></li>
+        <li><a href="{{ routes.account_addresses_url }}">Addresses</a></li>
         <li><a href="{{ routes.account_logout_url }}">Logout</a></li>
       </ul>
     </div>
 
   {% else %}
 
-    <!-- ======================
-         LOGIN FORM
-    ======================= -->
-    <div class="user-login">
+    <!-- LOGIN FORM -->
+    <div class="user-login" data-login-form>
       <h4 class="sub-title">Login</h4>
 
       {% form 'customer_login' %}
         {{ form.errors | default_errors }}
 
-        <div class="field">
-          <label for="CustomerEmail">Email</label>
-          <input
-            type="email"
-            name="customer[email]"
-            id="CustomerEmail"
-            autocomplete="email"
-            required
-          >
-        </div>
+        <input type="email" name="customer[email]" placeholder="Email" required>
+        <input type="password" name="customer[password]" placeholder="Password" required>
 
-        <div class="field">
-          <label for="CustomerPassword">Password</label>
-          <input
-            type="password"
-            name="customer[password]"
-            id="CustomerPassword"
-            autocomplete="current-password"
-            required
-          >
-        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
 
-        <button type="submit" class="btn btn-primary">
-          Sign In
-        </button>
-
-        <p class="forgot-password">
-          <a href="{{ routes.customer_recover_url }}">
+        <p>
+          <a href="#" data-show-recover>
             Forgot your password?
           </a>
         </p>
       {% endform %}
     </div>
 
-    <!-- ======================
-         REGISTER FORM
-    ======================= -->
+    <!-- RECOVER PASSWORD FORM -->
+    <div class="user-recover-password" data-recover-form style="display:none;">
+      <h4 class="sub-title">Reset your password</h4>
+
+      {% form 'recover_customer_password' %}
+        {{ form.errors | default_errors }}
+
+        {% if form.posted_successfully? %}
+          <p class="success-message">
+            We’ve sent you an email with a link to reset your password.
+          </p>
+        {% else %}
+          <input
+            type="email"
+            name="email"
+            placeholder="Email address"
+            required
+          >
+
+          <button type="submit" class="btn btn-primary">
+            Send reset link
+          </button>
+
+          <p>
+            <a href="#" data-hide-recover>
+              Back to login
+            </a>
+          </p>
+        {% endif %}
+      {% endform %}
+    </div>
+
+    <!-- REGISTER FORM -->
     <div class="user-create-account">
-      <h4 class="sub-title">Create Account</h4>
+      <h4 class="sub-title">Create account</h4>
 
       {% form 'create_customer' %}
         {{ form.errors | default_errors }}
 
-        <div class="field">
-          <label for="RegisterFirstName">First Name</label>
-          <input
-            type="text"
-            name="customer[first_name]"
-            id="RegisterFirstName"
-            value="{{ form.first_name }}"
-            autocomplete="given-name"
-            required
-          >
-        </div>
-
-        <div class="field">
-          <label for="RegisterLastName">Last Name</label>
-          <input
-            type="text"
-            name="customer[last_name]"
-            id="RegisterLastName"
-            value="{{ form.last_name }}"
-            autocomplete="family-name"
-            required
-          >
-        </div>
-
-        <div class="field">
-          <label for="RegisterEmail">Email</label>
-          <input
-            type="email"
-            name="customer[email]"
-            id="RegisterEmail"
-            value="{{ form.email }}"
-            autocomplete="email"
-            required
-          >
-        </div>
-
-        <div class="field">
-          <label for="RegisterPassword">Password</label>
-          <input
-            type="password"
-            name="customer[password]"
-            id="RegisterPassword"
-            autocomplete="new-password"
-            required
-          >
-        </div>
+        <input type="text" name="customer[first_name]" placeholder="First name" required>
+        <input type="text" name="customer[last_name]" placeholder="Last name" required>
+        <input type="email" name="customer[email]" placeholder="Email" required>
+        <input type="password" name="customer[password]" placeholder="Password" required>
 
         <button type="submit" class="btn btn-secondary">
-          Create Account
+          Create account
         </button>
       {% endform %}
     </div>
@@ -128,5 +88,3 @@
   {% endif %}
 
 </div>
-
-<script src="{{ 'user-signup.js' | asset_url }}" defer></script>
