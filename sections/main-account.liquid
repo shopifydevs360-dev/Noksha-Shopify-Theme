@@ -1,0 +1,26 @@
+<section class="customer customer-account">
+  <div class="page-width">
+    <h1>My Account</h1>
+
+    {% if customer %}
+      <p>Welcome, {{ customer.first_name }}</p>
+
+      <ul>
+        <li><a href="{{ routes.account_url }}">Account overview</a></li>
+        <li><a href="{{ routes.account_orders_url }}">Orders</a></li>
+        <li><a href="{{ routes.account_addresses_url }}">Addresses</a></li>
+        <li><a href="{{ routes.account_logout_url }}">Log out</a></li>
+      </ul>
+    {% else %}
+      <p>You are not logged in.</p>
+      <a href="{{ routes.customer_login_url }}">Login</a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer account",
+  "settings": []
+}
+{% endschema %}
