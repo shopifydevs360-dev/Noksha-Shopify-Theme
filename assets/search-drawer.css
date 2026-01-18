@@ -48,14 +48,14 @@
      Search box
 ------------------------------- */
 
-.shopify-section-search .serch-box label {
+.shopify-section-search .search-box label {
     display: block;
     font-size: 1em;
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 2px;
 }
-.shopify-section-search .serch-box input[type="search"] {
+.shopify-section-search .search-box input[type="search"] {
     font-size: 0.8em;
     color: rgb(var(--color-text));
     border-radius: 0;
@@ -78,7 +78,7 @@
      suggested search
 ------------------------------- */
 .search-suggestions h4,
-.serch-results h4{
+.search-results h4{
     font-size: 0.8em;
     text-transform: uppercase;
     font-weight: 600;
