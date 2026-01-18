@@ -1,0 +1,49 @@
+<section class="customer customer-addresses">
+  <div class="page-width">
+
+    <h1>My addresses</h1>
+
+    {% form 'customer_address', customer.new_address %}
+      <h2>Add new address</h2>
+
+      {{ form.errors | default_errors }}
+
+      <input name="address[first_name]" placeholder="First name">
+      <input name="address[last_name]" placeholder="Last name">
+      <input name="address[address1]" placeholder="Address">
+      <input name="address[city]" placeholder="City">
+      <input name="address[zip]" placeholder="ZIP">
+      <input name="address[country]" placeholder="Country">
+      <input name="address[phone]" placeholder="Phone">
+
+      <button type="submit">Add address</button>
+    {% endform %}
+
+    <h2>Saved addresses</h2>
+
+    {% for address in customer.addresses %}
+      <div class="address-card">
+        {{ address | format_address }}
+
+        <a href="{{ address.url }}">Edit</a>
+
+        <form method="post" action="{{ address.url }}">
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit">Delete</button>
+        </form>
+      </div>
+    {% endfor %}
+
+    <p>
+      <a href="{{ routes.account_url }}">← Back to account</a>
+    </p>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer addresses",
+  "settings": []
+}
+{% endschema %}
