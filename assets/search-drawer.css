@@ -27,7 +27,7 @@
 .shopify-section-search .search-active{
   min-width: 55rem;
 }
-.search-template {
+.shopify-section-search .search-template {
     flex-direction: row;
 }
 }
