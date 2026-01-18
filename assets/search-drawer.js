@@ -105,7 +105,7 @@ function initSearchDrawerSuggestions() {
   function appendItem(word) {
     list.insertAdjacentHTML(
       "beforeend",
-      `<li><a href="/search?q=${encodeURIComponent(word)}">${word}</a></li>`
+      `<li class="btn--animation hover-underline"><a href="/search?q=${encodeURIComponent(word)}">${word}</a></li>`
     );
   }
 
