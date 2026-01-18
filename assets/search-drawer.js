@@ -23,7 +23,6 @@ function initSearchDrawerSuggestions() {
 
   function levenshtein(a, b) {
     const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
-
     for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
 
     for (let i = 1; i <= b.length; i++) {
@@ -38,7 +37,6 @@ function initSearchDrawerSuggestions() {
               );
       }
     }
-
     return matrix[b.length][a.length];
   }
 
@@ -47,7 +45,7 @@ function initSearchDrawerSuggestions() {
     const q = query.toLowerCase();
 
     if (w.startsWith(q)) return 0;
-    if (w.split(/[\s-]/).some(part => part.startsWith(q))) return 1;
+    if (w.split(/[\s-]/).some(p => p.startsWith(q))) return 1;
     if (w.includes(q)) return 2;
 
     const distance = levenshtein(q, w);
@@ -103,7 +101,7 @@ function initSearchDrawerAjaxProducts() {
   let debounceTimer;
   let controller;
 
-  input.addEventListener("input", (e) => {
+  input.addEventListener("input", e => {
     const query = e.target.value.trim();
     clearTimeout(debounceTimer);
 
@@ -114,11 +112,11 @@ function initSearchDrawerAjaxProducts() {
         return;
       }
 
-      fetchSearchResults(query);
+      fetchSearchHTML(query);
     }, 300);
   });
 
-  function fetchSearchResults(query) {
+  function fetchSearchHTML(query) {
     if (controller) controller.abort();
     controller = new AbortController();
 
