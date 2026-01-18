@@ -75,9 +75,6 @@
     margin-bottom: -0.3rem;
 }
 
-/* ------------------------------
-     suggested search
-------------------------------- */
 .shopify-section-search .sub-title{
     font-size: 0.8em;
     text-transform: uppercase;
@@ -86,11 +83,11 @@
     margin-bottom: 1rem;
     margin-top: 1.5rem;
 }
-.search-suggestions ul {
+.shopify-section-search ul {
     list-style: none;
     padding: 0;
     font-size: 0.9em;
 }
-.search-suggestions ul li{
+.shopify-section-search ul li{
     margin-bottom: 0.6rem;
 }
