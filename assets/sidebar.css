@@ -251,7 +251,7 @@ body.disable-scrollbars {
     bottom: 5rem;
 }
 .expended-area-active .sidebar-footer,
-.expended .sidebar-footer {
+.top-home .sidebar-footer {
     display: block;
 }
 
