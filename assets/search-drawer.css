@@ -2,23 +2,29 @@
   background: #f0eee8;
   max-width: fit-content;
 }
-.search-template {
+.shopify-section-search  .search-template {
     display: flex;
     gap: 2rem;
     flex-direction: column;
 }
-.search-results-list {
+.shopify-section-search  .search-results-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     max-width: 32rem;
+}
+.shopify-section-search .right-content{
+  display: none;
+}
+.shopify-section-search .search-active .right-content{
+  display: block;
 }
 @media (min-width: 992px){
 .shopify-section-search .inner-section{
   min-width: 35rem;
   transition: all .4s cubic-bezier(.32,.24,.15,1);
 }
-.shopify-section-search .inner-section.search-active{
+.shopify-section-search .search-active{
   min-width: 55rem;
 }
 .search-template {
