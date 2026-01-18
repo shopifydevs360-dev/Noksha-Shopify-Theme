@@ -47,6 +47,9 @@
     gap: 1rem;
     flex-wrap: wrap;
 }
+.shopify-section-search {
+  max-width: 100%;
+}
 }
 
 /* ------------------------------
