@@ -73,21 +73,34 @@ function initSearchDrawerSuggestions() {
   function renderSuggestions(query = "") {
     list.innerHTML = "";
 
+    // Default suggestions
+    const defaultWords = keywords.slice(0, 5);
+
+    // If input is empty → show default
     if (!query) {
-      keywords.slice(0, 5).forEach(appendItem);
+      defaultWords.forEach(appendItem);
       return;
     }
 
-    keywords
+    const results = keywords
       .map(word => {
         const score = getScore(word, query);
         return score !== null ? { word, score } : null;
       })
       .filter(Boolean)
       .sort((a, b) => a.score - b.score)
-      .slice(0, 5)
-      .forEach(item => appendItem(item.word));
+      .slice(0, 5);
+
+    // 🔥 No matches → fallback to default
+    if (!results.length) {
+      defaultWords.forEach(appendItem);
+      return;
+    }
+
+    // Matches found
+    results.forEach(item => appendItem(item.word));
   }
+
 
   function appendItem(word) {
     list.insertAdjacentHTML(
