@@ -77,7 +77,8 @@
 /* ------------------------------
      suggested search
 ------------------------------- */
-.search-suggestions h4 {
+.search-suggestions h4,
+.serch-results h4{
     font-size: 0.8em;
     text-transform: uppercase;
     font-weight: 600;
