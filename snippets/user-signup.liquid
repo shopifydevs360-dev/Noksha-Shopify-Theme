@@ -20,51 +20,31 @@
       <h4 class="sub-title">Login</h4>
 
       {% form 'customer_login' %}
+        {{ form.errors | default_errors }}
 
-        {% if form.errors %}
-          <p class="error-message">
-            Invalid email or password.
-          </p>
-        {% endif %}
+        <input type="email" name="customer[email]" placeholder="Email" required>
+        <input type="password" name="customer[password]" placeholder="Password" required>
 
-        <input
-          type="email"
-          name="customer[email]"
-          placeholder="Email"
-          autocomplete="email"
-          required
-        >
-
-        <input
-          type="password"
-          name="customer[password]"
-          placeholder="Password"
-          autocomplete="current-password"
-          required
-        >
-
-        <button type="submit" class="btn btn-primary">
-          Sign in
-        </button>
+        <button type="submit" class="btn btn-primary">Sign in</button>
 
         <p>
           <a href="#" data-show-recover>
             Forgot your password?
           </a>
         </p>
-
       {% endform %}
     </div>
 
-    <!-- RECOVER PASSWORD -->
+    <!-- RECOVER PASSWORD FORM -->
     <div class="user-recover-password" data-recover-form style="display:none;">
       <h4 class="sub-title">Reset your password</h4>
 
       {% form 'recover_customer_password' %}
+        {{ form.errors | default_errors }}
 
         {% if form.posted_successfully? %}
           <p class="success-message">
-            If an account is associated with this email, you’ll receive a reset link shortly.
+            We’ve sent you an email with a link to reset your password.
           </p>
         {% else %}
           <input
@@ -84,7 +64,6 @@
             </a>
           </p>
         {% endif %}
-
       {% endform %}
     </div>
 
@@ -110,7 +89,7 @@
 
 </div>
 <script>
-document.addEventListener("click", function (e) {
+    document.addEventListener("click", function (e) {
   if (e.target.matches("[data-show-recover]")) {
     e.preventDefault();
     document.querySelector("[data-login-form]").style.display = "none";
@@ -123,4 +102,5 @@ document.addEventListener("click", function (e) {
     document.querySelector("[data-login-form]").style.display = "block";
   }
 });
+
 </script>
