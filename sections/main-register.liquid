@@ -1,0 +1,76 @@
+<section class="customer customer-register">
+  <div class="page-width">
+
+    <h1>Create account</h1>
+
+    {% form 'create_customer' %}
+
+      {{ form.errors | default_errors }}
+
+      <div class="field">
+        <label for="RegisterFirstName">First name</label>
+        <input
+          type="text"
+          name="customer[first_name]"
+          id="RegisterFirstName"
+          value="{{ form.first_name }}"
+          autocomplete="given-name"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="RegisterLastName">Last name</label>
+        <input
+          type="text"
+          name="customer[last_name]"
+          id="RegisterLastName"
+          value="{{ form.last_name }}"
+          autocomplete="family-name"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="RegisterEmail">Email</label>
+        <input
+          type="email"
+          name="customer[email]"
+          id="RegisterEmail"
+          value="{{ form.email }}"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="RegisterPassword">Password</label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="RegisterPassword"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="button">
+        Create account
+      </button>
+
+      <p class="customer-login-link">
+        Already have an account?
+        <a href="{{ routes.customer_login_url }}">Sign in</a>
+      </p>
+
+    {% endform %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer register",
+  "settings": []
+}
+{% endschema %}
