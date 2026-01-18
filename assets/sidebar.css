@@ -299,14 +299,14 @@ body.disable-scrollbars {
     .drawer-space {
         margin-left: 9rem;
     }
+   .top .drawer-space {
+        margin-left: 11rem;
+    }
    .rtl .drawer-space {
         margin-right: 9rem;
     }
      .noksha-drawer .inner-section {
         padding: 8rem 1.5rem 1.5rem 1rem;
-    }
-    .expended .noksha-drawer .inner-section {
-        padding-left: 3rem;
     }
 }
 
