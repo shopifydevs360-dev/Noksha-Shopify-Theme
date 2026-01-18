@@ -69,3 +69,7 @@
     width: 100%;
     justify-content: space-between;
 }
+.shopify-section-search svg.icon-arrow-right {
+    width: 1.4rem;
+    margin-bottom: -0.3rem;
+}
