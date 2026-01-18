@@ -4,22 +4,28 @@
   using: {% render 'predictive-product-item', product: product, enable_search_data: true %}
 
 {%- endcomment -%}
-<div class="search-product-item">
-  <a href="{{ product.url }}" class="product-card" data-product-url>
-    <div class="product-card__image">
-      <img
-        src="{{ product.featured_image | image_url: width: 300 }}"
-        alt="{{ product.title }}"
-        loading="lazy"
-        data-product-image
-      >
-    </div>
+{% assign enable_search_data = enable_search_data | default: false %}
 
-    <div class="product-card__info">
-      <h5 data-product-title>{{ product.title }}</h5>
-      <span class="price" data-product-price>
-        {{ product.price | money }}
-      </span>
-    </div>
-  </a>
+{% if enable_search_data %}
+  {% assign collections_titles = product.collections | map: 'title' | join: ',' | downcase %}
+  {% assign tags = product.tags | join: ',' | downcase %}
+  {% assign title = product.title | downcase %}
+{% endif %}
+
+<div
+    class="search-product-item"
+    {% if enable_search_data %} data-title="{{ title }}" data-tags="{{ tags }}" data-collection="{{ collections_titles }}" {% endif %}>
+    <a href="{{ product.url }}" class="product-card">
+        <div class="product-card__image">
+        {{ product.featured_image | image_url: width: 300 | image_tag }}
+        </div>
+        <div class="product-card__info">
+        <h5>{{ product.title }}</h5>
+        <span class="price">
+            {{ product.price | money }}
+        </span>
+        </div>
+    </a>
 </div>
+
+
