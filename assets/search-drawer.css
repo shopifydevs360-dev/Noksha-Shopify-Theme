@@ -7,7 +7,7 @@
     gap: 2rem;
     flex-direction: column;
 }
-.shopify-section-search  .search-results-list {
+.shopify-section-search .search-results-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
