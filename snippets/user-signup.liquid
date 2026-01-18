@@ -1,43 +1,132 @@
-{% if customer %}
-    <h4 class="sub-title">Welcome, {{ customer.first_name }}</h4>
-    <ul>
-        <li><a href="/account">Account Overview</a></li>
-        <li><a href="/account/orders">Order History</a></li>
-        <li><a href="/account/addresses">Manage Addresses</a></li>
-        <li><a href="/account/logout">Logout</a></li>
-    </ul>
-{% else %}
-    <div class="user-login">
-    <h4 class="sub-title">Login</h4>
-    <form method="post" action="{{ routes.customer_login_url }}" id="CustomerLoginForm" accept-charset="UTF-8">
-        <input type="hidden" name="form_type" value="customer_login">
-        <input type="hidden" name="utf8" value="✓">
-        <label for="CustomerEmail">Email</label>
-        <input type="email" name="customer[email]" id="CustomerEmail" autocorrect="off" autocapitalize="off" value="" placeholder="Email" required>
-        <label for="CustomerPassword">Password</label>
-        <input type="password" name="customer[password]" id="CustomerPassword" placeholder="Password" required>
-        <button type="submit" class="btn btn-primary">Sign In</button>
-        <p class="forgot-password">
-            <a href="{{ routes.customer_recover_url }}">Forgot your password?</a>
-        </p>
-    </form>
-    </div>
-    <div class="user-create-account">
-    <h4 class="sub-title">New Customer?</h4>
-    <form method="get" action="{{ routes.customer_register_url }}">
-        <input type="hidden" name="form_type" value="customer_register">
-        <input type="hidden" name="utf8" value="✓">
-        <label for="CreateCustomerFirstName">First Name</label>
-        <input type="text" name="customer[first_name]" id="CreateCustomerFirstName" autocorrect="off" autocapitalize="off" value="" placeholder="First Name" required>
-        <label for="CreateCustomerLastName">Last Name</label>
-        <input type="text" name="customer[last_name]" id="CreateCustomerLastName" autocorrect="off" autocapitalize="off" value="" placeholder="Last Name" required>
-        <label for="CreateCustomerEmail">Email</label>
-        <input type="email" name="customer[email]" id="CreateCustomerEmail" autocorrect="off" autocapitalize="off" value="" placeholder="Email" required>
-        <label for="CreateCustomerPassword">Password</label>
-        <input type="password" name="customer[password]" id="CreateCustomerPassword" placeholder="Password" required>
-        <button type="submit" class="btn btn-secondary">Create Account</button>
-    </form>
+<div class="customer-auth-layout">
+
+  {% if customer %}
+
+    <!-- ======================
+         LOGGED-IN STATE
+    ======================= -->
+    <div class="customer-logged-in">
+      <h4 class="sub-title">
+        Welcome, {{ customer.first_name }}
+      </h4>
+
+      <ul class="account-menu">
+        <li><a href="{{ routes.account_url }}">Account overview</a></li>
+        <li><a href="{{ routes.account_orders_url }}">Order history</a></li>
+        <li><a href="{{ routes.account_addresses_url }}">Manage addresses</a></li>
+        <li><a href="{{ routes.account_logout_url }}">Logout</a></li>
+      </ul>
     </div>
 
-{% endif %}
-<script src="{{ 'user-signup.js' | asset_url }}" defer="defer"></script>
+  {% else %}
+
+    <!-- ======================
+         LOGIN FORM
+    ======================= -->
+    <div class="user-login">
+      <h4 class="sub-title">Login</h4>
+
+      {% form 'customer_login' %}
+        {{ form.errors | default_errors }}
+
+        <div class="field">
+          <label for="CustomerEmail">Email</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="CustomerPassword">Password</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="CustomerPassword"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          Sign In
+        </button>
+
+        <p class="forgot-password">
+          <a href="{{ routes.customer_recover_url }}">
+            Forgot your password?
+          </a>
+        </p>
+      {% endform %}
+    </div>
+
+    <!-- ======================
+         REGISTER FORM
+    ======================= -->
+    <div class="user-create-account">
+      <h4 class="sub-title">Create Account</h4>
+
+      {% form 'create_customer' %}
+        {{ form.errors | default_errors }}
+
+        <div class="field">
+          <label for="RegisterFirstName">First Name</label>
+          <input
+            type="text"
+            name="customer[first_name]"
+            id="RegisterFirstName"
+            value="{{ form.first_name }}"
+            autocomplete="given-name"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="RegisterLastName">Last Name</label>
+          <input
+            type="text"
+            name="customer[last_name]"
+            id="RegisterLastName"
+            value="{{ form.last_name }}"
+            autocomplete="family-name"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="RegisterEmail">Email</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="RegisterEmail"
+            value="{{ form.email }}"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="RegisterPassword">Password</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="RegisterPassword"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-secondary">
+          Create Account
+        </button>
+      {% endform %}
+    </div>
+
+  {% endif %}
+
+</div>
+
+<script src="{{ 'user-signup.js' | asset_url }}" defer></script>
