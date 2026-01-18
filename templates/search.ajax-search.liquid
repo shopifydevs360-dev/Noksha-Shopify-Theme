@@ -4,7 +4,7 @@
   <div class="search-results-list">
     {% for item in search.results %}
       {% if item.object_type == 'product' %}
-        {% render 'predictive-product-item', product: item, , enable_search_data: true %}
+        {% render 'predictive-product-item', item: product, , enable_search_data: true %}
       {% endif %}
     {% endfor %}
   </div>
