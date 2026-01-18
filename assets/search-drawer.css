@@ -48,7 +48,8 @@
      Search box
 ------------------------------- */
 
-.shopify-section-search .search-box label {
+.shopify-section-search .search-box label,
+.search-results h4 {
     display: block;
     font-size: 1em;
     text-transform: uppercase;
@@ -77,8 +78,7 @@
 /* ------------------------------
      suggested search
 ------------------------------- */
-.search-suggestions h4,
-.search-results h4{
+.search-suggestions h4{
     font-size: 0.8em;
     text-transform: uppercase;
     font-weight: 600;
