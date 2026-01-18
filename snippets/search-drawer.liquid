@@ -11,7 +11,7 @@
                         <form action="{{ routes.search_url }}" method="get" role="search">
                             <label for="SearchDrawerInput">Search</label>
                             <div class="inner-search-box">
-                                <input type="search" id="SearchDrawerInput" name="q" placeholder="What you are looking for?" autocomplete="off" aria-label="Search">
+                                <input type="search" id="SearchDrawerInput" name="q" placeholder="What you are looking for?" autocomplete="off" spellcheck="false" aria-label="Search">
                                 <button type="submit">{%- render 'theme-icon', icon: 'right-arrow' -%}</button>
                             </div>
                         </form>
