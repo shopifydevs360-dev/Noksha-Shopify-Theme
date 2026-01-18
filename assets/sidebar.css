@@ -277,7 +277,7 @@ body.disable-scrollbars {
   position: fixed;
   height: 100%;
   width: 100%;
-  z-index: 9;
+  z-index: 91;
   transform: translateX(-100%);
   transition: all 0.4s cubic-bezier(.32,.24,.15,1);
   visibility: hidden;
