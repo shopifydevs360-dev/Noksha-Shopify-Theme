@@ -95,6 +95,9 @@
             {% if settings.social_whatsapp_link != blank %}
             <li><a href="{{ settings.social_whatsapp_link }}" class="color-control" aria-label="WhatsApp">{%- render 'theme-icon', icon: 'whatsapp' -%}</a></li>
             {% endif %}
+            {% if settings.social_pinterest_link != blank %}
+            <li><a href="{{ settings.social_pinterest_link }}" class="color-control" aria-label="Pinterest">{%- render 'theme-icon', icon: 'pinterest' -%}</a></li>
+            {% endif %}
           </ul>
         </div>
         <div class="copyright color-control">
