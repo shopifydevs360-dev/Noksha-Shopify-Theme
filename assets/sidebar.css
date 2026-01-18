@@ -247,6 +247,20 @@ body.disable-scrollbars {
 }
 
 
+.sidebar-footer .social-icons-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+.sidebar-footer .social-icons-list svg {
+    width: 1.2em;
+}
+.sidebar-footer p {
+    font-size: 0.8em;
+}
+
 
 /* ==================
  Drawer Common Style
@@ -285,18 +299,3 @@ body.disable-scrollbars {
     }
 }
 
-
-.sidebar-footer .social-icons-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-}
-.sidebar-footer .social-icons-list svg {
-    width: 1.2em;
-}
-.sidebar-footer p {
-    font-size: 0.8em;
-    color: rgb(var(--color-text));
-}
