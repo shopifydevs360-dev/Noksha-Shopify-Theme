@@ -305,5 +305,8 @@ body.disable-scrollbars {
      .noksha-drawer .inner-section {
         padding: 8rem 1.5rem 1.5rem 1rem;
     }
+    .expended .noksha-drawer .inner-section {
+        padding-left: 3rem;
+    }
 }
 
