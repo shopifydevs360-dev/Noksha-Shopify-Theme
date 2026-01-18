@@ -2,6 +2,11 @@
   background: #f0eee8;
   max-width: fit-content;
 }
+.search-template {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+}
 @media (min-width: 768px){
 .shopify-section-search .inner-section{
   min-width: 35rem;
@@ -9,5 +14,8 @@
 }
 .shopify-section-search .inner-section.search-active{
   min-width: 55rem;
+}
+.search-template {
+    flex-direction: row;
 }
 }
