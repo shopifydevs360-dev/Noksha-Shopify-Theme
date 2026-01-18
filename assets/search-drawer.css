@@ -73,3 +73,14 @@
     width: 1.4rem;
     margin-bottom: -0.3rem;
 }
+
+/* ------------------------------
+     suggested search
+------------------------------- */
+.search-suggestions h4 {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
