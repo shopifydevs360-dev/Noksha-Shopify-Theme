@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   initSearchDrawerSuggestions();
   initSearchDrawerAjaxProducts();
+  initSearchDrawerAjaxPagesPosts();
 });
 
 /* ===============================
