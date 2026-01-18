@@ -30,4 +30,10 @@
 .shopify-section-search .search-template {
     flex-direction: row;
 }
+.shopify-section-search .right-content {
+    height: 89vh;
+    overflow-y: scroll;
+    position: relative;
+    top: -6rem;
+}
 }
