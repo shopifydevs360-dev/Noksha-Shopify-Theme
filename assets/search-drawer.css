@@ -91,3 +91,8 @@
 .shopify-section-search ul li{
     margin-bottom: 0.6rem;
 }
+
+.shopify-section-search .product-card__info h5 {
+    font-size: 0.8em;
+    margin: 0.4rem 0 0.2rem;
+}
