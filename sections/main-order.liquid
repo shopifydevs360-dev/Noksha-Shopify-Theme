@@ -1,0 +1,43 @@
+<section class="customer customer-order">
+  <div class="page-width">
+
+    <h1>Order {{ order.name }}</h1>
+
+    <p>
+      Placed on {{ order.created_at | date: "%B %d, %Y" }}
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for line_item in order.line_items %}
+          <tr>
+            <td>{{ line_item.title }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p><strong>Order total:</strong> {{ order.total_price | money }}</p>
+
+    <p>
+      <a href="{{ routes.account_url }}">← Back to account</a>
+    </p>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer order",
+  "settings": []
+}
+{% endschema %}
