@@ -84,3 +84,11 @@
     letter-spacing: 1px;
     margin-bottom: 1rem;
 }
+.search-suggestions ul {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9em;
+}
+.search-suggestions ul li{
+    margin-bottom: 0.6rem;
+}
