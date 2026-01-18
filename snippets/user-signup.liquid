@@ -88,3 +88,19 @@
   {% endif %}
 
 </div>
+<script>
+    document.addEventListener("click", function (e) {
+  if (e.target.matches("[data-show-recover]")) {
+    e.preventDefault();
+    document.querySelector("[data-login-form]").style.display = "none";
+    document.querySelector("[data-recover-form]").style.display = "block";
+  }
+
+  if (e.target.matches("[data-hide-recover]")) {
+    e.preventDefault();
+    document.querySelector("[data-recover-form]").style.display = "none";
+    document.querySelector("[data-login-form]").style.display = "block";
+  }
+});
+
+</script>
