@@ -4,13 +4,9 @@
   using: {% render 'predictive-product-item', product: product, enable_search_data: true %}
 
 {%- endcomment -%}
-{% assign enable_search_data = enable_search_data | default: false %}
-
-{% if enable_search_data %}
   {% assign collections_titles = product.collections | map: 'title' | join: ',' | downcase %}
   {% assign tags = product.tags | join: ',' | downcase %}
   {% assign title = product.title | downcase %}
-{% endif %}
 
 <div
     class="search-product-item"
