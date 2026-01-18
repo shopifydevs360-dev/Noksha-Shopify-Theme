@@ -142,3 +142,75 @@ function initSearchDrawerAjaxProducts() {
       });
   }
 }
+
+/* ===============================
+   SEARCH DRAWER: AJAX PAGES & POSTS
+   (JSON-based, no template needed)
+================================ */
+function initSearchDrawerAjaxPagesPosts() {
+  const input = document.getElementById("SearchDrawerInput");
+  const pagesWrap = document.getElementById("SearchPages");
+  const postsWrap = document.getElementById("SearchPosts");
+
+  if (!input || !pagesWrap || !postsWrap) return;
+
+  let debounceTimer;
+  let controller;
+
+  input.addEventListener("input", e => {
+    const query = e.target.value.trim();
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+      if (!query) {
+        pagesWrap.innerHTML = "";
+        postsWrap.innerHTML = "";
+        return;
+      }
+
+      fetchPagesAndPosts(query);
+    }, 300);
+  });
+
+  function fetchPagesAndPosts(query) {
+    if (controller) controller.abort();
+    controller = new AbortController();
+
+    fetch(
+      `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=page,article&resources[limit]=5`,
+      { signal: controller.signal }
+    )
+      .then(res => res.json())
+      .then(data => {
+        renderPages(data.resources.results.pages || []);
+        renderPosts(data.resources.results.articles || []);
+      })
+      .catch(err => {
+        if (err.name !== "AbortError") {
+          console.error("Page/Post search error:", err);
+        }
+      });
+  }
+
+  function renderPages(pages) {
+    pagesWrap.innerHTML = "";
+
+    pages.forEach(page => {
+      pagesWrap.insertAdjacentHTML(
+        "beforeend",
+        `<li><a href="${page.url}">${page.title}</a></li>`
+      );
+    });
+  }
+
+  function renderPosts(posts) {
+    postsWrap.innerHTML = "";
+
+    posts.forEach(post => {
+      postsWrap.insertAdjacentHTML(
+        "beforeend",
+        `<li><a href="${post.url}">${post.title}</a></li>`
+      );
+    });
+  }
+}
