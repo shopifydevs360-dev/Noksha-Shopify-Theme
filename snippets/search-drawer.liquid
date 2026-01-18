@@ -10,8 +10,10 @@
                     <div class="serch-box">
                         <form action="{{ routes.search_url }}" method="get" role="search">
                             <label for="SearchDrawerInput">Search</label>
-                            <input type="search" id="SearchDrawerInput" name="q" placeholder="What you are looking for?" autocomplete="off" aria-label="Search">
-                            <button type="submit">{%- render 'theme-icon', icon: 'right-arrow' -%}</button>
+                            <div class="inner-search-box">
+                                <input type="search" id="SearchDrawerInput" name="q" placeholder="What you are looking for?" autocomplete="off" aria-label="Search">
+                                <button type="submit">{%- render 'theme-icon', icon: 'right-arrow' -%}</button>
+                            </div>
                         </form>
                     </div>
                     <div class="search-suggestions">
