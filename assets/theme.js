@@ -14,12 +14,21 @@ document.addEventListener("shopify:section:load", () => {
 /* ===============================
    BODY: SCROLLED STATE
 ================================ */
+/* ===============================
+   BODY: SCROLL STATES
+================================ */
 function initBodyScrollState() {
   const SCROLL_THRESHOLD = 100;
   const body = document.body;
 
   function onScroll() {
-    body.classList.toggle("scrolled", window.scrollY > SCROLL_THRESHOLD);
+    const scrollY = window.scrollY;
+
+    // Existing behavior
+    body.classList.toggle("scrolled", scrollY > SCROLL_THRESHOLD);
+
+    // NEW behavior
+    body.classList.toggle("top-home", scrollY === 0);
   }
 
   onScroll();
