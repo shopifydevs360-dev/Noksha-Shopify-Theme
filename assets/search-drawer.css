@@ -79,6 +79,11 @@
     width: 1.4rem;
     margin-bottom: -0.3rem;
 }
+.shopify-section-search .inner-search-box button {
+    background: transparent;
+    border: none;
+    color: rgb(var(--color-text));
+}
 
 .shopify-section-search .sub-title{
     font-size: 0.8em;
