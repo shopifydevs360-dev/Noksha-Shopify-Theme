@@ -99,6 +99,9 @@ select {
   background-color: var(--color-body-background);
   color: currentcolor;
 }
+input:focus {
+  outline: none;
+}
 select:focus-visible {
     outline: 0;
 }
