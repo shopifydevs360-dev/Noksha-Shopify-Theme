@@ -78,7 +78,7 @@
 /* ------------------------------
      suggested search
 ------------------------------- */
-.search-suggestions sub-title{
+.shopify-section-search .sub-title{
     font-size: 0.8em;
     text-transform: uppercase;
     font-weight: 600;
