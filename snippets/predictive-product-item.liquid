@@ -14,7 +14,7 @@
 
 <div class="search-product-item" {% if enable_search_data %} data-title="{{ title }}" data-tags="{{ tags }}" data-collection="{{ collections_titles }}" {% endif %}>
   <a href="{{ product.url }}" class="product-card">
-    <div class="product-card__image">
+    <div class="product-card__image {{ settings.aspect_ratio }}">
       {{ product.featured_image | image_url: width: 300 | image_tag }}
     </div>
     <div class="product-card__info">
