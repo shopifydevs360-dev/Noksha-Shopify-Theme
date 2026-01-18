@@ -12,14 +12,7 @@
   {% assign title = product.title | downcase %}
 {% endif %}
 
-<div
-  class="search-product-item"
-  {% if enable_search_data %}
-    data-title="{{ title }}"
-    data-tags="{{ tags }}"
-    data-collection="{{ collections_titles }}"
-  {% endif %}
->
+<div class="search-product-item" {% if enable_search_data %} data-title="{{ title }}" data-tags="{{ tags }}" data-collection="{{ collections_titles }}" {% endif %}>
   <a href="{{ product.url }}" class="product-card">
     <div class="product-card__image">
       {{ product.featured_image | image_url: width: 300 | image_tag }}
