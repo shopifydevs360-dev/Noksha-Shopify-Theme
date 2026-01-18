@@ -55,3 +55,9 @@
     font-weight: 600;
     letter-spacing: 2px;
 }
+.shopify-section-search .serch-box input[type="search"] {
+    width: 100%;
+    font-size: 0.8em;
+    color: rgb(var(--color-text));
+    border-bottom: 2px solid rgb(var(--color-border));
+}
