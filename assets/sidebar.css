@@ -245,20 +245,28 @@ body.disable-scrollbars {
         padding-right: 2rem;
     }
 }
-
+.sidebar-footer {
+    display: none;
+    position: absolute;
+    bottom: 5rem;
+}
+.expended-area-active .sidebar-footer,
+.expended .sidebar-footer {
+    display: block;
+}
 
 .sidebar-footer .social-icons-list {
     list-style: none;
     padding: 0;
     display: flex;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
+    gap: .4rem;
+    margin-bottom: 0.4rem;
 }
 .sidebar-footer .social-icons-list svg {
-    width: 1.2em;
+    width: 1em;
 }
 .sidebar-footer p {
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 
 
