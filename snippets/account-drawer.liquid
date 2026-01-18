@@ -3,49 +3,8 @@
     <div class="inner-section drawer-space">
         <div class="container">
             <div class="account-template">
-                <div class="account-links">
-                    {% if customer %}
-                        <h4 class="sub-title">Welcome, {{ customer.first_name }}</h4>
-                        <ul>
-                            <li><a href="/account">Account Overview</a></li>
-                            <li><a href="/account/orders">Order History</a></li>
-                            <li><a href="/account/addresses">Manage Addresses</a></li>
-                            <li><a href="/account/logout">Logout</a></li>
-                        </ul>
-                    {% else %}
-                        <div class="user-login">
-                        <h4 class="sub-title">Login</h4>
-                        <form method="post" action="{{ routes.customer_login_url }}" id="CustomerLoginForm" accept-charset="UTF-8">
-                            <input type="hidden" name="form_type" value="customer_login">
-                            <input type="hidden" name="utf8" value="✓">
-                            <label for="CustomerEmail">Email</label>
-                            <input type="email" name="customer[email]" id="CustomerEmail" autocorrect="off" autocapitalize="off" value="" placeholder="Email" required>
-                            <label for="CustomerPassword">Password</label>
-                            <input type="password" name="customer[password]" id="CustomerPassword" placeholder="Password" required>
-                            <button type="submit" class="btn btn-primary">Sign In</button>
-                            <p class="forgot-password">
-                                <a href="{{ routes.customer_recover_url }}">Forgot your password?</a>
-                            </p>
-                        </form>
-                        </div>
-                        <div class="user-create-account">
-                        <h4 class="sub-title">New Customer?</h4>
-                        <form method="get" action="{{ routes.customer_register_url }}">
-                            <input type="hidden" name="form_type" value="customer_register">
-                            <input type="hidden" name="utf8" value="✓">
-                            <label for="CreateCustomerFirstName">First Name</label>
-                            <input type="text" name="customer[first_name]" id="CreateCustomerFirstName" autocorrect="off" autocapitalize="off" value="" placeholder="First Name" required>
-                            <label for="CreateCustomerLastName">Last Name</label>
-                            <input type="text" name="customer[last_name]" id="CreateCustomerLastName" autocorrect="off" autocapitalize="off" value="" placeholder="Last Name" required>
-                            <label for="CreateCustomerEmail">Email</label>
-                            <input type="email" name="customer[email]" id="CreateCustomerEmail" autocorrect="off" autocapitalize="off" value="" placeholder="Email" required>
-                            <label for="CreateCustomerPassword">Password</label>
-                            <input type="password" name="customer[password]" id="CreateCustomerPassword" placeholder="Password" required>
-                            <button type="submit" class="btn btn-secondary">Create Account</button>
-                        </form>
-                        </div>
-
-                    {% endif %}
+                <div class="login-inner">
+                 {% render 'user-signup' %}
                 </div>
             </div>
         </div>
