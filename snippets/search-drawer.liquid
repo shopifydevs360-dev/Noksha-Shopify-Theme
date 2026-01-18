@@ -17,7 +17,7 @@
                         </form>
                     </div>
                     <div class="search-suggestions">
-                        <h4>Suggested Searches</h4>
+                        <h4 class="sub-title">Suggested Searches</h4>
                         <ul id="SearchSuggestionList" data-keywords='[{% for word in keywords %} "{{ word | strip | escape }}"{% unless forloop.last %},{% endunless %}{% endfor %}]'></ul>
                     </div>
                 </div>
@@ -25,17 +25,17 @@
                     <div class="search-results">
                         <h4>Search Results</h4>
                         <div class="products-results">
-                        <h5 class="related-products">Products</h5>
+                        <h5 class="related-products sub-title">Products</h5>
                         <div id="SearchProducts"></div>
                         <p id="SearchNoResults" class="hide">No products found</p>
                         </div>
                         <div class="pages-results">
-                        <h5 class="related-pages">Pages</h5>
+                        <h5 class="related-pages sub-title">Pages</h5>
                         <ul id="SearchPages"></ul>
                         </div>
 
                         <div class="posts-results">
-                        <h5 class="related-pages">Posts</h5>
+                        <h5 class="related-post sub-title">Posts</h5>
                         <ul id="SearchPosts"></ul>
                         </div>
                     </div>
