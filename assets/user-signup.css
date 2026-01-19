@@ -6,3 +6,14 @@
     font-weight: 600;
     letter-spacing: 2px;
 }
+.customer-auth-layout input {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid;
+    border-radius: 0;
+    width: 100%;
+    font-size: 0.9em;
+    margin-bottom: 1.5rem;
+    color: rgb(var(--color-text));
+    background: transparent;
+    border: none;
+}
