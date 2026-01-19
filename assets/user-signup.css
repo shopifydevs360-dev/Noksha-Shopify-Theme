@@ -1,1 +1,8 @@
 /* User login form style */
+.customer-auth-layout .sub-title {
+    display: block;
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
