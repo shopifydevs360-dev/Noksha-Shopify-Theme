@@ -114,7 +114,7 @@ input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
-:placeholder{
+*:placeholder{
   color: rgb(var(--color-form-field-text, #222)/0.6);
   opacity: 1;
   font-size: 0.7em;
