@@ -33,3 +33,13 @@
     background: transparent;
     color: rgb(var(--color-heading));
 }
+
+/* Forgot password link */
+.forgot-password-trigger {
+    font-size: 1em;
+    color: rgb(var(--color-heading));
+    text-decoration: none;
+}
+.forgot-password-trigger:hover {
+    text-decoration: underline;
+}
