@@ -22,10 +22,11 @@
       display: flex;
       gap: 2rem;
   }
+
+}
   .element-hide{
     display: none;
   }
-}
 .shopify-section-nav ul{
   list-style: none;
   padding-left: 0;
