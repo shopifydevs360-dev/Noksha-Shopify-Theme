@@ -16,7 +16,6 @@ function initMobileLinkControl() {
   if (!isMobileView) return;
 
   const drawer = document.getElementById("js-nav-drawer");
-  if (!drawer) return;
 
   drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
     if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
@@ -53,8 +52,6 @@ function disableLink(item) {
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
-  if (!drawer) return;
-
   const triggerEvent = isMobileView ? "click" : "mouseenter";
 
   /* ---------- PARENT ---------- */
@@ -134,19 +131,16 @@ function initNavDrawer() {
    CHILD PANEL
 ====================================== */
 function openChildPanel(parentHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-child-linklist");
-  if (!panel) return;
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-1");
+  panel.classList.remove("element-hide");
 
-  const title = panel.querySelector(".child-linklist-title");
-  if (title) {
-    title.textContent = titleText;
-  }
+  panel.querySelector(".child-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".child-menu-item").forEach(item => {
-    const shouldShow = item.dataset.parent === parentHandle;
-    item.classList.toggle("active", shouldShow);
+    item.classList.toggle("element-hide", item.dataset.parent !== parentHandle);
   });
 }
 
@@ -154,19 +148,16 @@ function openChildPanel(parentHandle, titleText) {
    GRAND CHILD PANEL
 ====================================== */
 function openGrandChildPanel(childHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
-  if (!panel) return;
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-2");
+  panel.classList.remove("element-hide");
 
-  const title = panel.querySelector(".grandchild-linklist-title");
-  if (title) {
-    title.textContent = titleText;
-  }
+  panel.querySelector(".grandchild-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
-    const shouldShow = item.dataset.child === childHandle;
-    item.classList.toggle("active", shouldShow);
+    item.classList.toggle("element-hide", item.dataset.child !== childHandle);
   });
 }
 
@@ -176,22 +167,19 @@ function openGrandChildPanel(childHandle, titleText) {
 let activeCollectionHandle = null;
 
 function openCollectionPanel(handle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
-  if (!panel || !container) return;
-
   const loader = panel.querySelector(".collection-product-loader");
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-product");
+  panel.classList.remove("element-hide");
 
-  const title = panel.querySelector(".collections-productlist-title");
-  if (title) {
-    title.textContent = titleText;
-  }
+  panel.querySelector(".collections-productlist-title").textContent = titleText;
 
   /* SHOW LOADER */
-  if (loader) loader.classList.add("active");
-  container.classList.remove("active");
+  loader.classList.add("active");
+  container.classList.add("element-hide");
 
   /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
@@ -200,12 +188,11 @@ function openCollectionPanel(handle, titleText) {
       activeCollectionHandle = handle;
 
       container.innerHTML = html;
-
-      if (loader) loader.classList.remove("active");
-      container.classList.add("active");
+      loader.classList.remove("active");
+      container.classList.remove("element-hide");
     })
     .catch(() => {
-      if (loader) loader.classList.remove("active");
+      loader.classList.remove("active");
     });
 }
 
@@ -239,39 +226,26 @@ function resetAllPanels() {
 }
 
 function resetChild() {
-  const panel = document.getElementById("js-child-linklist");
-  if (!panel) return;
-
-  panel.classList.remove("active");
-
-  panel.querySelectorAll(".child-menu-item").forEach(item => {
-    item.classList.remove("active");
-  });
+  document.getElementById("js-child-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-1");
 }
 
 function resetGrandChild() {
-  const panel = document.getElementById("js-grandchild-linklist");
-  if (!panel) return;
-
-  panel.classList.remove("active");
-
-  panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
-    item.classList.remove("active");
-  });
+  document.getElementById("js-grandchild-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-2");
 }
 
 function resetCollection() {
   const panel = document.getElementById("js-collections");
-  if (!panel) return;
-
   const loader = panel.querySelector(".collection-product-loader");
   const container = document.getElementById("CollectionProducts");
 
-  panel.classList.remove("active");
-
-  if (loader) loader.classList.remove("active");
-  if (container) container.classList.remove("active");
+  panel.classList.add("element-hide");
+  loader.classList.remove("active");
+  container.classList.add("element-hide");
 
   /* 🔑 CRITICAL FIX */
   activeCollectionHandle = null;
+
+  document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
