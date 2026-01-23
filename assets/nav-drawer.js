@@ -64,17 +64,7 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      const parentHandle = parent.dataset.parentHandle;
-
-      // Prevent re-triggering same hover
-      if (!isMobileView && activeParentHandle === parentHandle && !isCollection) {
-        return;
-      }
-
       resetAllPanels();
-
-      activeParentHandle = parentHandle;
-      activeChildHandle = null;
 
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
@@ -99,17 +89,8 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      const childHandle = child.dataset.childHandle;
-
-      // Prevent re-triggering same hover
-      if (!isMobileView && activeChildHandle === childHandle && !isCollection) {
-        return;
-      }
-
       resetGrandChild();
       resetCollection();
-
-      activeChildHandle = childHandle;
 
       if (hasChildren) {
         openGrandChildPanel(
@@ -184,8 +165,6 @@ function openGrandChildPanel(childHandle, titleText) {
    COLLECTION PANEL + LOADER
 ====================================== */
 let activeCollectionHandle = null;
-let activeParentHandle = null;
-let activeChildHandle = null;
 
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
@@ -254,8 +233,6 @@ function resetAllPanels() {
   resetCollection();
   resetGrandChild();
   resetChild();
-  activeParentHandle = null;
-  activeChildHandle = null;
 }
 
 function resetChild() {
