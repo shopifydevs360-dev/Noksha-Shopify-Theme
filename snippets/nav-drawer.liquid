@@ -11,29 +11,38 @@
 
         <!-- ================= PRIMARY MENU ================= -->
         <div class="primary-menu-inner">
-          <ul class="nav-drawer-menu">
-            {% for link in linklists[section.settings.primary_menu].links %}
-            {% assign is_collection = false %}
-            {% if link.type == 'collection_link' %}
-            {% assign is_collection = true %}
+        <ul class="nav-drawer-menu">
+            {% for parent in linklists[section.settings.primary_menu].links %}
+
+            {% assign parent_has_children = false %}
+            {% if parent.links.size > 0 %}
+                {% assign parent_has_children = true %}
+            {% endif %}
+
+            {% assign parent_is_collection = false %}
+            {% if parent.type == 'collection_link' %}
+                {% assign parent_is_collection = true %}
             {% endif %}
 
             <li
-            class="nav-drawer-item"
-            data-level="parent"
-            data-has-children="{% if link.links.size > 0 %}true{% else %}false{% endif %}"
-            data-is-collection="{{ is_collection }}"
-            {% if is_collection %}
-                data-collection-handle="{{ link.object.handle }}"
-            {% endif %}
+                class="nav-drawer-item"
+                data-level="parent"
+                data-parent-handle="{{ parent.handle }}"
+                data-has-children="{% if parent_has_children %}true{% else %}false{% endif %}"
+                data-is-collection="{% if parent_is_collection %}true{% else %}false{% endif %}"
+                {% if parent_is_collection %}
+                data-collection-handle="{{ parent.object.handle }}"
+                {% endif %}
             >
-                <a href="{{ link.url }}" class="nav-drawer-link">
-                  {{ link.title }}
+                <a href="{{ parent.url }}" class="nav-drawer-link">
+                {{ parent.title }}
                 </a>
-              </li>
+            </li>
+
             {% endfor %}
-          </ul>
+        </ul>
         </div>
+
 
         <!-- ================= SECONDARY MENU ================= -->
         <div class="secondary-menu-inner">
@@ -65,15 +74,25 @@
         <ul class="child-menu">
         {% for parent in linklists[section.settings.primary_menu].links %}
             {% if parent.links.size > 0 %}
-            {% assign parent_is_collection = parent.type == 'collection_link' %}
+
+            {% assign parent_handle = parent.handle %}
 
             {% for child in parent.links %}
-                {% assign child_is_collection = child.type == 'collection_link' %}
-                {% assign child_has_children = child.links.size > 0 %}
+
+                {% assign child_has_children = false %}
+                {% if child.links.size > 0 %}
+                {% assign child_has_children = true %}
+                {% endif %}
+
+                {% assign child_is_collection = false %}
+                {% if child.type == 'collection_link' %}
+                {% assign child_is_collection = true %}
+                {% endif %}
 
                 <li
                 class="child-menu-item hide"
-                data-parent="{{ parent.handle }}"
+                data-parent="{{ parent_handle }}"
+                data-child-handle="{{ child.handle }}"
                 data-has-children="{% if child_has_children %}true{% else %}false{% endif %}"
                 data-is-collection="{% if child_is_collection %}true{% else %}false{% endif %}"
                 {% if child_is_collection %}
@@ -84,12 +103,14 @@
                     {{ child.title }}
                 </a>
                 </li>
+
             {% endfor %}
             {% endif %}
         {% endfor %}
         </ul>
     </div>
     </div>
+
 
 
     <!-- ================= GRAND CHILD PANEL ================= -->
@@ -107,8 +128,13 @@
             {% if parent.links.size > 0 %}
             {% for child in parent.links %}
                 {% if child.links.size > 0 %}
+
                 {% for grandchild in child.links %}
-                    {% assign grandchild_is_collection = grandchild.type == 'collection_link' %}
+
+                    {% assign grandchild_is_collection = false %}
+                    {% if grandchild.type == 'collection_link' %}
+                    {% assign grandchild_is_collection = true %}
+                    {% endif %}
 
                     <li
                     class="grandchild-menu-item hide"
@@ -123,6 +149,7 @@
                         {{ grandchild.title }}
                     </a>
                     </li>
+
                 {% endfor %}
                 {% endif %}
             {% endfor %}
@@ -131,6 +158,7 @@
         </ul>
     </div>
     </div>
+
 
 
   <!-- ================= COLLECTION PRODUCTS PANEL ================= -->
