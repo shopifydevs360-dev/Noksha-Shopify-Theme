@@ -1,6 +1,18 @@
 .shopify-section-nav {
-  max-width: 38rem;
+  max-width: 40rem;
   background: #f0eee8;
+}
+.shopify-section-nav.panel-1 {
+  max-width: 50rem;
+}
+.shopify-section-nav.panel-1.panel-2 {
+  max-width: 60rem;
+}
+.shopify-section-nav.panel-1.panel-product {
+  max-width: 70rem;
+}
+.shopify-section-nav.panel-1.panel-2.panel-product {
+  max-width: 100%;
 }
 .nav-template {
     display: flex;
