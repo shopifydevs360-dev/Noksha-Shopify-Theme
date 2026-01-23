@@ -17,21 +17,18 @@ function initMobileLinkControl() {
 
   const drawer = document.getElementById("js-nav-drawer");
 
-  // Parent
   drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
     if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
       disableLink(item);
     }
   });
 
-  // Child
   drawer.querySelectorAll(".child-menu-item").forEach(item => {
     if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
       disableLink(item);
     }
   });
 
-  // Grandchild (collection only)
   drawer.querySelectorAll(".grandchild-menu-item").forEach(item => {
     if (item.dataset.isCollection === "true") {
       disableLink(item);
@@ -63,12 +60,10 @@ function initNavDrawer() {
       const hasChildren = parent.dataset.hasChildren === "true";
       const isCollection = parent.dataset.isCollection === "true";
 
-      // ✅ Prevent navigation ONLY on mobile when needed
       if (isMobileView && (hasChildren || isCollection)) {
         e.preventDefault();
       }
 
-      // ✅ Desktop hover ALWAYS works
       resetAllPanels();
 
       if (hasChildren) {
@@ -167,22 +162,37 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL
+   COLLECTION PANEL + LOADER
 ====================================== */
+let activeCollectionHandle = null;
+
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
+  const loader = panel.querySelector(".collection-product-loader");
 
   drawer.classList.add("panel-product");
   panel.classList.remove("hide");
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
+  /* SHOW LOADER */
+  loader.classList.add("active");
+  container.classList.add("hide");
+
+  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
+      activeCollectionHandle = handle;
+
       container.innerHTML = html;
+      loader.classList.remove("active");
+      container.classList.remove("hide");
+    })
+    .catch(() => {
+      loader.classList.remove("active");
     });
 }
 
@@ -226,6 +236,16 @@ function resetGrandChild() {
 }
 
 function resetCollection() {
-  document.getElementById("js-collections").classList.add("hide");
+  const panel = document.getElementById("js-collections");
+  const loader = panel.querySelector(".collection-product-loader");
+  const container = document.getElementById("CollectionProducts");
+
+  panel.classList.add("hide");
+  loader.classList.remove("active");
+  container.classList.add("hide");
+
+  /* 🔑 CRITICAL FIX */
+  activeCollectionHandle = null;
+
   document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
