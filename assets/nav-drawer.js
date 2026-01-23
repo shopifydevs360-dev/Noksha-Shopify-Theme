@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   initNavDrawer();
   initBackButtons();
-  initMobileLinkControl(); // ✅ NEW
+  initMobileLinkControl();
 });
 
 /* ======================================
-   DEVICE DETECTION
+   BREAKPOINT DETECTION (MOBILE + TABLET)
 ====================================== */
-const isMobile = window.matchMedia("(hover: none)").matches;
+const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
 /* ======================================
-   MOBILE LINK CONTROL (NEW)
+   MOBILE LINK CONTROL
 ====================================== */
 function initMobileLinkControl() {
-  if (!isMobile) return;
+  if (!isMobileView) return;
 
   const drawer = document.getElementById("js-nav-drawer");
 
@@ -49,7 +49,10 @@ function disableLink(item) {
   const link = item.querySelector("a");
   if (!link) return;
 
-  link.dataset.href = link.getAttribute("href"); // keep for later if needed
+  if (!link.dataset.href) {
+    link.dataset.href = link.getAttribute("href");
+  }
+
   link.removeAttribute("href");
 
   link.addEventListener("click", e => {
@@ -62,16 +65,20 @@ function disableLink(item) {
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
+  const triggerEvent = isMobileView ? "click" : "mouseenter";
 
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
-    parent.addEventListener(isMobile ? "click" : "mouseenter", e => {
-      if (isMobile) e.preventDefault();
+    parent.addEventListener(triggerEvent, e => {
+      if (isMobileView) e.preventDefault();
 
       resetAllPanels();
 
       if (parent.dataset.hasChildren === "true") {
-        openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
+        openChildPanel(
+          parent.dataset.parentHandle,
+          parent.textContent.trim()
+        );
       }
 
       if (parent.dataset.isCollection === "true") {
@@ -85,8 +92,8 @@ function initNavDrawer() {
 
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
-    child.addEventListener(isMobile ? "click" : "mouseenter", e => {
-      if (isMobile) e.preventDefault();
+    child.addEventListener(triggerEvent, e => {
+      if (isMobileView) e.preventDefault();
 
       resetGrandChild();
       resetCollection();
@@ -109,8 +116,8 @@ function initNavDrawer() {
 
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
-    gc.addEventListener(isMobile ? "click" : "mouseenter", e => {
-      if (isMobile) e.preventDefault();
+    gc.addEventListener(triggerEvent, e => {
+      if (isMobileView) e.preventDefault();
 
       if (gc.dataset.isCollection === "true") {
         openCollectionPanel(
