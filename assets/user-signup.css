@@ -35,13 +35,15 @@
 }
 
 /* Forgot password link */
-.forgot-password-trigger {
+.forgot-password-link,
+.back-login-link {
     display: block;
     margin-top: 0.8rem;
     font-size: 1em;
     color: rgb(var(--color-heading));
     text-decoration: none;
 }
-.forgot-password-trigger:hover {
+.forgot-password-link:hover,
+.back-login-link:hover {
     text-decoration: underline;
 }
