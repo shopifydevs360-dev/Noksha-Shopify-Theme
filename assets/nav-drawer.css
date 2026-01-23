@@ -29,12 +29,12 @@
   -webkit-overflow-scrolling: touch;
   max-height: 80vh;
   padding: 0 1rem;
-  transition: all 0.4s cubic-bezier(.32,.24,.15,1);
 }
 .child-linklist,
 .grandchild-linklist,
 .collections-productlist {
 width: 0;
+  transition: width 0.4s cubic-bezier(.32,.24,.15,1);
 }
 .child-linklist.active,
 .grandchild-linklist.active {
