@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   BREAKPOINT DETECTION (MOBILE + TABLET)
+   BREAKPOINT DETECTION
 ====================================== */
 const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
@@ -17,27 +17,21 @@ function initMobileLinkControl() {
 
   const drawer = document.getElementById("js-nav-drawer");
 
-  // Parent items
+  // Parent
   drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
-    if (
-      item.dataset.hasChildren === "true" ||
-      item.dataset.isCollection === "true"
-    ) {
+    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
       disableLink(item);
     }
   });
 
-  // Child items
+  // Child
   drawer.querySelectorAll(".child-menu-item").forEach(item => {
-    if (
-      item.dataset.hasChildren === "true" ||
-      item.dataset.isCollection === "true"
-    ) {
+    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
       disableLink(item);
     }
   });
 
-  // Grandchild items (collection only)
+  // Grandchild (collection only)
   drawer.querySelectorAll(".grandchild-menu-item").forEach(item => {
     if (item.dataset.isCollection === "true") {
       disableLink(item);
@@ -54,10 +48,6 @@ function disableLink(item) {
   }
 
   link.removeAttribute("href");
-
-  link.addEventListener("click", e => {
-    e.preventDefault();
-  });
 }
 
 /* ======================================
@@ -70,18 +60,22 @@ function initNavDrawer() {
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
     parent.addEventListener(triggerEvent, e => {
-      if (isMobileView) e.preventDefault();
+      const hasChildren = parent.dataset.hasChildren === "true";
+      const isCollection = parent.dataset.isCollection === "true";
 
-      resetAllPanels();
-
-      if (parent.dataset.hasChildren === "true") {
-        openChildPanel(
-          parent.dataset.parentHandle,
-          parent.textContent.trim()
-        );
+      // ✅ Prevent navigation ONLY on mobile when needed
+      if (isMobileView && (hasChildren || isCollection)) {
+        e.preventDefault();
       }
 
-      if (parent.dataset.isCollection === "true") {
+      // ✅ Desktop hover ALWAYS works
+      resetAllPanels();
+
+      if (hasChildren) {
+        openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
+      }
+
+      if (isCollection) {
         openCollectionPanel(
           parent.dataset.collectionHandle,
           parent.textContent.trim()
@@ -93,19 +87,24 @@ function initNavDrawer() {
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
     child.addEventListener(triggerEvent, e => {
-      if (isMobileView) e.preventDefault();
+      const hasChildren = child.dataset.hasChildren === "true";
+      const isCollection = child.dataset.isCollection === "true";
+
+      if (isMobileView && (hasChildren || isCollection)) {
+        e.preventDefault();
+      }
 
       resetGrandChild();
       resetCollection();
 
-      if (child.dataset.hasChildren === "true") {
+      if (hasChildren) {
         openGrandChildPanel(
           child.dataset.childHandle,
           child.textContent.trim()
         );
       }
 
-      if (child.dataset.isCollection === "true") {
+      if (isCollection) {
         openCollectionPanel(
           child.dataset.collectionHandle,
           child.textContent.trim()
@@ -117,9 +116,13 @@ function initNavDrawer() {
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
     gc.addEventListener(triggerEvent, e => {
-      if (isMobileView) e.preventDefault();
+      const isCollection = gc.dataset.isCollection === "true";
 
-      if (gc.dataset.isCollection === "true") {
+      if (isMobileView && isCollection) {
+        e.preventDefault();
+      }
+
+      if (isCollection) {
         openCollectionPanel(
           gc.dataset.collectionHandle,
           gc.textContent.trim()
