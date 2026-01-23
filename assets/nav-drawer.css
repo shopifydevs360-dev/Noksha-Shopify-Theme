@@ -1,6 +1,6 @@
 @media (min-width: 992px) {
   .shopify-section-nav {
-    max-width: fit-content;
+    width: fit-content;
     background: #f0eee8;
   }
   .nav-template {
