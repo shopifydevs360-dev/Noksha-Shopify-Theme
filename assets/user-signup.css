@@ -25,7 +25,7 @@
     border: 1px solid rgb(var(--color-heading));
 }
 .btn--small .icon {
-    width: 0.8em;
+    width: 1em;
     height: auto;
 }
 .btn--small:hover{
