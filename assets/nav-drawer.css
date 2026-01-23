@@ -22,9 +22,4 @@
       display: flex;
       gap: 2rem;
   }
-  .element-hide{
-    display: none;
-  }
 }
-
-
