@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   BREAKPOINT DETECTION
+   BREAKPOINT
 ====================================== */
 const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
@@ -39,16 +39,11 @@ function initMobileLinkControl() {
 function disableLink(item) {
   const link = item.querySelector("a");
   if (!link) return;
-
-  if (!link.dataset.href) {
-    link.dataset.href = link.getAttribute("href");
-  }
-
   link.removeAttribute("href");
 }
 
 /* ======================================
-   NAV DRAWER MAIN
+   NAV DRAWER MAIN (STABLE)
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
@@ -60,21 +55,18 @@ function initNavDrawer() {
       const hasChildren = parent.dataset.hasChildren === "true";
       const isCollection = parent.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren || isCollection)) {
-        e.preventDefault();
-      }
+      if (isMobileView && (hasChildren || isCollection)) e.preventDefault();
 
-      resetAllPanels();
+      /* ❌ DO NOT collapse width */
+      resetGrandChild();
+      resetCollection();
 
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
       }
 
       if (isCollection) {
-        openCollectionPanel(
-          parent.dataset.collectionHandle,
-          parent.textContent.trim()
-        );
+        openCollectionPanel(parent.dataset.collectionHandle, parent.textContent.trim());
       }
     });
   });
@@ -85,25 +77,18 @@ function initNavDrawer() {
       const hasChildren = child.dataset.hasChildren === "true";
       const isCollection = child.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren || isCollection)) {
-        e.preventDefault();
-      }
+      if (isMobileView && (hasChildren || isCollection)) e.preventDefault();
 
+      /* ❌ keep panel-1 */
       resetGrandChild();
       resetCollection();
 
       if (hasChildren) {
-        openGrandChildPanel(
-          child.dataset.childHandle,
-          child.textContent.trim()
-        );
+        openGrandChildPanel(child.dataset.childHandle, child.textContent.trim());
       }
 
       if (isCollection) {
-        openCollectionPanel(
-          child.dataset.collectionHandle,
-          child.textContent.trim()
-        );
+        openCollectionPanel(child.dataset.collectionHandle, child.textContent.trim());
       }
     });
   });
@@ -113,15 +98,13 @@ function initNavDrawer() {
     gc.addEventListener(triggerEvent, e => {
       const isCollection = gc.dataset.isCollection === "true";
 
-      if (isMobileView && isCollection) {
-        e.preventDefault();
-      }
+      if (isMobileView && isCollection) e.preventDefault();
+
+      /* ❌ keep panel-1 + panel-2 */
+      resetCollection();
 
       if (isCollection) {
-        openCollectionPanel(
-          gc.dataset.collectionHandle,
-          gc.textContent.trim()
-        );
+        openCollectionPanel(gc.dataset.collectionHandle, gc.textContent.trim());
       }
     });
   });
@@ -164,8 +147,6 @@ function openGrandChildPanel(childHandle, titleText) {
 /* ======================================
    COLLECTION PANEL + LOADER
 ====================================== */
-let activeCollectionHandle = null;
-
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
@@ -177,23 +158,17 @@ function openCollectionPanel(handle, titleText) {
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  /* SHOW LOADER */
   loader.classList.add("active");
   container.classList.add("element-hide");
 
-  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
-      activeCollectionHandle = handle;
-
       container.innerHTML = html;
       loader.classList.remove("active");
       container.classList.remove("element-hide");
     })
-    .catch(() => {
-      loader.classList.remove("active");
-    });
+    .catch(() => loader.classList.remove("active"));
 }
 
 /* ======================================
@@ -211,20 +186,12 @@ function initBackButtons() {
     resetGrandChild();
   });
 
-  document.getElementById("js-back-to-collections")?.addEventListener("click", () => {
-    resetCollection();
-  });
+  document.getElementById("js-back-to-collections")?.addEventListener("click", resetCollection);
 }
 
 /* ======================================
-   RESET HELPERS
+   RESET HELPERS (WIDTH SAFE)
 ====================================== */
-function resetAllPanels() {
-  resetCollection();
-  resetGrandChild();
-  resetChild();
-}
-
 function resetChild() {
   document.getElementById("js-child-linklist").classList.add("element-hide");
   document.getElementById("js-nav-drawer").classList.remove("panel-1");
@@ -243,9 +210,6 @@ function resetCollection() {
   panel.classList.add("element-hide");
   loader.classList.remove("active");
   container.classList.add("element-hide");
-
-  /* 🔑 CRITICAL FIX */
-  activeCollectionHandle = null;
 
   document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
