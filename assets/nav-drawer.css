@@ -35,3 +35,11 @@
   margin: 0.15rem;
 }
 
+/* Overflow Scrolling */
+.initial-panel,
+.child-linklist,
+.grandchild-linklist,
+.collections-productlist {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
