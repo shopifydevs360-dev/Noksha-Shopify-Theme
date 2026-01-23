@@ -29,7 +29,6 @@
   -webkit-overflow-scrolling: touch;
   max-height: 80vh;
   padding: 0 1rem;
-  width: 0rem;
   transition: all 0.4s cubic-bezier(.32,.24,.15,1);
 }
 .child-linklist,
@@ -40,7 +39,7 @@
 .child-linklist.active,
 .grandchild-linklist.active,
 .collections-productlist.active {
-  width: auto;
+  width: 100%;
 }
 .shopify-section-nav.is-switching {
   pointer-events: none;
