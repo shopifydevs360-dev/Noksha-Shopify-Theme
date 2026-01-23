@@ -4,25 +4,62 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   MAIN NAV DRAWER
+   NAV DRAWER MAIN
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
-  const parentItems = drawer.querySelectorAll('[data-level="parent"]');
 
-  parentItems.forEach(item => {
-    item.addEventListener("mouseenter", () => {
-      resetPanels();
+  /* ---------- PARENT HOVER ---------- */
+  drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
+    parent.addEventListener("mouseenter", () => {
+      resetAllPanels();
 
-      const hasChildren = item.dataset.hasChildren === "true";
-      const isCollection = item.dataset.isCollection === "true";
+      const parentHandle = parent.dataset.parentHandle;
 
-      if (hasChildren) {
-        openChildPanel(item);
+      if (parent.dataset.hasChildren === "true") {
+        openChildPanel(parentHandle, parent.textContent.trim());
       }
 
-      if (isCollection) {
-        openCollectionPanel(item.dataset.collectionHandle, item.textContent.trim());
+      if (parent.dataset.isCollection === "true") {
+        openCollectionPanel(
+          parent.dataset.collectionHandle,
+          parent.textContent.trim()
+        );
+      }
+    });
+  });
+
+  /* ---------- CHILD HOVER ---------- */
+  drawer.querySelectorAll(".child-menu-item").forEach(child => {
+    child.addEventListener("mouseenter", () => {
+      resetGrandChild();
+      resetCollection();
+
+      const childHandle = child.dataset.childHandle;
+
+      if (child.dataset.hasChildren === "true") {
+        openGrandChildPanel(childHandle, child.textContent.trim());
+      }
+
+      if (child.dataset.isCollection === "true") {
+        openCollectionPanel(
+          child.dataset.collectionHandle,
+          child.textContent.trim()
+        );
+      }
+    });
+  });
+
+  /* ---------- GRAND CHILD HOVER ---------- */
+  drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
+    gc.addEventListener("mouseenter", () => {
+      resetCollection();
+
+      if (gc.dataset.isCollection === "true") {
+        openCollectionPanel(
+          gc.dataset.collectionHandle,
+          gc.textContent.trim()
+        );
       }
     });
   });
@@ -31,79 +68,53 @@ function initNavDrawer() {
 /* ======================================
    CHILD PANEL
 ====================================== */
-function openChildPanel(parentItem) {
+function openChildPanel(parentHandle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-child-linklist");
-  const title = panel.querySelector(".child-linklist-title");
-  const list = panel.querySelector(".child-menu");
 
   drawer.classList.add("panel-1");
   panel.classList.remove("hide");
 
-  title.textContent = parentItem.textContent.trim();
-  list.innerHTML = "";
+  panel.querySelector(".child-linklist-title").textContent = titleText;
 
-  const links = parentItem.querySelectorAll(":scope > ul > li");
-
-  links.forEach(link => {
-    const li = document.createElement("li");
-    li.className = "child-item";
-    li.textContent = link.textContent.trim();
-
-    li.dataset.hasChildren = link.querySelector("ul") ? "true" : "false";
-    li.dataset.isCollection = link.dataset.isCollection || "false";
-    li.dataset.collectionHandle = link.dataset.collectionHandle || "";
-
-    li.addEventListener("mouseenter", () => {
-      resetGrandChild();
-      resetCollection();
-
-      if (li.dataset.hasChildren === "true") {
-        openGrandChildPanel(li);
-      }
-
-      if (li.dataset.isCollection === "true") {
-        openCollectionPanel(li.dataset.collectionHandle, li.textContent.trim());
-      }
-    });
-
-    list.appendChild(li);
+  panel.querySelectorAll(".child-menu-item").forEach(item => {
+    item.classList.toggle("hide", item.dataset.parent !== parentHandle);
   });
 }
 
 /* ======================================
    GRAND CHILD PANEL
 ====================================== */
-function openGrandChildPanel(childItem) {
+function openGrandChildPanel(childHandle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
 
   drawer.classList.add("panel-2");
   panel.classList.remove("hide");
 
-  panel.querySelector(".grandchild-linklist-title").textContent =
-    childItem.textContent.trim();
+  panel.querySelector(".grandchild-linklist-title").textContent = titleText;
+
+  panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
+    item.classList.toggle("hide", item.dataset.child !== childHandle);
+  });
 }
 
 /* ======================================
-   COLLECTION PRODUCTS
+   COLLECTION PANEL
 ====================================== */
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
-  const title = panel.querySelector(".collections-productlist-title");
-  const container = document.getElementById("CollectionProducts");
 
   drawer.classList.add("panel-product");
   panel.classList.remove("hide");
-  title.textContent = titleText;
 
-  fetch(
-    `/search?view=ajax-search&type=product&q=collection:${handle}`
-  )
+  panel.querySelector(".collections-productlist-title").textContent = titleText;
+
+  fetch(`/search?view=ajax-search&type=product&q=collection:${handle}`)
     .then(res => res.text())
     .then(html => {
-      container.innerHTML = html;
+      document.getElementById("CollectionProducts").innerHTML = html;
     });
 }
 
@@ -127,7 +138,7 @@ function initBackButtons() {
 /* ======================================
    RESET HELPERS
 ====================================== */
-function resetPanels() {
+function resetAllPanels() {
   resetChild();
   resetGrandChild();
   resetCollection();
