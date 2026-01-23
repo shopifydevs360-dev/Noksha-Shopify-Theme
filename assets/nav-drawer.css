@@ -20,7 +20,7 @@
   }
   .nav-template {
       display: flex;
-      gap: 4rem;
+      gap: 2rem;
   }
   .element-hide{
     display: none;
@@ -43,4 +43,5 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-height: 80vh;
+  padding: 0 1rem;
 }
