@@ -1,6 +1,6 @@
 @media (min-width: 992px) {
   .shopify-section-nav {
-    max-width: 40rem;
+    max-width: 100%;
     background: #f0eee8;
   }
   .shopify-section-nav.panel-1 {
