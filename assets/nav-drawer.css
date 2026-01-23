@@ -34,7 +34,7 @@
 .child-linklist,
 .grandchild-linklist,
 .collections-productlist {
-width: 30rem;
+width: 0;
 }
 .shopify-section-nav.is-switching {
   pointer-events: none;
