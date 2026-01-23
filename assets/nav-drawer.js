@@ -131,13 +131,16 @@ function initNavDrawer() {
    CHILD PANEL
 ====================================== */
 function openChildPanel(parentHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-child-linklist");
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-1");
+  panel.classList.remove("element-hide");
+
   panel.querySelector(".child-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".child-menu-item").forEach(item => {
-    item.classList.toggle("active", item.dataset.parent === parentHandle);
+    item.classList.toggle("element-hide", item.dataset.parent !== parentHandle);
   });
 }
 
@@ -145,13 +148,16 @@ function openChildPanel(parentHandle, titleText) {
    GRAND CHILD PANEL
 ====================================== */
 function openGrandChildPanel(childHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-2");
+  panel.classList.remove("element-hide");
+
   panel.querySelector(".grandchild-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
-    item.classList.toggle("active", item.dataset.child === childHandle);
+    item.classList.toggle("element-hide", item.dataset.child !== childHandle);
   });
 }
 
@@ -161,23 +167,29 @@ function openGrandChildPanel(childHandle, titleText) {
 let activeCollectionHandle = null;
 
 function openCollectionPanel(handle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
   const loader = panel.querySelector(".collection-product-loader");
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-product");
+  panel.classList.remove("element-hide");
+
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
+  /* SHOW LOADER */
   loader.classList.add("active");
-  container.classList.remove("active");
+  container.classList.add("element-hide");
 
+  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
       activeCollectionHandle = handle;
+
       container.innerHTML = html;
       loader.classList.remove("active");
-      container.classList.add("active");
+      container.classList.remove("element-hide");
     })
     .catch(() => {
       loader.classList.remove("active");
@@ -214,21 +226,13 @@ function resetAllPanels() {
 }
 
 function resetChild() {
-  const panel = document.getElementById("js-child-linklist");
-  panel.classList.remove("active");
-
-  panel.querySelectorAll(".child-menu-item").forEach(item => {
-    item.classList.remove("active");
-  });
+  document.getElementById("js-child-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-1");
 }
 
 function resetGrandChild() {
-  const panel = document.getElementById("js-grandchild-linklist");
-  panel.classList.remove("active");
-
-  panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
-    item.classList.remove("active");
-  });
+  document.getElementById("js-grandchild-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-2");
 }
 
 function resetCollection() {
@@ -236,9 +240,12 @@ function resetCollection() {
   const loader = panel.querySelector(".collection-product-loader");
   const container = document.getElementById("CollectionProducts");
 
-  panel.classList.remove("active");
+  panel.classList.add("element-hide");
   loader.classList.remove("active");
-  container.classList.remove("active");
+  container.classList.add("element-hide");
 
+  /* 🔑 CRITICAL FIX */
   activeCollectionHandle = null;
+
+  document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
