@@ -33,12 +33,15 @@
 .child-linklist,
 .grandchild-linklist,
 .collections-productlist {
-width: 0;
+  width: 0;
   transition: width 0.4s cubic-bezier(.32,.24,.15,1);
 }
 .child-linklist.active,
 .grandchild-linklist.active {
 width: 15rem;
+}
+.collections-productlist.active{
+  width: 25rem;
 }
 .shopify-section-nav.is-switching {
   pointer-events: none;
