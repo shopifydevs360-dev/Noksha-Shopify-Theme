@@ -1,4 +1,31 @@
 {{ 'nav-drawer.css' | asset_url | stylesheet_tag: preload: true }}
 <div id="js-nav-drawer" class="shopify-section-nav noksha-drawer" data-open-section="nav-drawer">
-
+    <div class="inner-section drawer-space m-color-{{ section.settings.sidebar_color_scheme }}">
+        <div class="container">
+            <div class="nav-template">
+                <div class="primary-menu-inner">
+                    <ul class="nav-drawer-menu">
+                        {% for link in linklists[section.settings.primary_menu].links %}
+                            <li class="nav-drawer-item">
+                                <a href="{{ link.url }}" class="nav-drawer-link">
+                                    {{ link.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="secondary-menu-inner">
+                    <ul class="nav-drawer-menu">
+                        {% for link in linklists[section.settings.secondary_menu].links %}
+                            <li class="nav-drawer-item">
+                                <a href="{{ link.url }}" class="nav-drawer-link">
+                                    {{ link.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
