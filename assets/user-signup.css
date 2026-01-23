@@ -24,6 +24,10 @@
     color: rgb(var(--color-background));
     border: 1px solid rgb(var(--color-heading));
 }
+.btn--small .icon {
+    width: 0.8em;
+    height: auto;
+}
 .btn--small:hover{
     background: transparent;
     color: rgb(var(--color-heading));
