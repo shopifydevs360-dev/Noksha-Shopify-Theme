@@ -177,17 +177,9 @@ function openCollectionPanel(handle, titleText) {
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  // If same collection already loaded, don't refetch
-  if (activeCollectionHandle === handle && container.innerHTML.trim() !== "") {
-    loader.classList.remove("active");
-    container.classList.remove("element-hide");
-    return;
-  }
-
   /* SHOW LOADER */
   loader.classList.add("active");
   container.classList.add("element-hide");
-  container.innerHTML = ""; // Clear old content
 
   /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
@@ -201,8 +193,6 @@ function openCollectionPanel(handle, titleText) {
     })
     .catch(() => {
       loader.classList.remove("active");
-      container.classList.remove("element-hide");
-      container.innerHTML = "<p>Failed to load products.</p>";
     });
 }
 
