@@ -1,23 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
   initNavDrawer();
   initBackButtons();
-  initTouchLinkControl();
+  initMobileLinkControl(); // ✅ NEW
 });
 
 /* ======================================
-   DEVICE DETECTION (MOBILE + TABLET)
+   DEVICE DETECTION
 ====================================== */
-const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+const isMobile = window.matchMedia("(hover: none)").matches;
 
 /* ======================================
-   DISABLE LINKS ON TOUCH DEVICES
+   MOBILE LINK CONTROL (NEW)
 ====================================== */
-function initTouchLinkControl() {
-  if (!isTouchDevice) return;
+function initMobileLinkControl() {
+  if (!isMobile) return;
 
   const drawer = document.getElementById("js-nav-drawer");
 
-  // Parent
+  // Parent items
   drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
     if (
       item.dataset.hasChildren === "true" ||
@@ -27,7 +27,7 @@ function initTouchLinkControl() {
     }
   });
 
-  // Child
+  // Child items
   drawer.querySelectorAll(".child-menu-item").forEach(item => {
     if (
       item.dataset.hasChildren === "true" ||
@@ -37,7 +37,7 @@ function initTouchLinkControl() {
     }
   });
 
-  // Grandchild (collection only)
+  // Grandchild items (collection only)
   drawer.querySelectorAll(".grandchild-menu-item").forEach(item => {
     if (item.dataset.isCollection === "true") {
       disableLink(item);
@@ -49,7 +49,7 @@ function disableLink(item) {
   const link = item.querySelector("a");
   if (!link) return;
 
-  link.dataset.href = link.getAttribute("href");
+  link.dataset.href = link.getAttribute("href"); // keep for later if needed
   link.removeAttribute("href");
 
   link.addEventListener("click", e => {
@@ -62,12 +62,11 @@ function disableLink(item) {
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
-  const parentEvent = isTouchDevice ? "click" : "mouseenter";
 
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
-    parent.addEventListener(parentEvent, e => {
-      if (isTouchDevice) e.preventDefault();
+    parent.addEventListener(isMobile ? "click" : "mouseenter", e => {
+      if (isMobile) e.preventDefault();
 
       resetAllPanels();
 
@@ -86,8 +85,8 @@ function initNavDrawer() {
 
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
-    child.addEventListener(parentEvent, e => {
-      if (isTouchDevice) e.preventDefault();
+    child.addEventListener(isMobile ? "click" : "mouseenter", e => {
+      if (isMobile) e.preventDefault();
 
       resetGrandChild();
       resetCollection();
@@ -110,8 +109,8 @@ function initNavDrawer() {
 
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
-    gc.addEventListener(parentEvent, e => {
-      if (isTouchDevice) e.preventDefault();
+    gc.addEventListener(isMobile ? "click" : "mouseenter", e => {
+      if (isMobile) e.preventDefault();
 
       if (gc.dataset.isCollection === "true") {
         openCollectionPanel(
@@ -182,8 +181,8 @@ function openCollectionPanel(handle, titleText) {
 ====================================== */
 function initBackButtons() {
   document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
-    resetCollection();
     resetGrandChild();
+    resetCollection();
     resetChild();
   });
 
