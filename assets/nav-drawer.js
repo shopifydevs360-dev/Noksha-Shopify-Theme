@@ -54,7 +54,6 @@ function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
   const triggerEvent = isMobileView ? "click" : "mouseenter";
 
-  /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
     parent.addEventListener(triggerEvent, e => {
       const hasChildren = parent.dataset.hasChildren === "true";
@@ -64,7 +63,11 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      resetAllPanels();
+      /* 🔑 DESKTOP LOGIC FIX */
+      if (!hasChildren && !isCollection) {
+        resetAllPanels();
+        return;
+      }
 
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
@@ -89,8 +92,11 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      resetGrandChild();
-      resetCollection();
+      if (!hasChildren && !isCollection) {
+        resetGrandChild();
+        resetCollection();
+        return;
+      }
 
       if (hasChildren) {
         openGrandChildPanel(
@@ -117,12 +123,15 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      if (isCollection) {
-        openCollectionPanel(
-          gc.dataset.collectionHandle,
-          gc.textContent.trim()
-        );
+      if (!isCollection) {
+        resetCollection();
+        return;
       }
+
+      openCollectionPanel(
+        gc.dataset.collectionHandle,
+        gc.textContent.trim()
+      );
     });
   });
 }
@@ -131,12 +140,9 @@ function initNavDrawer() {
    CHILD PANEL
 ====================================== */
 function openChildPanel(parentHandle, titleText) {
-  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-child-linklist");
 
-  drawer.classList.add("panel-1");
   panel.classList.remove("element-hide");
-
   panel.querySelector(".child-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".child-menu-item").forEach(item => {
@@ -148,12 +154,9 @@ function openChildPanel(parentHandle, titleText) {
    GRAND CHILD PANEL
 ====================================== */
 function openGrandChildPanel(childHandle, titleText) {
-  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
 
-  drawer.classList.add("panel-2");
   panel.classList.remove("element-hide");
-
   panel.querySelector(".grandchild-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
@@ -162,31 +165,22 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL + LOADER
+   COLLECTION PANEL
 ====================================== */
-let activeCollectionHandle = null;
-
 function openCollectionPanel(handle, titleText) {
-  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
   const loader = panel.querySelector(".collection-product-loader");
 
-  drawer.classList.add("panel-product");
   panel.classList.remove("element-hide");
-
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  /* SHOW LOADER */
   loader.classList.add("active");
   container.classList.add("element-hide");
 
-  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
-      activeCollectionHandle = handle;
-
       container.innerHTML = html;
       loader.classList.remove("active");
       container.classList.remove("element-hide");
@@ -227,25 +221,12 @@ function resetAllPanels() {
 
 function resetChild() {
   document.getElementById("js-child-linklist").classList.add("element-hide");
-  document.getElementById("js-nav-drawer").classList.remove("panel-1");
 }
 
 function resetGrandChild() {
   document.getElementById("js-grandchild-linklist").classList.add("element-hide");
-  document.getElementById("js-nav-drawer").classList.remove("panel-2");
 }
 
 function resetCollection() {
-  const panel = document.getElementById("js-collections");
-  const loader = panel.querySelector(".collection-product-loader");
-  const container = document.getElementById("CollectionProducts");
-
-  panel.classList.add("element-hide");
-  loader.classList.remove("active");
-  container.classList.add("element-hide");
-
-  /* 🔑 CRITICAL FIX */
-  activeCollectionHandle = null;
-
-  document.getElementById("js-nav-drawer").classList.remove("panel-product");
+  document.getElementById("js-collections").classList.add("element-hide");
 }
