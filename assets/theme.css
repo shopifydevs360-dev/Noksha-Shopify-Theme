@@ -158,6 +158,11 @@ dialog {
   height: 40px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
+  display: none;
+}
+
+.loader.active {
+  display: block;
 }
 
 /* Safari */
