@@ -1,7 +1,61 @@
 document.addEventListener("DOMContentLoaded", () => {
   initNavDrawer();
   initBackButtons();
+  initMobileLinkControl(); // ✅ NEW
 });
+
+/* ======================================
+   DEVICE DETECTION
+====================================== */
+const isMobile = window.matchMedia("(hover: none)").matches;
+
+/* ======================================
+   MOBILE LINK CONTROL (NEW)
+====================================== */
+function initMobileLinkControl() {
+  if (!isMobile) return;
+
+  const drawer = document.getElementById("js-nav-drawer");
+
+  // Parent items
+  drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
+    if (
+      item.dataset.hasChildren === "true" ||
+      item.dataset.isCollection === "true"
+    ) {
+      disableLink(item);
+    }
+  });
+
+  // Child items
+  drawer.querySelectorAll(".child-menu-item").forEach(item => {
+    if (
+      item.dataset.hasChildren === "true" ||
+      item.dataset.isCollection === "true"
+    ) {
+      disableLink(item);
+    }
+  });
+
+  // Grandchild items (collection only)
+  drawer.querySelectorAll(".grandchild-menu-item").forEach(item => {
+    if (item.dataset.isCollection === "true") {
+      disableLink(item);
+    }
+  });
+}
+
+function disableLink(item) {
+  const link = item.querySelector("a");
+  if (!link) return;
+
+  link.dataset.href = link.getAttribute("href"); // keep for later if needed
+  link.removeAttribute("href");
+
+  link.addEventListener("click", e => {
+    e.preventDefault();
+  });
+}
 
 /* ======================================
    NAV DRAWER MAIN
@@ -11,13 +65,13 @@ function initNavDrawer() {
 
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
-    parent.addEventListener("mouseenter", () => {
+    parent.addEventListener(isMobile ? "click" : "mouseenter", e => {
+      if (isMobile) e.preventDefault();
+
       resetAllPanels();
 
-      const parentHandle = parent.dataset.parentHandle;
-
       if (parent.dataset.hasChildren === "true") {
-        openChildPanel(parentHandle, parent.textContent.trim());
+        openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
       }
 
       if (parent.dataset.isCollection === "true") {
@@ -31,7 +85,9 @@ function initNavDrawer() {
 
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
-    child.addEventListener("mouseenter", () => {
+    child.addEventListener(isMobile ? "click" : "mouseenter", e => {
+      if (isMobile) e.preventDefault();
+
       resetGrandChild();
       resetCollection();
 
@@ -53,8 +109,8 @@ function initNavDrawer() {
 
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
-    gc.addEventListener("mouseenter", () => {
-      resetCollection();
+    gc.addEventListener(isMobile ? "click" : "mouseenter", e => {
+      if (isMobile) e.preventDefault();
 
       if (gc.dataset.isCollection === "true") {
         openCollectionPanel(
@@ -101,7 +157,7 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL (PARENT / CHILD / GRANDCHILD)
+   COLLECTION PANEL
 ====================================== */
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
@@ -121,7 +177,7 @@ function openCollectionPanel(handle, titleText) {
 }
 
 /* ======================================
-   BACK BUTTONS (HIERARCHY SAFE)
+   BACK BUTTONS
 ====================================== */
 function initBackButtons() {
   document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
