@@ -2,7 +2,7 @@
   .shopify-section-nav {
     max-width: 40rem;
     background: #f0eee8;
-    transition: max-width 2s ease;
+    transition: max-width 0s ease;
   }
   .shopify-section-nav.panel-1 {
     max-width: 50rem;
