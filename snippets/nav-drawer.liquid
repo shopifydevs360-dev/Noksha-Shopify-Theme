@@ -9,59 +9,56 @@
     <div class="container">
       <div class="nav-template">
 
-        <!-- ================= PRIMARY MENU ================= -->
-        <div class="primary-menu-inner">
-        <ul class="nav-drawer-menu">
-            {% for parent in linklists[section.settings.primary_menu].links %}
+        <div class="initial-panel">
+                    <!-- ================= PRIMARY MENU ================= -->
+            <div class="primary-menu-inner">
+            <ul class="nav-drawer-menu">
+                {% for parent in linklists[section.settings.primary_menu].links %}
 
-            {% assign parent_has_children = false %}
-            {% if parent.links.size > 0 %}
-                {% assign parent_has_children = true %}
-            {% endif %}
-
-            {% assign parent_is_collection = false %}
-            {% if parent.type == 'collection_link' %}
-                {% assign parent_is_collection = true %}
-            {% endif %}
-
-            <li
-                class="nav-drawer-item"
-                data-level="parent"
-                data-parent-handle="{{ parent.handle }}"
-                data-has-children="{% if parent_has_children %}true{% else %}false{% endif %}"
-                data-is-collection="{% if parent_is_collection %}true{% else %}false{% endif %}"
-                {% if parent_is_collection %}
-                data-collection-handle="{{ parent.object.handle }}"
+                {% assign parent_has_children = false %}
+                {% if parent.links.size > 0 %}
+                    {% assign parent_has_children = true %}
                 {% endif %}
-            >
-                <a href="{{ parent.url }}" class="nav-drawer-link">
-                {{ parent.title }}
-                </a>
-            </li>
 
-            {% endfor %}
-        </ul>
+                {% assign parent_is_collection = false %}
+                {% if parent.type == 'collection_link' %}
+                    {% assign parent_is_collection = true %}
+                {% endif %}
+
+                <li
+                    class="nav-drawer-item"
+                    data-level="parent"
+                    data-parent-handle="{{ parent.handle }}"
+                    data-has-children="{% if parent_has_children %}true{% else %}false{% endif %}"
+                    data-is-collection="{% if parent_is_collection %}true{% else %}false{% endif %}"
+                    {% if parent_is_collection %}
+                    data-collection-handle="{{ parent.object.handle }}"
+                    {% endif %}
+                >
+                    <a href="{{ parent.url }}" class="nav-drawer-link">
+                    {{ parent.title }}
+                    </a>
+                </li>
+
+                {% endfor %}
+            </ul>
+            </div>
+
+
+            <!-- ================= SECONDARY MENU ================= -->
+            <div class="secondary-menu-inner">
+            <ul class="nav-drawer-menu">
+                {% for link in linklists[section.settings.secondary_menu].links %}
+                <li class="nav-drawer-item">
+                    <a href="{{ link.url }}" class="nav-drawer-link">
+                    {{ link.title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            </div>
         </div>
-
-
-        <!-- ================= SECONDARY MENU ================= -->
-        <div class="secondary-menu-inner">
-          <ul class="nav-drawer-menu">
-            {% for link in linklists[section.settings.secondary_menu].links %}
-              <li class="nav-drawer-item">
-                <a href="{{ link.url }}" class="nav-drawer-link">
-                  {{ link.title }}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-    <!-- ================= CHILD PANEL ================= -->
+            <!-- ================= CHILD PANEL ================= -->
     <div id="js-child-linklist" class="child-linklist hide">
     <div class="child-linklist-inner">
         <div class="child-linklist-header">
@@ -172,6 +169,11 @@
       </div>
 
       <div id="CollectionProducts"></div>
+    </div>
+  </div>
+
+
+      </div>
     </div>
   </div>
 </div>
