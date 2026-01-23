@@ -19,10 +19,11 @@
 }
 .btn--small {
     font-size: 0.8em;
-    padding: 0.6em 1.2em;
+    padding: 0.5em 1em;
     background: rgb(var(--color-heading));
     color: rgb(var(--color-background));
     border: 1px solid rgb(var(--color-heading));
+    border-radius: 0;
 }
 .btn--small .icon {
     width: 1em;
