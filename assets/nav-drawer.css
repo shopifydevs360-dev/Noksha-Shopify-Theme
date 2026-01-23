@@ -2,7 +2,6 @@
   .shopify-section-nav {
     max-width: 40rem;
     background: #f0eee8;
-    transition: all .6s cubic-bezier(.72,0,.28,1);
   }
   .shopify-section-nav.panel-1 {
     max-width: 50rem;
