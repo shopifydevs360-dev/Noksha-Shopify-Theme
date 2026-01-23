@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   BREAKPOINT DETECTION
+   BREAKPOINT
 ====================================== */
 const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
@@ -17,23 +17,15 @@ function initMobileLinkControl() {
 
   const drawer = document.getElementById("js-nav-drawer");
 
-  drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
-    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
-      disableLink(item);
-    }
-  });
-
-  drawer.querySelectorAll(".child-menu-item").forEach(item => {
-    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
-      disableLink(item);
-    }
-  });
-
-  drawer.querySelectorAll(".grandchild-menu-item").forEach(item => {
-    if (item.dataset.isCollection === "true") {
-      disableLink(item);
-    }
-  });
+  drawer.querySelectorAll('[data-level="parent"], .child-menu-item, .grandchild-menu-item')
+    .forEach(item => {
+      if (
+        item.dataset.hasChildren === "true" ||
+        item.dataset.isCollection === "true"
+      ) {
+        disableLink(item);
+      }
+    });
 }
 
 function disableLink(item) {
@@ -48,14 +40,15 @@ function disableLink(item) {
 }
 
 /* ======================================
-   NAV DRAWER MAIN
+   NAV DRAWER
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
-  const triggerEvent = isMobileView ? "click" : "mouseenter";
+  const eventType = isMobileView ? "click" : "mouseenter";
 
+  /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
-    parent.addEventListener(triggerEvent, e => {
+    parent.addEventListener(eventType, e => {
       const hasChildren = parent.dataset.hasChildren === "true";
       const isCollection = parent.dataset.isCollection === "true";
 
@@ -63,12 +56,13 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      /* 🔑 DESKTOP LOGIC FIX */
+      /* ❌ CLOSE EVERYTHING ONLY IF DEAD-END */
       if (!hasChildren && !isCollection) {
         resetAllPanels();
         return;
       }
 
+      /* ✅ KEEP COLLECTION OPEN IF SAME FLOW */
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
       }
@@ -84,7 +78,7 @@ function initNavDrawer() {
 
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
-    child.addEventListener(triggerEvent, e => {
+    child.addEventListener(eventType, e => {
       const hasChildren = child.dataset.hasChildren === "true";
       const isCollection = child.dataset.isCollection === "true";
 
@@ -116,7 +110,7 @@ function initNavDrawer() {
 
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
-    gc.addEventListener(triggerEvent, e => {
+    gc.addEventListener(eventType, e => {
       const isCollection = gc.dataset.isCollection === "true";
 
       if (isMobileView && isCollection) {
@@ -139,25 +133,28 @@ function initNavDrawer() {
 /* ======================================
    CHILD PANEL
 ====================================== */
-function openChildPanel(parentHandle, titleText) {
+function openChildPanel(parentHandle, title) {
   const panel = document.getElementById("js-child-linklist");
 
   panel.classList.remove("element-hide");
-  panel.querySelector(".child-linklist-title").textContent = titleText;
+  panel.querySelector(".child-linklist-title").textContent = title;
 
   panel.querySelectorAll(".child-menu-item").forEach(item => {
     item.classList.toggle("element-hide", item.dataset.parent !== parentHandle);
   });
+
+  /* 🔑 IMPORTANT */
+  resetGrandChild();
 }
 
 /* ======================================
    GRAND CHILD PANEL
 ====================================== */
-function openGrandChildPanel(childHandle, titleText) {
+function openGrandChildPanel(childHandle, title) {
   const panel = document.getElementById("js-grandchild-linklist");
 
   panel.classList.remove("element-hide");
-  panel.querySelector(".grandchild-linklist-title").textContent = titleText;
+  panel.querySelector(".grandchild-linklist-title").textContent = title;
 
   panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
     item.classList.toggle("element-hide", item.dataset.child !== childHandle);
@@ -167,27 +164,31 @@ function openGrandChildPanel(childHandle, titleText) {
 /* ======================================
    COLLECTION PANEL
 ====================================== */
-function openCollectionPanel(handle, titleText) {
+let activeCollection = null;
+
+function openCollectionPanel(handle, title) {
+  if (activeCollection === handle) return;
+
+  activeCollection = handle;
+
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
   const loader = panel.querySelector(".collection-product-loader");
 
   panel.classList.remove("element-hide");
-  panel.querySelector(".collections-productlist-title").textContent = titleText;
+  panel.querySelector(".collections-productlist-title").textContent = title;
 
   loader.classList.add("active");
   container.classList.add("element-hide");
 
   fetch(`/collections/${handle}?view=ajax-search`)
-    .then(res => res.text())
+    .then(r => r.text())
     .then(html => {
       container.innerHTML = html;
       loader.classList.remove("active");
       container.classList.remove("element-hide");
     })
-    .catch(() => {
-      loader.classList.remove("active");
-    });
+    .catch(() => loader.classList.remove("active"));
 }
 
 /* ======================================
@@ -229,4 +230,5 @@ function resetGrandChild() {
 
 function resetCollection() {
   document.getElementById("js-collections").classList.add("element-hide");
+  activeCollection = null;
 }
