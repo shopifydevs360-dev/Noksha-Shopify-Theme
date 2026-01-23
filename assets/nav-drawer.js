@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   BREAKPOINT DETECTION
+   BREAKPOINT DETECTION (MOBILE + TABLET)
 ====================================== */
 const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
@@ -70,27 +70,18 @@ function initNavDrawer() {
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
     parent.addEventListener(triggerEvent, e => {
-
-      const hasChildren = parent.dataset.hasChildren === "true";
-      const isCollection = parent.dataset.isCollection === "true";
-
-      // 🚨 Only block navigation when needed
-      if (isMobileView && (hasChildren || isCollection)) {
-        e.preventDefault();
-      } else {
-        return; // allow normal link navigation
-      }
+      if (isMobileView) e.preventDefault();
 
       resetAllPanels();
 
-      if (hasChildren) {
+      if (parent.dataset.hasChildren === "true") {
         openChildPanel(
           parent.dataset.parentHandle,
           parent.textContent.trim()
         );
       }
 
-      if (isCollection) {
+      if (parent.dataset.isCollection === "true") {
         openCollectionPanel(
           parent.dataset.collectionHandle,
           parent.textContent.trim()
@@ -102,27 +93,19 @@ function initNavDrawer() {
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
     child.addEventListener(triggerEvent, e => {
-
-      const hasChildren = child.dataset.hasChildren === "true";
-      const isCollection = child.dataset.isCollection === "true";
-
-      if (isMobileView && (hasChildren || isCollection)) {
-        e.preventDefault();
-      } else {
-        return;
-      }
+      if (isMobileView) e.preventDefault();
 
       resetGrandChild();
       resetCollection();
 
-      if (hasChildren) {
+      if (child.dataset.hasChildren === "true") {
         openGrandChildPanel(
           child.dataset.childHandle,
           child.textContent.trim()
         );
       }
 
-      if (isCollection) {
+      if (child.dataset.isCollection === "true") {
         openCollectionPanel(
           child.dataset.collectionHandle,
           child.textContent.trim()
@@ -134,19 +117,14 @@ function initNavDrawer() {
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
     gc.addEventListener(triggerEvent, e => {
+      if (isMobileView) e.preventDefault();
 
-      const isCollection = gc.dataset.isCollection === "true";
-
-      if (isMobileView && isCollection) {
-        e.preventDefault();
-      } else {
-        return;
+      if (gc.dataset.isCollection === "true") {
+        openCollectionPanel(
+          gc.dataset.collectionHandle,
+          gc.textContent.trim()
+        );
       }
-
-      openCollectionPanel(
-        gc.dataset.collectionHandle,
-        gc.textContent.trim()
-      );
     });
   });
 }
