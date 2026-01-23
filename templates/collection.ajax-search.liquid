@@ -1,0 +1,10 @@
+{% layout none %}
+
+<div class="search-results-list">
+  {% for product in collection.products limit: 20 %}
+    {% render 'predictive-product-item',
+      product: product,
+      enable_search_data: true
+    %}
+  {% endfor %}
+</div>
