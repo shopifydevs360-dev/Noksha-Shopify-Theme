@@ -14,8 +14,10 @@ function initNavDrawer() {
     parent.addEventListener("mouseenter", () => {
       resetAllPanels();
 
+      const parentHandle = parent.dataset.parentHandle;
+
       if (parent.dataset.hasChildren === "true") {
-        openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
+        openChildPanel(parentHandle, parent.textContent.trim());
       }
 
       if (parent.dataset.isCollection === "true") {
@@ -30,6 +32,7 @@ function initNavDrawer() {
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
     child.addEventListener("mouseenter", () => {
+      resetGrandChild();
       resetCollection();
 
       if (child.dataset.hasChildren === "true") {
@@ -48,11 +51,10 @@ function initNavDrawer() {
     });
   });
 
-  /* ---------- ✅ GRAND CHILD (FIXED) ---------- */
+  /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
     gc.addEventListener("mouseenter", () => {
-      /* 🔑 DO NOT reset other panels */
-      /* 🔑 Only control collection panel */
+      resetCollection();
 
       if (gc.dataset.isCollection === "true") {
         openCollectionPanel(
@@ -99,16 +101,15 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL (ALL LEVELS)
+   COLLECTION PANEL (PARENT / CHILD / GRANDCHILD)
 ====================================== */
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
 
-  /* 🔑 CRITICAL FIX */
-  panel.classList.remove("hide");
   drawer.classList.add("panel-product");
+  panel.classList.remove("hide");
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
@@ -120,12 +121,12 @@ function openCollectionPanel(handle, titleText) {
 }
 
 /* ======================================
-   BACK BUTTONS
+   BACK BUTTONS (HIERARCHY SAFE)
 ====================================== */
 function initBackButtons() {
   document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
-    resetCollection();
     resetGrandChild();
+    resetCollection();
     resetChild();
   });
 
