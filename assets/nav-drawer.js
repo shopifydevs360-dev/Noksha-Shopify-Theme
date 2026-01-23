@@ -51,10 +51,14 @@ function initNavDrawer() {
     });
   });
 
-  /* ---------- GRAND CHILD ---------- */
+  /* ---------- GRAND CHILD (FIXED) ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
     gc.addEventListener("mouseenter", () => {
-      resetCollection();
+
+      /* 🔑 IMPORTANT:
+         Do NOT resetCollection() here.
+         Grandchild collections must behave like parent & child.
+      */
 
       if (gc.dataset.isCollection === "true") {
         openCollectionPanel(
@@ -101,7 +105,7 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL (PARENT / CHILD / GRANDCHILD)
+   COLLECTION PANEL
 ====================================== */
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
@@ -121,7 +125,7 @@ function openCollectionPanel(handle, titleText) {
 }
 
 /* ======================================
-   BACK BUTTONS (HIERARCHY SAFE)
+   BACK BUTTONS
 ====================================== */
 function initBackButtons() {
   document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
