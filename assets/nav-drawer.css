@@ -20,7 +20,7 @@
   }
   .nav-template {
       display: flex;
-      gap: 2rem;
+      gap: 4rem;
   }
   .element-hide{
     display: none;
