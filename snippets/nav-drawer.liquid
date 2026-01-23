@@ -59,7 +59,7 @@
             </div>
         </div>
             <!-- ================= CHILD PANEL ================= -->
-    <div id="js-child-linklist" class="child-linklist hide">
+    <div id="js-child-linklist" class="child-linklist element-hide">
     <div class="child-linklist-inner">
         <div class="child-linklist-header">
         <button id="js-back-to-parent" class="back-to-parent-btn">
@@ -87,7 +87,7 @@
                 {% endif %}
 
                 <li
-                class="child-menu-item hide"
+                class="child-menu-item"
                 data-parent="{{ parent_handle }}"
                 data-child-handle="{{ child.handle }}"
                 data-has-children="{% if child_has_children %}true{% else %}false{% endif %}"
@@ -111,7 +111,7 @@
 
 
     <!-- ================= GRAND CHILD PANEL ================= -->
-    <div id="js-grandchild-linklist" class="grandchild-linklist hide">
+    <div id="js-grandchild-linklist" class="grandchild-linklist element-hide">
     <div class="grandchild-linklist-inner">
         <div class="grandchild-linklist-header">
         <button id="js-back-to-child" class="back-to-child-btn">
@@ -134,7 +134,7 @@
                     {% endif %}
 
                     <li
-                    class="grandchild-menu-item hide"
+                    class="grandchild-menu-item"
                     data-parent="{{ parent.handle }}"
                     data-child="{{ child.handle }}"
                     data-is-collection="{% if grandchild_is_collection %}true{% else %}false{% endif %}"
@@ -159,7 +159,7 @@
 
 
   <!-- ================= COLLECTION PRODUCTS PANEL ================= -->
-  <div id="js-collections" class="collections-productlist hide">
+  <div id="js-collections" class="collections-productlist element-hide">
     <div class="collections-productlist-inner">
       <div class="collections-productlist-header">
         <button id="js-back-to-collections" class="back-to-collections-btn">
