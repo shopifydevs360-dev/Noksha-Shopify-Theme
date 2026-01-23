@@ -3,7 +3,7 @@
     max-width: 100%;
     background: #f0eee8;
   }
-  .shopify-section-nav.panel-1 {
+  /* .shopify-section-nav.panel-1 {
     max-width: 50rem;
   }
   .shopify-section-nav.panel-product {
@@ -17,7 +17,7 @@
   }
   .shopify-section-nav.panel-1.panel-2.panel-product {
     max-width: 100%;
-  }
+  } */
   .nav-template {
       display: flex;
       gap: 2rem;
