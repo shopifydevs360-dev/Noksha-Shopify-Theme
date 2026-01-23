@@ -40,6 +40,10 @@ function disableLink(item) {
   const link = item.querySelector("a");
   if (!link) return;
 
+  if (!link.dataset.href) {
+    link.dataset.href = link.getAttribute("href");
+  }
+
   link.removeAttribute("href");
 }
 
@@ -56,12 +60,11 @@ function initNavDrawer() {
       const hasChildren = parent.dataset.hasChildren === "true";
       const isCollection = parent.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren || isCollection)) e.preventDefault();
+      if (isMobileView && (hasChildren || isCollection)) {
+        e.preventDefault();
+      }
 
-      /* ✅ DO NOT collapse width */
-      resetChild();
-      resetGrandChild();
-      resetCollection();
+      resetAllPanels();
 
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
@@ -82,9 +85,10 @@ function initNavDrawer() {
       const hasChildren = child.dataset.hasChildren === "true";
       const isCollection = child.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren || isCollection)) e.preventDefault();
+      if (isMobileView && (hasChildren || isCollection)) {
+        e.preventDefault();
+      }
 
-      /* ✅ keep panel-1 */
       resetGrandChild();
       resetCollection();
 
@@ -109,10 +113,9 @@ function initNavDrawer() {
     gc.addEventListener(triggerEvent, e => {
       const isCollection = gc.dataset.isCollection === "true";
 
-      if (isMobileView && isCollection) e.preventDefault();
-
-      /* ✅ keep panel-1 + panel-2 */
-      resetCollection();
+      if (isMobileView && isCollection) {
+        e.preventDefault();
+      }
 
       if (isCollection) {
         openCollectionPanel(
@@ -159,8 +162,10 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL + LOADER (STABLE)
+   COLLECTION PANEL + LOADER
 ====================================== */
+let activeCollectionHandle = null;
+
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
@@ -172,13 +177,16 @@ function openCollectionPanel(handle, titleText) {
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  /* 🔑 FORCE CLEAN STATE */
+  /* SHOW LOADER */
   loader.classList.add("active");
   container.classList.add("element-hide");
 
+  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
+      activeCollectionHandle = handle;
+
       container.innerHTML = html;
       loader.classList.remove("active");
       container.classList.remove("element-hide");
@@ -189,11 +197,13 @@ function openCollectionPanel(handle, titleText) {
 }
 
 /* ======================================
-   BACK BUTTONS (FULL RESET OK)
+   BACK BUTTONS
 ====================================== */
 function initBackButtons() {
   document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
-    resetAllPanels();
+    resetGrandChild();
+    resetCollection();
+    resetChild();
   });
 
   document.getElementById("js-back-to-child")?.addEventListener("click", () => {
@@ -233,6 +243,9 @@ function resetCollection() {
   panel.classList.add("element-hide");
   loader.classList.remove("active");
   container.classList.add("element-hide");
+
+  /* 🔑 CRITICAL FIX */
+  activeCollectionHandle = null;
 
   document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
