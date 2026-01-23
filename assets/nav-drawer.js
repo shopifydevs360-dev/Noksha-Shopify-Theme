@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   BREAKPOINT
+   BREAKPOINT DETECTION
 ====================================== */
 const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
@@ -17,15 +17,23 @@ function initMobileLinkControl() {
 
   const drawer = document.getElementById("js-nav-drawer");
 
-  drawer.querySelectorAll('[data-level="parent"], .child-menu-item, .grandchild-menu-item')
-    .forEach(item => {
-      if (
-        item.dataset.hasChildren === "true" ||
-        item.dataset.isCollection === "true"
-      ) {
-        disableLink(item);
-      }
-    });
+  drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
+    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
+      disableLink(item);
+    }
+  });
+
+  drawer.querySelectorAll(".child-menu-item").forEach(item => {
+    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
+      disableLink(item);
+    }
+  });
+
+  drawer.querySelectorAll(".grandchild-menu-item").forEach(item => {
+    if (item.dataset.isCollection === "true") {
+      disableLink(item);
+    }
+  });
 }
 
 function disableLink(item) {
@@ -40,15 +48,15 @@ function disableLink(item) {
 }
 
 /* ======================================
-   NAV DRAWER
+   NAV DRAWER MAIN
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
-  const eventType = isMobileView ? "click" : "mouseenter";
+  const triggerEvent = isMobileView ? "click" : "mouseenter";
 
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
-    parent.addEventListener(eventType, e => {
+    parent.addEventListener(triggerEvent, e => {
       const hasChildren = parent.dataset.hasChildren === "true";
       const isCollection = parent.dataset.isCollection === "true";
 
@@ -56,13 +64,8 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      /* ❌ CLOSE EVERYTHING ONLY IF DEAD-END */
-      if (!hasChildren && !isCollection) {
-        resetAllPanels();
-        return;
-      }
+      resetAllPanels();
 
-      /* ✅ KEEP COLLECTION OPEN IF SAME FLOW */
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
       }
@@ -78,7 +81,7 @@ function initNavDrawer() {
 
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
-    child.addEventListener(eventType, e => {
+    child.addEventListener(triggerEvent, e => {
       const hasChildren = child.dataset.hasChildren === "true";
       const isCollection = child.dataset.isCollection === "true";
 
@@ -86,11 +89,8 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      if (!hasChildren && !isCollection) {
-        resetGrandChild();
-        resetCollection();
-        return;
-      }
+      resetGrandChild();
+      resetCollection();
 
       if (hasChildren) {
         openGrandChildPanel(
@@ -110,22 +110,19 @@ function initNavDrawer() {
 
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
-    gc.addEventListener(eventType, e => {
+    gc.addEventListener(triggerEvent, e => {
       const isCollection = gc.dataset.isCollection === "true";
 
       if (isMobileView && isCollection) {
         e.preventDefault();
       }
 
-      if (!isCollection) {
-        resetCollection();
-        return;
+      if (isCollection) {
+        openCollectionPanel(
+          gc.dataset.collectionHandle,
+          gc.textContent.trim()
+        );
       }
-
-      openCollectionPanel(
-        gc.dataset.collectionHandle,
-        gc.textContent.trim()
-      );
     });
   });
 }
@@ -133,28 +130,31 @@ function initNavDrawer() {
 /* ======================================
    CHILD PANEL
 ====================================== */
-function openChildPanel(parentHandle, title) {
+function openChildPanel(parentHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-child-linklist");
 
+  drawer.classList.add("panel-1");
   panel.classList.remove("element-hide");
-  panel.querySelector(".child-linklist-title").textContent = title;
+
+  panel.querySelector(".child-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".child-menu-item").forEach(item => {
     item.classList.toggle("element-hide", item.dataset.parent !== parentHandle);
   });
-
-  /* 🔑 IMPORTANT */
-  resetGrandChild();
 }
 
 /* ======================================
    GRAND CHILD PANEL
 ====================================== */
-function openGrandChildPanel(childHandle, title) {
+function openGrandChildPanel(childHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
 
+  drawer.classList.add("panel-2");
   panel.classList.remove("element-hide");
-  panel.querySelector(".grandchild-linklist-title").textContent = title;
+
+  panel.querySelector(".grandchild-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
     item.classList.toggle("element-hide", item.dataset.child !== childHandle);
@@ -162,33 +162,38 @@ function openGrandChildPanel(childHandle, title) {
 }
 
 /* ======================================
-   COLLECTION PANEL
+   COLLECTION PANEL + LOADER
 ====================================== */
-let activeCollection = null;
+let activeCollectionHandle = null;
 
-function openCollectionPanel(handle, title) {
-  if (activeCollection === handle) return;
-
-  activeCollection = handle;
-
+function openCollectionPanel(handle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
   const loader = panel.querySelector(".collection-product-loader");
 
+  drawer.classList.add("panel-product");
   panel.classList.remove("element-hide");
-  panel.querySelector(".collections-productlist-title").textContent = title;
 
+  panel.querySelector(".collections-productlist-title").textContent = titleText;
+
+  /* SHOW LOADER */
   loader.classList.add("active");
   container.classList.add("element-hide");
 
+  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
-    .then(r => r.text())
+    .then(res => res.text())
     .then(html => {
+      activeCollectionHandle = handle;
+
       container.innerHTML = html;
       loader.classList.remove("active");
       container.classList.remove("element-hide");
     })
-    .catch(() => loader.classList.remove("active"));
+    .catch(() => {
+      loader.classList.remove("active");
+    });
 }
 
 /* ======================================
@@ -222,13 +227,25 @@ function resetAllPanels() {
 
 function resetChild() {
   document.getElementById("js-child-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-1");
 }
 
 function resetGrandChild() {
   document.getElementById("js-grandchild-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-2");
 }
 
 function resetCollection() {
-  document.getElementById("js-collections").classList.add("element-hide");
-  activeCollection = null;
+  const panel = document.getElementById("js-collections");
+  const loader = panel.querySelector(".collection-product-loader");
+  const container = document.getElementById("CollectionProducts");
+
+  panel.classList.add("element-hide");
+  loader.classList.remove("active");
+  container.classList.add("element-hide");
+
+  /* 🔑 CRITICAL FIX */
+  activeCollectionHandle = null;
+
+  document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
