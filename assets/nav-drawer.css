@@ -45,3 +45,6 @@
   max-height: 80vh;
   padding: 0 1rem;
 }
+.shopify-section-nav.is-switching {
+  pointer-events: none;
+}

@@ -5,17 +5,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   BREAKPOINT DETECTION
+   BREAKPOINT DETECTION (dynamic)
 ====================================== */
-const isMobileView = window.matchMedia("(max-width: 991px)").matches;
+function isMobile() {
+  return window.matchMedia("(max-width: 991px)").matches;
+}
 
 /* ======================================
    MOBILE LINK CONTROL
 ====================================== */
 function initMobileLinkControl() {
-  if (!isMobileView) return;
+  if (!isMobile()) return;
 
   const drawer = document.getElementById("js-nav-drawer");
+  if (!drawer) return;
 
   drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
     if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
@@ -48,11 +51,22 @@ function disableLink(item) {
 }
 
 /* ======================================
+   GLOBAL STATE (prevents jumping + double triggers)
+====================================== */
+let activeCollectionHandle = null;
+let activeParentHandle = null;
+let activeChildHandle = null;
+
+let currentFetchRequestId = 0;
+
+/* ======================================
    NAV DRAWER MAIN
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
-  const triggerEvent = isMobileView ? "click" : "mouseenter";
+  if (!drawer) return;
+
+  const triggerEvent = isMobile() ? "click" : "mouseenter";
 
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
@@ -60,21 +74,32 @@ function initNavDrawer() {
       const hasChildren = parent.dataset.hasChildren === "true";
       const isCollection = parent.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren || isCollection)) {
+      if (isMobile() && (hasChildren || isCollection)) {
         e.preventDefault();
       }
 
+      const parentHandle = parent.dataset.parentHandle;
+      const title = parent.textContent.trim();
+
+      // ✅ Prevent layout jumping from re-triggering same hover repeatedly
+      if (!isMobile() && activeParentHandle === parentHandle && !isCollection) {
+        return;
+      }
+
+      drawer.classList.add("is-switching");
+      setTimeout(() => drawer.classList.remove("is-switching"), 80);
+
       resetAllPanels();
 
+      activeParentHandle = parentHandle;
+      activeChildHandle = null;
+
       if (hasChildren) {
-        openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
+        openChildPanel(parentHandle, title);
       }
 
       if (isCollection) {
-        openCollectionPanel(
-          parent.dataset.collectionHandle,
-          parent.textContent.trim()
-        );
+        openCollectionPanel(parent.dataset.collectionHandle, title);
       }
     });
   });
@@ -85,25 +110,32 @@ function initNavDrawer() {
       const hasChildren = child.dataset.hasChildren === "true";
       const isCollection = child.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren || isCollection)) {
+      if (isMobile() && (hasChildren || isCollection)) {
         e.preventDefault();
       }
+
+      const childHandle = child.dataset.childHandle;
+      const title = child.textContent.trim();
+
+      // ✅ Prevent re-open same child panel on hover
+      if (!isMobile() && activeChildHandle === childHandle && !isCollection) {
+        return;
+      }
+
+      drawer.classList.add("is-switching");
+      setTimeout(() => drawer.classList.remove("is-switching"), 80);
 
       resetGrandChild();
       resetCollection();
 
+      activeChildHandle = childHandle;
+
       if (hasChildren) {
-        openGrandChildPanel(
-          child.dataset.childHandle,
-          child.textContent.trim()
-        );
+        openGrandChildPanel(childHandle, title);
       }
 
       if (isCollection) {
-        openCollectionPanel(
-          child.dataset.collectionHandle,
-          child.textContent.trim()
-        );
+        openCollectionPanel(child.dataset.collectionHandle, title);
       }
     });
   });
@@ -113,15 +145,13 @@ function initNavDrawer() {
     gc.addEventListener(triggerEvent, e => {
       const isCollection = gc.dataset.isCollection === "true";
 
-      if (isMobileView && isCollection) {
+      if (isMobile() && isCollection) {
         e.preventDefault();
       }
 
       if (isCollection) {
-        openCollectionPanel(
-          gc.dataset.collectionHandle,
-          gc.textContent.trim()
-        );
+        const title = gc.textContent.trim();
+        openCollectionPanel(gc.dataset.collectionHandle, title);
       }
     });
   });
@@ -133,11 +163,13 @@ function initNavDrawer() {
 function openChildPanel(parentHandle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-child-linklist");
+  if (!drawer || !panel) return;
 
   drawer.classList.add("panel-1");
   panel.classList.remove("element-hide");
 
-  panel.querySelector(".child-linklist-title").textContent = titleText;
+  const titleEl = panel.querySelector(".child-linklist-title");
+  if (titleEl) titleEl.textContent = titleText;
 
   panel.querySelectorAll(".child-menu-item").forEach(item => {
     item.classList.toggle("element-hide", item.dataset.parent !== parentHandle);
@@ -150,11 +182,13 @@ function openChildPanel(parentHandle, titleText) {
 function openGrandChildPanel(childHandle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
+  if (!drawer || !panel) return;
 
   drawer.classList.add("panel-2");
   panel.classList.remove("element-hide");
 
-  panel.querySelector(".grandchild-linklist-title").textContent = titleText;
+  const titleEl = panel.querySelector(".grandchild-linklist-title");
+  if (titleEl) titleEl.textContent = titleText;
 
   panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
     item.classList.toggle("element-hide", item.dataset.child !== childHandle);
@@ -162,37 +196,59 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL + LOADER
+   COLLECTION PANEL + LOADER ✅ FIXED
 ====================================== */
-let activeCollectionHandle = null;
-
 function openCollectionPanel(handle, titleText) {
+  if (!handle) return;
+
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
+
+  if (!drawer || !panel || !container) return;
+
   const loader = panel.querySelector(".collection-product-loader");
 
   drawer.classList.add("panel-product");
   panel.classList.remove("element-hide");
 
-  panel.querySelector(".collections-productlist-title").textContent = titleText;
+  const titleEl = panel.querySelector(".collections-productlist-title");
+  if (titleEl) titleEl.textContent = titleText;
 
-  /* SHOW LOADER */
-  loader.classList.add("active");
+  // ✅ If same collection already opened, don’t refetch
+  if (activeCollectionHandle === handle && container.innerHTML.trim() !== "") {
+    if (loader) loader.classList.remove("active");
+    container.classList.remove("element-hide");
+    return;
+  }
+
+  activeCollectionHandle = handle;
+
+  // ✅ Reset UI for loader
+  if (loader) loader.classList.add("active");
   container.classList.add("element-hide");
+  container.innerHTML = ""; // optional (prevents old products flash)
 
-  /* FETCH PRODUCTS */
+  // ✅ requestId prevents old fetch from overriding
+  const requestId = ++currentFetchRequestId;
+
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
-      activeCollectionHandle = handle;
+      // ✅ Ignore old responses
+      if (requestId !== currentFetchRequestId) return;
 
       container.innerHTML = html;
-      loader.classList.remove("active");
+
+      if (loader) loader.classList.remove("active");
       container.classList.remove("element-hide");
     })
     .catch(() => {
-      loader.classList.remove("active");
+      if (requestId !== currentFetchRequestId) return;
+
+      if (loader) loader.classList.remove("active");
+      container.classList.remove("element-hide");
+      container.innerHTML = `<p style="padding:10px;">Failed to load products.</p>`;
     });
 }
 
@@ -217,7 +273,7 @@ function initBackButtons() {
 }
 
 /* ======================================
-   RESET HELPERS
+   RESET HELPERS ✅ IMPROVED
 ====================================== */
 function resetAllPanels() {
   resetCollection();
@@ -226,26 +282,42 @@ function resetAllPanels() {
 }
 
 function resetChild() {
-  document.getElementById("js-child-linklist").classList.add("element-hide");
-  document.getElementById("js-nav-drawer").classList.remove("panel-1");
+  const childPanel = document.getElementById("js-child-linklist");
+  const drawer = document.getElementById("js-nav-drawer");
+
+  if (childPanel) childPanel.classList.add("element-hide");
+  if (drawer) drawer.classList.remove("panel-1");
 }
 
 function resetGrandChild() {
-  document.getElementById("js-grandchild-linklist").classList.add("element-hide");
-  document.getElementById("js-nav-drawer").classList.remove("panel-2");
+  const gcPanel = document.getElementById("js-grandchild-linklist");
+  const drawer = document.getElementById("js-nav-drawer");
+
+  if (gcPanel) gcPanel.classList.add("element-hide");
+  if (drawer) drawer.classList.remove("panel-2");
 }
 
 function resetCollection() {
   const panel = document.getElementById("js-collections");
-  const loader = panel.querySelector(".collection-product-loader");
+  const drawer = document.getElementById("js-nav-drawer");
   const container = document.getElementById("CollectionProducts");
 
-  panel.classList.add("element-hide");
-  loader.classList.remove("active");
-  container.classList.add("element-hide");
+  if (!panel || !drawer || !container) return;
 
-  /* 🔑 CRITICAL FIX */
+  const loader = panel.querySelector(".collection-product-loader");
+
+  panel.classList.add("element-hide");
+
+  if (loader) loader.classList.remove("active");
+
+  container.classList.add("element-hide");
+  container.innerHTML = "";
+
+  // ✅ reset handle
   activeCollectionHandle = null;
 
-  document.getElementById("js-nav-drawer").classList.remove("panel-product");
+  drawer.classList.remove("panel-product");
+
+  // ✅ cancel any old fetch responses
+  currentFetchRequestId++;
 }
