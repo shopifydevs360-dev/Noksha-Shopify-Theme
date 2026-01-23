@@ -42,4 +42,5 @@
 .collections-productlist {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  max-height: 80vh;
 }
