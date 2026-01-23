@@ -2,5 +2,9 @@
   max-width: 50rem;
   background: #f0eee8;
 }
+.nav-template {
+    display: flex;
+    gap: 2rem;
+}
 
 
