@@ -37,8 +37,8 @@
 width: 0;
 }
 .child-linklist.active,
-.grandchild-linklist.active, {
-width: 15rem !important;
+.grandchild-linklist.active {
+width: 15rem;
 }
 .shopify-section-nav.is-switching {
   pointer-events: none;
