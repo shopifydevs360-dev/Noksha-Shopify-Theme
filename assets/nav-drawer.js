@@ -64,10 +64,7 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      /* 🔑 ONLY reset what is needed */
-      resetChild();
-      resetGrandChild();
-      resetCollection();
+      resetAllPanels();
 
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
@@ -120,8 +117,6 @@ function initNavDrawer() {
         e.preventDefault();
       }
 
-      resetCollection();
-
       if (isCollection) {
         openCollectionPanel(
           gc.dataset.collectionHandle,
@@ -167,8 +162,10 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   COLLECTION PANEL + LOADER (FIXED)
+   COLLECTION PANEL + LOADER
 ====================================== */
+let activeCollectionHandle = null;
+
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
@@ -180,16 +177,17 @@ function openCollectionPanel(handle, titleText) {
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  /* 🔥 FORCE RESET STATE */
+  /* SHOW LOADER */
   loader.classList.add("active");
   container.classList.add("element-hide");
 
+  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
-      container.innerHTML = html;
+      activeCollectionHandle = handle;
 
-      /* 🔥 ALWAYS HIDE LOADER */
+      container.innerHTML = html;
       loader.classList.remove("active");
       container.classList.remove("element-hide");
     })
@@ -219,8 +217,14 @@ function initBackButtons() {
 }
 
 /* ======================================
-   RESET HELPERS (STABLE)
+   RESET HELPERS
 ====================================== */
+function resetAllPanels() {
+  resetCollection();
+  resetGrandChild();
+  resetChild();
+}
+
 function resetChild() {
   document.getElementById("js-child-linklist").classList.add("element-hide");
   document.getElementById("js-nav-drawer").classList.remove("panel-1");
@@ -239,6 +243,9 @@ function resetCollection() {
   panel.classList.add("element-hide");
   loader.classList.remove("active");
   container.classList.add("element-hide");
+
+  /* 🔑 CRITICAL FIX */
+  activeCollectionHandle = null;
 
   document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
