@@ -52,33 +52,86 @@
     </div>
   </div>
 
-  <!-- ================= CHILD PANEL ================= -->
-  <div id="js-child-linklist" class="child-linklist hide">
+    <!-- ================= CHILD PANEL ================= -->
+    <div id="js-child-linklist" class="child-linklist hide">
     <div class="child-linklist-inner">
-      <div class="child-linklist-header">
+        <div class="child-linklist-header">
         <button id="js-back-to-parent" class="back-to-parent-btn">
-          &larr; Back
+            &larr; Back
         </button>
         <h2 class="child-linklist-title"></h2>
-      </div>
+        </div>
 
-      <ul class="child-menu"></ul>
+        <ul class="child-menu">
+        {% for parent in linklists[section.settings.primary_menu].links %}
+            {% if parent.links.size > 0 %}
+            {% assign parent_is_collection = parent.type == 'collection_link' %}
+
+            {% for child in parent.links %}
+                {% assign child_is_collection = child.type == 'collection_link' %}
+                {% assign child_has_children = child.links.size > 0 %}
+
+                <li
+                class="child-menu-item hide"
+                data-parent="{{ parent.handle }}"
+                data-has-children="{% if child_has_children %}true{% else %}false{% endif %}"
+                data-is-collection="{% if child_is_collection %}true{% else %}false{% endif %}"
+                {% if child_is_collection %}
+                    data-collection-handle="{{ child.object.handle }}"
+                {% endif %}
+                >
+                <a href="{{ child.url }}">
+                    {{ child.title }}
+                </a>
+                </li>
+            {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </ul>
     </div>
-  </div>
+    </div>
 
-  <!-- ================= GRAND CHILD PANEL ================= -->
-  <div id="js-grandchild-linklist" class="grandchild-linklist hide">
+
+    <!-- ================= GRAND CHILD PANEL ================= -->
+    <div id="js-grandchild-linklist" class="grandchild-linklist hide">
     <div class="grandchild-linklist-inner">
-      <div class="grandchild-linklist-header">
+        <div class="grandchild-linklist-header">
         <button id="js-back-to-child" class="back-to-child-btn">
-          &larr; Back
+            &larr; Back
         </button>
         <h2 class="grandchild-linklist-title"></h2>
-      </div>
+        </div>
 
-      <ul class="grandchild-menu"></ul>
+        <ul class="grandchild-menu">
+        {% for parent in linklists[section.settings.primary_menu].links %}
+            {% if parent.links.size > 0 %}
+            {% for child in parent.links %}
+                {% if child.links.size > 0 %}
+                {% for grandchild in child.links %}
+                    {% assign grandchild_is_collection = grandchild.type == 'collection_link' %}
+
+                    <li
+                    class="grandchild-menu-item hide"
+                    data-parent="{{ parent.handle }}"
+                    data-child="{{ child.handle }}"
+                    data-is-collection="{% if grandchild_is_collection %}true{% else %}false{% endif %}"
+                    {% if grandchild_is_collection %}
+                        data-collection-handle="{{ grandchild.object.handle }}"
+                    {% endif %}
+                    >
+                    <a href="{{ grandchild.url }}">
+                        {{ grandchild.title }}
+                    </a>
+                    </li>
+                {% endfor %}
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </ul>
     </div>
-  </div>
+    </div>
+
 
   <!-- ================= COLLECTION PRODUCTS PANEL ================= -->
   <div id="js-collections" class="collections-productlist hide">
