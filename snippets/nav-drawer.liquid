@@ -13,18 +13,20 @@
         <div class="primary-menu-inner">
           <ul class="nav-drawer-menu">
             {% for link in linklists[section.settings.primary_menu].links %}
-              {% assign is_collection = link.type == 'collection_link' %}
-              {% assign has_children = link.links.size > 0 %}
+            {% assign is_collection = false %}
+            {% if link.type == 'collection_link' %}
+            {% assign is_collection = true %}
+            {% endif %}
 
-              <li
-                class="nav-drawer-item"
-                data-level="parent"
-                data-has-children="{{ has_children }}"
-                data-is-collection="{{ is_collection }}"
-                {% if is_collection %}
-                  data-collection-handle="{{ link.object.handle }}"
-                {% endif %}
-              >
+            <li
+            class="nav-drawer-item"
+            data-level="parent"
+            data-has-children="{% if link.links.size > 0 %}true{% else %}false{% endif %}"
+            data-is-collection="{{ is_collection }}"
+            {% if is_collection %}
+                data-collection-handle="{{ link.object.handle }}"
+            {% endif %}
+            >
                 <a href="{{ link.url }}" class="nav-drawer-link">
                   {{ link.title }}
                 </a>
