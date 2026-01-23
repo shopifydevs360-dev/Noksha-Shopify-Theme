@@ -78,7 +78,7 @@
         "white_logo": "shopify://shop_images/Halla_Hijab_white.png",
         "brand_text": "Halla Hijab",
         "primary_menu": "main-menu",
-        "secondary_menu": "footer"
+        "secondary_menu": "main-menu"
       }
     }
   },
