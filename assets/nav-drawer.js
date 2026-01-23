@@ -16,16 +16,23 @@ function initMobileLinkControl() {
   if (!isMobileView) return;
 
   const drawer = document.getElementById("js-nav-drawer");
-  if (!drawer) return;
 
-  const shouldDisable = item =>
-    item.dataset.hasChildren === "true" ||
-    item.dataset.isCollection === "true";
+  drawer.querySelectorAll('[data-level="parent"]').forEach(item => {
+    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
+      disableLink(item);
+    }
+  });
 
-  drawer.querySelectorAll(
-    '[data-level="parent"], .child-menu-item, .grandchild-menu-item'
-  ).forEach(item => {
-    if (shouldDisable(item)) disableLink(item);
+  drawer.querySelectorAll(".child-menu-item").forEach(item => {
+    if (item.dataset.hasChildren === "true" || item.dataset.isCollection === "true") {
+      disableLink(item);
+    }
+  });
+
+  drawer.querySelectorAll(".grandchild-menu-item").forEach(item => {
+    if (item.dataset.isCollection === "true") {
+      disableLink(item);
+    }
   });
 }
 
@@ -36,6 +43,7 @@ function disableLink(item) {
   if (!link.dataset.href) {
     link.dataset.href = link.getAttribute("href");
   }
+
   link.removeAttribute("href");
 }
 
@@ -44,26 +52,25 @@ function disableLink(item) {
 ====================================== */
 function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
-  if (!drawer) return;
-
   const triggerEvent = isMobileView ? "click" : "mouseenter";
 
   /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
     parent.addEventListener(triggerEvent, e => {
-      const { hasChildren, isCollection } = parent.dataset;
+      const hasChildren = parent.dataset.hasChildren === "true";
+      const isCollection = parent.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren === "true" || isCollection === "true")) {
+      if (isMobileView && (hasChildren || isCollection)) {
         e.preventDefault();
       }
 
       resetAllPanels();
 
-      if (hasChildren === "true") {
+      if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
       }
 
-      if (isCollection === "true") {
+      if (isCollection) {
         openCollectionPanel(
           parent.dataset.collectionHandle,
           parent.textContent.trim()
@@ -75,23 +82,24 @@ function initNavDrawer() {
   /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
     child.addEventListener(triggerEvent, e => {
-      const { hasChildren, isCollection } = child.dataset;
+      const hasChildren = child.dataset.hasChildren === "true";
+      const isCollection = child.dataset.isCollection === "true";
 
-      if (isMobileView && (hasChildren === "true" || isCollection === "true")) {
+      if (isMobileView && (hasChildren || isCollection)) {
         e.preventDefault();
       }
 
       resetGrandChild();
       resetCollection();
 
-      if (hasChildren === "true") {
+      if (hasChildren) {
         openGrandChildPanel(
           child.dataset.childHandle,
           child.textContent.trim()
         );
       }
 
-      if (isCollection === "true") {
+      if (isCollection) {
         openCollectionPanel(
           child.dataset.collectionHandle,
           child.textContent.trim()
@@ -103,11 +111,13 @@ function initNavDrawer() {
   /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
     gc.addEventListener(triggerEvent, e => {
-      if (isMobileView && gc.dataset.isCollection === "true") {
+      const isCollection = gc.dataset.isCollection === "true";
+
+      if (isMobileView && isCollection) {
         e.preventDefault();
       }
 
-      if (gc.dataset.isCollection === "true") {
+      if (isCollection) {
         openCollectionPanel(
           gc.dataset.collectionHandle,
           gc.textContent.trim()
@@ -121,14 +131,16 @@ function initNavDrawer() {
    CHILD PANEL
 ====================================== */
 function openChildPanel(parentHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-child-linklist");
-  if (!panel) return;
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-1");
+  panel.classList.remove("element-hide");
+
   panel.querySelector(".child-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".child-menu-item").forEach(item => {
-    item.classList.toggle("active", item.dataset.parent === parentHandle);
+    item.classList.toggle("element-hide", item.dataset.parent !== parentHandle);
   });
 }
 
@@ -136,14 +148,16 @@ function openChildPanel(parentHandle, titleText) {
    GRAND CHILD PANEL
 ====================================== */
 function openGrandChildPanel(childHandle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
-  if (!panel) return;
 
-  panel.classList.add("active");
+  drawer.classList.add("panel-2");
+  panel.classList.remove("element-hide");
+
   panel.querySelector(".grandchild-linklist-title").textContent = titleText;
 
   panel.querySelectorAll(".grandchild-menu-item").forEach(item => {
-    item.classList.toggle("active", item.dataset.child === childHandle);
+    item.classList.toggle("element-hide", item.dataset.child !== childHandle);
   });
 }
 
@@ -153,36 +167,41 @@ function openGrandChildPanel(childHandle, titleText) {
 let activeCollectionHandle = null;
 
 function openCollectionPanel(handle, titleText) {
+  const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-collections");
   const container = document.getElementById("CollectionProducts");
-  const loader = panel?.querySelector(".collection-product-loader");
+  const loader = panel.querySelector(".collection-product-loader");
 
-  if (!panel || !container || !loader) return;
+  drawer.classList.add("panel-product");
+  panel.classList.remove("element-hide");
 
-  panel.classList.add("active");
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  if (activeCollectionHandle === handle && container.innerHTML.trim()) {
+  // If same collection already loaded, don't refetch
+  if (activeCollectionHandle === handle && container.innerHTML.trim() !== "") {
     loader.classList.remove("active");
-    container.classList.add("active");
+    container.classList.remove("element-hide");
     return;
   }
 
+  /* SHOW LOADER */
   loader.classList.add("active");
-  container.classList.remove("active");
-  container.innerHTML = "";
+  container.classList.add("element-hide");
+  container.innerHTML = ""; // Clear old content
 
+  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
       activeCollectionHandle = handle;
+
       container.innerHTML = html;
       loader.classList.remove("active");
-      container.classList.add("active");
+      container.classList.remove("element-hide");
     })
     .catch(() => {
       loader.classList.remove("active");
-      container.classList.add("active");
+      container.classList.remove("element-hide");
       container.innerHTML = "<p>Failed to load products.</p>";
     });
 }
@@ -211,27 +230,32 @@ function initBackButtons() {
    RESET HELPERS
 ====================================== */
 function resetAllPanels() {
-  resetChild();
-  resetGrandChild();
   resetCollection();
+  resetGrandChild();
+  resetChild();
 }
 
 function resetChild() {
-  document.getElementById("js-child-linklist")?.classList.remove("active");
+  document.getElementById("js-child-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-1");
 }
 
 function resetGrandChild() {
-  document.getElementById("js-grandchild-linklist")?.classList.remove("active");
+  document.getElementById("js-grandchild-linklist").classList.add("element-hide");
+  document.getElementById("js-nav-drawer").classList.remove("panel-2");
 }
 
 function resetCollection() {
   const panel = document.getElementById("js-collections");
-  const loader = panel?.querySelector(".collection-product-loader");
+  const loader = panel.querySelector(".collection-product-loader");
   const container = document.getElementById("CollectionProducts");
 
-  panel?.classList.remove("active");
-  loader?.classList.remove("active");
-  container?.classList.remove("active");
+  panel.classList.add("element-hide");
+  loader.classList.remove("active");
+  container.classList.add("element-hide");
 
+  /* 🔑 CRITICAL FIX */
   activeCollectionHandle = null;
+
+  document.getElementById("js-nav-drawer").classList.remove("panel-product");
 }
