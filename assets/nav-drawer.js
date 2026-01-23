@@ -67,7 +67,7 @@ function initNavDrawer() {
 }
 
 /* ======================================
-   PANELS
+   CHILD PANEL
 ====================================== */
 function openChildPanel(parentHandle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
@@ -83,6 +83,9 @@ function openChildPanel(parentHandle, titleText) {
   });
 }
 
+/* ======================================
+   GRAND CHILD PANEL
+====================================== */
 function openGrandChildPanel(childHandle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
   const panel = document.getElementById("js-grandchild-linklist");
@@ -98,7 +101,7 @@ function openGrandChildPanel(childHandle, titleText) {
 }
 
 /* ======================================
-   ✅ FIXED COLLECTION LOADER
+   COLLECTION PANEL (PARENT / CHILD / GRANDCHILD)
 ====================================== */
 function openCollectionPanel(handle, titleText) {
   const drawer = document.getElementById("js-nav-drawer");
@@ -110,7 +113,6 @@ function openCollectionPanel(handle, titleText) {
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  /* IMPORTANT FIX */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
@@ -119,21 +121,32 @@ function openCollectionPanel(handle, titleText) {
 }
 
 /* ======================================
-   BACK BUTTONS
+   BACK BUTTONS (HIERARCHY SAFE)
 ====================================== */
 function initBackButtons() {
-  document.getElementById("js-back-to-parent")?.addEventListener("click", resetChild);
-  document.getElementById("js-back-to-child")?.addEventListener("click", resetGrandChild);
-  document.getElementById("js-back-to-collections")?.addEventListener("click", resetCollection);
+  document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
+    resetGrandChild();
+    resetCollection();
+    resetChild();
+  });
+
+  document.getElementById("js-back-to-child")?.addEventListener("click", () => {
+    resetCollection();
+    resetGrandChild();
+  });
+
+  document.getElementById("js-back-to-collections")?.addEventListener("click", () => {
+    resetCollection();
+  });
 }
 
 /* ======================================
-   RESET
+   RESET HELPERS
 ====================================== */
 function resetAllPanels() {
-  resetChild();
-  resetGrandChild();
   resetCollection();
+  resetGrandChild();
+  resetChild();
 }
 
 function resetChild() {
