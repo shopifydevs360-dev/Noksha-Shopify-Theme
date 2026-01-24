@@ -12,6 +12,13 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
+        "custom_filter_aYWtBd": {
+          "type": "custom-filter",
+          "settings": {
+            "filter_title": "Test",
+            "custom_filter_tags": "ta"
+          }
+        },
         "color_filter_D8GdUg": {
           "type": "color-filter",
           "settings": {}
@@ -30,6 +37,7 @@
         }
       },
       "block_order": [
+        "custom_filter_aYWtBd",
         "color_filter_D8GdUg",
         "collection_filter_tN3AFm",
         "vendor_filter_enV8mP",
