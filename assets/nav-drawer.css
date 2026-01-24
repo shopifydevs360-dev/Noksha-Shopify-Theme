@@ -71,3 +71,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+.shopify-section-nav button svg {
+    width: 1em;
+    margin-bottom: -2px;
+}
