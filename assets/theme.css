@@ -264,13 +264,13 @@ h6, .h6 { font-size: calc(var(--font-h6-size, 16px) * 0.9); }
    LINKS
 ------------------------------- */
 a {
-  color: rgb(var(--color-body-link));
+  color: rgb(var(--color-link));
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: rgb(var(--color-body-link-hover));
+  color: rgb(var(--color-link-hover));
 }
 /* ------------------------------
    RTL Mode
