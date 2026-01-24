@@ -177,106 +177,44 @@
       ],
       "default": "section-light"
     },
+  ],
+  "blocks": [
     {
-      "type": "header",
-      "content": "Filter Settings"
+      "type": "availablity-filter",
+      "name": "Availability Filter",
+      "limit": 1
     },
     {
-      "type": "checkbox",
-      "id": "enable_availability",
-      "label": "Enable Availability Filter",
-      "default": true
+      "type": "collection-filter",
+      "name": "Collection Filter",
+      "limit": 1
     },
     {
-      "type": "checkbox",
-      "id": "enable_collection",
-      "label": "Enable Collection Filter",
-      "default": true
+      "type": "vendor-filter",
+      "name": "Vendor Filter",
+      "limit": 1
     },
     {
-      "type": "text",
-      "id": "specific_collections",
-      "label": "Specific Collections",
-      "info": "Enter collection handles separated by commas. Leave empty to show all collections."
+      "type": "color-filter",
+      "name": "Color Filter",
+      "limit": 1
     },
     {
-      "type": "checkbox",
-      "id": "enable_brand",
-      "label": "Enable Brand Filter",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "specific_brands",
-      "label": "Specific Brands",
-      "info": "Enter brand names separated by commas. Leave empty to show all brands."
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_color",
-      "label": "Enable Color Filter",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "specific_colors",
-      "label": "specific Colors",
-      "info": "Enter color names separated by commas. Leave empty to show all colors."
-    },
-    {
-      "type": "header",
-      "content": "Custom Filters"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_custom_filter_1",
-      "label": "Enable Custom Filter 1",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "custom_filter_1_title",
-      "label": "Filter 1 Title"
-    },
-    {
-      "type": "text",
-      "id": "custom_filter_1_tags",
-      "label": "Filter 1 Product Tags",
-      "info": "Enter product tags separated by commas."
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_custom_filter_2",
-      "label": "Enable Custom Filter 2",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "custom_filter_2_title",
-      "label": "Filter 2 Title"
-    },
-    {
-      "type": "text",
-      "id": "custom_filter_2_tags",
-      "label": "Filter 2 Product Tags",
-      "info": "Enter product tags separated by commas."
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_custom_filter_3",
-      "label": "Enable Custom Filter 3",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "custom_filter_3_title",
-      "label": "Filter 3 Title"
-    },
-    {
-      "type": "text",
-      "id": "custom_filter_3_tags",
-      "label": "Filter 3 Product Tags",
-      "info": "Enter product tags separated by commas."
+      "type": "custom-filter",
+      "name": "Custom Filter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "custom_filter_tags",
+          "label": "Filter Product Tags",
+          "info": "Enter product tags separated by commas."
+        }
+      ]
     }
   ]
 }
