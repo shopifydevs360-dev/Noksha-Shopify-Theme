@@ -12,20 +12,15 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
-        "custom_filter_aYWtBd": {
-          "type": "custom-filter",
-          "settings": {
-            "filter_title": "Test",
-            "custom_filter_tags": "ta"
-          }
-        },
         "color_filter_D8GdUg": {
           "type": "color-filter",
           "settings": {}
         },
         "collection_filter_tN3AFm": {
           "type": "collection-filter",
-          "settings": {}
+          "settings": {
+            "collection_menu": ""
+          }
         },
         "vendor_filter_enV8mP": {
           "type": "vendor-filter",
@@ -37,7 +32,6 @@
         }
       },
       "block_order": [
-        "custom_filter_aYWtBd",
         "color_filter_D8GdUg",
         "collection_filter_tN3AFm",
         "vendor_filter_enV8mP",
@@ -49,7 +43,7 @@
         "grid_columns_desktop": "3",
         "enable_pagination": true,
         "products_per_page": 4,
-        "pagination_type": "load_more_button",
+        "pagination_type": "pagination_by_number",
         "enable_sorting": true,
         "enable_filter": true,
         "custom_class": "",
