@@ -65,3 +65,9 @@
     font-weight: 600;
     width: fit-content;
 }
+.shopify-section-nav button {
+    font-size: 0.8rem;
+    background: transparent;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
