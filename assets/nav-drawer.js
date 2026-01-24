@@ -10,25 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
 const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
 /* ======================================
-   ACTIVE STATE HELPERS
-====================================== */
-let activeMenuItem = null;
-
-function setActiveItem(item) {
-  clearActiveItems();
-  activeMenuItem = item;
-  item.classList.add("active");
-}
-
-function clearActiveItems() {
-  document
-    .querySelectorAll(
-      '[data-level="parent"], .child-menu-item, .grandchild-menu-item'
-    )
-    .forEach(el => el.classList.remove("active"));
-}
-
-/* ======================================
    MOBILE LINK CONTROL
 ====================================== */
 function initMobileLinkControl() {
@@ -87,7 +68,6 @@ function initNavDrawer() {
 
       if (hasChildren) {
         openChildPanel(parent.dataset.parentHandle, parent.textContent.trim());
-        setActiveItem(parent);
       }
 
       if (isCollection) {
@@ -95,7 +75,6 @@ function initNavDrawer() {
           parent.dataset.collectionHandle,
           parent.textContent.trim()
         );
-        setActiveItem(parent);
       }
     });
   });
@@ -118,7 +97,6 @@ function initNavDrawer() {
           child.dataset.childHandle,
           child.textContent.trim()
         );
-        setActiveItem(child);
       }
 
       if (isCollection) {
@@ -126,7 +104,6 @@ function initNavDrawer() {
           child.dataset.collectionHandle,
           child.textContent.trim()
         );
-        setActiveItem(child);
       }
     });
   });
@@ -145,7 +122,6 @@ function initNavDrawer() {
           gc.dataset.collectionHandle,
           gc.textContent.trim()
         );
-        setActiveItem(gc);
       }
     });
   });
@@ -201,13 +177,16 @@ function openCollectionPanel(handle, titleText) {
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
+  /* SHOW LOADER */
   loader.classList.add("active");
   container.classList.add("element-hide");
 
+  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
       activeCollectionHandle = handle;
+
       container.innerHTML = html;
       loader.classList.remove("active");
       container.classList.remove("element-hide");
@@ -222,7 +201,9 @@ function openCollectionPanel(handle, titleText) {
 ====================================== */
 function initBackButtons() {
   document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
-    resetAllPanels();
+    resetGrandChild();
+    resetCollection();
+    resetChild();
   });
 
   document.getElementById("js-back-to-child")?.addEventListener("click", () => {
@@ -242,7 +223,6 @@ function resetAllPanels() {
   resetCollection();
   resetGrandChild();
   resetChild();
-  clearActiveItems();
 }
 
 function resetChild() {
@@ -264,6 +244,7 @@ function resetCollection() {
   loader.classList.remove("active");
   container.classList.add("element-hide");
 
+  /* 🔑 CRITICAL FIX */
   activeCollectionHandle = null;
 
   document.getElementById("js-nav-drawer").classList.remove("panel-product");
