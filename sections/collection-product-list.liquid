@@ -1,180 +1,88 @@
 {{ 'collection-product-list.css' | asset_url | stylesheet_tag }}
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
 
+<section
+  class="collection-section m-color-{{ section.settings.color_scheme.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
+  data-section-id="{{ section.id }}"
+  data-pagination-type="{{ section.settings.pagination_type }}"
+  data-products-per-page="{{ section.settings.products_per_page }}"
+>
 
-<div class="shopify-section m-color-{{ section.settings.color_scheme.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper sidebar-space">
 
-      <!-- Main Content -->
-      <main class="product-list-wapper">
-        <!-- Products Grid -->
-        <div class="products-grid cols-{{ section.settings.grid_columns_desktop }}" id="productsContainer">
-          {% paginate collection.products by 5 %}
-            {% for product in collection.products %}
-              {% render 'product-card', product: product %}
-            {% else %}
-              <p>No products found.</p>
-            {% endfor %}
-            {{- paginate | default_pagination }}
+      <!-- FILTER SIDEBAR -->
+      {% if section.settings.enable_filter %}
+        {% render 'products-filter', section: section, collection: collection %}
+      {% endif %}
+
+      <!-- PRODUCT LIST -->
+      <main class="product-list-wrapper">
+        <div id="ProductsGrid">
+          {% paginate collection.products by section.settings.products_per_page %}
+            <div class="products-grid cols-{{ section.settings.grid_columns_desktop }}">
+              {% for product in collection.products %}
+                {% render 'product-card-template', product: product %}
+              {% endfor %}
+            </div>
+
+            {% if section.settings.enable_pagination %}
+              <div id="PaginationWrapper">
+                {{ paginate | default_pagination }}
+              </div>
+            {% endif %}
           {% endpaginate %}
         </div>
-        <div class="product-filter">
-        {% if section.settings.enable_filter %}
-          {% render 'products-filter' %}
-        {% endif %}
-        </div>
       </main>
+
     </div>
   </div>
-</div>
 
+</section>
 
-<script src="{{ 'products-filter.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'pagination.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'products-filter.js' | asset_url }}" defer></script>
+<script src="{{ 'pagination.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
   "name": "Collection Product List",
   "settings": [
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "container_type",
-      "label": "Container Type",
-      "options": [
-        { "value": "container", "label": "Container" },
-        { "value": "container-fluid", "label": "Container Fluid" },
-        { "value": "container-narrow", "label": "Container Narrow" },
-        { "value": "container-extra-narrow", "label": "Container Extra Narrow" },
-        { "value": "full-width", "label": "Full Width"}
-      ],
-      "default": "container"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color Scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "Product Grid"
-    },
-    {
-      "type": "select",
-      "id": "grid_columns_desktop",
-      "label": "Desktop Grid Columns",
-      "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },        
-        { "value": "6", "label": "6" },
-      ],
-      "default": "4"
-    },
-    {
-      "type": "header",
-      "content": "Pagination"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_pagination",
-      "label": "Enable Pagination",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "products_per_page",
-      "min": 2,
-      "max": 48,
-      "step": 1,
-      "label": "Products per page",
-      "default": 24
-    },
-    {
-      "type": "select",
-      "id": "pagination_type",
-      "label": "Pagination Type",
-      "options": [
-        { "value": "pagination_by_number", "label": "Pagination by Number" },
-        { "value": "load_more_button", "label": "Load More Button" },
-        { "value": "infinity_loading", "label": "Infinity Loading" }
-      ],
-      "default": "pagination_by_number"
-    },
-    {
-      "type": "header",
-      "content": "Sorting & Filter"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sorting",
-      "label": "Enable Sorting",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_filter",
-      "label": "Enable Filter",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "custom_class",
-      "label": "Custom class"
-    },
-    {
-      "type": "select",
-      "id": "color_control",
-      "label": "Color Control",
-      "options": [
-        { "value": "section-dark", "label": "Dark" },
-        { "value": "section-light", "label": "Light" }
-      ],
-      "default": "section-light"
-    },
+    { "type": "select", "id": "container_type", "label": "Container", "options": [
+      { "value": "container", "label": "Container" },
+      { "value": "container-fluid", "label": "Fluid" },
+      { "value": "full-width", "label": "Full Width" }
+    ], "default": "container" },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color Scheme" },
+
+    { "type": "select", "id": "grid_columns_desktop", "label": "Grid Columns", "options": [
+      { "value": "2", "label": "2" },
+      { "value": "3", "label": "3" },
+      { "value": "4", "label": "4" }
+    ], "default": "4" },
+
+    { "type": "checkbox", "id": "enable_filter", "label": "Enable Filter", "default": true },
+    { "type": "checkbox", "id": "enable_pagination", "label": "Enable Pagination", "default": true },
+
+    { "type": "range", "label": "Product Grid", "id": "products_per_page", "min": 2, "max": 48, "step": 1, "default": 12 },
+
+    { "type": "select", "id": "pagination_type", "label": "Pagination Type", "options": [
+      { "value": "pagination_by_number", "label": "Numbered" },
+      { "value": "load_more_button", "label": "Load More" },
+      { "value": "infinite_scroll", "label": "Infinite Scroll" }
+    ], "default": "pagination_by_number" }
   ],
+
   "blocks": [
+    { "type": "availability", "name": "Availability" },
+    { "type": "vendor", "name": "Brand" },
+    { "type": "collection", "name": "Collection" },
+    { "type": "color", "name": "Color" },
     {
-      "type": "availablity-filter",
-      "name": "Availability Filter",
-      "limit": 1
-    },
-    {
-      "type": "collection-filter",
-      "name": "Collection Filter",
-      "limit": 1
-    },
-    {
-      "type": "vendor-filter",
-      "name": "Vendor Filter",
-      "limit": 1
-    },
-    {
-      "type": "color-filter",
-      "name": "Color Filter",
-      "limit": 1
-    },
-    {
-      "type": "custom-filter",
-      "name": "Custom Filter",
+      "type": "tag",
+      "name": "Tag",
       "settings": [
-        {
-          "type": "text",
-          "id": "filter_title",
-          "label": "Title"
-        },
-        {
-          "type": "text",
-          "id": "custom_filter_tags",
-          "label": "Filter Product Tags",
-          "info": "Enter product tags separated by commas."
-        }
+        { "type": "text", "id": "tags", "label": "Tags (comma separated)" }
       ]
     }
   ]
