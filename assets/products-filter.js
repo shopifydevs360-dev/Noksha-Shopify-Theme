@@ -1,55 +1,49 @@
 document.addEventListener('change', (e) => {
   if (!e.target.closest('#CollectionFilters')) return;
-  applyFilters();
+  fetchCollection();
 });
 
-function applyFilters() {
-  const filters = {
-    availability: [],
-    collection: [],
-    vendor: [],
-    tag: []
-  };
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('#paginationWrapper a');
+  if (!link) return;
 
-  document
-    .querySelectorAll('#CollectionFilters input:checked')
-    .forEach(input => {
-      filters[input.dataset.filterType].push(input.value);
+  e.preventDefault();
+  fetchCollection(link.href);
+});
+
+function fetchCollection(url = null) {
+  const form = document.getElementById('CollectionFilters');
+  const params = new URLSearchParams(new FormData(form));
+
+  let fetchUrl;
+
+  if (url) {
+    fetchUrl = new URL(url);
+    params.forEach((value, key) => {
+      fetchUrl.searchParams.set(key, value);
     });
-
-  const hasActiveFilters = Object.values(filters).some(arr => arr.length);
-
-  document.querySelectorAll('.product-card').forEach(card => {
-    let visible = true;
-
-    if (filters.availability.length) {
-      visible = !card.querySelector('.add-to-cart-btn[disabled]');
-    }
-
-    if (visible && filters.collection.length) {
-      visible = filters.collection.some(v =>
-        card.dataset.productCollections.includes(v)
-      );
-    }
-
-    if (visible && filters.vendor.length) {
-      visible = filters.vendor.some(v =>
-        card.dataset.productTitle.includes(v)
-      );
-    }
-
-    if (visible && filters.tag.length) {
-      visible = filters.tag.some(v =>
-        card.dataset.productTags.includes(v)
-      );
-    }
-
-    card.style.display = visible ? '' : 'none';
-  });
-
-  // 🔥 KEY FIX: pagination handling
-  const pagination = document.getElementById('paginationWrapper');
-  if (pagination) {
-    pagination.style.display = hasActiveFilters ? 'none' : '';
+  } else {
+    fetchUrl = new URL(window.location.href);
+    fetchUrl.search = params.toString();
   }
+
+  fetch(fetchUrl.toString())
+    .then(res => res.text())
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      // Replace products
+      document.querySelector('#productsContainer').innerHTML =
+        doc.querySelector('#productsContainer').innerHTML;
+
+      // Replace pagination
+      const newPagination = doc.querySelector('#paginationWrapper');
+      const paginationWrapper = document.querySelector('#paginationWrapper');
+
+      if (paginationWrapper) {
+        paginationWrapper.innerHTML = newPagination ? newPagination.innerHTML : '';
+      }
+
+      history.pushState({}, '', fetchUrl.pathname + '?' + fetchUrl.searchParams.toString());
+    });
 }
