@@ -5,7 +5,7 @@
   Pass the cart_behavior setting to JavaScript via a data attribute.
   This allows the JS to know whether to use AJAX or form submission.
 {%- endcomment -%}
-<div class="shopify-section m-color-{{ section.settings.color_scheme.id }}" data-cart-behavior="{{ settings.cart_behavior }}">
+<div class="shopify-section m-color-{{ section.settings.color_scheme.id }}">
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper {% if section.settings.enable_filter and section.settings.filter_position == 'sidebar' %}with-sidebar{% endif %}">
       <!-- Filters Sidebar -->
