@@ -1,55 +1,78 @@
-<aside class="collection-filters" id="CollectionFilters">
+<form id="CollectionFilters" class="collection-filters">
 
   {% for block in section.blocks %}
     {% case block.type %}
 
-      {% when 'availability' %}
-        <fieldset>
+      {% when 'availablity-filter' %}
+        <fieldset class="filter-group">
           <legend>Availability</legend>
-          <label><input type="checkbox" data-filter="filter.v.availability" value="1"> In stock</label>
+          <label>
+            <input
+              type="checkbox"
+              data-filter="filter.v.availability"
+              value="1"
+            >
+            In stock
+          </label>
         </fieldset>
 
-      {% when 'vendor' %}
-        <fieldset>
-          <legend>Brand</legend>
-          {% for vendor in collection.all_vendors %}
-            <label>
-              <input type="checkbox" data-filter="filter.p.vendor" value="{{ vendor }}">
-              {{ vendor }}
-            </label>
-          {% endfor %}
-        </fieldset>
-
-      {% when 'collection' %}
-        <fieldset>
+      {% when 'collection-filter' %}
+        <fieldset class="filter-group">
           <legend>Collections</legend>
           {% for c in collections %}
             <label>
-              <input type="checkbox" data-filter="filter.p.collection" value="{{ c.handle }}">
+              <input
+                type="checkbox"
+                data-filter="filter.p.collection"
+                value="{{ c.handle }}"
+              >
               {{ c.title }}
             </label>
           {% endfor %}
         </fieldset>
 
-      {% when 'color' %}
-        <fieldset>
+      {% when 'vendor-filter' %}
+        <fieldset class="filter-group">
+          <legend>Brand</legend>
+          {% for vendor in collection.all_vendors %}
+            <label>
+              <input
+                type="checkbox"
+                data-filter="filter.p.vendor"
+                value="{{ vendor }}"
+              >
+              {{ vendor }}
+            </label>
+          {% endfor %}
+        </fieldset>
+
+      {% when 'color-filter' %}
+        <fieldset class="filter-group">
           <legend>Color</legend>
           {% assign colors = 'black,white,red,blue,green' | split: ',' %}
           {% for color in colors %}
             <label>
-              <input type="checkbox" data-filter="filter.p.tag" value="{{ color }}">
+              <input
+                type="checkbox"
+                data-filter="filter.p.tag"
+                value="{{ color }}"
+              >
               {{ color | capitalize }}
             </label>
           {% endfor %}
         </fieldset>
 
-      {% when 'tag' %}
-        <fieldset>
-          <legend>Tags</legend>
-          {% assign tags = block.settings.tags | split: ',' %}
+      {% when 'custom-filter' %}
+        <fieldset class="filter-group">
+          <legend>{{ block.settings.filter_title }}</legend>
+          {% assign tags = block.settings.custom_filter_tags | split: ',' %}
           {% for tag in tags %}
             <label>
-              <input type="checkbox" data-filter="filter.p.tag" value="{{ tag | strip }}">
+              <input
+                type="checkbox"
+                data-filter="filter.p.tag"
+                value="{{ tag | strip }}"
+              >
               {{ tag | strip }}
             </label>
           {% endfor %}
@@ -58,4 +81,4 @@
     {% endcase %}
   {% endfor %}
 
-</aside>
+</form>
