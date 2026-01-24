@@ -11,7 +11,7 @@
       <main class="product-list-wapper" data-pagination-type="{{ section.settings.pagination_type }}">
 
         <!-- Products Grid -->
-        <div class="products-grid grid-desktop-{{ section.settings.grid_columns_desktop }} grid-mobile-{{ section.settings.grid_columns_mobile }}" id="productsContainer">
+        <div class="products-grid col-{{ section.settings.grid_columns_desktop }} id="productsContainer">
           {% for product in collection.products %}
             {% render 'product-card', product: product %}
           {% else %}
@@ -105,22 +105,6 @@
         }
       ],
       "default": "4"
-    },
-    {
-      "type": "select",
-      "id": "grid_columns_mobile",
-      "label": "Mobile Grid Columns",
-      "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
-      ],
-      "default": "2"
     },
     {
       "type": "header",
