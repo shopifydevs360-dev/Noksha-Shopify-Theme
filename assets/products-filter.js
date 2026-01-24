@@ -1,38 +1,22 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const filterForm = document.getElementById('filters-form');
-  if (!filterForm) return;
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.querySelector(".filter-toggle-btn");
+  const filters = document.getElementById("CollectionFilters");
 
-  // Listen for changes on any filter input
-  const filterInputs = filterForm.querySelectorAll('input');
-  filterInputs.forEach(input => {
-    input.addEventListener('change', function() {
-      applyFilters();
-    });
+  if (!toggleBtn || !filters) return;
+
+  toggleBtn.addEventListener("click", () => {
+    const expanded = toggleBtn.getAttribute("aria-expanded") === "true";
+    toggleBtn.setAttribute("aria-expanded", !expanded);
+    filters.classList.toggle("is-open");
+    document.body.classList.toggle("filters-open");
   });
 
-  function applyFilters() {
-    const formData = new FormData(filterForm);
-    const searchParams = new URLSearchParams(window.location.search);
-
-    // Clear existing filter parameters from the URL
-    for (const [key] of searchParams) {
-      if (key.startsWith('filter.')) {
-        searchParams.delete(key);
-      }
-    }
-
-    // Build the search parameters from the form data
-    for (const [key, value] of formData.entries()) {
-      searchParams.append(key, value);
-    }
-
-    // Get the current URL without any parameters
-    const currentUrl = window.location.origin + window.location.pathname;
-
-    // Construct the new URL with the filter parameters
-    let newUrl = `${currentUrl}?${searchParams.toString()}`;
-
-    // Reload the page with the new URL
-    window.location.href = newUrl;
+  // Auto-submit on desktop
+  if (window.innerWidth > 991) {
+    document.querySelectorAll(".filters-form input").forEach(input => {
+      input.addEventListener("change", () => {
+        input.closest("form").submit();
+      });
+    });
   }
 });
