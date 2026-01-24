@@ -2,7 +2,7 @@
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
 
 
-<div class="shopify-section m-color-{{ section.settings.color_scheme.id }}">
+<div class="shopify-section m-color-{{ section.settings.color_scheme.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper sidebar-space">
 
