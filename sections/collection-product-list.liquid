@@ -4,7 +4,6 @@
 <div
   class="main-product-list m-color-{{ section.settings.color_scheme.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
   data-section-id="{{ section.id }}"
-  data-pagination-type="{{ section.settings.pagination_type }}"
 >
 
   <div class="{{ section.settings.container_type }}">
@@ -12,14 +11,16 @@
 
       <main class="inner-warpper">
 
+        {% paginate collection.products by section.settings.products_per_page %}
         <div class="product-list">
-          {% paginate collection.products by 4 %}
-          <!-- Products Grid -->
-          <div class="products-grid cols-{{ section.settings.grid_columns_desktop }}" id="productsContainer">
+
+          <!-- Products -->
+          <div
+            class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
+            id="productsContainer"
+          >
             {% for product in collection.products %}
               {% render 'product-card', product: product %}
-            {% else %}
-              <p>No products found.</p>
             {% endfor %}
           </div>
 
@@ -29,10 +30,10 @@
             </div>
           {% endif %}
 
-        {% endpaginate %}
         </div>
+        {% endpaginate %}
 
-        <!-- Filters (unchanged layout position) -->
+        <!-- Filters -->
         <div class="product-filter">
           {% if section.settings.enable_filter %}
             {% render 'products-filter', section: section, collection: collection %}
@@ -45,8 +46,8 @@
   </div>
 </div>
 
-<script src="{{ 'products-filter.js' | asset_url }}" defer></script>
-<script src="{{ 'pagination.js' | asset_url }}" defer></script>
+<script src="{{ 'product-filter.js' | asset_url }}" defer></script>
+
 
 
 {% schema %}
