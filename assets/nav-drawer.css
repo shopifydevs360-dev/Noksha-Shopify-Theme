@@ -103,11 +103,11 @@
   .child-linklist,
   .grandchild-linklist,
   .collections-productlist {
-    max-height: 92vh;
+    max-height: 85vh;
     min-height: 100%;
     width: 100%;
     position: absolute;
-    top: 2rem;
+    top: 3rem;
     left: 0;
     background: #f0eee8;
     transform: translateX(-100%);
