@@ -1,41 +1,35 @@
 document.addEventListener('change', (e) => {
   if (!e.target.closest('#CollectionFilters')) return;
-  applyFilters(1);
+  applyClientSideFilters();
 });
 
-function applyFilters(page = 1) {
-  const params = new URLSearchParams();
+function applyClientSideFilters() {
+  const activeFilters = {
+    tag: [],
+    vendor: [],
+    collection: []
+  };
 
-  document
-    .querySelectorAll('#CollectionFilters input:checked')
-    .forEach(input => {
-      params.append(input.dataset.filter, input.value);
-    });
+  document.querySelectorAll('#CollectionFilters input:checked').forEach(input => {
+    const type = input.dataset.filterType;
+    activeFilters[type].push(input.value.toLowerCase());
+  });
 
-  params.set('page', page);
+  document.querySelectorAll('.product-card').forEach(card => {
+    let visible = true;
 
-  const url = `${window.location.pathname}?${params.toString()}`;
+    if (activeFilters.tag.length) {
+      visible = activeFilters.tag.some(tag =>
+        card.dataset.productTags.includes(tag)
+      );
+    }
 
-  fetch(url)
-    .then(res => res.text())
-    .then(html => {
-      const doc = new DOMParser().parseFromString(html, 'text/html');
+    if (visible && activeFilters.collection.length) {
+      visible = activeFilters.collection.some(col =>
+        card.dataset.productCollections.includes(col)
+      );
+    }
 
-      // Update products
-      const newProducts = doc.querySelector('#productsContainer');
-      if (newProducts) {
-        document.querySelector('#productsContainer').innerHTML =
-          newProducts.innerHTML;
-      }
-
-      // Update pagination
-      const newPagination = doc.querySelector('#paginationWrapper');
-      const paginationWrapper = document.querySelector('#paginationWrapper');
-
-      if (paginationWrapper && newPagination) {
-        paginationWrapper.innerHTML = newPagination.innerHTML;
-      }
-
-      history.pushState({}, '', url);
-    });
+    card.style.display = visible ? '' : 'none';
+  });
 }
