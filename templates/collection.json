@@ -12,6 +12,19 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
+        "tag_filter_jbYeEn": {
+          "type": "tag-filter",
+          "settings": {
+            "filter_title": "Tags",
+            "custom_filter_tags": "coats"
+          }
+        },
+        "price_filter_qRJzFT": {
+          "type": "price-filter",
+          "settings": {
+            "filter_title": "Price"
+          }
+        },
         "color_filter_D8GdUg": {
           "type": "color-filter",
           "settings": {}
@@ -32,6 +45,8 @@
         }
       },
       "block_order": [
+        "tag_filter_jbYeEn",
+        "price_filter_qRJzFT",
         "color_filter_D8GdUg",
         "collection_filter_tN3AFm",
         "vendor_filter_enV8mP",
