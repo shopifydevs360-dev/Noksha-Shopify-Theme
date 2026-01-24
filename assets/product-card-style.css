@@ -109,5 +109,5 @@ text-decoration: underline;
     color: inherit;
 }
 .split-aligner .title a{
-  color: rgb(var(--color-heading, var(--color-text)));
+  color: rgb(var(--color-heading));
 }
