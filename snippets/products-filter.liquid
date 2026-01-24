@@ -1,13 +1,13 @@
 <form id="CollectionFilters" class="collection-filters">
 
   {% for block in section.blocks %}
-
     {% case block.type %}
 
       {% when 'availablity-filter' %}
         {% assign filter = collection.filters | where: 'type', 'availability' | first %}
+        {% if filter %}
           <fieldset class="filter-group">
-            <legend>{{ filter.label }}</legend>
+            <legend>Availability</legend>
             {% for value in filter.values %}
               <label>
                 <input
@@ -20,50 +20,13 @@
               </label>
             {% endfor %}
           </fieldset>
+        {% endif %}
 
       {% when 'vendor-filter' %}
         {% assign filter = collection.filters | where: 'type', 'vendor' | first %}
         {% if filter %}
           <fieldset class="filter-group">
-            <legend>{{ filter.label }}</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-
-      {% when 'collection-filter' %}
-        {% assign filter = collection.filters | where: 'type', 'product_type' | first %}
-        {% if filter %}
-          <fieldset class="filter-group">
-            <legend>{{ filter.label }}</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-
-      {% when 'color-filter' %}
-        {% assign filter = collection.filters | where: 'label', 'Color' | first %}
-        {% if filter %}
-          <fieldset class="filter-group">
-            <legend>{{ filter.label }}</legend>
+            <legend>Brand</legend>
             {% for value in filter.values %}
               <label>
                 <input
@@ -101,7 +64,6 @@
         {% endif %}
 
     {% endcase %}
-
   {% endfor %}
 
 </form>
