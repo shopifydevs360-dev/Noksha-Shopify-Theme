@@ -8,6 +8,6 @@
     display: flex;
     gap: 2rem;
 }
-input{
+input, label{
   color: #000;
 }
