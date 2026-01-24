@@ -628,32 +628,27 @@ button:disabled,
   grid-template-columns: repeat(1,1fr);
 }
 .cols-3 {
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(2,1fr);
 }
 .cols-4 {
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: repeat(2,1fr);
 }
 .cols-5 {
-  grid-template-columns: repeat(5,1fr);
+  grid-template-columns: repeat(2,1fr);
 }
 .cols-6 {
-  grid-template-columns: repeat(6,1fr);
+  grid-template-columns: repeat(2,1fr);
 }
 .cols-7 {
-  grid-template-columns: repeat(7,1fr);
+  grid-template-columns: repeat(3,1fr);
 }
 .cols-8 {
-  grid-template-columns: repeat(8,1fr);
+  grid-template-columns: repeat(3,1fr);
 }
 .cols-9 {
-  grid-template-columns: repeat(9,1fr);
+  grid-template-columns: repeat(3,1fr);
 }
-/* Mobile */
-@media (max-width: 440px) {
-  .hide-mobile {
-    display: none !important;
-  }
-}
+
 
 /* Tablet (portrait) */
 @media (min-width: 441px) and (max-width: 768px) {
@@ -661,25 +656,25 @@ button:disabled,
     grid-template-columns: repeat(1,1fr);
   }
   .cols-3 {
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(2,1fr);
   }
   .cols-4 {
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(2,1fr);
   }
   .cols-5 {
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(2,1fr);
   }
   .cols-6 {
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
   .cols-7 {
-    grid-template-columns: repeat(7,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
   .cols-8 {
-    grid-template-columns: repeat(8,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
   .cols-9 {
-    grid-template-columns: repeat(9,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
 }
 
@@ -689,25 +684,25 @@ button:disabled,
     grid-template-columns: repeat(2,1fr);
   }
   .cols-3 {
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(2,1fr);
   }
   .cols-4 {
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(2,1fr);
   }
   .cols-5 {
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
   .cols-6 {
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
   .cols-7 {
-    grid-template-columns: repeat(7,1fr);
+    grid-template-columns: repeat(4,1fr);
   }
   .cols-8 {
-    grid-template-columns: repeat(8,1fr);
+    grid-template-columns: repeat(4,1fr);
   }
   .cols-9 {
-    grid-template-columns: repeat(9,1fr);
+    grid-template-columns: repeat(4,1fr);
   }
 }
 
@@ -720,22 +715,22 @@ button:disabled,
     grid-template-columns: repeat(3,1fr);
   }
   .cols-4 {
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
   .cols-5 {
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(4,1fr);
   }
   .cols-6 {
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(4,1fr);
   }
   .cols-7 {
-    grid-template-columns: repeat(7,1fr);
+    grid-template-columns: repeat(5,1fr);
   }
   .cols-8 {
-    grid-template-columns: repeat(8,1fr);
+    grid-template-columns: repeat(5,1fr);
   }
   .cols-9 {
-    grid-template-columns: repeat(9,1fr);
+    grid-template-columns: repeat(6,1fr);
   }
 }
 
