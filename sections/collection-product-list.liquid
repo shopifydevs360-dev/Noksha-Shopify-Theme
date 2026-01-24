@@ -1,50 +1,44 @@
 {{ 'collection-product-list.css' | asset_url | stylesheet_tag }}
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
 
-<section
+<div
   class="main-product-list m-color-{{ section.settings.color_scheme.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
   data-section-id="{{ section.id }}"
-  data-pagination-type="{{ section.settings.pagination_type }}"
-  data-products-per-page="{{ section.settings.products_per_page }}"
 >
 
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper sidebar-space">
 
       <main class="inner-warpper">
+        <div class="product-list">
 
-        <!-- FILTER -->
+          <!-- Products -->
+          <div
+            class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
+            id="productsContainer"
+          >
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% endfor %}
+          </div>
+
+        </div>
+        <div id="paginationWrapper" class="custom-pagination"></div>
+
+        <!-- Filters -->
         {% if section.settings.enable_filter %}
           <div class="product-filter">
             {% render 'products-filter', section: section, collection: collection %}
           </div>
         {% endif %}
 
-        <!-- PRODUCT LIST -->
-        <div class="product-list">
-
-          <div
-            id="productsContainer"
-            class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
-          >
-            {% for product in collection.products limit: section.settings.products_per_page %}
-              {% render 'product-card', product: product %}
-            {% endfor %}
-          </div>
-
-          <!-- CUSTOM PAGINATION -->
-          <div id="paginationWrapper" class="custom-pagination"></div>
-
-        </div>
-
       </main>
 
     </div>
   </div>
-</section>
+</div>
 
 <script src="{{ 'product-filter.js' | asset_url }}" defer></script>
-
 
 
 

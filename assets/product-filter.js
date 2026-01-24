@@ -1,84 +1,60 @@
 document.addEventListener('DOMContentLoaded', () => {
-  initCollectionFilters();
-  initCollectionPagination();
-  initHistoryHandler();
+  initFilters();
+  initPagination();
 });
 
-/* ===============================
-   FILTER CHANGE
-================================ */
-function initCollectionFilters() {
+let currentPage = 1;
+
+function initFilters() {
   document.addEventListener('change', (e) => {
     if (!e.target.closest('#CollectionFilters')) return;
-    fetchCollection();
+    currentPage = 1;
+    fetchProducts();
   });
 }
 
-/* ===============================
-   PAGINATION CLICK
-================================ */
-function initCollectionPagination() {
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('#paginationWrapper a');
-    if (!link) return;
+function initPagination() {
+  const container = document.querySelector('.main-product-list');
+  if (!container) return;
 
-    e.preventDefault();
-    fetchCollection(link.href);
-  });
+  if (container.dataset.paginationType === 'infinity_loading') {
+    window.addEventListener('scroll', infiniteScroll);
+  }
 }
 
-/* ===============================
-   BACK / FORWARD SUPPORT
-================================ */
-function initHistoryHandler() {
-  window.addEventListener('popstate', () => {
-    fetchCollection(window.location.href, false);
-  });
+function infiniteScroll() {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+    currentPage++;
+    fetchProducts(true);
+  }
 }
 
-/* ===============================
-   CORE FETCH
-================================ */
-function fetchCollection(url = null, pushState = true) {
+function fetchProducts(append = false) {
   const form = document.getElementById('CollectionFilters');
-  if (!form) return;
-
   const params = new URLSearchParams(new FormData(form));
-  let fetchUrl = url ? new URL(url) : new URL(window.location.href);
 
-  params.forEach((value, key) => {
-    fetchUrl.searchParams.set(key, value);
-  });
+  const collectionHandle = params.get('collection_handle');
+  params.delete('collection_handle');
 
-  fetch(fetchUrl.toString())
+  params.set('page', currentPage);
+
+  const baseUrl = collectionHandle
+    ? `/collections/${collectionHandle}`
+    : window.location.pathname;
+
+  fetch(`${baseUrl}?${params.toString()}`)
     .then(res => res.text())
     .then(html => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
+      const newProducts = doc.querySelector('#productsContainer');
 
-      replaceProducts(doc);
-      replacePagination(doc);
+      const container = document.getElementById('productsContainer');
+      if (!container || !newProducts) return;
 
-      if (pushState) {
-        history.pushState({}, '', fetchUrl.pathname + '?' + fetchUrl.searchParams.toString());
+      if (append) {
+        container.insertAdjacentHTML('beforeend', newProducts.innerHTML);
+      } else {
+        container.innerHTML = newProducts.innerHTML;
       }
     });
-}
-
-/* ===============================
-   DOM REPLACERS
-================================ */
-function replaceProducts(doc) {
-  const current = document.getElementById('productsContainer');
-  const incoming = doc.getElementById('productsContainer');
-  if (current && incoming) {
-    current.innerHTML = incoming.innerHTML;
-  }
-}
-
-function replacePagination(doc) {
-  const current = document.getElementById('paginationWrapper');
-  const incoming = doc.getElementById('paginationWrapper');
-  if (current) {
-    current.innerHTML = incoming ? incoming.innerHTML : '';
-  }
 }
