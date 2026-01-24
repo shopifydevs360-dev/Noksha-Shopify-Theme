@@ -1,32 +1,86 @@
 {{ 'collection-product-list.css' | asset_url | stylesheet_tag }}
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
 
+{% paginate collection.products by section.settings.products_per_page %}
 
 <div class="shopify-section m-color-{{ section.settings.color_scheme.id }}">
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper">
-      <!-- Filters Sidebar -->
 
-      <!-- Main Content -->
-      <main class="product-list-wapper" data-pagination-type="{{ section.settings.pagination_type }}">
-
-        <!-- Products Grid -->
-        <div class="products-grid grid-desktop-{{ section.settings.grid_columns_desktop }} grid-mobile-{{ section.settings.grid_columns_mobile }}" id="productsContainer">
-
+      <!-- ================= FILTER BUTTON (MOBILE + DESKTOP) ================= -->
+      {% if section.settings.enable_filter %}
+        <div class="collection-toolbar">
+          <button
+            class="filter-toggle-btn"
+            aria-controls="CollectionFilters"
+            aria-expanded="false"
+          >
+            Filter
+          </button>
         </div>
-        <div class="product-filter">
-        {% if section.settings.enable_filter %}
-          {% render 'products-filter' %}
+      {% endif %}
+
+      <!-- ================= FILTER PANEL ================= -->
+      {% if section.settings.enable_filter %}
+        <aside
+          id="CollectionFilters"
+          class="collection-filters"
+          data-offcanvas
+        >
+          {% render 'products-filter',
+            section: section,
+            collection: collection
+          %}
+        </aside>
+      {% endif %}
+
+      <!-- ================= PRODUCT GRID ================= -->
+      <main
+        class="product-list-wrapper"
+        data-pagination-type="{{ section.settings.pagination_type }}"
+      >
+        <div
+          class="products-grid
+          grid-desktop-{{ section.settings.grid_columns_desktop }}
+          grid-mobile-{{ section.settings.grid_columns_mobile }}"
+          id="productsContainer"
+        >
+          {% for product in collection.products %}
+            {% render 'product-card', product: product %}
+          {% else %}
+            <p>No products found.</p>
+          {% endfor %}
+        </div>
+
+        <!-- ================= PAGINATION ================= -->
+        {% if section.settings.enable_pagination %}
+          <div class="pagination-wrapper">
+            {% if section.settings.pagination_type == 'pagination_by_number' %}
+              {{ paginate | default_pagination }}
+
+            {% elsif section.settings.pagination_type == 'load_more_button' %}
+              {% if paginate.next %}
+                <a
+                  href="{{ paginate.next.url }}"
+                  class="load-more-btn"
+                >
+                  Load more
+                </a>
+              {% endif %}
+
+            {% endif %}
+          </div>
         {% endif %}
-        </div>
       </main>
+
     </div>
   </div>
 </div>
 
+{% endpaginate %}
 
-<script src="{{ 'products-filter.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'pagination.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'products-filter.js' | asset_url }}" defer></script>
+<script src="{{ 'pagination.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
