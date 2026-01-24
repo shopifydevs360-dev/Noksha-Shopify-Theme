@@ -1,0 +1,57 @@
+<form method="get" action="{{ collection.url }}" class="filters-form">
+
+  {% for filter in collection.filters %}
+
+    {% assign show_filter = false %}
+
+    {% if filter.type == 'availability' and section.settings.enable_availability %}
+      {% assign show_filter = true %}
+    {% endif %}
+
+    {% if filter.type == 'price_range' %}
+      {% assign show_filter = false %}
+    {% endif %}
+
+    {% if filter.label == 'Brand' and section.settings.enable_brand %}
+      {% assign show_filter = true %}
+    {% endif %}
+
+    {% if filter.label == 'Color' and section.settings.enable_color %}
+      {% assign show_filter = true %}
+    {% endif %}
+
+    {% if filter.type == 'list' and show_filter %}
+      <div class="filter-group">
+        <button type="button" class="filter-group-title">
+          {{ filter.label }}
+        </button>
+
+        <div class="filter-options">
+          {% for value in filter.values %}
+            <label>
+              <input
+                type="checkbox"
+                name="{{ value.param_name }}"
+                value="{{ value.value }}"
+                {% if value.active %}checked{% endif %}
+              >
+              <span>{{ value.label }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  {% endfor %}
+
+  <div class="filter-actions">
+    <button type="submit" class="apply-filters-btn">
+      Apply filters
+    </button>
+
+    <a href="{{ collection.url }}" class="clear-filters-btn">
+      Clear all
+    </a>
+  </div>
+
+</form>
