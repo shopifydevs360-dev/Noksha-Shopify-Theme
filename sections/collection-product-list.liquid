@@ -11,7 +11,7 @@
       <main class="product-list-wapper" data-pagination-type="{{ section.settings.pagination_type }}">
 
         <!-- Products Grid -->
-        <div class="products-grid col-{{ section.settings.grid_columns_desktop }} id="productsContainer">
+        <div class="products-grid cols-{{ section.settings.grid_columns_desktop }}" id="productsContainer">
           {% for product in collection.products %}
             {% render 'product-card', product: product %}
           {% else %}
