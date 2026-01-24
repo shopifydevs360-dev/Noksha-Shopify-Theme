@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initCollectionFilters();
   initCollectionPagination();
-  initHistorySync();
+  initHistoryHandler();
 });
 
 /* ===============================
@@ -28,9 +28,9 @@ function initCollectionPagination() {
 }
 
 /* ===============================
-   BACK / FORWARD
+   BACK / FORWARD SUPPORT
 ================================ */
-function initHistorySync() {
+function initHistoryHandler() {
   window.addEventListener('popstate', () => {
     fetchCollection(window.location.href, false);
   });
