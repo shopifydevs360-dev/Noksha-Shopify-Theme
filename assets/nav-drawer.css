@@ -73,6 +73,7 @@
     background: transparent;
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: var(rgb(--color-heading));
 }
 .shopify-section-nav button svg {
     width: 1em;
