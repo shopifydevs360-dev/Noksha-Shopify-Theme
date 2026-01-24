@@ -111,5 +111,11 @@
     top: 2rem;
     left: 0;
     background: rgb(var(--color-background));
+    transform: translateX(-100%);
+  }
+  .child-linklist.active,
+  .grandchild-linklist.active,
+  .collections-productlist.active {
+    transform: translateX(0%);
   }
 }
