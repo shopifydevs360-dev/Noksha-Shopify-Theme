@@ -1,25 +1,19 @@
-<form id="CollectionFilters" class="collection-filters">
-
-  {% if collection.filters.size == 0 %}
-    <p class="filters-empty">No filters available</p>
-  {% endif %}
+<form id="CollectionFilters">
 
   {% for block in section.blocks %}
     {% case block.type %}
 
-      {%- comment -%} AVAILABILITY {%- endcomment -%}
       {% when 'availablity-filter' %}
         {% for filter in collection.filters %}
           {% if filter.label == 'Availability' %}
-            <fieldset class="filter-group">
-              <legend>{{ filter.label }}</legend>
+            <fieldset>
+              <legend>Availability</legend>
               {% for value in filter.values %}
                 <label>
                   <input
                     type="checkbox"
                     name="{{ value.param_name }}"
                     value="{{ value.value }}"
-                    {% if value.active %}checked{% endif %}
                   >
                   {{ value.label }}
                 </label>
@@ -28,19 +22,17 @@
           {% endif %}
         {% endfor %}
 
-      {%- comment -%} BRAND / VENDOR {%- endcomment -%}
       {% when 'vendor-filter' %}
         {% for filter in collection.filters %}
           {% if filter.label == 'Brand' %}
-            <fieldset class="filter-group">
-              <legend>{{ filter.label }}</legend>
+            <fieldset>
+              <legend>Brand</legend>
               {% for value in filter.values %}
                 <label>
                   <input
                     type="checkbox"
                     name="{{ value.param_name }}"
                     value="{{ value.value }}"
-                    {% if value.active %}checked{% endif %}
                   >
                   {{ value.label }}
                 </label>
@@ -49,19 +41,33 @@
           {% endif %}
         {% endfor %}
 
-      {%- comment -%} COLOR (METAFIELD / CATEGORY METAFIELD) {%- endcomment -%}
+      {% when 'collection-filter' %}
+        <fieldset>
+          <legend>Collections</legend>
+          {% assign menu = linklists[section.settings.collection_menu] %}
+          {% for link in menu.links %}
+            <label>
+              <input
+                type="radio"
+                name="collection_handle"
+                value="{{ link.object.handle }}"
+              >
+              {{ link.title }}
+            </label>
+          {% endfor %}
+        </fieldset>
+
       {% when 'color-filter' %}
         {% for filter in collection.filters %}
           {% if filter.label == 'Color' %}
-            <fieldset class="filter-group">
-              <legend>{{ filter.label }}</legend>
+            <fieldset>
+              <legend>Color</legend>
               {% for value in filter.values %}
                 <label>
                   <input
                     type="checkbox"
                     name="{{ value.param_name }}"
                     value="{{ value.value }}"
-                    {% if value.active %}checked{% endif %}
                   >
                   {{ value.label }}
                 </label>
@@ -70,22 +76,20 @@
           {% endif %}
         {% endfor %}
 
-      {%- comment -%} CUSTOM TAG FILTER (SCHEMA-CONTROLLED) {%- endcomment -%}
       {% when 'custom-filter' %}
-        {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' %}
         {% for filter in collection.filters %}
-          {% if filter.label == 'Product tags' or filter.label == 'Tags' %}
-            <fieldset class="filter-group">
+          {% if filter.label contains 'Tag' %}
+            {% assign allowed = block.settings.custom_filter_tags | downcase | split: ',' %}
+            <fieldset>
               <legend>{{ block.settings.filter_title }}</legend>
               {% for value in filter.values %}
-                {% assign tag_down = value.label | downcase %}
-                {% if allowed_tags contains tag_down %}
+                {% assign tag = value.label | downcase %}
+                {% if allowed contains tag %}
                   <label>
                     <input
                       type="checkbox"
                       name="{{ value.param_name }}"
                       value="{{ value.value }}"
-                      {% if value.active %}checked{% endif %}
                     >
                     {{ value.label }}
                   </label>
