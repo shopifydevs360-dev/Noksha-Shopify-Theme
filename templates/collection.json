@@ -43,7 +43,7 @@
         "grid_columns_desktop": "3",
         "enable_pagination": true,
         "products_per_page": 8,
-        "pagination_type": "infinity_loading",
+        "pagination_type": "load_more_button",
         "enable_sorting": true,
         "enable_filter": true,
         "custom_class": "",
