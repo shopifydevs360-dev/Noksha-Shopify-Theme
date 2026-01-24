@@ -8,3 +8,6 @@
     display: flex;
     gap: 2rem;
 }
+input{
+  color: #000;
+}
