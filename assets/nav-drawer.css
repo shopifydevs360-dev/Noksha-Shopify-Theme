@@ -112,6 +112,7 @@
     left: 0;
     background: rgb(var(--color-background));
     transform: translateX(-100%);
+    transition: all 0.4s cubic-bezier(.32,.24,.15,1);
   }
   .child-linklist.active,
   .grandchild-linklist.active,
