@@ -20,11 +20,20 @@
             class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
             id="productsContainer"
           >
-            {% paginate collection.products by section.settings.products_per_page %}
-              {% for product in collection.products %}
-                {% render 'product-card', product: product %}
-              {% endfor %}
-            {% endpaginate %}
+{% paginate collection.products by section.settings.products_per_page %}
+  <div
+    class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
+    id="productsContainer"
+    data-total-products="{{ collection.products_count }}"
+    data-total-pages="{{ paginate.pages }}"
+    data-current-page="{{ paginate.current_page }}"
+  >
+    {% for product in collection.products %}
+      {% render 'product-card', product: product %}
+    {% endfor %}
+  </div>
+{% endpaginate %}
+
           </div>
 
         </div>
