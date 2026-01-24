@@ -12,7 +12,11 @@
 
         <!-- Products Grid -->
         <div class="products-grid grid-desktop-{{ section.settings.grid_columns_desktop }} grid-mobile-{{ section.settings.grid_columns_mobile }}" id="productsContainer">
-
+          {% for product in collection.products %}
+            {% render 'product-card', product: product %}
+          {% else %}
+            <p>No products found.</p>
+          {% endfor %}
         </div>
         <div class="product-filter">
         {% if section.settings.enable_filter %}
