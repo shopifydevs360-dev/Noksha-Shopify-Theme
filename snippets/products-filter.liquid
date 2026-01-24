@@ -6,7 +6,6 @@
 
       {% when 'availablity-filter' %}
         {% assign filter = collection.filters | where: 'type', 'availability' | first %}
-        {% if filter %}
           <fieldset class="filter-group">
             <legend>{{ filter.label }}</legend>
             {% for value in filter.values %}
@@ -21,7 +20,6 @@
               </label>
             {% endfor %}
           </fieldset>
-        {% endif %}
 
       {% when 'vendor-filter' %}
         {% assign filter = collection.filters | where: 'type', 'vendor' | first %}
