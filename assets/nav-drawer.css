@@ -47,6 +47,20 @@
   padding: 0 1rem;
       min-width: fit-content;
 }
-.shopify-section-nav.is-switching {
-  pointer-events: none;
+.secondary-menu-inner {
+    font-size: 0.8em;
+    margin-top: 5rem;
+}
+.primary-menu-inner {
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.shopify-section-nav h4 {
+    font-size: 0.9em;
+    margin: 0.8rem 0 0.5rem 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+    font-weight: 600;
 }
