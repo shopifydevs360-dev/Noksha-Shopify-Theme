@@ -10,6 +10,21 @@ document.addEventListener("DOMContentLoaded", () => {
 const isMobileView = window.matchMedia("(max-width: 991px)").matches;
 
 /* ======================================
+   VISIBILITY HELPERS
+====================================== */
+function showElement(el) {
+  if (!el) return;
+  el.classList.remove("element-hide");
+  el.classList.add("active");
+}
+
+function hideElement(el) {
+  if (!el) return;
+  el.classList.add("element-hide");
+  el.classList.remove("active");
+}
+
+/* ======================================
    MOBILE LINK CONTROL
 ====================================== */
 function initMobileLinkControl() {
@@ -54,7 +69,6 @@ function initNavDrawer() {
   const drawer = document.getElementById("js-nav-drawer");
   const triggerEvent = isMobileView ? "click" : "mouseenter";
 
-  /* ---------- PARENT ---------- */
   drawer.querySelectorAll('[data-level="parent"]').forEach(parent => {
     parent.addEventListener(triggerEvent, e => {
       const hasChildren = parent.dataset.hasChildren === "true";
@@ -79,7 +93,6 @@ function initNavDrawer() {
     });
   });
 
-  /* ---------- CHILD ---------- */
   drawer.querySelectorAll(".child-menu-item").forEach(child => {
     child.addEventListener(triggerEvent, e => {
       const hasChildren = child.dataset.hasChildren === "true";
@@ -108,7 +121,6 @@ function initNavDrawer() {
     });
   });
 
-  /* ---------- GRAND CHILD ---------- */
   drawer.querySelectorAll(".grandchild-menu-item").forEach(gc => {
     gc.addEventListener(triggerEvent, e => {
       const isCollection = gc.dataset.isCollection === "true";
@@ -135,7 +147,7 @@ function openChildPanel(parentHandle, titleText) {
   const panel = document.getElementById("js-child-linklist");
 
   drawer.classList.add("panel-1");
-  panel.classList.remove("element-hide");
+  showElement(panel);
 
   panel.querySelector(".child-linklist-title").textContent = titleText;
 
@@ -152,7 +164,7 @@ function openGrandChildPanel(childHandle, titleText) {
   const panel = document.getElementById("js-grandchild-linklist");
 
   drawer.classList.add("panel-2");
-  panel.classList.remove("element-hide");
+  showElement(panel);
 
   panel.querySelector(".grandchild-linklist-title").textContent = titleText;
 
@@ -173,23 +185,20 @@ function openCollectionPanel(handle, titleText) {
   const loader = panel.querySelector(".collection-product-loader");
 
   drawer.classList.add("panel-product");
-  panel.classList.remove("element-hide");
+  showElement(panel);
 
   panel.querySelector(".collections-productlist-title").textContent = titleText;
 
-  /* SHOW LOADER */
   loader.classList.add("active");
-  container.classList.add("element-hide");
+  hideElement(container);
 
-  /* FETCH PRODUCTS */
   fetch(`/collections/${handle}?view=ajax-search`)
     .then(res => res.text())
     .then(html => {
       activeCollectionHandle = handle;
-
       container.innerHTML = html;
       loader.classList.remove("active");
-      container.classList.remove("element-hide");
+      showElement(container);
     })
     .catch(() => {
       loader.classList.remove("active");
@@ -201,9 +210,7 @@ function openCollectionPanel(handle, titleText) {
 ====================================== */
 function initBackButtons() {
   document.getElementById("js-back-to-parent")?.addEventListener("click", () => {
-    resetGrandChild();
-    resetCollection();
-    resetChild();
+    resetAllPanels();
   });
 
   document.getElementById("js-back-to-child")?.addEventListener("click", () => {
@@ -226,12 +233,12 @@ function resetAllPanels() {
 }
 
 function resetChild() {
-  document.getElementById("js-child-linklist").classList.add("element-hide");
+  hideElement(document.getElementById("js-child-linklist"));
   document.getElementById("js-nav-drawer").classList.remove("panel-1");
 }
 
 function resetGrandChild() {
-  document.getElementById("js-grandchild-linklist").classList.add("element-hide");
+  hideElement(document.getElementById("js-grandchild-linklist"));
   document.getElementById("js-nav-drawer").classList.remove("panel-2");
 }
 
@@ -240,11 +247,10 @@ function resetCollection() {
   const loader = panel.querySelector(".collection-product-loader");
   const container = document.getElementById("CollectionProducts");
 
-  panel.classList.add("element-hide");
+  hideElement(panel);
   loader.classList.remove("active");
-  container.classList.add("element-hide");
+  hideElement(container);
 
-  /* 🔑 CRITICAL FIX */
   activeCollectionHandle = null;
 
   document.getElementById("js-nav-drawer").classList.remove("panel-product");
