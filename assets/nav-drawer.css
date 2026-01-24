@@ -90,3 +90,21 @@
 .shopify-section-nav .product-card__info .price {
     font-size: 0.8em;
 }
+@media (max-width: 991px) {
+  .shopify-section-nav {
+    max-width: 100%;
+  }
+  .shopify-section-nav .initial-panel {
+    overflow-x: auto;
+    height: 85vh;
+}
+  .child-linklist,
+  .grandchild-linklist,
+  .collections-productlist {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgb(var(--color-background));
+  }
+}
