@@ -12,11 +12,14 @@
 
         <!-- Products Grid -->
         <div class="products-grid cols-{{ section.settings.grid_columns_desktop }}" id="productsContainer">
-          {% for product in collection.products %}
-            {% render 'product-card', product: product %}
-          {% else %}
-            <p>No products found.</p>
-          {% endfor %}
+          {% paginate collection.products by 5 %}
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% else %}
+              <p>No products found.</p>
+            {% endfor %}
+            {{- paginate | default_pagination }}
+          {% endpaginate %}
         </div>
         <div class="product-filter">
         {% if section.settings.enable_filter %}
