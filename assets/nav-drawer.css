@@ -98,14 +98,15 @@
     overflow-x: auto;
     height: 85vh;
 }
-  .child-linklist,
+  /* .child-linklist,
   .grandchild-linklist,
   .collections-productlist {
     max-height: 92vh;
+    min-height: 100%;
     width: 100%;
     position: absolute;
     top: 2rem;
     left: 0;
     background: rgb(var(--color-background));
-  }
+  } */
 }
