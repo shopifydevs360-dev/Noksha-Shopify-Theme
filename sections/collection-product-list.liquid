@@ -34,11 +34,11 @@
         {% endpaginate %}
 
         <!-- Filters -->
-        <div class="product-filter">
-          {% if section.settings.enable_filter %}
+        {% if section.settings.enable_filter %}
+          <div class="product-filter">
             {% render 'products-filter', section: section, collection: collection %}
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
 
       </main>
 
@@ -47,6 +47,7 @@
 </div>
 
 <script src="{{ 'product-filter.js' | asset_url }}" defer></script>
+
 
 
 
