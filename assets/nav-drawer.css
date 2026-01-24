@@ -2,6 +2,7 @@
   .shopify-section-nav {
     max-width: 40rem;
     background: #f0eee8;
+    min-width: fit-content;
     transition: all 0.4s cubic-bezier(.32,.24,.15,1);
   }
   .shopify-section-nav.panel-1 {
