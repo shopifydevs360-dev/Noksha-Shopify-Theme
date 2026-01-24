@@ -11,6 +11,30 @@
   "sections": {
     "main": {
       "type": "collection-product-list",
+      "blocks": {
+        "color_filter_D8GdUg": {
+          "type": "color-filter",
+          "settings": {}
+        },
+        "collection_filter_tN3AFm": {
+          "type": "collection-filter",
+          "settings": {}
+        },
+        "vendor_filter_enV8mP": {
+          "type": "vendor-filter",
+          "settings": {}
+        },
+        "availablity_filter_P4qqc4": {
+          "type": "availablity-filter",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "color_filter_D8GdUg",
+        "collection_filter_tN3AFm",
+        "vendor_filter_enV8mP",
+        "availablity_filter_P4qqc4"
+      ],
       "settings": {
         "container_type": "container",
         "color_scheme": "scheme-1e6195d5-cb89-4a9c-a4a6-d3205814ce99",
@@ -21,23 +45,7 @@
         "enable_sorting": true,
         "enable_filter": true,
         "custom_class": "",
-        "color_control": "section-light",
-        "enable_availability": true,
-        "enable_collection": true,
-        "specific_collections": "",
-        "enable_brand": true,
-        "specific_brands": "",
-        "enable_color": true,
-        "specific_colors": "",
-        "enable_custom_filter_1": false,
-        "custom_filter_1_title": "",
-        "custom_filter_1_tags": "",
-        "enable_custom_filter_2": false,
-        "custom_filter_2_title": "",
-        "custom_filter_2_tags": "",
-        "enable_custom_filter_3": false,
-        "custom_filter_3_title": "",
-        "custom_filter_3_tags": ""
+        "color_control": "section-light"
       }
     }
   },
