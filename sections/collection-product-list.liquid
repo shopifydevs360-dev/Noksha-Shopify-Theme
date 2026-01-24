@@ -5,11 +5,9 @@
 <div class="shopify-section m-color-{{ section.settings.color_scheme.id }}">
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper sidebar-space">
-      <!-- Filters Sidebar -->
 
       <!-- Main Content -->
-      <main class="product-list-wapper" data-pagination-type="{{ section.settings.pagination_type }}">
-
+      <main class="product-list-wapper">
         <!-- Products Grid -->
         <div class="products-grid cols-{{ section.settings.grid_columns_desktop }}" id="productsContainer">
           {% paginate collection.products by 5 %}
