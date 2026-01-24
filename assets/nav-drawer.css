@@ -58,9 +58,10 @@
     letter-spacing: 1px;
 }
 .shopify-section-nav h4 {
-    font-size: 0.9em;
-    margin: 0.8rem 0 0.5rem 0;
+    font-size: .9em;
+    margin: .8rem 0 .5rem;
     text-transform: uppercase;
     border-bottom: 1px solid;
     font-weight: 600;
+    width: fit-content;
 }
