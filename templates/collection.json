@@ -19,7 +19,7 @@
         "collection_filter_tN3AFm": {
           "type": "collection-filter",
           "settings": {
-            "collection_menu": ""
+            "collection_menu": "main-menu"
           }
         },
         "vendor_filter_enV8mP": {
