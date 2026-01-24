@@ -20,14 +20,7 @@
         <fieldset class="filter-group">
           <legend>Collections</legend>
           {% for c in collections %}
-            <label>
-              <input
-                type="checkbox"
-                data-filter="filter.p.collection"
-                value="{{ c.handle }}"
-              >
-              {{ c.title }}
-            </label>
+          <input data-filter-type="collection" value="{{ c.title | downcase }}">
           {% endfor %}
         </fieldset>
 
@@ -35,14 +28,7 @@
         <fieldset class="filter-group">
           <legend>Brand</legend>
           {% for vendor in collection.all_vendors %}
-            <label>
-              <input
-                type="checkbox"
-                data-filter="filter.p.vendor"
-                value="{{ vendor }}"
-              >
-              {{ vendor }}
-            </label>
+          <input data-filter-type="vendor" value="{{ vendor | downcase }}">
           {% endfor %}
         </fieldset>
 
@@ -67,14 +53,14 @@
           <legend>{{ block.settings.filter_title }}</legend>
           {% assign tags = block.settings.custom_filter_tags | split: ',' %}
           {% for tag in tags %}
-            <label>
-              <input
-                type="checkbox"
-                data-filter="filter.p.tag"
-                value="{{ tag | strip }}"
-              >
-              {{ tag | strip }}
-            </label>
+          <label>
+            <input
+              type="checkbox"
+              data-filter-type="tag"
+              value="{{ tag | strip | downcase }}"
+            >
+            {{ tag | strip }}
+          </label>
           {% endfor %}
         </fieldset>
 
