@@ -227,12 +227,16 @@ function resetAllPanels() {
 
 function resetChild() {
   document.getElementById("js-child-linklist").classList.add("element-hide");
-  document.getElementById("js-nav-drawer").classList.remove("panel-1");
+
+  const drawer = document.getElementById("js-nav-drawer");
+  drawer.classList.remove("panel-1");
 }
 
 function resetGrandChild() {
   document.getElementById("js-grandchild-linklist").classList.add("element-hide");
-  document.getElementById("js-nav-drawer").classList.remove("panel-2");
+
+  const drawer = document.getElementById("js-nav-drawer");
+  drawer.classList.remove("panel-2");
 }
 
 function resetCollection() {
@@ -244,8 +248,9 @@ function resetCollection() {
   loader.classList.remove("active");
   container.classList.add("element-hide");
 
-  /* 🔑 CRITICAL FIX */
   activeCollectionHandle = null;
 
-  document.getElementById("js-nav-drawer").classList.remove("panel-product");
+  const drawer = document.getElementById("js-nav-drawer");
+  drawer.classList.remove("panel-product");
 }
+
