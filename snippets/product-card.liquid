@@ -1,6 +1,9 @@
 {% if product %}
 {% assign cart_behavior = settings.cart_behavior | default: 'ajax' %}
-<div class="product-card" data-product-id="{{ product.id }}">
+  {% assign collections_titles = product.collections | map: 'title' | join: ',' | downcase %}
+  {% assign tags = product.tags | join: ',' | downcase %}
+  {% assign title = product.title | downcase %}
+<div class="product-card" data-product-id="{{ product.id }}" data-product-collections="{{ collections_titles }}" data-product-tags="{{ tags }}" data-product-title="{{ title }}">
   <!-- ================= IMAGE WRAP ================= -->
   <div class="image-wrap">
     <a href="{{ product.url }}" aria-label="{{ product.title }}">
