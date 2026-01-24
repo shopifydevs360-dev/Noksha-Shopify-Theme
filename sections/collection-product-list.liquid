@@ -24,13 +24,14 @@
             {% else %}
               <p>No products found.</p>
             {% endfor %}
-          </div>
 
-          {% if section.settings.enable_pagination %}
+
+            {% if section.settings.enable_pagination %}
             <div id="paginationWrapper">
               {{ paginate | default_pagination }}
             </div>
           {% endif %}
+          </div>
 
         {% endpaginate %}
 
