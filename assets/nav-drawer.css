@@ -75,3 +75,17 @@
     width: 1em;
     margin-bottom: -2px;
 }
+.shopify-section-nav .search-results-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 25rem;
+}
+
+.shopify-section-nav .product-card__info h5 {
+    font-size: 0.8em;
+    margin: 0.5rem 0 0;
+}
+.shopify-section-nav .product-card__info .price {
+    font-size: 0.8em;
+}
