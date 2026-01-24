@@ -2,7 +2,7 @@
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
 
 <div
-  class="main-product-list m-color-{{ section.settings.color_scheme.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
+  class="main-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
   data-section-id="{{ section.id }}"
   data-enable-pagination="{{ section.settings.enable_pagination }}"
   data-pagination-type="{{ section.settings.pagination_type }}"
@@ -100,7 +100,7 @@
     },
     {
       "type": "color_scheme",
-      "id": "color_scheme",
+      "id": "product_color_scheme",
       "label": "Color Scheme",
       "default": "scheme-1"
     },
