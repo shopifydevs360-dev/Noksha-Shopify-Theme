@@ -204,6 +204,7 @@ p:empty {
 }
 [role=button], a, button, input, label, select, textarea {
     touch-action: manipulation;
+    color: rgb(var(--color-heading));
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading-family, sans-serif);
