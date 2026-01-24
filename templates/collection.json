@@ -59,7 +59,7 @@
         "enable_pagination": true,
         "products_per_page": 4,
         "pagination_type": "infinity_loading",
-        "enable_sorting": true,
+        "enable_sorting": false,
         "enable_filter": true,
         "custom_class": "",
         "color_control": "section-light"
