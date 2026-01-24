@@ -7,53 +7,13 @@
   {% for block in section.blocks %}
     {% case block.type %}
 
+      {%- comment -%} AVAILABILITY {%- endcomment -%}
       {% when 'availablity-filter' %}
-        {% assign filter = collection.filters | where: 'type', 'availability' | first %}
-        {% if filter %}
-          <fieldset class="filter-group">
-            <legend>Availability</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-
-      {% when 'vendor-filter' %}
-        {% assign filter = collection.filters | where: 'type', 'vendor' | first %}
-        {% if filter %}
-          <fieldset class="filter-group">
-            <legend>Brand</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-
-      {% when 'custom-filter' %}
-        {% assign filter = collection.filters | where: 'type', 'tag' | first %}
-        {% if filter %}
-          {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' %}
-          <fieldset class="filter-group">
-            <legend>{{ block.settings.filter_title }}</legend>
-            {% for value in filter.values %}
-              {% assign label_down = value.label | downcase %}
-              {% if allowed_tags contains label_down %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Availability' %}
+            <fieldset class="filter-group">
+              <legend>{{ filter.label }}</legend>
+              {% for value in filter.values %}
                 <label>
                   <input
                     type="checkbox"
@@ -63,10 +23,77 @@
                   >
                   {{ value.label }}
                 </label>
-              {% endif %}
-            {% endfor %}
-          </fieldset>
-        {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {%- comment -%} BRAND / VENDOR {%- endcomment -%}
+      {% when 'vendor-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Brand' %}
+            <fieldset class="filter-group">
+              <legend>{{ filter.label }}</legend>
+              {% for value in filter.values %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  {{ value.label }}
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {%- comment -%} COLOR (METAFIELD / CATEGORY METAFIELD) {%- endcomment -%}
+      {% when 'color-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Color' %}
+            <fieldset class="filter-group">
+              <legend>{{ filter.label }}</legend>
+              {% for value in filter.values %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  {{ value.label }}
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {%- comment -%} CUSTOM TAG FILTER (SCHEMA-CONTROLLED) {%- endcomment -%}
+      {% when 'custom-filter' %}
+        {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Product tags' or filter.label == 'Tags' %}
+            <fieldset class="filter-group">
+              <legend>{{ block.settings.filter_title }}</legend>
+              {% for value in filter.values %}
+                {% assign tag_down = value.label | downcase %}
+                {% if allowed_tags contains tag_down %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    {{ value.label }}
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
 
     {% endcase %}
   {% endfor %}
