@@ -14,40 +14,42 @@ function applyFilters() {
   document
     .querySelectorAll('#CollectionFilters input:checked')
     .forEach(input => {
-      const type = input.dataset.filterType;
-      filters[type].push(input.value);
+      filters[input.dataset.filterType].push(input.value);
     });
+
+  const hasActiveFilters = Object.values(filters).some(arr => arr.length);
 
   document.querySelectorAll('.product-card').forEach(card => {
     let visible = true;
 
-    // Availability
     if (filters.availability.length) {
-      const isAvailable = !card.querySelector('.add-to-cart-btn[disabled]');
-      visible = isAvailable;
+      visible = !card.querySelector('.add-to-cart-btn[disabled]');
     }
 
-    // Collection
     if (visible && filters.collection.length) {
-      visible = filters.collection.some(col =>
-        card.dataset.productCollections.includes(col)
+      visible = filters.collection.some(v =>
+        card.dataset.productCollections.includes(v)
       );
     }
 
-    // Vendor (from title or data attr if added later)
     if (visible && filters.vendor.length) {
       visible = filters.vendor.some(v =>
         card.dataset.productTitle.includes(v)
       );
     }
 
-    // Tags / Colors
     if (visible && filters.tag.length) {
-      visible = filters.tag.some(tag =>
-        card.dataset.productTags.includes(tag)
+      visible = filters.tag.some(v =>
+        card.dataset.productTags.includes(v)
       );
     }
 
     card.style.display = visible ? '' : 'none';
   });
+
+  // 🔥 KEY FIX: pagination handling
+  const pagination = document.getElementById('paginationWrapper');
+  if (pagination) {
+    pagination.style.display = hasActiveFilters ? 'none' : '';
+  }
 }
