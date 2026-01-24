@@ -101,7 +101,7 @@
     overflow-x: auto;
     height: 85vh;
 }
-  /* .child-linklist,
+  .child-linklist,
   .grandchild-linklist,
   .collections-productlist {
     max-height: 92vh;
@@ -111,5 +111,5 @@
     top: 2rem;
     left: 0;
     background: rgb(var(--color-background));
-  } */
+  }
 }
