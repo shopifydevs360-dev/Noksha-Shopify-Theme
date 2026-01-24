@@ -30,7 +30,7 @@
   max-height: 80vh;
   padding: 0 1rem;
 }
-.child-linklist,
+/* .child-linklist,
 .grandchild-linklist,
 .collections-productlist {
   width: 0;
@@ -43,7 +43,7 @@ width: 15rem;
 .collections-productlist.active{
   width: 25rem;
   max-width: 100%;
-}
+} */
 .shopify-section-nav.is-switching {
   pointer-events: none;
 }
