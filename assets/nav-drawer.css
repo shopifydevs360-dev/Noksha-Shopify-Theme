@@ -3,7 +3,6 @@
     max-width: 40rem;
     background: #f0eee8;
     transition: all 0.4s cubic-bezier(.32,.24,.15,1);
-    transition-delay: 0.5s;
   }
   .shopify-section-nav.panel-1 {
     max-width: 50rem;
