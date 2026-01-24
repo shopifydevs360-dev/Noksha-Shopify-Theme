@@ -4,4 +4,7 @@
     gap: 30px;
     margin: 4rem 0;
 }
-
+.main-product-list .inner-warpper {
+    display: flex;
+    gap: 2rem;
+}
