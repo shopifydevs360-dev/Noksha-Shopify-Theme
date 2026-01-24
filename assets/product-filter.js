@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   initCollectionFilters();
   initCollectionPagination();
-  initPopStateHandler();
+  initHistorySync();
 });
 
 /* ===============================
-   FILTER CHANGE HANDLER
+   FILTER CHANGE
 ================================ */
 function initCollectionFilters() {
   document.addEventListener('change', (e) => {
@@ -15,7 +15,7 @@ function initCollectionFilters() {
 }
 
 /* ===============================
-   PAGINATION CLICK HANDLER
+   PAGINATION CLICK
 ================================ */
 function initCollectionPagination() {
   document.addEventListener('click', (e) => {
@@ -28,33 +28,27 @@ function initCollectionPagination() {
 }
 
 /* ===============================
-   BACK / FORWARD SUPPORT
+   BACK / FORWARD
 ================================ */
-function initPopStateHandler() {
+function initHistorySync() {
   window.addEventListener('popstate', () => {
-    fetchCollection(window.location.href);
+    fetchCollection(window.location.href, false);
   });
 }
 
 /* ===============================
-   CORE FETCH FUNCTION
+   CORE FETCH
 ================================ */
-function fetchCollection(url = null) {
+function fetchCollection(url = null, pushState = true) {
   const form = document.getElementById('CollectionFilters');
   if (!form) return;
 
   const params = new URLSearchParams(new FormData(form));
-  let fetchUrl;
+  let fetchUrl = url ? new URL(url) : new URL(window.location.href);
 
-  if (url) {
-    fetchUrl = new URL(url);
-    params.forEach((value, key) => {
-      fetchUrl.searchParams.set(key, value);
-    });
-  } else {
-    fetchUrl = new URL(window.location.href);
-    fetchUrl.search = params.toString();
-  }
+  params.forEach((value, key) => {
+    fetchUrl.searchParams.set(key, value);
+  });
 
   fetch(fetchUrl.toString())
     .then(res => res.text())
@@ -63,7 +57,10 @@ function fetchCollection(url = null) {
 
       replaceProducts(doc);
       replacePagination(doc);
-      updateURL(fetchUrl);
+
+      if (pushState) {
+        history.pushState({}, '', fetchUrl.pathname + '?' + fetchUrl.searchParams.toString());
+      }
     });
 }
 
@@ -71,26 +68,17 @@ function fetchCollection(url = null) {
    DOM REPLACERS
 ================================ */
 function replaceProducts(doc) {
-  const newProducts = doc.querySelector('#productsContainer');
-  const currentProducts = document.querySelector('#productsContainer');
-
-  if (newProducts && currentProducts) {
-    currentProducts.innerHTML = newProducts.innerHTML;
+  const current = document.getElementById('productsContainer');
+  const incoming = doc.getElementById('productsContainer');
+  if (current && incoming) {
+    current.innerHTML = incoming.innerHTML;
   }
 }
 
 function replacePagination(doc) {
-  const newPagination = doc.querySelector('#paginationWrapper');
-  const paginationWrapper = document.querySelector('#paginationWrapper');
-
-  if (paginationWrapper) {
-    paginationWrapper.innerHTML = newPagination ? newPagination.innerHTML : '';
+  const current = document.getElementById('paginationWrapper');
+  const incoming = doc.getElementById('paginationWrapper');
+  if (current) {
+    current.innerHTML = incoming ? incoming.innerHTML : '';
   }
-}
-
-/* ===============================
-   URL SYNC
-================================ */
-function updateURL(urlObj) {
-  history.pushState({}, '', urlObj.pathname + '?' + urlObj.searchParams.toString());
 }
