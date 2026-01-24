@@ -101,6 +101,7 @@
   .child-linklist,
   .grandchild-linklist,
   .collections-productlist {
+    max-height: 95vh;
     width: 100%;
     position: absolute;
     top: 0;
