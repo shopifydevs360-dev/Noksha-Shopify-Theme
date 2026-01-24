@@ -9,8 +9,8 @@
           <label>
             <input
               type="checkbox"
-              data-filter="filter.v.availability"
-              value="1"
+              data-filter-type="availability"
+              value="in-stock"
             >
             In stock
           </label>
@@ -20,7 +20,14 @@
         <fieldset class="filter-group">
           <legend>Collections</legend>
           {% for c in collections %}
-          <input data-filter-type="collection" value="{{ c.title | downcase }}">
+            <label>
+              <input
+                type="checkbox"
+                data-filter-type="collection"
+                value="{{ c.title | downcase }}"
+              >
+              {{ c.title }}
+            </label>
           {% endfor %}
         </fieldset>
 
@@ -28,7 +35,14 @@
         <fieldset class="filter-group">
           <legend>Brand</legend>
           {% for vendor in collection.all_vendors %}
-          <input data-filter-type="vendor" value="{{ vendor | downcase }}">
+            <label>
+              <input
+                type="checkbox"
+                data-filter-type="vendor"
+                value="{{ vendor | downcase }}"
+              >
+              {{ vendor }}
+            </label>
           {% endfor %}
         </fieldset>
 
@@ -40,8 +54,8 @@
             <label>
               <input
                 type="checkbox"
-                data-filter="filter.p.tag"
-                value="{{ color }}"
+                data-filter-type="tag"
+                value="{{ color | downcase }}"
               >
               {{ color | capitalize }}
             </label>
@@ -53,14 +67,14 @@
           <legend>{{ block.settings.filter_title }}</legend>
           {% assign tags = block.settings.custom_filter_tags | split: ',' %}
           {% for tag in tags %}
-          <label>
-            <input
-              type="checkbox"
-              data-filter-type="tag"
-              value="{{ tag | strip | downcase }}"
-            >
-            {{ tag | strip }}
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                data-filter-type="tag"
+                value="{{ tag | strip | downcase }}"
+              >
+              {{ tag | strip }}
+            </label>
           {% endfor %}
         </fieldset>
 
