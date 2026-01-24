@@ -1,22 +1,41 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtn = document.querySelector(".filter-toggle-btn");
-  const filters = document.getElementById("CollectionFilters");
-
-  if (!toggleBtn || !filters) return;
-
-  toggleBtn.addEventListener("click", () => {
-    const expanded = toggleBtn.getAttribute("aria-expanded") === "true";
-    toggleBtn.setAttribute("aria-expanded", !expanded);
-    filters.classList.toggle("is-open");
-    document.body.classList.toggle("filters-open");
-  });
-
-  // Auto-submit on desktop
-  if (window.innerWidth > 991) {
-    document.querySelectorAll(".filters-form input").forEach(input => {
-      input.addEventListener("change", () => {
-        input.closest("form").submit();
-      });
-    });
-  }
+document.addEventListener('change', (e) => {
+  if (!e.target.closest('#CollectionFilters')) return;
+  applyFilters(1);
 });
+
+function applyFilters(page = 1) {
+  const params = new URLSearchParams();
+
+  document
+    .querySelectorAll('#CollectionFilters input:checked')
+    .forEach(input => {
+      params.append(input.dataset.filter, input.value);
+    });
+
+  params.set('page', page);
+
+  const url = `${window.location.pathname}?${params.toString()}`;
+
+  fetch(url)
+    .then(res => res.text())
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      // Update products
+      const newProducts = doc.querySelector('#productsContainer');
+      if (newProducts) {
+        document.querySelector('#productsContainer').innerHTML =
+          newProducts.innerHTML;
+      }
+
+      // Update pagination
+      const newPagination = doc.querySelector('#paginationWrapper');
+      const paginationWrapper = document.querySelector('#paginationWrapper');
+
+      if (paginationWrapper && newPagination) {
+        paginationWrapper.innerHTML = newPagination.innerHTML;
+      }
+
+      history.pushState({}, '', url);
+    });
+}
