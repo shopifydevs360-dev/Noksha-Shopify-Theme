@@ -1,82 +1,72 @@
 <form id="CollectionFilters" class="collection-filters">
 
+  {% if collection.filters.size == 0 %}
+    <p class="filters-empty">No filters available</p>
+  {% endif %}
+
   {% for block in section.blocks %}
     {% case block.type %}
 
       {% when 'availablity-filter' %}
-        <fieldset class="filter-group">
-          <legend>Availability</legend>
-          <label>
-            <input
-              type="checkbox"
-              data-filter-type="availability"
-              value="in-stock"
-            >
-            In stock
-          </label>
-        </fieldset>
-
-      {% when 'collection-filter' %}
-        <fieldset class="filter-group">
-          <legend>Collections</legend>
-          {% for c in collections %}
-            <label>
-              <input
-                type="checkbox"
-                data-filter-type="collection"
-                value="{{ c.title | downcase }}"
-              >
-              {{ c.title }}
-            </label>
-          {% endfor %}
-        </fieldset>
+        {% assign filter = collection.filters | where: 'type', 'availability' | first %}
+        {% if filter %}
+          <fieldset class="filter-group">
+            <legend>Availability</legend>
+            {% for value in filter.values %}
+              <label>
+                <input
+                  type="checkbox"
+                  name="{{ value.param_name }}"
+                  value="{{ value.value }}"
+                  {% if value.active %}checked{% endif %}
+                >
+                {{ value.label }}
+              </label>
+            {% endfor %}
+          </fieldset>
+        {% endif %}
 
       {% when 'vendor-filter' %}
-        <fieldset class="filter-group">
-          <legend>Brand</legend>
-          {% for vendor in collection.all_vendors %}
-            <label>
-              <input
-                type="checkbox"
-                data-filter-type="vendor"
-                value="{{ vendor | downcase }}"
-              >
-              {{ vendor }}
-            </label>
-          {% endfor %}
-        </fieldset>
-
-      {% when 'color-filter' %}
-        <fieldset class="filter-group">
-          <legend>Color</legend>
-          {% assign colors = 'black,white,red,blue,green' | split: ',' %}
-          {% for color in colors %}
-            <label>
-              <input
-                type="checkbox"
-                data-filter-type="tag"
-                value="{{ color | downcase }}"
-              >
-              {{ color | capitalize }}
-            </label>
-          {% endfor %}
-        </fieldset>
+        {% assign filter = collection.filters | where: 'type', 'vendor' | first %}
+        {% if filter %}
+          <fieldset class="filter-group">
+            <legend>Brand</legend>
+            {% for value in filter.values %}
+              <label>
+                <input
+                  type="checkbox"
+                  name="{{ value.param_name }}"
+                  value="{{ value.value }}"
+                  {% if value.active %}checked{% endif %}
+                >
+                {{ value.label }}
+              </label>
+            {% endfor %}
+          </fieldset>
+        {% endif %}
 
       {% when 'custom-filter' %}
-        <fieldset class="filter-group">
-          <legend>{{ block.settings.filter_title }}</legend>
-          {% assign tags = block.settings.custom_filter_tags | split: ',' %}
-          {% for tag in tags %}
-            <label>
-              <input
-                type="checkbox"
-                data-filter-type="tag"
-                value="{{ tag | strip | downcase }}"
-              >
-              {{ tag | strip }}
-            </label>
-          {% endfor %}
-        </fieldset>
+        {% assign filter = collection.filters | where: 'type', 'tag' | first %}
+        {% if filter %}
+          {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' %}
+          <fieldset class="filter-group">
+            <legend>{{ block.settings.filter_title }}</legend>
+            {% for value in filter.values %}
+              {% assign label_down = value.label | downcase %}
+              {% if allowed_tags contains label_down %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  {{ value.label }}
+                </label>
+              {% endif %}
+            {% endfor %}
+          </fieldset>
+        {% endif %}
 
     {% endcase %}
   {% endfor %}
