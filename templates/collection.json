@@ -55,7 +55,7 @@
           "type": "tag-filter",
           "settings": {
             "filter_title": "Tags",
-            "custom_filter_tags": ""
+            "custom_filter_tags": "Coats"
           }
         }
       },
