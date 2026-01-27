@@ -8,9 +8,9 @@
     AVAILABILITY FILTER
     ======================
     {%- endcomment -%}
-    {% when 'availablity-filter' %}
+    {% when 'availability-filter' %}
       {% for filter in collection.filters %}
-        {% if filter.label == 'Availability' %}
+        {% if filter.type == 'availability' %}
           <fieldset>
             <legend>Availability</legend>
 
@@ -22,8 +22,7 @@
                   value="{{ value.value }}"
                   {% if value.active %}checked{% endif %}
                 >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
+                {{ value.label }} <span>({{ value.count }})</span>
               </label>
             {% endfor %}
           </fieldset>
@@ -38,7 +37,7 @@
     {%- endcomment -%}
     {% when 'vendor-filter' %}
       {% for filter in collection.filters %}
-        {% if filter.label == 'Vendor' or filter.label == 'Brand' %}
+        {% if filter.type == 'list' and filter.label == 'Vendor' %}
           <fieldset>
             <legend>{{ filter.label }}</legend>
 
@@ -50,8 +49,7 @@
                   value="{{ value.value }}"
                   {% if value.active %}checked{% endif %}
                 >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
+                {{ value.label }} <span>({{ value.count }})</span>
               </label>
             {% endfor %}
           </fieldset>
@@ -61,26 +59,49 @@
 
     {%- comment -%}
     ======================
-    COLOR FILTER
+    COLOR FILTER (ALLOW + DISALLOW)
     ======================
     {%- endcomment -%}
     {% when 'color-filter' %}
+      {% assign allow_colors = block.settings.allow_colors | downcase | split: ',' | map: 'strip' %}
+      {% assign disallow_colors = block.settings.disallow_colors | downcase | split: ',' | map: 'strip' %}
+
       {% for filter in collection.filters %}
         {% if filter.label == 'Color' %}
-          <fieldset>
-            <legend>Color</legend>
+          <fieldset class="filter filter--color">
+            <legend>{{ block.settings.filter_title }}</legend>
 
             {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
-              </label>
+              {% assign color_value = value.label | downcase | strip %}
+
+              {% if allow_colors != blank and allow_colors contains color_value %}
+                {% unless disallow_colors contains color_value %}
+                  <label class="color-filter-item">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    <span class="color-name">{{ value.label }}</span>
+                    <span>({{ value.count }})</span>
+                  </label>
+                {% endunless %}
+
+              {% elsif allow_colors == blank %}
+                {% unless disallow_colors contains color_value %}
+                  <label class="color-filter-item">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    <span class="color-name">{{ value.label }}</span>
+                    <span>({{ value.count }})</span>
+                  </label>
+                {% endunless %}
+              {% endif %}
             {% endfor %}
           </fieldset>
         {% endif %}
@@ -89,16 +110,11 @@
 
     {%- comment -%}
     ======================
-    TAG FILTER (CUSTOM)
+    TAG FILTER (CUSTOM ALLOW LIST)
     ======================
     {%- endcomment -%}
     {% when 'tag-filter' %}
-      {% assign allowed = block.settings.custom_filter_tags | downcase | split: ',' %}
-      {% assign allowed_clean = '' | split: ',' %}
-
-      {% for tag in allowed %}
-        {% assign allowed_clean = allowed_clean | push: tag | map: 'strip' %}
-      {% endfor %}
+      {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' | map: 'strip' %}
 
       {% for filter in collection.filters %}
         {% if filter.label contains 'Tag' %}
@@ -106,8 +122,8 @@
             <legend>{{ block.settings.filter_title }}</legend>
 
             {% for value in filter.values %}
-              {% assign tag_label = value.label | downcase | strip %}
-              {% if allowed_clean contains tag_label %}
+              {% assign tag_value = value.label | downcase | strip %}
+              {% if allowed_tags contains tag_value %}
                 <label>
                   <input
                     type="checkbox"
@@ -115,8 +131,7 @@
                     value="{{ value.value }}"
                     {% if value.active %}checked{% endif %}
                   >
-                  {{ value.label }}
-                  <span>({{ value.count }})</span>
+                  {{ value.label }} <span>({{ value.count }})</span>
                 </label>
               {% endif %}
             {% endfor %}
@@ -127,42 +142,41 @@
 
     {%- comment -%}
     ======================
-    PRICE FILTER (CORRECT)
+    PRICE FILTER
     ======================
     {%- endcomment -%}
-{% when 'price-filter' %}
-  {% for filter in collection.filters %}
-    {% if filter.type == 'price_range' %}
-      <fieldset>
-        <legend>{{ block.settings.filter_title }}</legend>
+    {% when 'price-filter' %}
+      {% for filter in collection.filters %}
+        {% if filter.type == 'price_range' %}
+          <fieldset>
+            <legend>{{ block.settings.filter_title }}</legend>
 
-        <label>
-          Min
-        <input
-          type="number"
-          name="{{ filter.min_value.param_name }}"
-          value="{{ filter.min_value.value }}"
-          min="0"
-          max="{{ filter.range_max }}"
-          placeholder="{{ 0 | money_without_trailing_zeros }}"
-        >
-        </label>
+            <label>
+              Min
+              <input
+                type="number"
+                name="{{ filter.min_value.param_name }}"
+                value="{{ filter.min_value.value }}"
+                min="0"
+                max="{{ filter.range_max }}"
+                placeholder="{{ 0 | money_without_trailing_zeros }}"
+              >
+            </label>
 
-        <label>
-          Max
-        <input
-          type="number"
-          name="{{ filter.max_value.param_name }}"
-          value="{{ filter.max_value.value }}"
-          min="0"
-          max="{{ filter.range_max }}"
-          placeholder="{{ filter.range_max | money_without_trailing_zeros }}"
-        >
-
-        </label>
-      </fieldset>
-    {% endif %}
-  {% endfor %}
+            <label>
+              Max
+              <input
+                type="number"
+                name="{{ filter.max_value.param_name }}"
+                value="{{ filter.max_value.value }}"
+                min="0"
+                max="{{ filter.range_max }}"
+                placeholder="{{ filter.range_max | money_without_trailing_zeros }}"
+              >
+            </label>
+          </fieldset>
+        {% endif %}
+      {% endfor %}
 
 
     {%- comment -%}
@@ -184,8 +198,7 @@
                   value="{{ value.value }}"
                   {% if value.active %}checked{% endif %}
                 >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
+                {{ value.label }} <span>({{ value.count }})</span>
               </label>
             {% endfor %}
           </fieldset>
@@ -212,8 +225,7 @@
                   value="{{ value.value }}"
                   {% if value.active %}checked{% endif %}
                 >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
+                {{ value.label }} <span>({{ value.count }})</span>
               </label>
             {% endfor %}
           </fieldset>
@@ -222,6 +234,7 @@
 
     {% endcase %}
   {% endfor %}
+
   <a href="{{ collection.url }}" id="clearFiltersBtn">Clear All</a>
 
 </form>
