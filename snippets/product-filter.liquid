@@ -135,7 +135,7 @@
       <fieldset class="price-range">
         <legend>{{ block.settings.filter_title }}</legend>
 
-        <!-- Hidden inputs (Shopify params) -->
+        <!-- Hidden Shopify inputs -->
         <input
           type="hidden"
           name="{{ filter.min_value.param_name }}"
@@ -179,64 +179,9 @@
           </div>
         </div>
       </fieldset>
+
     {% endif %}
   {% endfor %}
-
-          {% for filter in collection.filters %}
-            {% if filter.type == 'price_range' %}
-              {% assign min_value = filter.min_value.value | default: 0 %}
-              {% assign max_value = filter.max_value.value | default: filter.range_max %}
-
-              <fieldset class="price-range">
-                <legend>{{ block.settings.filter_title }}</legend>
-
-                <!-- Hidden inputs (Shopify needs these) -->
-                <input
-                  type="hidden"
-                  name="{{ filter.min_value.param_name }}"
-                  id="PriceMinInput"
-                  value="{{ min_value }}"
-                >
-
-                <input
-                  type="hidden"
-                  name="{{ filter.max_value.param_name }}"
-                  id="PriceMaxInput"
-                  value="{{ max_value }}"
-                >
-
-                <!-- Slider UI -->
-                <div class="range-slider">
-                  <div class="range-track"></div>
-                  <div class="range-fill" id="RangeFill"></div>
-
-                  <input
-                    type="range"
-                    min="0"
-                    max="{{ filter.range_max }}"
-                    value="{{ min_value }}"
-                    id="MinRange"
-                  >
-
-                  <input
-                    type="range"
-                    min="0"
-                    max="{{ filter.range_max }}"
-                    value="{{ max_value }}"
-                    id="MaxRange"
-                  >
-
-                  <div class="price-bubble min" id="MinBubble">
-                    {{ min_value | money }}
-                  </div>
-
-                  <div class="price-bubble max" id="MaxBubble">
-                    {{ max_value | money }}
-                  </div>
-                </div>
-              </fieldset>
-            {% endif %}
-          {% endfor %}
 
 
 
