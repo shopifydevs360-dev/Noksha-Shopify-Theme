@@ -138,26 +138,26 @@
 
         <label>
           Min
-          <input
-            type="number"
-            name="{{ filter.min_value.param_name }}"
-            value="{{ filter.min_value.value }}"
-            min="0"
-            max="{{ filter.range_max }}"
-            placeholder="0"
-          >
+        <input
+          type="number"
+          name="{{ filter.min_value.param_name }}"
+          value="{{ filter.min_value.value }}"
+          min="0"
+          max="{{ filter.range_max }}"
+          placeholder="{{ 0 | money_without_trailing_zeros }}"
+        >
         </label>
 
         <label>
           Max
-<input
-  type="number"
-  name="{{ filter.max_value.param_name }}"
-  value="{{ filter.max_value.value }}"
-  min="0"
-  max="{{ filter.range_max }}"
-  placeholder="{{ filter.range_max | money_without_trailing_zeros }}"
->
+        <input
+          type="number"
+          name="{{ filter.max_value.param_name }}"
+          value="{{ filter.max_value.value }}"
+          min="0"
+          max="{{ filter.range_max }}"
+          placeholder="{{ filter.range_max | money_without_trailing_zeros }}"
+        >
 
         </label>
       </fieldset>
