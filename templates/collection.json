@@ -22,7 +22,8 @@
         "price_filter_qRJzFT": {
           "type": "price-filter",
           "settings": {
-            "filter_title": "Price"
+            "filter_title": "Price",
+            "price_step": 50
           }
         },
         "color_filter_D8GdUg": {
@@ -42,6 +43,20 @@
         "availablity_filter_P4qqc4": {
           "type": "availablity-filter",
           "settings": {}
+        },
+        "size_filter_8THUEK": {
+          "type": "size-filter",
+          "settings": {
+            "filter_title": "Size",
+            "sizes": "S, M"
+          }
+        },
+        "tag_filter_hTjcQz": {
+          "type": "tag-filter",
+          "settings": {
+            "filter_title": "Tags",
+            "custom_filter_tags": ""
+          }
         }
       },
       "block_order": [
@@ -50,7 +65,9 @@
         "color_filter_D8GdUg",
         "collection_filter_tN3AFm",
         "vendor_filter_enV8mP",
-        "availablity_filter_P4qqc4"
+        "availablity_filter_P4qqc4",
+        "size_filter_8THUEK",
+        "tag_filter_hTjcQz"
       ],
       "settings": {
         "container_type": "container",
