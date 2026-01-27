@@ -8,13 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initFilters();
   initPagination();
   initPriceRangeSlider();
-
   updatePaginationUIFromCurrentDOM();
 });
 
-/* ---------------------------
+/* ===========================
   HELPERS
----------------------------- */
+=========================== */
 function getMainContainer() {
   return document.querySelector('.main-product-list');
 }
@@ -43,20 +42,20 @@ function getLoadMoreBtn() {
   return getPaginationWrapper()?.querySelector('#loadMoreBtn');
 }
 
-/* ---------------------------
-  INITIAL PAGINATION DATA
----------------------------- */
+/* ===========================
+  INITIAL PAGINATION
+=========================== */
 function setInitialPaginationData() {
   const box = getProductsContainer();
   if (!box) return;
 
-  const page = parseInt(box.dataset.currentPage || '1', 10);
-  window.COLLECTION_AJAX.currentPage = page > 0 ? page : 1;
+  window.COLLECTION_AJAX.currentPage =
+    parseInt(box.dataset.currentPage || '1', 10) || 1;
 }
 
-/* ---------------------------
+/* ===========================
   FILTERS
----------------------------- */
+=========================== */
 function initFilters() {
   const form = document.getElementById('CollectionFilters');
   if (!form) return;
@@ -72,18 +71,19 @@ function initFilters() {
 
   clearBtn.addEventListener('click', () => {
     form.reset();
-    initPriceRangeSlider(); // reset slider UI
+
+    // reset price slider UI
+    initPriceRangeSlider(true);
 
     window.COLLECTION_AJAX.currentPage = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
     fetchProducts(false, true);
   });
 }
 
-/* ---------------------------
+/* ===========================
   PAGINATION
----------------------------- */
+=========================== */
 function initPagination() {
   window.removeEventListener('scroll', infiniteScrollHandler);
 
@@ -92,10 +92,10 @@ function initPagination() {
   }
 
   document.addEventListener('click', (e) => {
+    if (window.COLLECTION_AJAX.isLoading) return;
+
     const loadMore = e.target.closest('#loadMoreBtn');
     const pageBtn = e.target.closest('[data-page-number]');
-
-    if (window.COLLECTION_AJAX.isLoading) return;
 
     if (loadMore) {
       window.COLLECTION_AJAX.currentPage++;
@@ -128,9 +128,9 @@ function infiniteScrollHandler() {
   }
 }
 
-/* ---------------------------
+/* ===========================
   QUERY PARAMS
----------------------------- */
+=========================== */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
   const params = new URLSearchParams();
@@ -144,15 +144,14 @@ function buildQueryParams() {
 
   const collectionHandle = params.get('collection_handle');
   params.delete('collection_handle');
-
   params.set('page', window.COLLECTION_AJAX.currentPage);
 
   return { params, collectionHandle };
 }
 
-/* ---------------------------
+/* ===========================
   PAGINATION UI
----------------------------- */
+=========================== */
 function renderPaginationUI(totalPages) {
   if (!getEnablePagination()) return;
 
@@ -198,16 +197,14 @@ function updatePaginationUIFromCurrentDOM() {
   const box = getProductsContainer();
   if (!box) return;
 
-  const total = parseInt(box.dataset.totalPages || '1', 10);
-  const current = parseInt(box.dataset.currentPage || '1', 10);
-
-  window.COLLECTION_AJAX.currentPage = current;
-  renderPaginationUI(total);
+  renderPaginationUI(
+    parseInt(box.dataset.totalPages || '1', 10)
+  );
 }
 
-/* ---------------------------
+/* ===========================
   AJAX FETCH
----------------------------- */
+=========================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
@@ -248,6 +245,9 @@ function fetchProducts(append = false, resetPage = false) {
       }
 
       updatePaginationUIFromCurrentDOM();
+
+      // 🔥 Re-init price slider after AJAX
+      initPriceRangeSlider(true);
     })
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
@@ -256,10 +256,10 @@ function fetchProducts(append = false, resetPage = false) {
     });
 }
 
-/* ---------------------------
-  PRICE RANGE SLIDER
----------------------------- */
-function initPriceRangeSlider() {
+/* ===========================
+  PRICE RANGE SLIDER (FINAL)
+=========================== */
+function initPriceRangeSlider(force = false) {
   const minRange = document.getElementById('MinRange');
   const maxRange = document.getElementById('MaxRange');
   const minInput = document.getElementById('PriceMinInput');
@@ -271,12 +271,15 @@ function initPriceRangeSlider() {
 
   if (!minRange || !maxRange || !form) return;
 
-  function update(trigger = false) {
-    let min = +minRange.value;
-    let max = +maxRange.value;
+  if (!force && minRange.dataset.initialized === 'true') return;
+  minRange.dataset.initialized = 'true';
 
-    if (min > max - 1) min = max - 1;
-    if (max < min + 1) max = min + 1;
+  function update(trigger = false) {
+    let min = parseInt(minRange.value, 10);
+    let max = parseInt(maxRange.value, 10);
+
+    if (min >= max) min = max - 1;
+    if (max <= min) max = min + 1;
 
     minRange.value = min;
     maxRange.value = max;
@@ -284,7 +287,7 @@ function initPriceRangeSlider() {
     minInput.value = min;
     maxInput.value = max;
 
-    const maxVal = +minRange.max;
+    const maxVal = parseInt(minRange.getAttribute('max'), 10) || 1;
     const minPct = (min / maxVal) * 100;
     const maxPct = (max / maxVal) * 100;
 
@@ -302,10 +305,10 @@ function initPriceRangeSlider() {
     }
   }
 
-  minRange.addEventListener('input', () => update(false));
-  maxRange.addEventListener('input', () => update(false));
-  minRange.addEventListener('change', () => update(true));
-  maxRange.addEventListener('change', () => update(true));
+  minRange.oninput = () => update(false);
+  maxRange.oninput = () => update(false);
+  minRange.onchange = () => update(true);
+  maxRange.onchange = () => update(true);
 
   update(false);
 }
