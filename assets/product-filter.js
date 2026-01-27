@@ -57,16 +57,26 @@ function setInitialPaginationData() {
 }
 
 /* ===========================
-  FILTERS
+  FILTERS (PRICE SAFE)
 =========================== */
 function initFilters() {
   const form = getFiltersContainer();
   if (!form) return;
 
-  form.addEventListener('change', () => {
+  let debounceTimer = null;
+
+  form.addEventListener('change', (e) => {
+    const isPrice =
+      e.target.name &&
+      e.target.name.includes('filter.v.price');
+
     window.COLLECTION_AJAX.currentPage = 1;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    fetchProducts({ replaceFilters: true });
+
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      fetchProducts({ replaceFilters: true });
+    }, isPrice ? 400 : 0);
   });
 
   const clearBtn = document.getElementById('clearFiltersBtn');
@@ -99,7 +109,10 @@ function initPagination() {
     const pageBtn = e.target.closest('[data-page-number]');
     if (pageBtn) {
       if (window.COLLECTION_AJAX.isLoading) return;
-      window.COLLECTION_AJAX.currentPage = parseInt(pageBtn.dataset.pageNumber, 10);
+      window.COLLECTION_AJAX.currentPage = parseInt(
+        pageBtn.dataset.pageNumber,
+        10
+      );
       window.scrollTo({ top: 0, behavior: 'smooth' });
       fetchProducts();
     }
@@ -122,16 +135,28 @@ function infiniteScrollHandler() {
 }
 
 /* ===========================
-  QUERY PARAMS
+  QUERY PARAMS (PRICE FIX)
 =========================== */
 function buildQueryParams() {
   const form = getFiltersContainer();
   const params = new URLSearchParams();
 
   if (form) {
-    new FormData(form).forEach((value, key) => {
-      if (value !== '') params.append(key, value);
-    });
+    const formData = new FormData(form);
+
+    for (const [key, value] of formData.entries()) {
+      if (!value) continue;
+
+      // Shopify price filter normalization
+      if (key.includes('filter.v.price')) {
+        const numeric = parseFloat(value);
+        if (!isNaN(numeric)) {
+          params.append(key, numeric);
+        }
+      } else {
+        params.append(key, value);
+      }
+    }
   }
 
   const collectionHandle = params.get('collection_handle');
@@ -211,7 +236,7 @@ function fetchProducts({
     ? `/collections/${collectionHandle}`
     : window.location.pathname;
 
-  fetch(`${baseUrl}?${params}`, {
+  fetch(`${baseUrl}?${params.toString()}`, {
     headers: { 'X-Requested-With': 'XMLHttpRequest' }
   })
     .then(res => res.text())
@@ -222,12 +247,14 @@ function fetchProducts({
       const oldProducts = getProductsContainer();
       if (!newProducts || !oldProducts) return;
 
-      oldProducts.dataset.totalPages = newProducts.dataset.totalPages;
-      oldProducts.dataset.currentPage = newProducts.dataset.currentPage;
+      oldProducts.dataset.totalPages = newProducts.dataset.totalPages || '1';
+      oldProducts.dataset.currentPage = newProducts.dataset.currentPage || '1';
 
-      append
-        ? oldProducts.insertAdjacentHTML('beforeend', newProducts.innerHTML)
-        : oldProducts.innerHTML = newProducts.innerHTML;
+      if (append) {
+        oldProducts.insertAdjacentHTML('beforeend', newProducts.innerHTML);
+      } else {
+        oldProducts.innerHTML = newProducts.innerHTML;
+      }
 
       if (replaceFilters) {
         const newFilters = doc.getElementById('CollectionFilters');
@@ -238,6 +265,9 @@ function fetchProducts({
       }
 
       updatePaginationUIFromCurrentDOM();
+    })
+    .catch(err => {
+      console.error('AJAX filter error:', err);
     })
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
