@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   setInitialPaginationData();
   initFilters();
   initPagination();
-  initPriceRangeSlider();
+  initPriceRangeSlider(true);
   updatePaginationUIFromCurrentDOM();
 });
 
-/* ===========================
+/* =========================
   HELPERS
-=========================== */
+========================= */
 function getMainContainer() {
   return document.querySelector('.main-product-list');
 }
@@ -42,9 +42,9 @@ function getLoadMoreBtn() {
   return getPaginationWrapper()?.querySelector('#loadMoreBtn');
 }
 
-/* ===========================
+/* =========================
   INITIAL PAGINATION
-=========================== */
+========================= */
 function setInitialPaginationData() {
   const box = getProductsContainer();
   if (!box) return;
@@ -53,9 +53,9 @@ function setInitialPaginationData() {
     parseInt(box.dataset.currentPage || '1', 10) || 1;
 }
 
-/* ===========================
+/* =========================
   FILTERS
-=========================== */
+========================= */
 function initFilters() {
   const form = document.getElementById('CollectionFilters');
   if (!form) return;
@@ -71,8 +71,6 @@ function initFilters() {
 
   clearBtn.addEventListener('click', () => {
     form.reset();
-
-    // reset price slider UI
     initPriceRangeSlider(true);
 
     window.COLLECTION_AJAX.currentPage = 1;
@@ -81,9 +79,9 @@ function initFilters() {
   });
 }
 
-/* ===========================
+/* =========================
   PAGINATION
-=========================== */
+========================= */
 function initPagination() {
   window.removeEventListener('scroll', infiniteScrollHandler);
 
@@ -128,9 +126,9 @@ function infiniteScrollHandler() {
   }
 }
 
-/* ===========================
+/* =========================
   QUERY PARAMS
-=========================== */
+========================= */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
   const params = new URLSearchParams();
@@ -144,14 +142,15 @@ function buildQueryParams() {
 
   const collectionHandle = params.get('collection_handle');
   params.delete('collection_handle');
+
   params.set('page', window.COLLECTION_AJAX.currentPage);
 
   return { params, collectionHandle };
 }
 
-/* ===========================
+/* =========================
   PAGINATION UI
-=========================== */
+========================= */
 function renderPaginationUI(totalPages) {
   if (!getEnablePagination()) return;
 
@@ -175,11 +174,11 @@ function renderPaginationUI(totalPages) {
     box.innerHTML = Array.from({ length: totalPages }, (_, i) => {
       const page = i + 1;
       return `
-        <button
-          type="button"
+        <button type="button"
           data-page-number="${page}"
-          class="${page === window.COLLECTION_AJAX.currentPage ? 'active' : ''}"
-        >${page}</button>
+          class="${page === window.COLLECTION_AJAX.currentPage ? 'active' : ''}">
+          ${page}
+        </button>
       `;
     }).join('');
   }
@@ -197,14 +196,12 @@ function updatePaginationUIFromCurrentDOM() {
   const box = getProductsContainer();
   if (!box) return;
 
-  renderPaginationUI(
-    parseInt(box.dataset.totalPages || '1', 10)
-  );
+  renderPaginationUI(parseInt(box.dataset.totalPages || '1', 10));
 }
 
-/* ===========================
+/* =========================
   AJAX FETCH
-=========================== */
+========================= */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
@@ -245,8 +242,6 @@ function fetchProducts(append = false, resetPage = false) {
       }
 
       updatePaginationUIFromCurrentDOM();
-
-      // 🔥 Re-init price slider after AJAX
       initPriceRangeSlider(true);
     })
     .finally(() => {
@@ -256,9 +251,9 @@ function fetchProducts(append = false, resetPage = false) {
     });
 }
 
-/* ===========================
-  PRICE RANGE SLIDER (FINAL)
-=========================== */
+/* =========================
+  PRICE RANGE SLIDER (FIXED)
+========================= */
 function initPriceRangeSlider(force = false) {
   const minRange = document.getElementById('MinRange');
   const maxRange = document.getElementById('MaxRange');
@@ -287,15 +282,20 @@ function initPriceRangeSlider(force = false) {
     minInput.value = min;
     maxInput.value = max;
 
-    const maxVal = parseInt(minRange.getAttribute('max'), 10) || 1;
+    const maxVal = parseInt(minRange.max, 10) || 1;
+    const sliderWidth = minRange.offsetWidth || 1;
+
     const minPct = (min / maxVal) * 100;
     const maxPct = (max / maxVal) * 100;
 
     fill.style.left = `${minPct}%`;
     fill.style.width = `${maxPct - minPct}%`;
 
-    minBubble.style.left = `${minPct}%`;
-    maxBubble.style.left = `${maxPct}%`;
+    const minPx = (minPct / 100) * sliderWidth;
+    const maxPx = (maxPct / 100) * sliderWidth;
+
+    minBubble.style.left = `${Math.max(12, minPx)}px`;
+    maxBubble.style.left = `${Math.min(sliderWidth - 12, maxPx)}px`;
 
     minBubble.textContent = `$${min}`;
     maxBubble.textContent = `$${max}`;
@@ -310,5 +310,5 @@ function initPriceRangeSlider(force = false) {
   minRange.onchange = () => update(true);
   maxRange.onchange = () => update(true);
 
-  update(false);
+  requestAnimationFrame(() => update(false));
 }
