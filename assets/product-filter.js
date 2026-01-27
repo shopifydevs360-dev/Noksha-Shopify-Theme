@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     isLoading: false
   };
 
+  // 🔒 price filter interaction guard
+  window.PRICE_FILTER_USED = false;
+
   setInitialPaginationData();
   initFilters();
   initPagination();
@@ -46,7 +49,7 @@ function getLoadMoreBtn() {
 }
 
 /* ===========================
-  INITIAL DATA
+  INITIAL PAGINATION DATA
 =========================== */
 function setInitialPaginationData() {
   const products = getProductsContainer();
@@ -65,18 +68,21 @@ function initFilters() {
 
   let debounceTimer = null;
 
-  form.addEventListener('change', (e) => {
-    const isPrice =
-      e.target.name &&
-      e.target.name.includes('filter.v.price');
+  // ✅ detect real price interaction only
+  form.addEventListener('input', (e) => {
+    if (e.target.name?.includes('filter.v.price')) {
+      window.PRICE_FILTER_USED = true;
+    }
+  });
 
+  form.addEventListener('change', (e) => {
     window.COLLECTION_AJAX.currentPage = 1;
 
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       fetchProducts({ replaceFilters: true });
-    }, isPrice ? 400 : 0);
+    }, e.target.name?.includes('filter.v.price') ? 400 : 0);
   });
 
   const clearBtn = document.getElementById('clearFiltersBtn');
@@ -100,15 +106,13 @@ function initPagination() {
 
   document.addEventListener('click', (e) => {
     const loadMore = e.target.closest('#loadMoreBtn');
-    if (loadMore) {
-      if (window.COLLECTION_AJAX.isLoading) return;
+    if (loadMore && !window.COLLECTION_AJAX.isLoading) {
       window.COLLECTION_AJAX.currentPage++;
       fetchProducts({ append: true });
     }
 
     const pageBtn = e.target.closest('[data-page-number]');
-    if (pageBtn) {
-      if (window.COLLECTION_AJAX.isLoading) return;
+    if (pageBtn && !window.COLLECTION_AJAX.isLoading) {
       window.COLLECTION_AJAX.currentPage = parseInt(
         pageBtn.dataset.pageNumber,
         10
@@ -125,7 +129,6 @@ function infiniteScrollHandler() {
 
   const products = getProductsContainer();
   const totalPages = parseInt(products?.dataset.totalPages || '1', 10);
-
   if (window.COLLECTION_AJAX.currentPage >= totalPages) return;
 
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
@@ -135,7 +138,7 @@ function infiniteScrollHandler() {
 }
 
 /* ===========================
-  QUERY PARAMS (PRICE FIX)
+  QUERY PARAMS (PRICE GUARD)
 =========================== */
 function buildQueryParams() {
   const form = getFiltersContainer();
@@ -147,12 +150,16 @@ function buildQueryParams() {
     for (const [key, value] of formData.entries()) {
       if (!value) continue;
 
-      // Shopify price filter normalization
+      // 🚨 HARD PRICE FILTER GUARD
       if (key.includes('filter.v.price')) {
+        if (!window.PRICE_FILTER_USED) continue;
+
         const numeric = parseFloat(value);
-        if (!isNaN(numeric)) {
-          params.append(key, numeric);
-        }
+
+        // block browser auto-filled defaults
+        if (isNaN(numeric) || numeric <= 0) continue;
+
+        params.append(key, numeric);
       } else {
         params.append(key, value);
       }
