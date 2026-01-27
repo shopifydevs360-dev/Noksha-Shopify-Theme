@@ -16,7 +16,7 @@
           "type": "price-filter",
           "settings": {
             "filter_title": "Price",
-            "price_step": 50
+            "price_step": 1
           }
         },
         "color_filter_D8GdUg": {
@@ -43,13 +43,6 @@
             "filter_title": "Size",
             "sizes": "S, M"
           }
-        },
-        "tag_filter_hTjcQz": {
-          "type": "tag-filter",
-          "settings": {
-            "filter_title": "Tags",
-            "custom_filter_tags": "Coats"
-          }
         }
       },
       "block_order": [
@@ -58,8 +51,7 @@
         "collection_filter_tN3AFm",
         "vendor_filter_enV8mP",
         "availablity_filter_P4qqc4",
-        "size_filter_8THUEK",
-        "tag_filter_hTjcQz"
+        "size_filter_8THUEK"
       ],
       "settings": {
         "container_type": "container",
