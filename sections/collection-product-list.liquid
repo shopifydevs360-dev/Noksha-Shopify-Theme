@@ -211,8 +211,29 @@
     {
       "type": "color-filter",
       "name": "Color Filter",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Color"
+        },
+        {
+          "type": "text",
+          "id": "allow_colors",
+          "label": "Custom Colors (Allow)",
+          "info": "Comma separated values. If filled, only these colors will show."
+        },
+        {
+          "type": "text",
+          "id": "disallow_colors",
+          "label": "Disallow Colors",
+          "info": "Comma separated values. These colors will be hidden."
+        }
+      ]
     },
+
     {
       "type": "tag-filter",
       "name": "Tag Filter (Custom)",
