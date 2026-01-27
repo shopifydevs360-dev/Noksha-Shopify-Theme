@@ -3,107 +3,13 @@
   {% for block in section.blocks %}
     {% case block.type %}
 
-    {%- comment -%} ================= AVAILABILITY ================= {%- endcomment -%}
-    {% when 'availability-filter' %}
-      {% for filter in collection.filters %}
-        {% if filter.type == 'availability' %}
-          <fieldset>
-            <legend>{{ filter.label }}</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }} ({{ value.count }})
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-      {% endfor %}
-
-    {%- comment -%} ================= VENDOR ================= {%- endcomment -%}
-    {% when 'vendor-filter' %}
-      {% for filter in collection.filters %}
-        {% if filter.type == 'vendor' %}
-          <fieldset>
-            <legend>{{ filter.label }}</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }} ({{ value.count }})
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-      {% endfor %}
-
-    {%- comment -%} ================= COLOR ================= {%- endcomment -%}
-    {% when 'color-filter' %}
-      {% for filter in collection.filters %}
-        {% if filter.param_name contains 'filter.v.option.color' %}
-          <fieldset>
-            <legend>{{ filter.label }}</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-      {% endfor %}
-
-    {%- comment -%} ================= SIZE ================= {%- endcomment -%}
-    {% when 'size-filter' %}
-      {% for filter in collection.filters %}
-        {% if filter.param_name contains 'filter.v.option.size' %}
-          <fieldset>
-            <legend>{{ filter.label }}</legend>
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-      {% endfor %}
-
-    {%- comment -%} ================= TAG FILTER (CUSTOM LIST) ================= {%- endcomment -%}
-    {% when 'tag-filter' %}
-      {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' %}
-      {% assign allowed = '' | split: ',' %}
-
-      {% for tag in allowed_tags %}
-        {% assign clean = tag | strip %}
-        {% assign allowed = allowed | push: clean %}
-      {% endfor %}
-
-      {% for filter in collection.filters %}
-        {% if filter.label contains 'Tag' %}
-          <fieldset>
-            <legend>{{ block.settings.filter_title }}</legend>
-            {% for value in filter.values %}
-              {% assign label = value.label | downcase | strip %}
-              {% if allowed contains label %}
+      {%- comment -%} ========== AVAILABILITY FILTER ========== {%- endcomment -%}
+      {% when 'availablity-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.type == 'availability' %}
+            <fieldset>
+              <legend>Availability</legend>
+              {% for value in filter.values %}
                 <label>
                   <input
                     type="checkbox"
@@ -113,40 +19,174 @@
                   >
                   {{ value.label }}
                 </label>
-              {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {%- comment -%} ========== VENDOR / BRAND FILTER ========== {%- endcomment -%}
+      {% when 'vendor-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.type == 'vendor' %}
+            <fieldset>
+              <legend>{{ filter.label }}</legend>
+              {% for value in filter.values %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  {{ value.label }}
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {%- comment -%} ========== COLLECTION SWITCH (NOT FILTER) ========== {%- endcomment -%}
+      {% when 'collection-filter' %}
+        <fieldset>
+          <legend>Collections</legend>
+          {% assign menu = linklists[block.settings.collection_menu] %}
+          {% if menu.links.size > 0 %}
+            {% for link in menu.links %}
+              <label>
+                <input
+                  type="radio"
+                  name="collection_redirect"
+                  onchange="window.location.href='{{ link.url }}'"
+                >
+                {{ link.title }}
+              </label>
             {% endfor %}
+          {% else %}
+            <p>No menu selected.</p>
+          {% endif %}
+        </fieldset>
+
+      {%- comment -%} ========== COLOR FILTER ========== {%- endcomment -%}
+      {% when 'color-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.param_name contains 'filter.v.option.color' %}
+            <fieldset>
+              <legend>{{ filter.label }}</legend>
+              {% for value in filter.values %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  {{ value.label }}
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {%- comment -%} ========== TAG FILTER (CUSTOM LIST) ========== {%- endcomment -%}
+      {% when 'tag-filter' %}
+        {% assign allowed = block.settings.custom_filter_tags | downcase | split: ',' %}
+        {% assign allowed_clean = '' | split: ',' %}
+
+        {% for tag in allowed %}
+          {% assign clean = tag | strip %}
+          {% assign allowed_clean = allowed_clean | push: clean %}
+        {% endfor %}
+
+        {% for filter in collection.filters %}
+          {% if filter.label contains 'Tag' %}
+            <fieldset>
+              <legend>{{ block.settings.filter_title }}</legend>
+              {% for value in filter.values %}
+                {% assign tagLabel = value.label | downcase | strip %}
+                {% if allowed_clean contains tagLabel %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    {{ value.label }}
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {%- comment -%} ========== PRICE FILTER (FIXED) ========== {%- endcomment -%}
+      {% when 'price-filter' %}
+        {% assign price_filter = collection.filters | where: 'type', 'price_range' | first %}
+        {% if price_filter %}
+          <fieldset>
+            <legend>{{ block.settings.filter_title }}</legend>
+
+            <label>
+              Min:
+              <input
+                type="number"
+                name="{{ price_filter.min_value.param_name }}"
+                value="{{ price_filter.min_value.value | default: '' }}"
+                min="0"
+              >
+            </label>
+
+            <label>
+              Max:
+              <input
+                type="number"
+                name="{{ price_filter.max_value.param_name }}"
+                value="{{ price_filter.max_value.value | default: '' }}"
+                min="0"
+              >
+            </label>
           </fieldset>
         {% endif %}
-      {% endfor %}
 
-    {%- comment -%} ================= PRICE ================= {%- endcomment -%}
-    {% when 'price-filter' %}
-      {% assign price_filter = collection.filters | where: "type", "price_range" | first %}
-      {% if price_filter %}
+      {%- comment -%} ========== PRODUCT TYPE (CUSTOM) ========== {%- endcomment -%}
+      {% when 'product-type-filter' %}
+        {% assign types = block.settings.product_types | split: ',' %}
         <fieldset>
           <legend>{{ block.settings.filter_title }}</legend>
-
-          <label>
-            Min
-            <input
-              type="number"
-              name="{{ price_filter.min_value.param_name }}"
-              value="{{ price_filter.min_value.value | default: '' }}"
-              min="0"
-            >
-          </label>
-
-          <label>
-            Max
-            <input
-              type="number"
-              name="{{ price_filter.max_value.param_name }}"
-              value="{{ price_filter.max_value.value | default: '' }}"
-              min="0"
-            >
-          </label>
+          {% for type in types %}
+            {% assign clean_type = type | strip %}
+            {% if clean_type != blank %}
+              <label>
+                <input
+                  type="checkbox"
+                  name="filter.p.product_type"
+                  value="{{ clean_type }}"
+                >
+                {{ clean_type }}
+              </label>
+            {% endif %}
+          {% endfor %}
         </fieldset>
-      {% endif %}
+
+      {%- comment -%} ========== SIZE (CUSTOM) ========== {%- endcomment -%}
+      {% when 'size-filter' %}
+        {% assign sizes = block.settings.sizes | split: ',' %}
+        <fieldset>
+          <legend>{{ block.settings.filter_title }}</legend>
+          {% for size in sizes %}
+            {% assign clean_size = size | strip %}
+            {% if clean_size != blank %}
+              <label>
+                <input
+                  type="checkbox"
+                  name="filter.v.option.size"
+                  value="{{ clean_size }}"
+                >
+                {{ clean_size }}
+              </label>
+            {% endif %}
+          {% endfor %}
+        </fieldset>
 
     {% endcase %}
   {% endfor %}
@@ -155,4 +195,5 @@
     <button type="submit">Apply Filters</button>
     <button type="button" id="clearFiltersBtn">Clear All</button>
   </div>
+
 </form>
