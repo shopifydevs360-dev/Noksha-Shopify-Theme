@@ -7,13 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
   setInitialPaginationData();
   initFilters();
   initPagination();
-  initPriceRangeSlider(true);
+
+  // Render pagination immediately on first load
   updatePaginationUIFromCurrentDOM();
 });
 
-/* =========================
+/* ---------------------------
   HELPERS
-========================= */
+---------------------------- */
 function getMainContainer() {
   return document.querySelector('.main-product-list');
 }
@@ -27,97 +28,125 @@ function getProductsContainer() {
 }
 
 function getPaginationType() {
-  return getMainContainer()?.dataset.paginationType || 'pagination_by_number';
+  const main = getMainContainer();
+  return main?.dataset.paginationType || 'pagination_by_number';
 }
 
 function getEnablePagination() {
-  return getMainContainer()?.dataset.enablePagination === 'true';
+  const main = getMainContainer();
+  return main?.dataset.enablePagination === 'true';
 }
 
 function getLoaderElement() {
-  return getPaginationWrapper()?.querySelector('[data-loader]');
+  const wrapper = getPaginationWrapper();
+  if (!wrapper) return null;
+  return wrapper.querySelector('[data-loader]');
 }
 
 function getLoadMoreBtn() {
-  return getPaginationWrapper()?.querySelector('#loadMoreBtn');
+  const wrapper = getPaginationWrapper();
+  if (!wrapper) return null;
+  return wrapper.querySelector('#loadMoreBtn');
 }
 
-/* =========================
-  INITIAL PAGINATION
-========================= */
+/* ---------------------------
+  INITIAL PAGINATION DATA
+---------------------------- */
 function setInitialPaginationData() {
-  const box = getProductsContainer();
-  if (!box) return;
+  const productsBox = getProductsContainer();
+  if (!productsBox) return;
 
-  window.COLLECTION_AJAX.currentPage =
-    parseInt(box.dataset.currentPage || '1', 10) || 1;
+  const page = parseInt(productsBox.dataset.currentPage || '1', 10);
+  window.COLLECTION_AJAX.currentPage = page > 0 ? page : 1;
 }
 
-/* =========================
+/* ---------------------------
   FILTERS
-========================= */
+---------------------------- */
 function initFilters() {
   const form = document.getElementById('CollectionFilters');
   if (!form) return;
 
   form.addEventListener('change', () => {
+    // Reset page
     window.COLLECTION_AJAX.currentPage = 1;
+
+    // Reset scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
     fetchProducts(false, true);
   });
 
   const clearBtn = document.getElementById('clearFiltersBtn');
-  if (!clearBtn) return;
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      form.reset();
 
-  clearBtn.addEventListener('click', () => {
-    form.reset();
-    initPriceRangeSlider(true);
+      window.COLLECTION_AJAX.currentPage = 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    window.COLLECTION_AJAX.currentPage = 1;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    fetchProducts(false, true);
-  });
+      fetchProducts(false, true);
+    });
+  }
 }
 
-/* =========================
-  PAGINATION
-========================= */
+/* ---------------------------
+  PAGINATION INIT
+---------------------------- */
 function initPagination() {
+  // remove old scroll handlers (avoid duplicates)
   window.removeEventListener('scroll', infiniteScrollHandler);
 
-  if (getPaginationType() === 'infinity_loading') {
+  const type = getPaginationType();
+
+  // Infinity scroll
+  if (type === 'infinity_loading') {
     window.addEventListener('scroll', infiniteScrollHandler);
   }
 
+  // Load more click
   document.addEventListener('click', (e) => {
+    const btn = e.target.closest('#loadMoreBtn');
+    if (!btn) return;
+
     if (window.COLLECTION_AJAX.isLoading) return;
 
-    const loadMore = e.target.closest('#loadMoreBtn');
-    const pageBtn = e.target.closest('[data-page-number]');
+    window.COLLECTION_AJAX.currentPage++;
+    fetchProducts(true, false);
+  });
 
-    if (loadMore) {
-      window.COLLECTION_AJAX.currentPage++;
-      fetchProducts(true, false);
-    }
+  // Pagination by number click
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-page-number]');
+    if (!btn) return;
 
-    if (pageBtn) {
-      const page = parseInt(pageBtn.dataset.pageNumber, 10);
-      if (!page) return;
+    if (window.COLLECTION_AJAX.isLoading) return;
 
-      window.COLLECTION_AJAX.currentPage = page;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      fetchProducts(false, false);
-    }
+    const page = parseInt(btn.dataset.pageNumber, 10);
+    if (!page) return;
+
+    window.COLLECTION_AJAX.currentPage = page;
+
+    // Scroll top for better UX
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    fetchProducts(false, false);
   });
 }
 
+/* ---------------------------
+  INFINITY SCROLL HANDLER
+---------------------------- */
 function infiniteScrollHandler() {
   if (window.COLLECTION_AJAX.isLoading) return;
 
-  const box = getProductsContainer();
-  if (!box) return;
+  const type = getPaginationType();
+  if (type !== 'infinity_loading') return;
 
-  const totalPages = parseInt(box.dataset.totalPages || '1', 10);
+  const productsBox = getProductsContainer();
+  if (!productsBox) return;
+
+  const totalPages = parseInt(productsBox.dataset.totalPages || '1', 10);
   if (window.COLLECTION_AJAX.currentPage >= totalPages) return;
 
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
@@ -126,20 +155,24 @@ function infiniteScrollHandler() {
   }
 }
 
-/* =========================
-  QUERY PARAMS
-========================= */
+/* ---------------------------
+  BUILD QUERY PARAMS
+---------------------------- */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
   const params = new URLSearchParams();
 
   if (form) {
-    const data = new FormData(form);
-    for (const [key, value] of data.entries()) {
-      if (value !== '') params.append(key, value);
+    const formData = new FormData(form);
+
+    // allow multiple values
+    for (const [key, value] of formData.entries()) {
+      if (value === '' || value == null) continue;
+      params.append(key, value);
     }
   }
 
+  // collection handle logic
   const collectionHandle = params.get('collection_handle');
   params.delete('collection_handle');
 
@@ -148,67 +181,105 @@ function buildQueryParams() {
   return { params, collectionHandle };
 }
 
-/* =========================
-  PAGINATION UI
-========================= */
+/* ---------------------------
+  PAGINATION UI RENDER (LIQUID UI BASE)
+---------------------------- */
 function renderPaginationUI(totalPages) {
   if (!getEnablePagination()) return;
 
   const wrapper = getPaginationWrapper();
   if (!wrapper) return;
 
+  const type = getPaginationType();
+
+  // hide loader always by default
   const loader = getLoaderElement();
   if (loader) loader.hidden = true;
 
-  const type = getPaginationType();
-
+  // -------------------------
+  // Pagination by Number
+  // -------------------------
   if (type === 'pagination_by_number') {
-    const box = wrapper.querySelector('[data-pagination-numbers]');
-    if (!box) return;
+    const numbersBox = wrapper.querySelector('[data-pagination-numbers]');
+    if (!numbersBox) return;
 
-    if (totalPages <= 1) {
-      box.innerHTML = '';
+    if (!totalPages || totalPages <= 1) {
+      numbersBox.innerHTML = '';
       return;
     }
 
-    box.innerHTML = Array.from({ length: totalPages }, (_, i) => {
-      const page = i + 1;
-      return `
-        <button type="button"
-          data-page-number="${page}"
-          class="${page === window.COLLECTION_AJAX.currentPage ? 'active' : ''}">
-          ${page}
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+      html += `
+        <button
+          type="button"
+          data-page-number="${i}"
+          class="${i === window.COLLECTION_AJAX.currentPage ? 'active' : ''}"
+        >
+          ${i}
         </button>
       `;
-    }).join('');
+    }
+
+    numbersBox.innerHTML = html;
+    return;
   }
 
+  // -------------------------
+  // Load More Button
+  // -------------------------
   if (type === 'load_more_button') {
     const btn = getLoadMoreBtn();
     if (!btn) return;
 
-    btn.style.display =
-      window.COLLECTION_AJAX.currentPage >= totalPages ? 'none' : '';
+    if (!totalPages || totalPages <= 1) {
+      btn.style.display = 'none';
+      return;
+    }
+
+    // Hide if last page
+    if (window.COLLECTION_AJAX.currentPage >= totalPages) {
+      btn.style.display = 'none';
+    } else {
+      btn.style.display = '';
+    }
+
+    return;
+  }
+
+  // -------------------------
+  // Infinity Loading
+  // -------------------------
+  if (type === 'infinity_loading') {
+    // no UI buttons, loader will show only while fetching
+    return;
   }
 }
 
 function updatePaginationUIFromCurrentDOM() {
-  const box = getProductsContainer();
-  if (!box) return;
+  const productsBox = getProductsContainer();
+  if (!productsBox) return;
 
-  renderPaginationUI(parseInt(box.dataset.totalPages || '1', 10));
+  const totalPages = parseInt(productsBox.dataset.totalPages || '1', 10);
+  const currentPage = parseInt(productsBox.dataset.currentPage || '1', 10);
+
+  window.COLLECTION_AJAX.currentPage = currentPage > 0 ? currentPage : 1;
+
+  renderPaginationUI(totalPages);
 }
 
-/* =========================
-  AJAX FETCH
-========================= */
+/* ---------------------------
+  AJAX FETCH PRODUCTS
+---------------------------- */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
 
+  // Loader show
   const loader = getLoaderElement();
   if (loader) loader.hidden = false;
 
+  // disable load more button while loading
   const loadMoreBtn = getLoadMoreBtn();
   if (loadMoreBtn) loadMoreBtn.disabled = true;
 
@@ -218,97 +289,51 @@ function fetchProducts(append = false, resetPage = false) {
   }
 
   const { params, collectionHandle } = buildQueryParams();
+
   const baseUrl = collectionHandle
     ? `/collections/${collectionHandle}`
     : window.location.pathname;
 
-  fetch(`${baseUrl}?${params}`, {
+  fetch(`${baseUrl}?${params.toString()}`, {
+    method: 'GET',
     headers: { 'X-Requested-With': 'XMLHttpRequest' }
   })
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
-      const newBox = doc.querySelector('#productsContainer');
-      const oldBox = getProductsContainer();
-      if (!newBox || !oldBox) return;
 
-      oldBox.dataset.totalPages = newBox.dataset.totalPages || '1';
-      oldBox.dataset.currentPage = newBox.dataset.currentPage || '1';
+      const newProducts = doc.querySelector('#productsContainer');
+      const oldProducts = getProductsContainer();
 
+      if (!oldProducts || !newProducts) return;
+
+      // Replace dataset info (important)
+      oldProducts.dataset.totalPages = newProducts.dataset.totalPages || '1';
+      oldProducts.dataset.currentPage = newProducts.dataset.currentPage || '1';
+      oldProducts.dataset.totalProducts = newProducts.dataset.totalProducts || '';
+
+      // Update products HTML
       if (append) {
-        oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML);
+        oldProducts.insertAdjacentHTML('beforeend', newProducts.innerHTML);
       } else {
-        oldBox.innerHTML = newBox.innerHTML;
+        oldProducts.innerHTML = newProducts.innerHTML;
       }
 
+      // Update pagination UI
       updatePaginationUIFromCurrentDOM();
-      initPriceRangeSlider(true);
+    })
+    .catch((err) => {
+      console.error('AJAX fetch error:', err);
     })
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
+
+      // hide loader
+      const loader = getLoaderElement();
       if (loader) loader.hidden = true;
+
+      // enable load more button
+      const loadMoreBtn = getLoadMoreBtn();
       if (loadMoreBtn) loadMoreBtn.disabled = false;
     });
-}
-
-/* =========================
-  PRICE RANGE SLIDER (FIXED)
-========================= */
-function initPriceRangeSlider(force = false) {
-  const minRange = document.getElementById('MinRange');
-  const maxRange = document.getElementById('MaxRange');
-  const minInput = document.getElementById('PriceMinInput');
-  const maxInput = document.getElementById('PriceMaxInput');
-  const fill = document.getElementById('RangeFill');
-  const minBubble = document.getElementById('MinBubble');
-  const maxBubble = document.getElementById('MaxBubble');
-  const form = document.getElementById('CollectionFilters');
-
-  if (!minRange || !maxRange || !form) return;
-
-  if (!force && minRange.dataset.initialized === 'true') return;
-  minRange.dataset.initialized = 'true';
-
-  function update(trigger = false) {
-    let min = parseInt(minRange.value, 10);
-    let max = parseInt(maxRange.value, 10);
-
-    if (min >= max) min = max - 1;
-    if (max <= min) max = min + 1;
-
-    minRange.value = min;
-    maxRange.value = max;
-
-    minInput.value = min;
-    maxInput.value = max;
-
-    const maxVal = parseInt(minRange.max, 10) || 1;
-    const sliderWidth = minRange.offsetWidth || 1;
-
-    const minPct = (min / maxVal) * 100;
-    const maxPct = (max / maxVal) * 100;
-
-    fill.style.left = `${minPct}%`;
-    fill.style.width = `${maxPct - minPct}%`;
-
-    const minPx = (minPct / 100) * sliderWidth;
-    const maxPx = (maxPct / 100) * sliderWidth;
-
-    minBubble.style.left = `${Math.max(12, minPx)}px`;
-    maxBubble.style.left = `${Math.min(sliderWidth - 12, maxPx)}px`;
-
-    minBubble.textContent = `$${min}`;
-    maxBubble.textContent = `$${max}`;
-
-    if (trigger) {
-      form.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-  }
-
-  minRange.oninput = () => update(false);
-  maxRange.oninput = () => update(false);
-  minRange.onchange = () => update(true);
-  maxRange.onchange = () => update(true);
-
-  requestAnimationFrame(() => update(false));
 }
