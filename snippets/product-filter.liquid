@@ -130,36 +130,38 @@
     PRICE FILTER (CORRECT)
     ======================
     {%- endcomment -%}
-    {% when 'price-filter' %}
-      {% for filter in collection.filters %}
-        {% if filter.type == 'price_range' %}
-          <fieldset>
-            <legend>{{ block.settings.filter_title }}</legend>
+{% when 'price-filter' %}
+  {% for filter in collection.filters %}
+    {% if filter.type == 'price_range' %}
+      <fieldset>
+        <legend>{{ block.settings.filter_title }}</legend>
 
-            <label>
-              Min
-              <input
-                type="number"
-                name="{{ filter.min_value.param_name }}"
-                value="{{ filter.min_value.value | default: 0 }}"
-                min="0"
-                max="{{ filter.range_max }}"
-              >
-            </label>
+        <label>
+          Min
+          <input
+            type="number"
+            name="{{ filter.min_value.param_name }}"
+            value="{{ filter.min_value.value }}"
+            min="0"
+            max="{{ filter.range_max }}"
+            placeholder="0"
+          >
+        </label>
 
-            <label>
-              Max
-              <input
-                type="number"
-                name="{{ filter.max_value.param_name }}"
-                value="{{ filter.max_value.value | default: filter.range_max }}"
-                min="0"
-                max="{{ filter.range_max }}"
-              >
-            </label>
-          </fieldset>
-        {% endif %}
-      {% endfor %}
+        <label>
+          Max
+          <input
+            type="number"
+            name="{{ filter.max_value.param_name }}"
+            value="{{ filter.max_value.value }}"
+            min="0"
+            max="{{ filter.range_max }}"
+            placeholder="{{ filter.range_max }}"
+          >
+        </label>
+      </fieldset>
+    {% endif %}
+  {% endfor %}
 
 
     {%- comment -%}
