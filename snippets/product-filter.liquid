@@ -3,29 +3,25 @@
   {% for block in section.blocks %}
     {% case block.type %}
 
-    {% when 'availablity-filter' %}
-      {% for filter in collection.filters %}
-        {% if filter.label == 'Availability' %}
-          <fieldset>
-            <legend>Availability</legend>
-
-            {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-
-                {{ value.label }}
-                <span class="filter-count">({{ value.count }})</span>
-              </label>
-            {% endfor %}
-          </fieldset>
-        {% endif %}
-      {% endfor %}
-
+      {% when 'availablity-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Availability' %}
+            <fieldset>
+              <legend>Availability</legend>
+              {% for value in filter.values %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  {{ value.label }}
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
 
       {% when 'vendor-filter' %}
         {% for filter in collection.filters %}
@@ -124,66 +120,20 @@
           {% endif %}
         {% endfor %}
 
-{% when 'price-filter' %}
-  {% for filter in collection.filters %}
-    {% if filter.type == 'price_range' %}
+      {% when 'price-filter' %}
+        <fieldset>
+          <legend>{{ block.settings.filter_title }}</legend>
 
-      {% assign real_max = collection.price_range.max | money_without_currency %}
-      {% assign min_value = filter.min_value.value | default: 0 %}
-      {% assign max_value = filter.max_value.value | default: real_max %}
+          <label>
+            Min:
+            <input type="number" name="filter.v.price.gte" min="0" placeholder="0">
+          </label>
 
-      <fieldset class="price-range">
-        <legend>{{ block.settings.filter_title }}</legend>
-
-        <!-- Hidden Shopify inputs -->
-        <input
-          type="hidden"
-          name="{{ filter.min_value.param_name }}"
-          id="PriceMinInput"
-          value="{{ min_value }}"
-        >
-        <input
-          type="hidden"
-          name="{{ filter.max_value.param_name }}"
-          id="PriceMaxInput"
-          value="{{ max_value }}"
-        >
-
-        <!-- Slider -->
-        <div class="range-slider">
-          <div class="range-track"></div>
-          <div class="range-fill" id="RangeFill"></div>
-
-          <input
-            type="range"
-            min="0"
-            max="{{ real_max }}"
-            value="{{ min_value }}"
-            id="MinRange"
-          >
-
-          <input
-            type="range"
-            min="0"
-            max="{{ real_max }}"
-            value="{{ max_value }}"
-            id="MaxRange"
-          >
-
-          <div class="price-bubble min" id="MinBubble">
-            {{ min_value | money }}
-          </div>
-
-          <div class="price-bubble max" id="MaxBubble">
-            {{ max_value | money }}
-          </div>
-        </div>
-      </fieldset>
-
-    {% endif %}
-  {% endfor %}
-
-
+          <label>
+            Max:
+            <input type="number" name="filter.v.price.lte" min="0" placeholder="9999">
+          </label>
+        </fieldset>
 
       {% when 'product-type-filter' %}
         {% assign types = block.settings.product_types | split: ',' %}
