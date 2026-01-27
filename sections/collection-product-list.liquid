@@ -12,63 +12,64 @@
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper sidebar-space">
 
-      <main class="inner-warpper">
+      <!-- Filters -->
+      {% if section.settings.enable_filter %}
+        <aside class="product-filter">
+          {% render 'product-filter', section: section, collection: collection %}
+        </aside>
+      {% endif %}
+
+      <!-- Products -->
+      <main class="inner-wrapper">
         <div class="product-list">
 
-          <!-- Products -->
           {% paginate collection.products by section.settings.products_per_page %}
-            <div
-              class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
-              id="productsContainer"
-              data-total-products="{{ collection.products_count }}"
-              data-total-pages="{{ paginate.pages }}"
-              data-current-page="{{ paginate.current_page }}"
-            >
-              {% for product in collection.products %}
-                {% render 'product-card', product: product %}
-              {% endfor %}
-            </div>
-          {% endpaginate %}
 
-        <!-- Pagination UI -->
-        {% if section.settings.enable_pagination %}
-          <div id="paginationWrapper" class="custom-pagination">
-
-            {% if section.settings.pagination_type == 'pagination_by_number' %}
-              <nav class="pagination-ui pagination-ui--numbers">
-                <!-- JS will inject buttons here -->
-                <div class="pagination-numbers" data-pagination-numbers></div>
-              </nav>
-            {% elsif section.settings.pagination_type == 'load_more_button' %}
-              <div class="pagination-ui pagination-ui--loadmore">
-                <button type="button" id="loadMoreBtn" class="load-more-btn">
-                  Load More
-                </button>
-
-                <div class="pagination-loader" data-loader hidden>
-                  Loading...
-                </div>
-              </div>
-            {% elsif section.settings.pagination_type == 'infinity_loading' %}
-              <div class="pagination-ui pagination-ui--infinity">
-                <div class="pagination-loader" data-loader hidden>
-                  Loading...
-                </div>
+            {% if collection.products_count == 0 %}
+              <p class="empty-collection">
+                No products found in this collection.
+              </p>
+            {% else %}
+              <div
+                class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
+                id="productsContainer"
+                data-total-products="{{ collection.products_count }}"
+                data-total-pages="{{ paginate.pages }}"
+                data-current-page="{{ paginate.current_page }}"
+              >
+                {% for product in collection.products %}
+                  {% render 'product-card', product: product %}
+                {% endfor %}
               </div>
             {% endif %}
 
-          </div>
-        {% endif %}
+            {% if section.settings.enable_pagination and paginate.pages > 1 %}
+              <div id="paginationWrapper" class="custom-pagination">
 
+                {% if section.settings.pagination_type == 'pagination_by_number' %}
+                  <nav class="pagination-ui pagination-ui--numbers">
+                    <div class="pagination-numbers" data-pagination-numbers></div>
+                  </nav>
+
+                {% elsif section.settings.pagination_type == 'load_more_button' %}
+                  <div class="pagination-ui pagination-ui--loadmore">
+                    <button type="button" id="loadMoreBtn" class="load-more-btn">
+                      Load More
+                    </button>
+                    <div class="pagination-loader" data-loader hidden>Loading...</div>
+                  </div>
+
+                {% elsif section.settings.pagination_type == 'infinity_loading' %}
+                  <div class="pagination-ui pagination-ui--infinity">
+                    <div class="pagination-loader" data-loader hidden>Loading...</div>
+                  </div>
+                {% endif %}
+
+              </div>
+            {% endif %}
+
+          {% endpaginate %}
         </div>
-
-        <!-- Filters -->
-        {% if section.settings.enable_filter %}
-          <div class="product-filter">
-            {% render 'product-filter', section: section, collection: collection %}
-          </div>
-        {% endif %}
-
       </main>
 
     </div>
@@ -76,6 +77,7 @@
 </div>
 
 <script src="{{ 'product-filter.js' | asset_url }}" defer></script>
+
 
 {% schema %}
 {
