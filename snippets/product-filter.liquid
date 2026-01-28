@@ -91,38 +91,39 @@
           {% endif %}
         {% endfor %}
 
-      {% when 'tag-filter' %}
-        {% assign allowed = block.settings.custom_filter_tags | downcase | split: ',' %}
-        {% assign allowed_clean = '' | split: ',' %}
+{% when 'tag-filter' %}
 
-        {% for tag in allowed %}
-          {% assign clean = tag | strip %}
-          {% assign allowed_clean = allowed_clean | push: clean %}
-        {% endfor %}
+  {% assign allowed_tags = block.settings.custom_filter_tags
+    | downcase
+    | split: ','
+  %}
 
-        {% for filter in collection.filters %}
-          {% if filter.label contains 'Tag' %}
-            <fieldset>
-              <legend>{{ block.settings.filter_title }}</legend>
+  {% for filter in collection.filters %}
+    {% if filter.param_name == 'filter.v.tag' %}
+      <fieldset class="filter filter--tags">
+        <legend>{{ block.settings.filter_title }}</legend>
 
-              {% for value in filter.values %}
-                {% assign tagLabel = value.label | downcase | strip %}
-                {% if allowed_clean contains tagLabel %}
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="{{ value.param_name }}"
-                      value="{{ value.value }}"
-                      {% if value.active %}checked{% endif %}
-                    >
-                    {{ value.label }}
-                    <span>({{ value.count }})</span>
-                  </label>
-                {% endif %}
-              {% endfor %}
-            </fieldset>
+        {% for value in filter.values %}
+          {% assign tag_handle = value.value | downcase | strip %}
+
+          {% if allowed_tags contains tag_handle %}
+            <label>
+              <input
+                type="checkbox"
+                name="{{ value.param_name }}"
+                value="{{ value.value }}"
+                {% if value.active %}checked{% endif %}
+              >
+              {{ value.label }}
+              <span>({{ value.count }})</span>
+            </label>
           {% endif %}
         {% endfor %}
+
+      </fieldset>
+    {% endif %}
+  {% endfor %}
+
 
         {% when 'price-filter' %}
           {% for filter in collection.filters %}
