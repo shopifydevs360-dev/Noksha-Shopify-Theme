@@ -178,25 +178,29 @@
           {% endfor %}
         </fieldset>
 
-      {% when 'size-filter' %}
-        {% assign sizes = block.settings.sizes | split: ',' %}
-        <fieldset>
-          <legend>{{ block.settings.filter_title }}</legend>
-          {% for size in sizes %}
-            {% assign clean_size = size | strip %}
-            {% if clean_size != blank %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="filter.v.option.size"
-                  value="{{ clean_size }}"
-                >
-                {{ clean_size }}
-                <span>({{ clean_size.count }})</span>
-              </label>
-            {% endif %}
-          {% endfor %}
-        </fieldset>
+{% when 'size-filter' %}
+
+  {% for filter in collection.filters %}
+    {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+      <fieldset class="filter filter--size">
+        <legend>{{ block.settings.filter_title }}</legend>
+
+        {% for value in filter.values %}
+          <label>
+            <input
+              type="checkbox"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}
+            >
+            {{ value.label }}
+            <span>({{ value.count }})</span>
+          </label>
+        {% endfor %}
+      </fieldset>
+    {% endif %}
+  {% endfor %}
+
 
     {% endcase %}
   {% endfor %}
