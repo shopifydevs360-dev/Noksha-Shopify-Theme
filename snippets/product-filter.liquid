@@ -38,6 +38,7 @@
                     {% if value.active %}checked{% endif %}
                   >
                   {{ value.label }}
+                  <span>({{ value.count }})</span>
                 </label>
               {% endfor %}
             </fieldset>
@@ -83,6 +84,7 @@
                     {% if value.active %}checked{% endif %}
                   >
                   {{ value.label }}
+                  <span>({{ value.count }})</span>
                 </label>
               {% endfor %}
             </fieldset>
@@ -114,6 +116,7 @@
                       {% if value.active %}checked{% endif %}
                     >
                     {{ value.label }}
+                    <span>({{ value.count }})</span>
                   </label>
                 {% endif %}
               {% endfor %}
@@ -170,6 +173,7 @@
                   value="{{ clean_type }}"
                 >
                 {{ clean_type }}
+                <span>({{ value.count }})</span>
               </label>
             {% endif %}
           {% endfor %}
