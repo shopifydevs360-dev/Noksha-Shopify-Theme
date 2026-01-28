@@ -99,14 +99,14 @@
   %}
 
   {% for filter in collection.filters %}
-    {% if filter.param_name == 'filter.v.tag' %}
+    {% if filter.param_name contains '.tag' %}
       <fieldset class="filter filter--tags">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
-          {% assign tag_handle = value.value | downcase | strip %}
+          {% assign tag_label = value.label | downcase | strip %}
 
-          {% if allowed_tags contains tag_handle %}
+          {% if allowed_tags contains tag_label %}
             <label>
               <input
                 type="checkbox"
@@ -119,7 +119,6 @@
             </label>
           {% endif %}
         {% endfor %}
-
       </fieldset>
     {% endif %}
   {% endfor %}
