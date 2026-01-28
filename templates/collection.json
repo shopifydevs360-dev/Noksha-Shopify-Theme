@@ -21,7 +21,11 @@
         },
         "color_filter_D8GdUg": {
           "type": "color-filter",
-          "settings": {}
+          "settings": {
+            "filter_title": "Color",
+            "allow_colors": "",
+            "disallow_colors": ""
+          }
         },
         "collection_filter_tN3AFm": {
           "type": "collection-filter",
@@ -41,14 +45,14 @@
           "type": "size-filter",
           "settings": {
             "filter_title": "Size",
-            "sizes": "S, M"
+            "sizes": ""
           }
         },
         "tag_filter_PrkaXn": {
           "type": "tag-filter",
           "settings": {
             "filter_title": "Tags",
-            "custom_filter_tags": ""
+            "custom_filter_tags": "Coats"
           }
         }
       },
