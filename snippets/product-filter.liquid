@@ -65,22 +65,26 @@
     ======================
     {%- endcomment -%}
     {% when 'color-filter' %}
+      {% assign allow_colors = block.settings.allow_colors | downcase | split: ',' | map: 'strip' %}
+      {% assign disallow_colors = block.settings.disallow_colors | downcase | split: ',' | map: 'strip' %}
+
       {% for filter in collection.filters %}
-        {% if filter.label == 'Color' %}
+        {% if filter.type == 'list' and filter.param_name contains 'color' %}
           <fieldset>
-            <legend>Color</legend>
+            <legend>{{ block.settings.filter_title }}</legend>
 
             {% for value in filter.values %}
-              <label>
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
-              </label>
+              {% assign color = value.label | downcase | strip %}
+
+              {% if allow_colors != blank and allow_colors contains color %}
+                {% unless disallow_colors contains color %}
+                  {% render 'filter-checkbox', value: value %}
+                {% endunless %}
+              {% elsif allow_colors == blank %}
+                {% unless disallow_colors contains color %}
+                  {% render 'filter-checkbox', value: value %}
+                {% endunless %}
+              {% endif %}
             {% endfor %}
           </fieldset>
         {% endif %}
