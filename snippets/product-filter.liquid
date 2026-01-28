@@ -17,6 +17,7 @@
                     {% if value.active %}checked{% endif %}
                   >
                   {{ value.label }}
+                  <span>({{ value.count }})</span>
                 </label>
               {% endfor %}
             </fieldset>
