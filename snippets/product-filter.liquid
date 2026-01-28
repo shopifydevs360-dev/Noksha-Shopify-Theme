@@ -120,20 +120,40 @@
           {% endif %}
         {% endfor %}
 
-      {% when 'price-filter' %}
-        <fieldset>
-          <legend>{{ block.settings.filter_title }}</legend>
+        {% when 'price-filter' %}
+          {% for filter in collection.filters %}
+            {% if filter.type == 'price_range' %}
+              <fieldset>
+                <legend>{{ block.settings.filter_title }}</legend>
 
-          <label>
-            Min:
-            <input type="number" name="filter.v.price.gte" min="0" placeholder="0">
-          </label>
+                <label>
+                  Min
+                <input
+                  type="number"
+                  name="{{ filter.min_value.param_name }}"
+                  value="{{ filter.min_value.value }}"
+                  min="0"
+                  max="{{ filter.range_max }}"
+                  placeholder="{{ 0 | money_without_trailing_zeros }}"
+                >
+                </label>
 
-          <label>
-            Max:
-            <input type="number" name="filter.v.price.lte" min="0" placeholder="9999">
-          </label>
-        </fieldset>
+                <label>
+                  Max
+                <input
+                  type="number"
+                  name="{{ filter.max_value.param_name }}"
+                  value="{{ filter.max_value.value }}"
+                  min="0"
+                  max="{{ filter.range_max }}"
+                  placeholder="{{ filter.range_max | money_without_trailing_zeros }}"
+                >
+
+                </label>
+              </fieldset>
+            {% endif %}
+          {% endfor %}
+
 
       {% when 'product-type-filter' %}
         {% assign types = block.settings.product_types | split: ',' %}
