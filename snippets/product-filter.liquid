@@ -180,41 +180,26 @@
 
 {% when 'size-filter' %}
 
-  {% assign allowed_sizes_raw = block.settings.sizes | strip %}
-  {% if allowed_sizes_raw != blank %}
-    {% assign allowed_sizes = allowed_sizes_raw | downcase | split: ',' | map: 'strip' %}
-  {% endif %}
-
   {% for filter in collection.filters %}
-    {% assign filter_label_normalized = filter.label | downcase | strip %}
-
-    {% if filter.type == 'list' and filter_label_normalized == 'size' %}
-
+    {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
       <fieldset class="filter filter--size">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
-          {% assign value_normalized = value.value | downcase | strip %}
-
-          {% if allowed_sizes_raw == blank or allowed_sizes contains value_normalized %}
-            <label>
-              <input
-                type="checkbox"
-                name="{{ value.param_name }}"
-                value="{{ value.value }}"
-                {% if value.active %}checked{% endif %}
-              >
-              {{ value.label }}
-              <span>({{ value.count }})</span>
-            </label>
-          {% endif %}
+          <label>
+            <input
+              type="checkbox"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}
+            >
+            {{ value.label }}
+            <span>({{ value.count }})</span>
+          </label>
         {% endfor %}
-
       </fieldset>
-
     {% endif %}
   {% endfor %}
-
 
 
     {% endcase %}
