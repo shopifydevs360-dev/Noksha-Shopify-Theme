@@ -15,8 +15,7 @@
         "price_filter_qRJzFT": {
           "type": "price-filter",
           "settings": {
-            "filter_title": "Price",
-            "price_step": 1
+            "filter_title": "Price"
           }
         },
         "color_filter_D8GdUg": {
