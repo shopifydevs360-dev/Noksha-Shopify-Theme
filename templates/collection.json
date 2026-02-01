@@ -44,7 +44,7 @@
           "type": "size-filter",
           "settings": {
             "filter_title": "Size",
-            "sizes": "Small (S)"
+            "sizes": ""
           }
         },
         "tag_filter_PrkaXn": {
