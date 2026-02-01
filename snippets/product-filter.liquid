@@ -180,9 +180,10 @@
 
 {% when 'size-filter' %}
 
-  {% assign allowed_sizes = block.settings.sizes | strip %}
-  {% if allowed_sizes != blank %}
-    {% assign allowed_sizes = allowed_sizes | split: ',' | map: 'strip' %}
+  {% assign allowed_sizes_raw = block.settings.sizes | strip %}
+
+  {% if allowed_sizes_raw != blank %}
+    {% assign allowed_sizes = allowed_sizes_raw | downcase | split: ',' | map: 'strip' %}
   {% endif %}
 
   {% for filter in collection.filters %}
@@ -191,8 +192,9 @@
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
+          {% assign value_normalized = value.value | downcase | strip %}
 
-          {% if allowed_sizes == blank or allowed_sizes contains value.label %}
+          {% if allowed_sizes_raw == blank or allowed_sizes contains value_normalized %}
             <label>
               <input
                 type="checkbox"
