@@ -180,32 +180,26 @@
 
 {% when 'size-filter' %}
 
-  {% assign allowed_sizes = block.settings.sizes | split: ',' | map: 'strip' %}
-
   {% for filter in collection.filters %}
     {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
       <fieldset class="filter filter--size">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
-          {% if allowed_sizes contains value.label %}
-            <label>
-              <input
-                type="checkbox"
-                name="{{ value.param_name }}"
-                value="{{ value.value }}"
-                {% if value.active %}checked{% endif %}
-              >
-              {{ value.label }}
-              <span>({{ value.count }})</span>
-            </label>
-          {% endif %}
+          <label>
+            <input
+              type="checkbox"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}
+            >
+            {{ value.label }}
+            <span>({{ value.count }})</span>
+          </label>
         {% endfor %}
-
       </fieldset>
     {% endif %}
   {% endfor %}
-
 
 
     {% endcase %}
