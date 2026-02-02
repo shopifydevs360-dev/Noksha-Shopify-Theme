@@ -12,6 +12,10 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
+        "availablity_filter_rWmQwq": {
+          "type": "availablity-filter",
+          "settings": {}
+        },
         "price_filter_LpwPgK": {
           "type": "price-filter",
           "settings": {
@@ -57,6 +61,7 @@
         }
       },
       "block_order": [
+        "availablity_filter_rWmQwq",
         "price_filter_LpwPgK",
         "product_type_filter_fHRmjP",
         "vendor_filter_pY8BW4",
