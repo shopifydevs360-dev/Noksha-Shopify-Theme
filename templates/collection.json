@@ -12,57 +12,15 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
-        "price_filter_qRJzFT": {
-          "type": "price-filter",
+        "price_range_nnV4T3": {
+          "type": "price_range",
           "settings": {
             "filter_title": "Price"
-          }
-        },
-        "color_filter_D8GdUg": {
-          "type": "color-filter",
-          "settings": {
-            "filter_title": "Color",
-            "allow_colors": "",
-            "disallow_colors": "Black"
-          }
-        },
-        "collection_filter_tN3AFm": {
-          "type": "collection-filter",
-          "settings": {
-            "collection_menu": "main-menu"
-          }
-        },
-        "vendor_filter_enV8mP": {
-          "type": "vendor-filter",
-          "settings": {}
-        },
-        "availablity_filter_P4qqc4": {
-          "type": "availablity-filter",
-          "settings": {}
-        },
-        "size_filter_8THUEK": {
-          "type": "size-filter",
-          "settings": {
-            "filter_title": "Size",
-            "sizes": ""
-          }
-        },
-        "tag_filter_PrkaXn": {
-          "type": "tag-filter",
-          "settings": {
-            "filter_title": "Tags",
-            "custom_filter_tags": "Coats"
           }
         }
       },
       "block_order": [
-        "price_filter_qRJzFT",
-        "color_filter_D8GdUg",
-        "collection_filter_tN3AFm",
-        "vendor_filter_enV8mP",
-        "availablity_filter_P4qqc4",
-        "size_filter_8THUEK",
-        "tag_filter_PrkaXn"
+        "price_range_nnV4T3"
       ],
       "settings": {
         "container_type": "container",
