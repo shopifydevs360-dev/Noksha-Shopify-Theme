@@ -12,11 +12,16 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
+        "price_filter_LpwPgK": {
+          "type": "price-filter",
+          "settings": {
+            "filter_title": "Price"
+          }
+        },
         "product_type_filter_fHRmjP": {
           "type": "product-type-filter",
           "settings": {
-            "filter_title": "Product Type",
-            "product_types": ""
+            "filter_title": "Product Type"
           }
         },
         "vendor_filter_pY8BW4": {
@@ -40,12 +45,12 @@
         "size_filter_G9C7xj": {
           "type": "size-filter",
           "settings": {
-            "filter_title": "Size",
-            "sizes": ""
+            "filter_title": "Size"
           }
         }
       },
       "block_order": [
+        "price_filter_LpwPgK",
         "product_type_filter_fHRmjP",
         "vendor_filter_pY8BW4",
         "color_filter_qAd3XG",
