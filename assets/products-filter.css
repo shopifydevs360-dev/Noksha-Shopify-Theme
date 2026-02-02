@@ -37,7 +37,7 @@
   OFF-CANVAS (MOBILE)
 ================================ */
 @media (max-width: 991px) {
-  .product-filter {
+.product-filter {
     position: fixed;
     top: 0;
     right: -100%;
@@ -45,8 +45,11 @@
     height: 100vh;
     background: #fff;
     z-index: 9;
-    transition: right 0.3s ease;
-  }
+    transition: right .3s ease;
+    overflow-y: auto;
+    padding-top: 9.2rem;
+    padding-bottom: 2rem;
+}
 .filter-actions-bar {
     position: fixed;
     bottom: 1rem;
