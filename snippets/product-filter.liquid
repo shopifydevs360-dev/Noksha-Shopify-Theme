@@ -1,4 +1,4 @@
-{%- form id: 'CollectionFilters', collection: collection -%}
+<form id="CollectionFilters" class="collection-filters-form" data-collection-handle="{{ collection.handle }}">
   
   {%- for block in section.blocks -%}
     {%- case block.type -%}
@@ -16,6 +16,7 @@
                   value="{{ value.value }}"
                   {% if value.active %}checked{% endif %}
                   {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  data-filter-input
                 >
                 {{ value.label }}
                 <span>({{ value.count }})</span>
@@ -37,6 +38,7 @@
                   value="{{ value.value }}"
                   {% if value.active %}checked{% endif %}
                   {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  data-filter-input
                 >
                 {{ value.label }}
                 <span>({{ value.count }})</span>
@@ -58,6 +60,7 @@
                     name="collection_handle"
                     value="{{ link.object.handle }}"
                     {% if current_tags contains link.object.handle %}checked{% endif %}
+                    data-filter-input
                   >
                   {{ link.title }}
                 </label>
@@ -69,6 +72,7 @@
                 name="collection_handle" 
                 value="" 
                 {% unless current_tags %}checked{% endunless %}
+                data-filter-input
               >
               All Collections
             </label>
@@ -107,6 +111,7 @@
                     value="{{ value.value }}"
                     {% if value.active %}checked{% endif %}
                     {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    data-filter-input
                   >
                   <span class="color-swatch" style="background-color: {{ value.label | handle }};"></span>
                   {{ value.label }}
@@ -133,6 +138,7 @@
                     value="{{ value.value }}"
                     {% if value.active %}checked{% endif %}
                     {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    data-filter-input
                   >
                   {{ value.label }}
                   <span>({{ value.count }})</span>
@@ -176,6 +182,7 @@
                   max="{{ price_filter.range_max | divided_by: 100.0 }}"
                   placeholder="0"
                   data-min-display
+                  data-filter-input
                 >
               </label>
               <label>
@@ -188,6 +195,7 @@
                   max="{{ price_filter.range_max | divided_by: 100.0 }}"
                   placeholder="{{ price_filter.range_max | divided_by: 100.0 }}"
                   data-max-display
+                  data-filter-input
                 >
               </label>
             </div>
@@ -209,6 +217,7 @@
                     name="filter.p.product_type"
                     value="{{ type }}"
                     {% if current_tags contains type %}checked{% endif %}
+                    data-filter-input
                   >
                   {{ type }}
                 </label>
@@ -222,6 +231,7 @@
                     value="{{ value.value }}"
                     {% if value.active %}checked{% endif %}
                     {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    data-filter-input
                   >
                   {{ value.label }}
                   <span>({{ value.count }})</span>
@@ -247,6 +257,7 @@
                     value="{{ value.value }}"
                     {% if value.active %}checked{% endif %}
                     {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    data-filter-input
                   >
                   {{ value.label }}
                   <span>({{ value.count }})</span>
@@ -260,8 +271,8 @@
   {%- endfor -%}
 
   <div class="filter-actions">
-    <button type="submit" class="btn btn--primary">Apply Filters</button>
-    <button type="button" id="clearFiltersBtn" class="btn btn--secondary">Clear All</button>
+    <button type="button" class="btn btn--primary apply-filters-btn">Apply Filters</button>
+    <button type="button" class="btn btn--secondary clear-filters-btn">Clear All</button>
   </div>
 
-{%- endform -%}
+</form>
