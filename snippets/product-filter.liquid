@@ -46,38 +46,38 @@
         {% endfor %}
 
 {% when 'collection-filter' %}
+  <fieldset class="filter filter--collections">
+    <legend>Collections</legend>
 
-  {% assign menu = linklists[block.settings.collection_menu] %}
-  {% assign has_match = false %}
+    {% assign menu = linklists[block.settings.collection_menu] %}
+    {% assign has_collections = false %}
 
-  {% if menu.links.size > 0 and collection %}
-
-    {% capture collection_items %}
+    {% if menu.links.size > 0 %}
       {% for link in menu.links %}
-        {% if link.type == 'collection_link' and link.object.handle == collection.handle %}
-          {% assign has_match = true %}
+        {% if link.type == 'collection_link' %}
+          {% assign has_collections = true %}
 
           <label>
             <input
               type="radio"
               name="collection_handle"
-              value="{{ collection.handle }}"
-              checked
+              value="{{ link.object.handle }}"
+              {% if collection and link.object.handle == collection.handle %}
+                checked
+              {% endif %}
             >
             {{ link.title }}
           </label>
         {% endif %}
       {% endfor %}
-    {% endcapture %}
 
-    {% if has_match %}
-      <fieldset class="filter filter--collections">
-        <legend>Collections</legend>
-        {{ collection_items }}
-      </fieldset>
+      {% if has_collections == false %}
+        <p>No collection links in this menu.</p>
+      {% endif %}
+    {% else %}
+      <p>No menu selected.</p>
     {% endif %}
-
-  {% endif %}
+  </fieldset>
 
 
       {% when 'color-filter' %}
