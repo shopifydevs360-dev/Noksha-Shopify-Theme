@@ -181,7 +181,7 @@
 {% when 'size-filter' %}
 
   {% assign allowed_sizes_raw = block.settings.sizes %}
-  {% assign sizes_provided = allowed_sizes_raw != blank %}
+
   {% if sizes_provided %}
     {% assign allowed_sizes = allowed_sizes_raw | downcase | replace: ', ', ',' | replace: ' ,', ',' | split: ',' %}
   {% endif %}
