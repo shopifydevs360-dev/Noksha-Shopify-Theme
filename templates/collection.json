@@ -76,7 +76,7 @@
         "grid_columns_desktop": "3",
         "enable_pagination": true,
         "products_per_page": 4,
-        "pagination_type": "load_more_button",
+        "pagination_type": "pagination_by_number",
         "enable_sorting": false,
         "enable_filter": true,
         "custom_class": "",
