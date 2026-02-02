@@ -64,6 +64,18 @@
 
         <!-- Filters -->
         <div class="product-filter">
+          <div class="filter-actions-bar">
+          <button type="button" class="filter-toggle-btn" data-action="filter">
+            <span class="icon">🔍</span>
+            <span class="label">Filter</span>
+          </button>
+
+          <button type="button" class="filter-toggle-btn" data-action="sort">
+            <span class="icon">⇅</span>
+            <span class="label">Sort</span>
+          </button>
+        </div>
+
           {% render 'product-filter', section: section, collection: collection %}
         </div>
 
