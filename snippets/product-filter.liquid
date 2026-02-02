@@ -9,7 +9,7 @@
     ============================
     {%- endcomment -%}
     {%- when 'availablity-filter' -%}
-      <div class="filter-item filter-availability hide">
+      <div class="filter-item filter-availability">
         {% for filter in collection.filters %}
           {% if filter.label == 'Availability' and filter.values.size > 0 %}
             <fieldset class="filter">
@@ -38,7 +38,7 @@
     ============================
     {%- endcomment -%}
     {%- when 'vendor-filter' -%}
-      <div class="filter-item filter-vendor hide">
+      <div class="filter-item filter-vendor">
         {% for filter in collection.filters %}
           {% if filter.label == 'Vendor' or filter.label == 'Brand' %}
             {% if filter.values.size > 0 %}
@@ -69,7 +69,7 @@
     ============================
     {%- endcomment -%}
     {%- when 'collection-filter' -%}
-      <div class="filter-item filter-collection hide">
+      <div class="filter-item filter-collection">
         {% assign menu = linklists[block.settings.collection_menu] %}
         {% if menu and menu.links.size > 0 %}
           <fieldset class="filter">
@@ -99,7 +99,7 @@
     ============================
     {%- endcomment -%}
     {%- when 'color-filter' -%}
-      <div class="filter-item filter-color hide">
+      <div class="filter-item filter-color">
         {% for filter in collection.filters %}
           {% if filter.label == 'Color' and filter.values.size > 0 %}
             <fieldset class="filter">
@@ -128,7 +128,7 @@
     ============================
     {%- endcomment -%}
     {%- when 'tag-filter' -%}
-      <div class="filter-item filter-tags hide">
+      <div class="filter-item filter-tags">
         {% assign raw_allowed_tags = block.settings.custom_filter_tags | strip %}
         {% assign allowed_tags = raw_allowed_tags | downcase | split: ',' %}
 
@@ -163,7 +163,7 @@
     ============================
     {%- endcomment -%}
     {%- when 'price-filter' -%}
-      <div class="filter-item filter-price hide">
+      <div class="filter-item filter-price">
         {% for filter in collection.filters %}
           {% if filter.type == 'price_range' %}
             <fieldset class="filter">
@@ -201,7 +201,7 @@
     ============================
     {%- endcomment -%}
     {%- when 'size-filter' -%}
-      <div class="filter-item filter-size hide">
+      <div class="filter-item filter-size">
         {% for filter in collection.filters %}
           {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
             <fieldset class="filter">
@@ -231,7 +231,7 @@
     ============================
     {%- endcomment -%}
 
-      <div class="filter-item filter-sort hide">
+      <div class="filter-item filter-sort">
         <fieldset class="filter">
           <legend class="filter-title">Sort By</legend>
           <div class="filter-body">
