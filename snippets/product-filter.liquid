@@ -204,12 +204,7 @@
 
         {% if show_value %}
           <label>
-            <input
-              type="checkbox"
-              name="{{ value.param_name }}"
-              value="{{ value.value }}"
-              {% if value.active %}checked{% endif %}
-            >
+            <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
             {{ value.label }}
             <span>({{ value.count }})</span>
           </label>
