@@ -183,30 +183,35 @@
 {% assign custom_sizes = block.settings.sizes | split: ',' | map: 'strip' %}
 
 {% for filter in collection.filters %}
-  {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+  {% if filter.type == 'list' and filter.param_name contains 'option.size' %}
     <fieldset class="filter filter--size">
       <legend>{{ block.settings.filter_title }}</legend>
 
       {% for value in filter.values %}
         {% assign show_value = false %}
-        {% assign label_downcase = value.label | downcase %}
+        {% assign label = value.label | strip %}
 
-        {%- comment -%}
-          Hide "One size"
-        {%- endcomment -%}
-        {% if label_downcase == 'one size' %}
+        {%- comment -%} Extract size code from "Small (S)" {%- endcomment -%}
+        {% assign size_code = label %}
+        {% if label contains '(' and label contains ')' %}
+          {% assign size_code = label | split: '(' | last | remove: ')' | strip %}
+        {% endif %}
+
+        {%- comment -%} Normalize size code {%- endcomment -%}
+        {% assign size_code_downcase = size_code | downcase %}
+
+        {%- comment -%} Hide "One size" {%- endcomment -%}
+        {% if size_code_downcase == 'one size' %}
           {% continue %}
         {% endif %}
 
-        {%- comment -%}
-          Show all if no custom sizes defined
-        {%- endcomment -%}
+        {%- comment -%} Decide visibility {%- endcomment -%}
         {% if block.settings.sizes == blank %}
           {% assign show_value = true %}
         {% else %}
           {% for custom_size in custom_sizes %}
-            {% assign token = '(' | append: custom_size | append: ')' | downcase %}
-            {% if label_downcase contains token %}
+            {% assign custom_size_downcase = custom_size | strip | downcase %}
+            {% if size_code_downcase == custom_size_downcase %}
               {% assign show_value = true %}
             {% endif %}
           {% endfor %}
@@ -220,16 +225,7 @@
               value="{{ value.value }}"
               {% if value.active %}checked{% endif %}
             >
-
-            {%- comment -%}
-              Display label as S / M / L
-            {%- endcomment -%}
-            {% assign display_label = value.label %}
-            {% if value.label contains '(' and value.label contains ')' %}
-              {% assign display_label = value.label | split: '(' | last | remove: ')' %}
-            {% endif %}
-
-            <span class="filter__label">{{ display_label }}</span>
+            <span class="filter__label">{{ size_code }}</span>
             <span class="filter__count">({{ value.count }})</span>
           </label>
         {% endif %}
@@ -237,6 +233,7 @@
     </fieldset>
   {% endif %}
 {% endfor %}
+
 
 
 
