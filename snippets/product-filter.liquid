@@ -186,6 +186,8 @@
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
+          {% assign short_label = value.label | split: '(' | last | split: ')' | first | strip %}
+
           <label>
             <input
               type="checkbox"
@@ -193,13 +195,14 @@
               value="{{ value.value }}"
               {% if value.active %}checked{% endif %}
             >
-            {{ value.label }}
+            {{ short_label }}
             <span>({{ value.count }})</span>
           </label>
         {% endfor %}
       </fieldset>
     {% endif %}
   {% endfor %}
+
 
 
     {% endcase %}
