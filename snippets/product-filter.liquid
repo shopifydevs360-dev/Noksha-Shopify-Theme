@@ -191,18 +191,17 @@
         {% assign show_value = false %}
         {% assign label = value.label %}
 
-        {%- comment -%} Extract size code (S, M, L, XL) {%- endcomment -%}
+        {%- comment -%} Extract size code {%- endcomment -%}
         {% assign size_code = label %}
-
         {% if label contains '(' and label contains ')' %}
           {% assign size_code = label | split: '(' | last | remove: ')' | strip %}
         {% endif %}
 
-        {%- comment -%} Normalize for comparison {%- endcomment -%}
-        {% assign size_code_downcase = size_code | downcase %}
+        {%- comment -%} Normalize extracted size {%- endcomment -%}
+        {% assign size_code_normalized = size_code | strip | downcase %}
 
         {%- comment -%} Hide "One size" {%- endcomment -%}
-        {% if size_code_downcase == 'one size' %}
+        {% if size_code_normalized == 'one size' %}
           {% continue %}
         {% endif %}
 
@@ -211,7 +210,8 @@
           {% assign show_value = true %}
         {% else %}
           {% for custom_size in custom_sizes %}
-            {% if size_code == custom_size %}
+            {% assign custom_size_normalized = custom_size | strip | downcase %}
+            {% if size_code_normalized == custom_size_normalized %}
               {% assign show_value = true %}
             {% endif %}
           {% endfor %}
