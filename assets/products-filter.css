@@ -7,6 +7,7 @@
   height: fit-content;
   position: sticky;
   top: 20px;
+  z-index: 100;
 }
 
 .filters-header {
@@ -20,6 +21,8 @@
 
 .filters-header h2 {
   margin: 0;
+  font-size: 1.5em;
+  color: rgb(var(--color-heading));
 }
 
 .filters-close-btn {
@@ -29,10 +32,23 @@
   cursor: pointer;
   padding: 5px;
   color: rgb(var(--color-text));
+  transition: color 0.2s ease;
+}
+
+.filters-close-btn:hover {
+  color: rgb(var(--color-link));
 }
 
 .filter-group {
   margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(var(--color-border), 0.3);
+}
+
+.filter-group:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .filter-group h3 {
@@ -48,14 +64,33 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+  padding: 5px 0;
   cursor: pointer;
   color: rgb(var(--color-text));
+  transition: color 0.2s ease;
 }
 
-.filter-label input[type="checkbox"] {
+.filter-label:hover {
+  color: rgb(var(--color-link));
+}
+
+.filter-label input[type="checkbox"],
+.filter-label input[type="radio"] {
   min-width: 18px;
   min-height: 18px;
   accent-color: rgb(var(--color-link));
+  cursor: pointer;
+}
+
+.filter-label span:last-child {
+  margin-left: auto;
+  font-size: 0.9em;
+  color: rgba(var(--color-text), 0.7);
+}
+
+.filter-label input:disabled + span {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Price Filter Specifics */
@@ -86,31 +121,96 @@
   pointer-events: auto;
   -webkit-appearance: none;
   appearance: none;
+  cursor: pointer;
+  border: 2px solid rgb(var(--color-background));
+  box-shadow: 0 2px 4px rgba(var(--color-text), 0.1);
 }
 
 .price-filter .price-input {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   align-items: center;
+  margin-top: 20px;
+}
+
+.price-input label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.9em;
+  color: rgb(var(--color-text));
 }
 
 .price-input input {
   width: 100%;
-  padding: 8px;
+  padding: 8px 12px;
   border: 1px solid rgb(var(--color-border));
   border-radius: var(--border-radius-style-one, 4px);
+  font-size: 0.9em;
+  transition: border-color 0.2s ease;
+}
+
+.price-input input:focus {
+  outline: none;
+  border-color: rgb(var(--color-link));
 }
 
 /* Color Filter Specifics */
+.filter-group--color .filter-label {
+  align-items: center;
+}
+
 .color-filter-label {
-  gap: 5px;
+  gap: 10px;
 }
 
 .color-swatch {
   width: 20px;
   height: 20px;
+  min-width: 20px;
   border-radius: 50%;
   border: 1px solid rgba(var(--color-border), 0.5);
+  flex-shrink: 0;
+}
+
+/* Filter Actions */
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid rgb(var(--color-border));
+}
+
+.filter-actions .btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: var(--border-radius-style-one, 4px);
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn--primary {
+  background-color: rgb(var(--color-link));
+  color: rgb(var(--color-background));
+}
+
+.btn--primary:hover {
+  opacity: 0.9;
+}
+
+.btn--secondary {
+  background-color: transparent;
+  color: rgb(var(--color-text));
+  border: 1px solid rgb(var(--color-border));
+}
+
+.btn--secondary:hover {
+  background-color: rgba(var(--color-border), 0.1);
 }
 
 /* Off-Canvas Filter Styles */
@@ -120,11 +220,14 @@
     top: 0;
     right: -400px; /* Hide off-screen */
     width: 400px;
+    max-width: 90vw;
     height: 100vh;
     z-index: 1000;
     overflow-y: auto;
     transition: right 0.3s ease;
     box-shadow: -5px 0 15px rgba(var(--color-text), 0.1);
+    border-radius: 0;
+    border: none;
   }
 
   .collection-wrapper:not(.with-sidebar) .filters-wrapper.active {
@@ -153,6 +256,12 @@
   cursor: pointer;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-filter-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(var(--color-text), 0.3);
 }
 
 @media (max-width: 749px) {
@@ -164,13 +273,15 @@
     position: fixed;
     top: 0;
     left: -100%; /* Hide off-screen */
-    width: 80%;
-    max-width: 300px;
+    width: 90%;
+    max-width: 350px;
     height: 100vh;
     z-index: 1000;
     overflow-y: auto;
     transition: left 0.3s ease;
     box-shadow: 5px 0 15px rgba(var(--color-text), 0.1);
+    border-radius: 0;
+    border: none;
   }
 
   .filters-wrapper.active {
@@ -185,4 +296,93 @@
 /* Prevent body scroll when filter is open on mobile */
 body.filter-open {
   overflow: hidden;
+}
+
+/* Overlay for mobile filter */
+@media (max-width: 749px) {
+  .filters-wrapper::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(var(--color-text), 0.5);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .filters-wrapper.active::before {
+    opacity: 1;
+  }
+}
+
+/* Pagination Styles */
+.custom-pagination {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgb(var(--color-border));
+  text-align: center;
+}
+
+.pagination-ui--numbers {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.pagination-btn {
+  padding: 8px 15px;
+  border: 1px solid rgb(var(--color-border));
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-text));
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9em;
+  min-width: 40px;
+}
+
+.pagination-btn:hover:not(.active):not(:disabled) {
+  background: rgba(var(--color-border), 0.1);
+}
+
+.pagination-btn.active {
+  background: rgb(var(--color-link));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-link));
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.load-more-btn {
+  padding: 12px 30px;
+  background: rgb(var(--color-link));
+  color: rgb(var(--color-background));
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.2s ease;
+}
+
+.load-more-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.load-more-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-loader {
+  text-align: center;
+  padding: 20px;
+  color: rgb(var(--color-text));
+  font-style: italic;
 }
