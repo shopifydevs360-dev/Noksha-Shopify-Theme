@@ -63,11 +63,9 @@
         </div>
 
         <!-- Filters -->
-        {% if section.settings.enable_filter %}
-          <div class="product-filter">
-            {% render 'product-filter', section: section, collection: collection %}
-          </div>
-        {% endif %}
+        <div class="product-filter">
+          {% render 'product-filter', section: section, collection: collection %}
+        </div>
 
       </main>
 
@@ -150,22 +148,6 @@
         { "value": "infinity_loading", "label": "Infinity Loading" }
       ],
       "default": "pagination_by_number"
-    },
-    {
-      "type": "header",
-      "content": "Sorting & Filter"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sorting",
-      "label": "Enable Sorting",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_filter",
-      "label": "Enable Filter",
-      "default": true
     },
     {
       "type": "text",
