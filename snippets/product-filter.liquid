@@ -192,15 +192,16 @@
         {% assign value_downcase = value.label | downcase | strip %}
         {% assign show_size = false %}
 
-        {%- if block.settings.sizes != blank -%}
-          {%- for size in custom_sizes -%}
-            {% if value_downcase == size | strip %}
+        {% if block.settings.sizes != blank %}
+          {% for size in custom_sizes %}
+            {% assign clean_size = size | strip %}
+            {% if value_downcase == clean_size %}
               {% assign show_size = true %}
             {% endif %}
-          {%- endfor -%}
-        {%- else -%}
+          {% endfor %}
+        {% else %}
           {% assign show_size = true %}
-        {%- endif -%}
+        {% endif %}
 
         {% if show_size %}
           <label>
