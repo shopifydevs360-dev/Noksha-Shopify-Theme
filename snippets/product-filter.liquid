@@ -178,6 +178,8 @@
           {% endfor %}
         </fieldset>
 
+{% when 'size-filter' %}
+
 {% assign custom_sizes = block.settings.sizes | split: ',' | map: 'strip' %}
 
 {% for filter in collection.filters %}
@@ -216,6 +218,7 @@
     </fieldset>
   {% endif %}
 {% endfor %}
+
 
 
     {% endcase %}
