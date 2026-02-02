@@ -12,15 +12,6 @@
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper sidebar-space">
 
-      {% if section.settings.enable_filter %}
-        <!-- Mobile Filter Toggle Button -->
-        <button type="button" class="mobile-filter-toggle" aria-label="Open filters">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      {% endif %}
-
       <main class="inner-warpper">
         <div class="product-list">
 
@@ -37,42 +28,41 @@
                 {% render 'product-card', product: product %}
               {% else %}
                 <div class="no-products">
-                  <p>No products found in this collection.</p>
+                  <p>No products found.</p>
                 </div>
               {% endfor %}
             </div>
           {% endpaginate %}
 
-          <!-- Pagination UI -->
-          {% if section.settings.enable_pagination %}
-            <div id="paginationWrapper" class="custom-pagination">
+        <!-- Pagination UI -->
+        {% if section.settings.enable_pagination and paginate.pages > 1 %}
+          <div id="paginationWrapper" class="custom-pagination">
 
-              {% if section.settings.pagination_type == 'pagination_by_number' %}
-                <nav class="pagination-ui pagination-ui--numbers" aria-label="Product pagination">
-                  <div class="pagination-numbers" data-pagination-numbers></div>
-                </nav>
-              {% elsif section.settings.pagination_type == 'load_more_button' %}
-                <div class="pagination-ui pagination-ui--loadmore">
-                  <button type="button" id="loadMoreBtn" class="load-more-btn" aria-label="Load more products">
-                    Load More
-                  </button>
+            {% if section.settings.pagination_type == 'pagination_by_number' %}
+              <nav class="pagination-ui pagination-ui--numbers">
+                <!-- JS will inject buttons here -->
+                <div class="pagination-numbers" data-pagination-numbers></div>
+              </nav>
+            {% elsif section.settings.pagination_type == 'load_more_button' %}
+              <div class="pagination-ui pagination-ui--loadmore">
+                <button type="button" id="loadMoreBtn" class="load-more-btn">
+                  Load More
+                </button>
 
-                  <div class="pagination-loader" data-loader hidden>
-                    <div class="spinner"></div>
-                    <span>Loading...</span>
-                  </div>
+                <div class="pagination-loader" data-loader hidden>
+                  Loading...
                 </div>
-              {% elsif section.settings.pagination_type == 'infinity_loading' %}
-                <div class="pagination-ui pagination-ui--infinity">
-                  <div class="pagination-loader" data-loader hidden>
-                    <div class="spinner"></div>
-                    <span>Loading...</span>
-                  </div>
+              </div>
+            {% elsif section.settings.pagination_type == 'infinity_loading' %}
+              <div class="pagination-ui pagination-ui--infinity">
+                <div class="pagination-loader" data-loader hidden>
+                  Loading...
                 </div>
-              {% endif %}
+              </div>
+            {% endif %}
 
-            </div>
-          {% endif %}
+          </div>
+        {% endif %}
 
         </div>
 
