@@ -52,12 +52,6 @@
           "settings": {
             "filter_title": "Brand"
           }
-        },
-        "price_range_nnV4T3": {
-          "type": "price_range",
-          "settings": {
-            "filter_title": "Price"
-          }
         }
       },
       "block_order": [
@@ -66,8 +60,7 @@
         "color_fcE8Rd",
         "collection_EN8pWF",
         "type_Lc9LAR",
-        "vendor_dzfAUV",
-        "price_range_nnV4T3"
+        "vendor_dzfAUV"
       ],
       "settings": {
         "container_type": "container",
