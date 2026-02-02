@@ -10,51 +10,67 @@
 >
 
   <div class="{{ section.settings.container_type }}">
-    <div class="collection-wrapper sidebar-space">
+    <div class="collection-wrapper {% if section.settings.enable_filter %}with-sidebar{% endif %}">
 
       <main class="inner-warpper">
         <div class="product-list">
+          
+          <!-- Mobile Filter Toggle Button -->
+          {% if section.settings.enable_filter %}
+            <button type="button" class="mobile-filter-toggle" aria-label="Open filters">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M10 18H14V16H10V18ZM3 6V8H21V6H3ZM6 13H18V11H6V13Z" fill="currentColor"/>
+              </svg>
+            </button>
+          {% endif %}
 
           <!-- Products -->
           {% paginate collection.products by section.settings.products_per_page %}
-            {% if collection.products_count > 0 %}
-              <div
-                class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
-                id="productsContainer"
-                data-total-products="{{ collection.products_count }}"
-                data-total-pages="{{ paginate.pages }}"
-                data-current-page="{{ paginate.current_page }}"
-              >
-                {% for product in collection.products %}
-                  {% render 'product-card', product: product %}
-                {% endfor %}
-              </div>
-            {% else %}
-              <div class="empty-collection-message">
-                <p>No products found in this collection.</p>
-              </div>
-            {% endif %}
+            <div
+              class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
+              id="productsContainer"
+              data-total-products="{{ collection.products_count }}"
+              data-total-pages="{{ paginate.pages }}"
+              data-current-page="{{ paginate.current_page }}"
+            >
+              {% for product in collection.products %}
+                {% render 'product-card', product: product %}
+              {% else %}
+                <div class="empty-collection">
+                  <p>No products found in this collection.</p>
+                </div>
+              {% endfor %}
+            </div>
           {% endpaginate %}
 
-        </div>
-      </main>
-
-      <!-- Pagination UI -->
-      {% if section.settings.enable_pagination and collection.products_count > 0 %}
-        {% if paginate.pages > 1 %}
+        <!-- Pagination UI -->
+        {% if section.settings.enable_pagination and paginate.pages > 1 %}
           <div id="paginationWrapper" class="custom-pagination">
 
             {% if section.settings.pagination_type == 'pagination_by_number' %}
               <nav class="pagination-ui pagination-ui--numbers">
-                <!-- JS will inject buttons here -->
-                <div class="pagination-numbers" data-pagination-numbers></div>
+                <div class="pagination-numbers" data-pagination-numbers>
+                  {% if paginate.pages > 1 %}
+                    {% for page in (1..paginate.pages) %}
+                      <button
+                        type="button"
+                        data-page-number="{{ page }}"
+                        class="{% if page == paginate.current_page %}active{% endif %}"
+                        {% if page == paginate.current_page %}disabled{% endif %}
+                      >
+                        {{ page }}
+                      </button>
+                    {% endfor %}
+                  {% endif %}
+                </div>
               </nav>
             {% elsif section.settings.pagination_type == 'load_more_button' %}
               <div class="pagination-ui pagination-ui--loadmore">
-                <button type="button" id="loadMoreBtn" class="load-more-btn">
-                  Load More
-                </button>
-
+                {% if paginate.next %}
+                  <button type="button" id="loadMoreBtn" class="load-more-btn">
+                    Load More
+                  </button>
+                {% endif %}
                 <div class="pagination-loader" data-loader hidden>
                   Loading...
                 </div>
@@ -69,14 +85,25 @@
 
           </div>
         {% endif %}
-      {% endif %}
 
-      <!-- Filters -->
-      {% if section.settings.enable_filter %}
-        <div class="product-filter">
-          {% render 'product-filter', section: section, collection: collection %}
         </div>
-      {% endif %}
+
+        <!-- Filters -->
+        {% if section.settings.enable_filter %}
+          <div class="filters-wrapper" id="filtersWrapper">
+            <div class="filters-header">
+              <h2>Filters</h2>
+              <button type="button" class="filters-close-btn" aria-label="Close filters">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="currentColor"/>
+                </svg>
+              </button>
+            </div>
+            {% render 'product-filter', section: section, collection: collection %}
+          </div>
+        {% endif %}
+
+      </main>
 
     </div>
   </div>
@@ -87,6 +114,7 @@
 {% schema %}
 {
   "name": "Collection Product List",
+  "class": "section-collection-product-list",
   "settings": [
     {
       "type": "header",
@@ -116,17 +144,13 @@
       "content": "Product Grid"
     },
     {
-      "type": "select",
+      "type": "range",
       "id": "grid_columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
       "label": "Desktop Grid Columns",
-      "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" }
-      ],
-      "default": "4"
+      "default": 4
     },
     {
       "type": "header",
@@ -192,7 +216,7 @@
   ],
   "blocks": [
     {
-      "type": "availablity-filter",
+      "type": "availability-filter",
       "name": "Availability Filter",
       "limit": 1
     },
@@ -211,7 +235,15 @@
     {
       "type": "vendor-filter",
       "name": "Vendor Filter",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Vendor"
+        }
+      ]
     },
     {
       "type": "color-filter",
@@ -225,13 +257,13 @@
           "default": "Color"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "allow_colors",
           "label": "Custom Colors (Allow)",
           "info": "Comma separated values. If filled, only these colors will show."
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "disallow_colors",
           "label": "Disallow Colors",
           "info": "Comma separated values. These colors will be hidden."
@@ -249,7 +281,7 @@
           "default": "Tags"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "custom_filter_tags",
           "label": "Allowed Tags",
           "info": "Comma separated tags (example: Summer, Winter, New)."
@@ -272,6 +304,7 @@
     {
       "type": "product-type-filter",
       "name": "Product Type Filter",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
@@ -280,7 +313,7 @@
           "default": "Product Type"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "product_types",
           "label": "Product Types",
           "info": "Comma separated values (example: T-shirt, Hoodie, Pants)"
@@ -290,6 +323,7 @@
     {
       "type": "size-filter",
       "name": "Size Filter (Custom)",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
@@ -298,10 +332,29 @@
           "default": "Size"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "sizes",
           "label": "Sizes",
-          "info": "Comma separated values. If filled, only these size will show."
+          "info": "Comma separated values. If filled, only these sizes will show."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Product List",
+      "blocks": [
+        {
+          "type": "availability-filter"
+        },
+        {
+          "type": "vendor-filter"
+        },
+        {
+          "type": "color-filter"
+        },
+        {
+          "type": "price-filter"
         }
       ]
     }
