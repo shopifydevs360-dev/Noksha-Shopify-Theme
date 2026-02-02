@@ -1,18 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('CollectionFilters');
-  const applyBtn = document.getElementById('applyFiltersBtn');
-  const clearBtn = document.getElementById('clearFiltersBtn');
 
   window.COLLECTION_AJAX = {
     currentPage: 1,
     isLoading: false
   };
 
-  /* --------------------------------
-    🚫 BLOCK NORMAL FORM SUBMIT
-  -------------------------------- */
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -45,32 +40,26 @@ function getPaginationType() {
 }
 
 function getLoaderElement() {
-  return getPaginationWrapper()?.querySelector('[data-loader]') || null;
-}
-
-function getLoadMoreBtn() {
-  return getPaginationWrapper()?.querySelector('#loadMoreBtn') || null;
+  return getPaginationWrapper()?.querySelector('[data-loader]');
 }
 
 /* ======================================================
-  INITIAL PAGE DATA
+  INITIAL DATA
 ====================================================== */
 function setInitialPaginationData() {
   const box = getProductsContainer();
   if (!box) return;
-
-  window.COLLECTION_AJAX.currentPage =
-    parseInt(box.dataset.currentPage || '1', 10);
+  window.COLLECTION_AJAX.currentPage = parseInt(box.dataset.currentPage || '1', 10);
 }
 
 /* ======================================================
-  APPLY FILTERS (AJAX ONLY)
+  APPLY FILTERS
 ====================================================== */
 function initApplyFilters() {
   const btn = document.getElementById('applyFiltersBtn');
   if (!btn) return;
 
-  btn.addEventListener('click', (e) => {
+  btn.addEventListener('click', e => {
     e.preventDefault();
     if (window.COLLECTION_AJAX.isLoading) return;
 
@@ -82,17 +71,17 @@ function initApplyFilters() {
 }
 
 /* ======================================================
-  CLEAR FILTERS (AJAX)
+  CLEAR FILTERS
 ====================================================== */
 function initClearFilters() {
   const btn = document.getElementById('clearFiltersBtn');
   const form = document.getElementById('CollectionFilters');
   if (!btn || !form) return;
 
-  btn.addEventListener('click', (e) => {
+  btn.addEventListener('click', e => {
     e.preventDefault();
-
     form.reset();
+
     window.COLLECTION_AJAX.currentPage = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -110,24 +99,17 @@ function initPagination() {
     window.addEventListener('scroll', infiniteScrollHandler);
   }
 
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const pageBtn = e.target.closest('[data-page-number]');
     if (pageBtn) {
       e.preventDefault();
-      if (window.COLLECTION_AJAX.isLoading) return;
-
-      window.COLLECTION_AJAX.currentPage =
-        parseInt(pageBtn.dataset.pageNumber, 10);
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.COLLECTION_AJAX.currentPage = parseInt(pageBtn.dataset.pageNumber, 10);
       fetchProducts(false, false);
     }
 
     const loadMoreBtn = e.target.closest('#loadMoreBtn');
     if (loadMoreBtn) {
       e.preventDefault();
-      if (window.COLLECTION_AJAX.isLoading) return;
-
       window.COLLECTION_AJAX.currentPage++;
       fetchProducts(true, false);
     }
@@ -136,7 +118,6 @@ function initPagination() {
 
 function infiniteScrollHandler() {
   if (window.COLLECTION_AJAX.isLoading) return;
-  if (getPaginationType() !== 'infinity_loading') return;
 
   const box = getProductsContainer();
   if (!box) return;
@@ -168,12 +149,11 @@ function buildQueryParams() {
   params.delete('collection_handle');
 
   params.set('page', window.COLLECTION_AJAX.currentPage);
-
   return { params, collectionHandle };
 }
 
 /* ======================================================
-  AJAX FETCH PRODUCTS
+  FETCH PRODUCTS (🔥 FIX HERE)
 ====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
@@ -210,7 +190,7 @@ function fetchProducts(append = false, resetPage = false) {
         ? oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML)
         : oldBox.innerHTML = newBox.innerHTML;
 
-      /* 🔥 RE-INIT EXISTING PRODUCT CART JS */
+      /* 🔥 RE-INIT ADD TO CART AFTER AJAX */
       if (typeof initAllProductCartEvents === 'function') {
         initAllProductCartEvents();
       }
