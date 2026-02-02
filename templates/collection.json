@@ -41,7 +41,7 @@
           "type": "size-filter",
           "settings": {
             "filter_title": "Size",
-            "sizes": "s"
+            "sizes": ""
           }
         }
       },
