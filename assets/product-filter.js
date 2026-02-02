@@ -24,11 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initClearFilters();
   initPagination();
   updatePaginationUIFromCurrentDOM();
+
+  /* INIT CART ON FIRST LOAD */
+  initAllAjaxCartEvents();
 });
 
-/* ---------------------------
+/* ======================================================
   HELPERS
----------------------------- */
+====================================================== */
 function getMainContainer() {
   return document.querySelector('.main-product-list');
 }
@@ -57,9 +60,9 @@ function getLoadMoreBtn() {
   return getPaginationWrapper()?.querySelector('#loadMoreBtn') || null;
 }
 
-/* ---------------------------
+/* ======================================================
   INITIAL PAGE DATA
----------------------------- */
+====================================================== */
 function setInitialPaginationData() {
   const box = getProductsContainer();
   if (!box) return;
@@ -68,17 +71,15 @@ function setInitialPaginationData() {
     parseInt(box.dataset.currentPage || '1', 10);
 }
 
-/* ---------------------------
+/* ======================================================
   APPLY FILTERS (AJAX ONLY)
----------------------------- */
+====================================================== */
 function initApplyFilters() {
   const btn = document.getElementById('applyFiltersBtn');
   if (!btn) return;
 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    e.stopPropagation();
-
     if (window.COLLECTION_AJAX.isLoading) return;
 
     window.COLLECTION_AJAX.currentPage = 1;
@@ -88,20 +89,18 @@ function initApplyFilters() {
   });
 }
 
-/* ---------------------------
+/* ======================================================
   CLEAR FILTERS (AJAX)
----------------------------- */
+====================================================== */
 function initClearFilters() {
   const btn = document.getElementById('clearFiltersBtn');
   const form = document.getElementById('CollectionFilters');
-
   if (!btn || !form) return;
 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    e.stopPropagation();
-
     form.reset();
+
     window.COLLECTION_AJAX.currentPage = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -109,15 +108,13 @@ function initClearFilters() {
   });
 }
 
-/* ---------------------------
-  PAGINATION INIT
----------------------------- */
+/* ======================================================
+  PAGINATION
+====================================================== */
 function initPagination() {
   window.removeEventListener('scroll', infiniteScrollHandler);
 
-  const type = getPaginationType();
-
-  if (type === 'infinity_loading') {
+  if (getPaginationType() === 'infinity_loading') {
     window.addEventListener('scroll', infiniteScrollHandler);
   }
 
@@ -145,9 +142,6 @@ function initPagination() {
   });
 }
 
-/* ---------------------------
-  INFINITE SCROLL
----------------------------- */
 function infiniteScrollHandler() {
   if (window.COLLECTION_AJAX.isLoading) return;
   if (getPaginationType() !== 'infinity_loading') return;
@@ -164,9 +158,9 @@ function infiniteScrollHandler() {
   }
 }
 
-/* ---------------------------
+/* ======================================================
   QUERY PARAMS
----------------------------- */
+====================================================== */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
   const params = new URLSearchParams();
@@ -186,20 +180,9 @@ function buildQueryParams() {
   return { params, collectionHandle };
 }
 
-/* ---------------------------
-  PAGINATION UI
----------------------------- */
-function updatePaginationUIFromCurrentDOM() {
-  const box = getProductsContainer();
-  if (!box) return;
-
-  window.COLLECTION_AJAX.currentPage =
-    parseInt(box.dataset.currentPage || '1', 10);
-}
-
-/* ---------------------------
+/* ======================================================
   AJAX FETCH PRODUCTS
----------------------------- */
+====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
@@ -234,10 +217,83 @@ function fetchProducts(append = false, resetPage = false) {
       append
         ? oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML)
         : oldBox.innerHTML = newBox.innerHTML;
+
+      /* 🔥 RE-INIT CART EVENTS AFTER DOM UPDATE */
+      initAllAjaxCartEvents();
     })
     .catch(err => console.error('AJAX error:', err))
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
       if (loader) loader.hidden = true;
     });
+}
+
+/* ======================================================
+  🔥 AJAX ADD TO CART (SAFE RE-INIT)
+====================================================== */
+function initAllAjaxCartEvents() {
+  initAjaxAddToCart();
+  initVariantAjaxAddToCart();
+}
+
+/* SINGLE PRODUCT */
+function initAjaxAddToCart() {
+  document.querySelectorAll(
+    '.cart-button-wrapper.btn-action--ajax .product-form,' +
+    '.cart-button-wrapper.btn-action--ajax_drawer .product-form'
+  ).forEach(form => {
+    if (form.dataset.ajaxBound) return;
+    form.dataset.ajaxBound = 'true';
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const wrapper = this.closest('.cart-button-wrapper');
+      const isDrawer = wrapper?.classList.contains('btn-action--ajax_drawer');
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: new FormData(this)
+      })
+        .then(res => res.json())
+        .then(() => {
+          refreshAllCartsUI();
+          if (isDrawer) openBagDrawer();
+        })
+        .catch(err => console.error(err));
+    });
+  });
+}
+
+/* MULTI VARIANT */
+function initVariantAjaxAddToCart() {
+  document.querySelectorAll(
+    '.cart-button-wrapper.btn-action--ajax .card-variant-btn,' +
+    '.cart-button-wrapper.btn-action--ajax_drawer .card-variant-btn'
+  ).forEach(button => {
+    if (button.dataset.ajaxBound) return;
+    button.dataset.ajaxBound = 'true';
+
+    button.addEventListener('click', function () {
+      if (this.disabled) return;
+
+      const wrapper = this.closest('.cart-button-wrapper');
+      const isDrawer = wrapper?.classList.contains('btn-action--ajax_drawer');
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: this.dataset.variantId,
+          quantity: 1
+        })
+      })
+        .then(res => res.json())
+        .then(() => {
+          refreshAllCartsUI();
+          if (isDrawer) openBagDrawer();
+        })
+        .catch(err => console.error(err));
+    });
+  });
 }
