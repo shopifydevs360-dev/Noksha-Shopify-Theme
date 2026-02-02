@@ -230,28 +230,34 @@ function initFilterToggle() {
     });
   }
 
-function openSidebar() {
-  sidebar.classList.add('is-expanded');
+  function openSidebar() {
+    sidebar.classList.add('is-expanded');
 
-  if (filterActions) {
-    filterActions.classList.remove('hide'); // ✅ SHOW ACTIONS
+    if (filterActions) {
+      filterActions.classList.remove('hide'); // ✅ SHOW ACTIONS
+    }
+
+    if (isMobile()) {
+      sidebar.classList.add('is-offcanvas');
+      document.body.classList.add('is-filter-open');
+      addOverlay();
+    }
   }
-
-  if (isMobile()) {
-    sidebar.classList.add('is-offcanvas');
-    document.body.classList.add('is-filter-open');
-    addOverlay();
-  }
-}
-
 
   function closeSidebar() {
     sidebar.classList.remove('is-expanded', 'is-offcanvas');
-    document.body.classList.remove('is-filter-open'); // 🔓 UNLOCK SCROLL
+    document.body.classList.remove('is-filter-open');
+
     hideAll();
     activeAction = null;
+
+    if (filterActions) {
+      filterActions.classList.add('hide'); // ✅ HIDE ACTIONS
+    }
+
     removeOverlay();
   }
+
 
   function addOverlay() {
     if (document.querySelector('.filter-overlay')) return;
