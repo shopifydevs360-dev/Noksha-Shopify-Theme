@@ -91,12 +91,30 @@
                   {% assign value_lower = value.label | downcase | strip %}
                   {% assign should_show = true %}
                   
+                  {% comment %} Check if color is in allow list {% endcomment %}
                   {% if allow_colors.size > 0 %}
-                    {% assign should_show = allow_colors contains value_lower %}
+                    {% assign color_is_allowed = false %}
+                    {% for allowed_color in allow_colors %}
+                      {% assign clean_allowed = allowed_color | strip %}
+                      {% if clean_allowed == value_lower %}
+                        {% assign color_is_allowed = true %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                    {% if color_is_allowed == false %}
+                      {% assign should_show = false %}
+                    {% endif %}
                   {% endif %}
                   
-                  {% if disallow_colors.size > 0 and disallow_colors contains value_lower %}
-                    {% assign should_show = false %}
+                  {% comment %} Check if color is in disallow list {% endcomment %}
+                  {% if disallow_colors.size > 0 and should_show %}
+                    {% for disallowed_color in disallow_colors %}
+                      {% assign clean_disallowed = disallowed_color | strip %}
+                      {% if clean_disallowed == value_lower %}
+                        {% assign should_show = false %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
                   {% endif %}
                   
                   {% if should_show %}
@@ -118,7 +136,8 @@
           {% endfor %}
 
         {% when 'tag-filter' %}
-          {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' %}
+          {% assign allowed_tags_string = block.settings.custom_filter_tags | downcase %}
+          {% assign allowed_tags = allowed_tags_string | split: ',' %}
           
           {% for filter in collection.filters %}
             {% if filter.param_name contains '.tag' %}
@@ -127,8 +146,22 @@
                 
                 {% for value in filter.values %}
                   {% assign tag_label = value.label | downcase | strip %}
+                  {% assign tag_should_show = false %}
                   
-                  {% if allowed_tags.size == 0 or allowed_tags contains tag_label %}
+                  {% if allowed_tags.size == 0 %}
+                    {% assign tag_should_show = true %}
+                  {% else %}
+                    {% comment %} Check if tag is in allowed list {% endcomment %}
+                    {% for allowed_tag in allowed_tags %}
+                      {% assign clean_allowed_tag = allowed_tag | strip %}
+                      {% if clean_allowed_tag == tag_label %}
+                        {% assign tag_should_show = true %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  
+                  {% if tag_should_show %}
                     <label class="filter-label">
                       <input
                         type="checkbox"
@@ -200,7 +233,8 @@
           {% endfor %}
 
         {% when 'product-type-filter' %}
-          {% assign types = block.settings.product_types | split: ',' %}
+          {% assign types_string = block.settings.product_types %}
+          {% assign types = types_string | split: ',' %}
           {% if types.size > 0 %}
             <div class="filter-group product-type-filter-group" {{ block.shopify_attributes }}>
               <h3>{{ block.settings.filter_title | default: 'Product Type' }}</h3>
@@ -214,6 +248,7 @@
                     {% if types.size == 0 %}
                       {% assign should_show = true %}
                     {% else %}
+                      {% comment %} Check if product type is in allowed list {% endcomment %}
                       {% for type in types %}
                         {% assign clean_type = type | strip | downcase %}
                         {% if clean_type == type_lower %}
@@ -242,7 +277,8 @@
           {% endif %}
 
         {% when 'size-filter' %}
-          {% assign allowed_sizes = block.settings.sizes | split: ',' %}
+          {% assign allowed_sizes_string = block.settings.sizes %}
+          {% assign allowed_sizes = allowed_sizes_string | split: ',' %}
           
           {% for filter in collection.filters %}
             {% if filter.label == block.settings.filter_title or filter.label == 'Size' %}
@@ -254,14 +290,17 @@
                   {% assign should_show = true %}
                   
                   {% if allowed_sizes.size > 0 %}
-                    {% assign should_show = false %}
+                    {% assign size_found = false %}
                     {% for size in allowed_sizes %}
                       {% assign clean_size = size | strip | downcase %}
                       {% if clean_size == size_lower %}
-                        {% assign should_show = true %}
+                        {% assign size_found = true %}
                         {% break %}
                       {% endif %}
                     {% endfor %}
+                    {% unless size_found %}
+                      {% assign should_show = false %}
+                    {% endunless %}
                   {% endif %}
                   
                   {% if should_show %}
