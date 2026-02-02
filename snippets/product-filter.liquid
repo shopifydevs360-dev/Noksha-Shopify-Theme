@@ -93,20 +93,20 @@
 
 {% when 'tag-filter' %}
 
-  {% assign allowed_tags = block.settings.custom_filter_tags
-    | downcase
-    | split: ','
-  %}
+  {% assign raw_allowed_tags = block.settings.custom_filter_tags | strip %}
+  {% assign allowed_tags = raw_allowed_tags | downcase | split: ',' %}
+  {% assign has_visible_tags = false %}
 
   {% for filter in collection.filters %}
     {% if filter.param_name contains '.tag' %}
-      <fieldset class="filter filter--tags">
-        <legend>{{ block.settings.filter_title }}</legend>
 
+      {% capture tag_items %}
         {% for value in filter.values %}
           {% assign tag_label = value.label | downcase | strip %}
 
-          {% if allowed_tags contains tag_label %}
+          {% if raw_allowed_tags == blank or allowed_tags contains tag_label %}
+            {% assign has_visible_tags = true %}
+
             <label>
               <input
                 type="checkbox"
@@ -119,9 +119,18 @@
             </label>
           {% endif %}
         {% endfor %}
-      </fieldset>
+      {% endcapture %}
+
+      {% if has_visible_tags %}
+        <fieldset class="filter filter--tags">
+          <legend>{{ block.settings.filter_title }}</legend>
+          {{ tag_items }}
+        </fieldset>
+      {% endif %}
+
     {% endif %}
   {% endfor %}
+
 
 
         {% when 'price-filter' %}
