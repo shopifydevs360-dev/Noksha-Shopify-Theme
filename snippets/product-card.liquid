@@ -1,3 +1,4 @@
+{%- comment -%} File Name: product-card.liquid {%- endcomment -%}
 {% if product %}
 {% assign cart_behavior = settings.cart_behavior | default: 'ajax' %}
   {% assign collections_titles = product.collections | map: 'title' | join: ',' | downcase %}
@@ -14,7 +15,6 @@
             <span>Best Seller</span>
           </div>
         {% endif %}
-
         <!-- ================= PRIMARY IMAGE ================= -->
         {% if product.featured_image %}
           <img
@@ -35,7 +35,6 @@
             height="{{ product.featured_image.height }}"
           >
         {% endif %}
-
         <!-- ================= HOVER IMAGE ================= -->
         {% if product.images.size > 1 %}
           {% assign hover_image = product.images[1] %}
@@ -57,10 +56,8 @@
             height="{{ hover_image.height }}"
           >
         {% endif %}
-
       </div>
     </a>
-
     <!-- ================= Add to cart button ================= -->
     <div class="cart-button-wrapper swiper-no-swiping btn-action--{{ cart_behavior }}">
       {% if product.variants.size > 1 %}
@@ -82,13 +79,10 @@
             Make Selection
           </button>
         </div>
-
       {% else %}
-
         {% assign variant = product.variants.first %}
         <form method="post" action="{{ routes.cart_add_url }}" class="product-form">
           <input type="hidden" name="id" value="{{ variant.id }}">
-
           <button
             type="submit"
             class="add-to-cart-btn single-product"
@@ -103,20 +97,16 @@
         </form>
       {% endif %}
     </div>
-
   </div>
-
   <!-- ================= PRODUCT INFO ================= -->
   <div class="product-card-info">
     <div class="split-aligner">
-
       <span class="title h5">
         <a href="{{ product.url }}">{{ product.title }}</a>
       </span>
       <p class="price h5">
         {{ product.price | money }}
       </p>
-
     </div>
   </div>
 </div>
