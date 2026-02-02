@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     isLoading: false
   };
 
-  /* ===============================
+  /* --------------------------------
     🚫 BLOCK NORMAL FORM SUBMIT
-  =============================== */
+  -------------------------------- */
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -23,30 +23,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initApplyFilters();
   initClearFilters();
   initPagination();
-  updatePaginationUIFromCurrentDOM();
 });
 
-/* ---------------------------
+/* ======================================================
   HELPERS
----------------------------- */
+====================================================== */
 function getMainContainer() {
   return document.querySelector('.main-product-list');
-}
-
-function getPaginationWrapper() {
-  return document.getElementById('paginationWrapper');
 }
 
 function getProductsContainer() {
   return document.getElementById('productsContainer');
 }
 
-function getPaginationType() {
-  return getMainContainer()?.dataset.paginationType || 'pagination_by_number';
+function getPaginationWrapper() {
+  return document.getElementById('paginationWrapper');
 }
 
-function getEnablePagination() {
-  return getMainContainer()?.dataset.enablePagination === 'true';
+function getPaginationType() {
+  return getMainContainer()?.dataset.paginationType || 'pagination_by_number';
 }
 
 function getLoaderElement() {
@@ -57,9 +52,9 @@ function getLoadMoreBtn() {
   return getPaginationWrapper()?.querySelector('#loadMoreBtn') || null;
 }
 
-/* ---------------------------
+/* ======================================================
   INITIAL PAGE DATA
----------------------------- */
+====================================================== */
 function setInitialPaginationData() {
   const box = getProductsContainer();
   if (!box) return;
@@ -68,17 +63,15 @@ function setInitialPaginationData() {
     parseInt(box.dataset.currentPage || '1', 10);
 }
 
-/* ---------------------------
+/* ======================================================
   APPLY FILTERS (AJAX ONLY)
----------------------------- */
+====================================================== */
 function initApplyFilters() {
   const btn = document.getElementById('applyFiltersBtn');
   if (!btn) return;
 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    e.stopPropagation();
-
     if (window.COLLECTION_AJAX.isLoading) return;
 
     window.COLLECTION_AJAX.currentPage = 1;
@@ -88,18 +81,16 @@ function initApplyFilters() {
   });
 }
 
-/* ---------------------------
+/* ======================================================
   CLEAR FILTERS (AJAX)
----------------------------- */
+====================================================== */
 function initClearFilters() {
   const btn = document.getElementById('clearFiltersBtn');
   const form = document.getElementById('CollectionFilters');
-
   if (!btn || !form) return;
 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
     form.reset();
     window.COLLECTION_AJAX.currentPage = 1;
@@ -109,15 +100,13 @@ function initClearFilters() {
   });
 }
 
-/* ---------------------------
-  PAGINATION INIT
----------------------------- */
+/* ======================================================
+  PAGINATION
+====================================================== */
 function initPagination() {
   window.removeEventListener('scroll', infiniteScrollHandler);
 
-  const type = getPaginationType();
-
-  if (type === 'infinity_loading') {
+  if (getPaginationType() === 'infinity_loading') {
     window.addEventListener('scroll', infiniteScrollHandler);
   }
 
@@ -145,9 +134,6 @@ function initPagination() {
   });
 }
 
-/* ---------------------------
-  INFINITE SCROLL
----------------------------- */
 function infiniteScrollHandler() {
   if (window.COLLECTION_AJAX.isLoading) return;
   if (getPaginationType() !== 'infinity_loading') return;
@@ -164,9 +150,9 @@ function infiniteScrollHandler() {
   }
 }
 
-/* ---------------------------
+/* ======================================================
   QUERY PARAMS
----------------------------- */
+====================================================== */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
   const params = new URLSearchParams();
@@ -186,20 +172,9 @@ function buildQueryParams() {
   return { params, collectionHandle };
 }
 
-/* ---------------------------
-  PAGINATION UI
----------------------------- */
-function updatePaginationUIFromCurrentDOM() {
-  const box = getProductsContainer();
-  if (!box) return;
-
-  window.COLLECTION_AJAX.currentPage =
-    parseInt(box.dataset.currentPage || '1', 10);
-}
-
-/* ---------------------------
+/* ======================================================
   AJAX FETCH PRODUCTS
----------------------------- */
+====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
@@ -234,8 +209,13 @@ function fetchProducts(append = false, resetPage = false) {
       append
         ? oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML)
         : oldBox.innerHTML = newBox.innerHTML;
+
+      /* 🔥 RE-INIT EXISTING PRODUCT CART JS */
+      if (typeof initAllProductCartEvents === 'function') {
+        initAllProductCartEvents();
+      }
     })
-    .catch(err => console.error('AJAX error:', err))
+    .catch(err => console.error('Filter AJAX error:', err))
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
       if (loader) loader.hidden = true;
