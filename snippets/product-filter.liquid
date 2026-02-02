@@ -183,31 +183,56 @@
   {% for filter in collection.filters %}
     {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
       {% assign custom_sizes = block.settings.sizes %}
-      {% assign custom_sizes_array = custom_sizes | split: ',' | strip %}
+      {% assign has_custom_sizes = false %}
+      {% assign custom_sizes_array = '' | split: '' %}
       
+      {% if custom_sizes != blank %}
+        {% assign has_custom_sizes = true %}
+        {% assign custom_sizes_array = custom_sizes | split: ',' %}
+        
+        {% comment %} Clean and normalize the custom sizes array {% endcomment %}
+        {% assign cleaned_sizes = '' | split: '' %}
+        {% for size in custom_sizes_array %}
+          {% assign trimmed_size = size | strip %}
+          {% assign cleaned_sizes = cleaned_sizes | push: trimmed_size %}
+        {% endfor %}
+        {% assign custom_sizes_array = cleaned_sizes %}
+      {% endif %}
+
       <fieldset class="filter filter--size">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
-          {% assign display_size = true %}
+          {% assign should_display = true %}
           
-          {% if custom_sizes != blank %}
-            {% assign display_size = false %}
+          {% if has_custom_sizes %}
+            {% assign should_display = false %}
+            {% assign value_label_stripped = value.label | strip %}
+            
+            {% comment %} Debug output - remove in production {% endcomment %}
+            {% comment %} 
+            <div style="display:none;">
+              Checking: {{ value_label_stripped }} 
+              Against: {{ custom_sizes_array | join: ', ' }}
+            </div>
+            {% endcomment %}
+            
             {% for custom_size in custom_sizes_array %}
-              {% if value.label | strip == custom_size | strip %}
-                {% assign display_size = true %}
+              {% if value_label_stripped == custom_size %}
+                {% assign should_display = true %}
                 {% break %}
               {% endif %}
             {% endfor %}
           {% endif %}
           
-          {% if display_size %}
+          {% if should_display %}
             <label>
               <input
                 type="checkbox"
                 name="{{ value.param_name }}"
                 value="{{ value.value }}"
                 {% if value.active %}checked{% endif %}
+                {% if value.count == 0 and value.active == false %}disabled{% endif %}
               >
               {{ value.label }}
               <span>({{ value.count }})</span>
