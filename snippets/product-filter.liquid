@@ -183,10 +183,7 @@
 {% assign custom_sizes = block.settings.sizes | split: ',' | map: 'strip' %}
 
 {% for filter in collection.filters %}
-  {% if filter.type == 'list'
-        and filter.param_name contains 'option'
-        and filter.param_name contains 'size' %}
-        
+  {% if filter.type == 'list' and filter.param_name contains 'option.size' %}
     <fieldset class="filter filter--size">
       <legend>{{ block.settings.filter_title }}</legend>
 
@@ -194,21 +191,21 @@
         {% assign show_value = false %}
         {% assign label = value.label | strip %}
 
-        {%- comment -%} Extract short size from label {%- endcomment -%}
+        {%- comment -%} Extract size code from "Small (S)" {%- endcomment -%}
         {% assign size_code = label %}
         {% if label contains '(' and label contains ')' %}
           {% assign size_code = label | split: '(' | last | remove: ')' | strip %}
         {% endif %}
 
-        {%- comment -%} Normalize {%- endcomment -%}
+        {%- comment -%} Normalize size code {%- endcomment -%}
         {% assign size_code_downcase = size_code | downcase %}
 
-        {%- comment -%} Hide One size {%- endcomment -%}
+        {%- comment -%} Hide "One size" {%- endcomment -%}
         {% if size_code_downcase == 'one size' %}
           {% continue %}
         {% endif %}
 
-        {%- comment -%} Visibility logic {%- endcomment -%}
+        {%- comment -%} Decide visibility {%- endcomment -%}
         {% if block.settings.sizes == blank %}
           {% assign show_value = true %}
         {% else %}
@@ -234,10 +231,8 @@
         {% endif %}
       {% endfor %}
     </fieldset>
-
   {% endif %}
 {% endfor %}
-
 
 
 
