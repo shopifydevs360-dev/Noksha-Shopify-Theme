@@ -41,7 +41,7 @@
         "collection_filter_ABBHdr": {
           "type": "collection-filter",
           "settings": {
-            "collection_menu": ""
+            "collection_menu": "main-menu"
           }
         }
       },
