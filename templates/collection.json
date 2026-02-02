@@ -47,6 +47,13 @@
           "settings": {
             "filter_title": "Size"
           }
+        },
+        "tag_filter_8pPicW": {
+          "type": "tag-filter",
+          "settings": {
+            "filter_title": "Tags",
+            "custom_filter_tags": "Coats"
+          }
         }
       },
       "block_order": [
@@ -55,7 +62,8 @@
         "vendor_filter_pY8BW4",
         "color_filter_qAd3XG",
         "collection_filter_ABBHdr",
-        "size_filter_G9C7xj"
+        "size_filter_G9C7xj",
+        "tag_filter_8pPicW"
       ],
       "settings": {
         "container_type": "container",
