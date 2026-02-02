@@ -185,74 +185,8 @@
   ],
   "blocks": [
     {
-      "type": "availablity-filter",
-      "name": "Availability Filter",
-      "limit": 1
-    },
-    {
-      "type": "collection-filter",
-      "name": "Collection Filter (Menu)",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "link_list",
-          "id": "collection_menu",
-          "label": "Collection Menu"
-        }
-      ]
-    },
-    {
-      "type": "vendor-filter",
-      "name": "Vendor Filter",
-      "limit": 1
-    },
-{
-  "type": "color-filter",
-  "name": "Color Filter",
-  "limit": 1,
-  "settings": [
-    {
-      "type": "text",
-      "id": "filter_title",
-      "label": "Title",
-      "default": "Color"
-    },
-    {
-      "type": "text",
-      "id": "allow_colors",
-      "label": "Custom Colors (Allow)",
-      "info": "Comma separated values. If filled, only these colors will show."
-    },
-    {
-      "type": "text",
-      "id": "disallow_colors",
-      "label": "Disallow Colors",
-      "info": "Comma separated values. These colors will be hidden."
-    }
-  ]
-},
-
-    {
-      "type": "tag-filter",
-      "name": "Tag Filter (Custom)",
-      "settings": [
-        {
-          "type": "text",
-          "id": "filter_title",
-          "label": "Title",
-          "default": "Tags"
-        },
-        {
-          "type": "text",
-          "id": "custom_filter_tags",
-          "label": "Allowed Tags",
-          "info": "Comma separated tags (example: Summer, Winter, New)."
-        }
-      ]
-    },
-    {
-      "type": "price-filter",
-      "name": "Price Filter",
+      "type": "price_range",
+      "name": "Price Range Filter",
       "limit": 1,
       "settings": [
         {
@@ -264,26 +198,108 @@
       ]
     },
     {
-      "type": "product-type-filter",
-      "name": "Product Type Filter",
+      "type": "availability",
+      "name": "Availability Filter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Availability"
+        }
+      ]
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor Filter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Brand"
+        }
+      ]
+    },
+    {
+      "type": "type",
+      "name": "Type Filter",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "filter_title",
           "label": "Title",
           "default": "Product Type"
-        },
-        {
-          "type": "text",
-          "id": "product_types",
-          "label": "Product Types",
-          "info": "Comma separated values (example: T-shirt, Hoodie, Pants)"
         }
       ]
     },
     {
-      "type": "size-filter",
-      "name": "Size Filter (Custom)",
+      "type": "tag",
+      "name": "Tag Filter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Tags"
+        },
+        {
+          "type": "text",
+          "id": "custom_filter_tags",
+          "label": "Allowed Tags",
+          "info": "Comma separated tags (example: Summer, Winter, New). Leave empty to show all."
+        }
+      ]
+    },
+    {
+      "type": "collection",
+      "name": "Collection Filter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Collections"
+        },
+        {
+          "type": "link_list",
+          "id": "collection_menu",
+          "label": "Collection Menu"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "name": "Color Filter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Color"
+        },
+        {
+          "type": "text",
+          "id": "allow_colors",
+          "label": "Allowed Colors",
+          "info": "Comma separated values. If filled, only these colors will show."
+        },
+        {
+          "type": "text",
+          "id": "disallow_colors",
+          "label": "Disallowed Colors",
+          "info": "Comma separated values. These colors will be hidden."
+        }
+      ]
+    },
+    {
+      "type": "size",
+      "name": "Size Filter",
       "settings": [
         {
           "type": "text",
@@ -294,8 +310,8 @@
         {
           "type": "text",
           "id": "sizes",
-          "label": "Sizes",
-          "info": "Comma separated values. If filled, only these size will show."
+          "label": "Allowed Sizes",
+          "info": "Comma separated values. If filled, only these sizes will show."
         }
       ]
     }
