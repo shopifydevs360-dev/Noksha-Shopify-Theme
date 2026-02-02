@@ -1,14 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   window.COLLECTION_AJAX = {
     currentPage: 1,
-    isLoading: false,
-    isMobileFilterOpen: false
+    isLoading: false
   };
 
   setInitialPaginationData();
   initFilters();
   initPagination();
-  initMobileFilterToggle();
 
   // Render pagination immediately on first load
   updatePaginationUIFromCurrentDOM();
@@ -51,50 +49,6 @@ function getLoadMoreBtn() {
   return wrapper.querySelector('#loadMoreBtn');
 }
 
-function getFiltersWrapper() {
-  return document.querySelector('.filters-wrapper');
-}
-
-/* ---------------------------
-  MOBILE FILTER TOGGLE
----------------------------- */
-function initMobileFilterToggle() {
-  const mobileToggle = document.querySelector('.mobile-filter-toggle');
-  const filtersWrapper = getFiltersWrapper();
-  const closeBtn = filtersWrapper?.querySelector('.filters-close-btn');
-
-  if (mobileToggle && filtersWrapper) {
-    mobileToggle.addEventListener('click', () => {
-      filtersWrapper.classList.add('active');
-      document.body.classList.add('filter-open');
-      window.COLLECTION_AJAX.isMobileFilterOpen = true;
-    });
-  }
-
-  if (closeBtn && filtersWrapper) {
-    closeBtn.addEventListener('click', () => {
-      filtersWrapper.classList.remove('active');
-      document.body.classList.remove('filter-open');
-      window.COLLECTION_AJAX.isMobileFilterOpen = false;
-    });
-  }
-
-  // Close filter when clicking outside on mobile
-  document.addEventListener('click', (e) => {
-    const filtersWrapper = getFiltersWrapper();
-    if (!filtersWrapper || !window.COLLECTION_AJAX.isMobileFilterOpen) return;
-
-    const isClickInsideFilter = filtersWrapper.contains(e.target);
-    const isToggleButton = e.target.closest('.mobile-filter-toggle');
-
-    if (!isClickInsideFilter && !isToggleButton && window.innerWidth <= 749) {
-      filtersWrapper.classList.remove('active');
-      document.body.classList.remove('filter-open');
-      window.COLLECTION_AJAX.isMobileFilterOpen = false;
-    }
-  });
-}
-
 /* ---------------------------
   INITIAL PAGINATION DATA
 ---------------------------- */
@@ -113,93 +67,57 @@ function initFilters() {
   const form = document.getElementById('CollectionFilters');
   if (!form) return;
 
-  // Price range slider functionality
-  initPriceSliders(form);
-
-  // Filter form submission
+  // Handle form submission
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    applyFilters();
+    window.COLLECTION_AJAX.currentPage = 1;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    fetchProducts(false, true);
   });
 
-  // Real-time filtering on change (optional - you might want to remove this if using submit button)
-  form.addEventListener('change', () => {
-    // Debounce the filter application
-    clearTimeout(window.filterTimeout);
-    window.filterTimeout = setTimeout(() => {
-      applyFilters();
-    }, 300);
+  // Handle individual changes (for instant filtering if desired)
+  const filterInputs = form.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+  filterInputs.forEach(input => {
+    input.addEventListener('change', () => {
+      // Optional: Add debounce here for better performance
+      window.COLLECTION_AJAX.currentPage = 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      fetchProducts(false, true);
+    });
   });
 
   const clearBtn = document.getElementById('clearFiltersBtn');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      form.reset();
-      window.COLLECTION_AJAX.currentPage = 1;
-      
-      // Reset price sliders
-      const priceSliders = form.querySelectorAll('.price-slider');
-      priceSliders.forEach(slider => {
-        if (slider.hasAttribute('data-min-input')) {
-          slider.value = slider.min;
-        } else if (slider.hasAttribute('data-max-input')) {
-          slider.value = slider.max;
+      // Reset all form inputs
+      const allInputs = form.querySelectorAll('input[type="checkbox"], input[type="radio"], input[type="number"]');
+      allInputs.forEach(input => {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+          input.checked = false;
+        } else if (input.type === 'number') {
+          input.value = '';
         }
       });
-      
-      applyFilters();
+
+      // Special handling for collection handle radio
+      const allCollectionRadios = form.querySelectorAll('input[name="collection_handle"]');
+      if (allCollectionRadios.length > 0) {
+        allCollectionRadios[allCollectionRadios.length - 1].checked = true; // Check "All" option
+      }
+
+      window.COLLECTION_AJAX.currentPage = 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      fetchProducts(false, true);
     });
   }
-}
-
-function initPriceSliders(form) {
-  const minSlider = form.querySelector('[data-min-input]');
-  const maxSlider = form.querySelector('[data-max-input]');
-  const minInput = form.querySelector('.price-min-input');
-  const maxInput = form.querySelector('.price-max-input');
-
-  if (minSlider && maxSlider && minInput && maxInput) {
-    // Update input when slider changes
-    minSlider.addEventListener('input', () => {
-      minInput.value = minSlider.value;
-    });
-
-    maxSlider.addEventListener('input', () => {
-      maxInput.value = maxSlider.value;
-    });
-
-    // Update slider when input changes
-    minInput.addEventListener('input', () => {
-      minSlider.value = minInput.value;
-    });
-
-    maxInput.addEventListener('input', () => {
-      maxSlider.value = maxInput.value;
-    });
-  }
-}
-
-function applyFilters() {
-  // Close mobile filter on apply
-  if (window.COLLECTION_AJAX.isMobileFilterOpen) {
-    const filtersWrapper = getFiltersWrapper();
-    if (filtersWrapper) {
-      filtersWrapper.classList.remove('active');
-      document.body.classList.remove('filter-open');
-      window.COLLECTION_AJAX.isMobileFilterOpen = false;
-    }
-  }
-
-  window.COLLECTION_AJAX.currentPage = 1;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  fetchProducts(false, true);
 }
 
 /* ---------------------------
   PAGINATION INIT
 ---------------------------- */
 function initPagination() {
-  // Remove old scroll handlers (avoid duplicates)
+  // remove old scroll handlers (avoid duplicates)
   window.removeEventListener('scroll', infiniteScrollHandler);
 
   const type = getPaginationType();
@@ -228,7 +146,7 @@ function initPagination() {
     if (window.COLLECTION_AJAX.isLoading) return;
 
     const page = parseInt(btn.dataset.pageNumber, 10);
-    if (!page) return;
+    if (!page || page < 1) return;
 
     window.COLLECTION_AJAX.currentPage = page;
 
@@ -270,33 +188,41 @@ function buildQueryParams() {
   if (form) {
     const formData = new FormData(form);
 
-    // Handle collection handle (radio button)
-    const collectionHandle = form.querySelector('input[name="collection_handle"]:checked');
-    if (collectionHandle && collectionHandle.value) {
-      params.set('collection_handle', collectionHandle.value);
-    }
+    // Handle collection handle separately
+    const collectionHandle = formData.get('collection_handle');
+    formData.delete('collection_handle');
 
-    // Handle other form fields
+    // Add all other form data to params
     for (const [key, value] of formData.entries()) {
-      if (value === '' || value == null || key === 'collection_handle') continue;
+      if (value === '' || value == null) continue;
       
-      // Convert price values from dollars to cents
+      // Special handling for price filters (convert to cents)
       if (key.includes('filter.v.price')) {
-        params.append(key, Math.round(value * 100));
+        const cents = Math.round(parseFloat(value) * 100);
+        if (!isNaN(cents)) {
+          params.append(key, cents.toString());
+        }
       } else {
         params.append(key, value);
       }
     }
+
+    params.set('page', window.COLLECTION_AJAX.currentPage);
+    params.set('section_id', getMainContainer()?.dataset.sectionId || '');
+
+    return { params, collectionHandle };
   }
 
+  // Default params if no form
+  const params = new URLSearchParams();
   params.set('page', window.COLLECTION_AJAX.currentPage);
-  params.set('view', 'ajax'); // Helps identify AJAX requests
-
-  return params.toString();
+  params.set('section_id', getMainContainer()?.dataset.sectionId || '');
+  
+  return { params, collectionHandle: null };
 }
 
 /* ---------------------------
-  PAGINATION UI RENDER
+  PAGINATION UI RENDER (LIQUID UI BASE)
 ---------------------------- */
 function renderPaginationUI(totalPages) {
   if (!getEnablePagination()) return;
@@ -306,11 +232,13 @@ function renderPaginationUI(totalPages) {
 
   const type = getPaginationType();
 
-  // Hide loader always by default
+  // hide loader always by default
   const loader = getLoaderElement();
   if (loader) loader.hidden = true;
 
+  // -------------------------
   // Pagination by Number
+  // -------------------------
   if (type === 'pagination_by_number') {
     const numbersBox = wrapper.querySelector('[data-pagination-numbers]');
     if (!numbersBox) return;
@@ -322,44 +250,50 @@ function renderPaginationUI(totalPages) {
 
     let html = '';
     const currentPage = window.COLLECTION_AJAX.currentPage;
-    const maxVisible = 5;
-
-    // Previous button
-    if (currentPage > 1) {
-      html += `
-        <button type="button" data-page-number="${currentPage - 1}" class="pagination-btn prev" aria-label="Previous page">
-          &laquo;
-        </button>
-      `;
+    
+    // Always show first page
+    html += `
+      <button
+        type="button"
+        data-page-number="1"
+        class="${1 === currentPage ? 'active' : ''}"
+      >
+        1
+      </button>
+    `;
+    
+    // Show ellipsis if needed
+    if (currentPage > 3) {
+      html += `<span class="ellipsis">...</span>`;
     }
-
-    // Page numbers
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-
-    if (endPage - startPage + 1 < maxVisible) {
-      startPage = Math.max(1, endPage - maxVisible + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
+    
+    // Show pages around current page
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
       html += `
         <button
           type="button"
           data-page-number="${i}"
-          class="pagination-btn ${i === currentPage ? 'active' : ''}"
-          aria-label="Page ${i}"
-          ${i === currentPage ? 'aria-current="page"' : ''}
+          class="${i === currentPage ? 'active' : ''}"
         >
           ${i}
         </button>
       `;
     }
-
-    // Next button
-    if (currentPage < totalPages) {
+    
+    // Show ellipsis if needed
+    if (currentPage < totalPages - 2) {
+      html += `<span class="ellipsis">...</span>`;
+    }
+    
+    // Always show last page if there is more than 1 page
+    if (totalPages > 1) {
       html += `
-        <button type="button" data-page-number="${currentPage + 1}" class="pagination-btn next" aria-label="Next page">
-          &raquo;
+        <button
+          type="button"
+          data-page-number="${totalPages}"
+          class="${totalPages === currentPage ? 'active' : ''}"
+        >
+          ${totalPages}
         </button>
       `;
     }
@@ -368,7 +302,9 @@ function renderPaginationUI(totalPages) {
     return;
   }
 
+  // -------------------------
   // Load More Button
+  // -------------------------
   if (type === 'load_more_button') {
     const btn = getLoadMoreBtn();
     if (!btn) return;
@@ -383,15 +319,16 @@ function renderPaginationUI(totalPages) {
       btn.style.display = 'none';
     } else {
       btn.style.display = '';
-      btn.textContent = 'Load More';
     }
 
     return;
   }
 
+  // -------------------------
   // Infinity Loading
+  // -------------------------
   if (type === 'infinity_loading') {
-    // No UI buttons, loader will show only while fetching
+    // no UI buttons, loader will show only while fetching
     return;
   }
 }
@@ -415,36 +352,33 @@ function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
 
-  // Show loader
+  // Loader show
   const loader = getLoaderElement();
   if (loader) loader.hidden = false;
 
-  // Disable load more button while loading
+  // disable load more button while loading
   const loadMoreBtn = getLoadMoreBtn();
-  if (loadMoreBtn) {
-    loadMoreBtn.disabled = true;
-    if (getPaginationType() === 'load_more_button') {
-      loadMoreBtn.textContent = 'Loading...';
-    }
-  }
+  if (loadMoreBtn) loadMoreBtn.disabled = true;
 
   if (resetPage) {
     window.COLLECTION_AJAX.currentPage = 1;
     append = false;
   }
 
-  const queryParams = buildQueryParams();
-  const url = `${window.location.pathname}?${queryParams}`;
+  const { params, collectionHandle } = buildQueryParams();
 
-  fetch(url, {
+  const baseUrl = collectionHandle
+    ? `/collections/${collectionHandle}`
+    : window.location.pathname;
+
+  fetch(`${baseUrl}?${params.toString()}`, {
     method: 'GET',
     headers: {
-      'X-Requested-With': 'XMLHttpRequest',
-      'Accept': 'text/html'
+      'X-Requested-With': 'XMLHttpRequest'
     }
   })
     .then((res) => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.text();
     })
     .then((html) => {
@@ -458,7 +392,7 @@ function fetchProducts(append = false, resetPage = false) {
         return;
       }
 
-      // Update dataset info
+      // Replace dataset info (important)
       oldProducts.dataset.totalPages = newProducts.dataset.totalPages || '1';
       oldProducts.dataset.currentPage = newProducts.dataset.currentPage || '1';
       oldProducts.dataset.totalProducts = newProducts.dataset.totalProducts || '0';
@@ -472,35 +406,39 @@ function fetchProducts(append = false, resetPage = false) {
 
       // Update pagination UI
       updatePaginationUIFromCurrentDOM();
-
-      // Update URL without reloading
-      updateURL(queryParams);
+      
+      // Update URL without reloading page
+      const newUrl = `${baseUrl}?${params.toString()}`;
+      window.history.pushState({ path: newUrl }, '', newUrl);
     })
     .catch((err) => {
       console.error('AJAX fetch error:', err);
-      // Fallback to normal page load
-      window.location.href = url;
+      // Show error message to user
+      const oldProducts = getProductsContainer();
+      if (oldProducts && !append) {
+        oldProducts.innerHTML = '<div class="error-message"><p>Failed to load products. Please try again.</p></div>';
+      }
     })
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
 
-      // Hide loader
+      // hide loader
       if (loader) loader.hidden = true;
 
-      // Enable load more button
-      if (loadMoreBtn) {
-        loadMoreBtn.disabled = false;
-        if (getPaginationType() === 'load_more_button') {
-          loadMoreBtn.textContent = 'Load More';
-        }
-      }
+      // enable load more button
+      if (loadMoreBtn) loadMoreBtn.disabled = false;
     });
 }
 
-/* ---------------------------
-  UPDATE URL WITHOUT RELOAD
----------------------------- */
-function updateURL(queryParams) {
-  const newUrl = `${window.location.pathname}?${queryParams}`;
-  window.history.replaceState({ path: newUrl }, '', newUrl);
-}
+// Handle browser back/forward buttons
+window.addEventListener('popstate', function(event) {
+  // Parse URL and update filters/pagination accordingly
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = parseInt(urlParams.get('page') || '1', 10);
+  window.COLLECTION_AJAX.currentPage = page;
+  
+  // You would need to update form inputs based on URL params here
+  // This is a more advanced feature that would require additional logic
+  
+  fetchProducts(false, false);
+});
