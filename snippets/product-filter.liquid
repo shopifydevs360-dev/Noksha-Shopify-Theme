@@ -182,54 +182,25 @@
 
   {% for filter in collection.filters %}
     {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
-      {% assign custom_sizes = block.settings.sizes %}
-      
       <fieldset class="filter filter--size">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
-          {% assign display_this_size = true %}
-          
-          {% if custom_sizes != blank %}
-            {% assign custom_sizes_array = custom_sizes | split: ',' %}
-            {% assign found_size = false %}
-            
-            {% comment %} Assign stripped value label to a variable {% endcomment %}
-            {% assign stripped_value_label = value.label | strip %}
-            
-            {% for custom_size in custom_sizes_array %}
-              {% comment %} Assign stripped custom size to a variable {% endcomment %}
-              {% assign stripped_custom_size = custom_size | strip %}
-              
-              {% comment %} Compare the stripped values {% endcomment %}
-              {% if stripped_value_label == stripped_custom_size %}
-                {% assign found_size = true %}
-                {% break %}
-              {% endif %}
-            {% endfor %}
-            
-            {% unless found_size %}
-              {% assign display_this_size = false %}
-            {% endunless %}
-          {% endif %}
-          
-          {% if display_this_size %}
-            <label>
-              <input
-                type="checkbox"
-                name="{{ value.param_name }}"
-                value="{{ value.value }}"
-                {% if value.active %}checked{% endif %}
-                {% if value.count == 0 and value.active == false %}disabled{% endif %}
-              >
-              {{ value.label }}
-              <span>({{ value.count }})</span>
-            </label>
-          {% endif %}
+          <label>
+            <input
+              type="checkbox"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}
+            >
+            {{ value.label }}
+            <span>({{ value.count }})</span>
+          </label>
         {% endfor %}
       </fieldset>
     {% endif %}
   {% endfor %}
+
 
     {% endcase %}
   {% endfor %}
