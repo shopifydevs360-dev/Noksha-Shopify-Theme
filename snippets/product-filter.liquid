@@ -1,85 +1,331 @@
-<form id="CollectionFilters">
+<form id="CollectionFilters" data-filter-form>
 
-{% for block in section.blocks %}
-  {% case block.type %}
+  {% for block in section.blocks %}
+    {% case block.type %}
 
-  {% when 'availability-filter' %}
-    {% for filter in collection.filters %}
-      {% if filter.label == 'Availability' %}
-        <fieldset>
-          <legend>Availability</legend>
-          {% for value in filter.values %}
-            <label>
-              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
-              {{ value.label }} ({{ value.count }})
-            </label>
-          {% endfor %}
-        </fieldset>
-      {% endif %}
-    {% endfor %}
+      {% when 'availablity-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Availability' %}
+            <fieldset class="filter filter--availability">
+              <legend>Availability</legend>
+              {% for value in filter.values %}
+                <label class="filter-label">
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  <span class="filter-text">{{ value.label }}</span>
+                  <span class="filter-count">({{ value.count }})</span>
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
 
-  {% when 'vendor-filter' %}
-    {% for filter in collection.filters %}
-      {% if filter.label == 'Vendor' %}
-        <fieldset>
-          <legend>{{ filter.label }}</legend>
-          {% for value in filter.values %}
-            <label>
-              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
-              {{ value.label }} ({{ value.count }})
-            </label>
-          {% endfor %}
-        </fieldset>
-      {% endif %}
-    {% endfor %}
-
-  {% when 'color-filter' %}
-    {% for filter in collection.filters %}
-      {% if filter.label == 'Color' %}
-        <fieldset>
-          <legend>Color</legend>
-          {% for value in filter.values %}
-            <label>
-              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
-              {{ value.label }}
-            </label>
-          {% endfor %}
-        </fieldset>
-      {% endif %}
-    {% endfor %}
-
-  {% when 'tag-filter' %}
-    {% assign allowed = block.settings.custom_filter_tags | downcase | split: ',' %}
-    {% for filter in collection.filters %}
-      {% if filter.param_name contains '.tag' %}
-        <fieldset>
-          <legend>{{ block.settings.filter_title }}</legend>
-          {% for value in filter.values %}
-            {% assign tag = value.label | downcase | strip %}
-            {% if allowed contains tag %}
-              <label>
-                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
-                {{ value.label }}
-              </label>
+      {% when 'vendor-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Brand' or filter.label == 'Vendor' %}
+            {% if filter.values.size > 0 %}
+              <fieldset class="filter filter--vendor">
+                <legend>{{ filter.label }}</legend>
+                {% for value in filter.values %}
+                  <label class="filter-label">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    <span class="filter-text">{{ value.label }}</span>
+                    <span class="filter-count">({{ value.count }})</span>
+                  </label>
+                {% endfor %}
+              </fieldset>
             {% endif %}
-          {% endfor %}
-        </fieldset>
-      {% endif %}
-    {% endfor %}
+          {% endif %}
+        {% endfor %}
 
-  {% when 'price-filter' %}
-    {% for filter in collection.filters %}
-      {% if filter.type == 'price_range' %}
-        <fieldset>
-          <legend>Price</legend>
-          <input type="number" name="{{ filter.min_value.param_name }}" placeholder="Min">
-          <input type="number" name="{{ filter.max_value.param_name }}" placeholder="Max">
-        </fieldset>
-      {% endif %}
-    {% endfor %}
+      {% when 'collection-filter' %}
+        {% assign menu = linklists[block.settings.collection_menu] %}
+        {% if menu and menu.links.size > 0 %}
+          <fieldset class="filter filter--collection">
+            <legend>Collections</legend>
+            {% for link in menu.links %}
+              {% assign handle = link.object.handle %}
+              <label class="filter-label">
+                <input
+                  type="radio"
+                  name="collection_handle"
+                  value="{{ handle }}"
+                  {% if collection.handle == handle %}checked{% endif %}
+                >
+                <span class="filter-text">{{ link.title }}</span>
+              </label>
+            {% endfor %}
+            <label class="filter-label">
+              <input 
+                type="radio" 
+                name="collection_handle" 
+                value="" 
+                {% unless collection.handle %}checked{% endunless %}
+              >
+              <span class="filter-text">All Collections</span>
+            </label>
+          </fieldset>
+        {% endif %}
 
-  {% endcase %}
-{% endfor %}
+      {% when 'color-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Color' and filter.values.size > 0 %}
+            <fieldset class="filter filter--color">
+              <legend>{{ block.settings.filter_title | default: 'Color' }}</legend>
+              {% assign allow_colors = block.settings.allow_colors | downcase | split: ',' %}
+              {% assign disallow_colors = block.settings.disallow_colors | downcase | split: ',' %}
+              
+              {% for value in filter.values %}
+                {% assign color_label = value.label | downcase | strip %}
+                
+                {% comment %} Check if color is allowed/disallowed {% endcomment %}
+                {% assign show_color = true %}
+                
+                {% if allow_colors.size > 0 and allow_colors[0] != blank %}
+                  {% unless allow_colors contains color_label %}
+                    {% assign show_color = false %}
+                  {% endunless %}
+                {% endif %}
+                
+                {% if disallow_colors.size > 0 and disallow_colors[0] != blank %}
+                  {% if disallow_colors contains color_label %}
+                    {% assign show_color = false %}
+                  {% endif %}
+                {% endif %}
+                
+                {% if show_color %}
+                  <label class="filter-label color-filter-label">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    <span class="color-swatch" style="background-color: {{ value.label | handleize }};"></span>
+                    <span class="filter-text">{{ value.label }}</span>
+                    <span class="filter-count">({{ value.count }})</span>
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
 
-<button type="button" id="clearFiltersBtn">Clear All</button>
+      {% when 'tag-filter' %}
+        {% assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' %}
+        
+        {% for filter in collection.filters %}
+          {% if filter.param_name contains '.tag' and filter.values.size > 0 %}
+            <fieldset class="filter filter--tags">
+              <legend>{{ block.settings.filter_title | default: 'Tags' }}</legend>
+              
+              {% if allowed_tags.size > 0 and allowed_tags[0] != blank %}
+                {% comment %} Show only allowed tags {% endcomment %}
+                {% for tag in allowed_tags %}
+                  {% assign tag = tag | strip %}
+                  {% assign found_value = false %}
+                  
+                  {% for value in filter.values %}
+                    {% if value.label | downcase == tag %}
+                      {% assign found_value = true %}
+                      <label class="filter-label">
+                        <input
+                          type="checkbox"
+                          name="{{ value.param_name }}"
+                          value="{{ value.value }}"
+                          {% if value.active %}checked{% endif %}
+                        >
+                        <span class="filter-text">{{ value.label }}</span>
+                        <span class="filter-count">({{ value.count }})</span>
+                      </label>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+              {% else %}
+                {% comment %} Show all tags {% endcomment %}
+                {% for value in filter.values %}
+                  <label class="filter-label">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    <span class="filter-text">{{ value.label }}</span>
+                    <span class="filter-count">({{ value.count }})</span>
+                  </label>
+                {% endfor %}
+              {% endif %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {% when 'price-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.type == 'price_range' %}
+            <fieldset class="filter filter--price">
+              <legend>{{ block.settings.filter_title | default: 'Price' }}</legend>
+              
+              <div class="price-inputs">
+                <label class="price-input-label">
+                  <span>Min</span>
+                  <input
+                    type="number"
+                    name="{{ filter.min_value.param_name }}"
+                    value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    placeholder="0"
+                    class="price-input"
+                    data-currency="{{ cart.currency.symbol }}"
+                  >
+                </label>
+                
+                <label class="price-input-label">
+                  <span>Max</span>
+                  <input
+                    type="number"
+                    name="{{ filter.max_value.param_name }}"
+                    value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    class="price-input"
+                    data-currency="{{ cart.currency.symbol }}"
+                  >
+                </label>
+              </div>
+              
+              <div class="price-range-display">
+                <span id="minPriceDisplay">{{ filter.min_value.value | default: 0 | money }}</span>
+                <span> - </span>
+                <span id="maxPriceDisplay">{{ filter.max_value.value | default: filter.range_max | money }}</span>
+              </div>
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+      {% when 'product-type-filter' %}
+        {% assign types = block.settings.product_types | split: ',' %}
+        {% if types.size > 0 and types[0] != blank %}
+          <fieldset class="filter filter--product-type">
+            <legend>{{ block.settings.filter_title | default: 'Product Type' }}</legend>
+            
+            {% for type in types %}
+              {% assign clean_type = type | strip %}
+              {% if clean_type != blank %}
+                {% assign type_active = false %}
+                {% assign type_count = 0 %}
+                
+                {% for product in collection.products %}
+                  {% if product.type == clean_type %}
+                    {% assign type_count = type_count | plus: 1 %}
+                  {% endif %}
+                {% endfor %}
+                
+                {% if current_tags contains clean_type %}
+                  {% assign type_active = true %}
+                {% endif %}
+                
+                <label class="filter-label">
+                  <input
+                    type="checkbox"
+                    name="filter.p.product_type"
+                    value="{{ clean_type }}"
+                    {% if type_active %}checked{% endif %}
+                  >
+                  <span class="filter-text">{{ clean_type }}</span>
+                  <span class="filter-count">({{ type_count }})</span>
+                </label>
+              {% endif %}
+            {% endfor %}
+          </fieldset>
+        {% endif %}
+
+      {% when 'size-filter' %}
+        {% assign custom_sizes = block.settings.sizes | split: ',' %}
+        
+        {% for filter in collection.filters %}
+          {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+            <fieldset class="filter filter--size">
+              <legend>{{ block.settings.filter_title | default: 'Size' }}</legend>
+              
+              {% if custom_sizes.size > 0 and custom_sizes[0] != blank %}
+                {% comment %} Show only custom sizes {% endcomment %}
+                {% for size in custom_sizes %}
+                  {% assign size = size | strip %}
+                  {% assign found_value = false %}
+                  
+                  {% for value in filter.values %}
+                    {% if value.label == size %}
+                      {% assign found_value = true %}
+                      <label class="filter-label">
+                        <input
+                          type="checkbox"
+                          name="{{ value.param_name }}"
+                          value="{{ value.value }}"
+                          {% if value.active %}checked{% endif %}
+                        >
+                        <span class="filter-text">{{ value.label }}</span>
+                        <span class="filter-count">({{ value.count }})</span>
+                      </label>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+              {% else %}
+                {% comment %} Show all sizes {% endcomment %}
+                {% for value in filter.values %}
+                  <label class="filter-label">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    <span class="filter-text">{{ value.label }}</span>
+                    <span class="filter-count">({{ value.count }})</span>
+                  </label>
+                {% endfor %}
+              {% endif %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+
+    {% endcase %}
+  {% endfor %}
+
+  <div class="filter-actions">
+    <button type="button" id="applyFiltersBtn" class="btn btn--primary">Apply Filters</button>
+    <button type="button" id="clearFiltersBtn" class="btn btn--secondary">Clear All</button>
+  </div>
+
 </form>
+
+<script>
+  // Price input formatting
+  document.addEventListener('DOMContentLoaded', function() {
+    const priceInputs = document.querySelectorAll('.price-input');
+    const currencySymbol = priceInputs[0]?.dataset.currency || '$';
+    
+    priceInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        const value = parseFloat(this.value);
+        if (!isNaN(value) && value >= 0) {
+          const displayElement = this.closest('.price-input-label').querySelector('span:first-child');
+          if (displayElement) {
+            displayElement.textContent = currencySymbol + value.toFixed(2);
+          }
+        }
+      });
+    });
+  });
+</script>
