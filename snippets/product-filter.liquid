@@ -189,24 +189,48 @@
 
       {% for value in filter.values %}
         {% assign show_value = false %}
-        {% assign label = value.label | downcase %}
+        {% assign label_downcase = value.label | downcase %}
 
+        {%- comment -%}
+          Hide "One size"
+        {%- endcomment -%}
+        {% if label_downcase == 'one size' %}
+          {% continue %}
+        {% endif %}
+
+        {%- comment -%}
+          Show all if no custom sizes defined
+        {%- endcomment -%}
         {% if block.settings.sizes == blank %}
           {% assign show_value = true %}
         {% else %}
           {% for custom_size in custom_sizes %}
             {% assign token = '(' | append: custom_size | append: ')' | downcase %}
-            {% if label contains token %}
+            {% if label_downcase contains token %}
               {% assign show_value = true %}
             {% endif %}
           {% endfor %}
         {% endif %}
 
         {% if show_value %}
-          <label>
-            <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
-            {{ value.label }}
-            <span>({{ value.count }})</span>
+          <label class="filter__item">
+            <input
+              type="checkbox"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}
+            >
+
+            {%- comment -%}
+              Display label as S / M / L
+            {%- endcomment -%}
+            {% assign display_label = value.label %}
+            {% if value.label contains '(' and value.label contains ')' %}
+              {% assign display_label = value.label | split: '(' | last | remove: ')' %}
+            {% endif %}
+
+            <span class="filter__label">{{ display_label }}</span>
+            <span class="filter__count">({{ value.count }})</span>
           </label>
         {% endif %}
       {% endfor %}
