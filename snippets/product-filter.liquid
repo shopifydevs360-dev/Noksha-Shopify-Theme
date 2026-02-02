@@ -183,36 +183,62 @@
 {% assign custom_sizes = block.settings.sizes | split: ',' | map: 'strip' %}
 
 {% for filter in collection.filters %}
-  {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+  {% if filter.type == 'list'
+        and filter.param_name contains 'option'
+        and filter.param_name contains 'size' %}
+        
     <fieldset class="filter filter--size">
       <legend>{{ block.settings.filter_title }}</legend>
 
       {% for value in filter.values %}
         {% assign show_value = false %}
-        {% assign label = value.label | downcase %}
+        {% assign label = value.label | strip %}
 
+        {%- comment -%} Extract short size from label {%- endcomment -%}
+        {% assign size_code = label %}
+        {% if label contains '(' and label contains ')' %}
+          {% assign size_code = label | split: '(' | last | remove: ')' | strip %}
+        {% endif %}
+
+        {%- comment -%} Normalize {%- endcomment -%}
+        {% assign size_code_downcase = size_code | downcase %}
+
+        {%- comment -%} Hide One size {%- endcomment -%}
+        {% if size_code_downcase == 'one size' %}
+          {% continue %}
+        {% endif %}
+
+        {%- comment -%} Visibility logic {%- endcomment -%}
         {% if block.settings.sizes == blank %}
           {% assign show_value = true %}
         {% else %}
           {% for custom_size in custom_sizes %}
-            {% assign token = '(' | append: custom_size | append: ')' | downcase %}
-            {% if label contains token %}
+            {% assign custom_size_downcase = custom_size | strip | downcase %}
+            {% if size_code_downcase == custom_size_downcase %}
               {% assign show_value = true %}
             {% endif %}
           {% endfor %}
         {% endif %}
 
         {% if show_value %}
-          <label>
-            <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}>
-            {{ value.label }}
-            <span>({{ value.count }})</span>
+          <label class="filter__item">
+            <input
+              type="checkbox"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}
+            >
+            <span class="filter__label">{{ size_code }}</span>
+            <span class="filter__count">({{ value.count }})</span>
           </label>
         {% endif %}
       {% endfor %}
     </fieldset>
+
   {% endif %}
 {% endfor %}
+
+
 
 
 
