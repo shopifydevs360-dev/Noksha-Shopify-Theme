@@ -68,6 +68,7 @@ function initApplyFilters() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     fetchProducts(false, true);
+    closeFilterUI(); // ✅ CLOSE & HIDE EVERYTHING
   });
 }
 
@@ -87,6 +88,7 @@ function initClearFilters() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     fetchProducts(false, true);
+    closeFilterUI();
   });
 }
 
@@ -154,7 +156,7 @@ function buildQueryParams() {
 }
 
 /* ======================================================
-  FETCH PRODUCTS (🔥 FIX HERE)
+  FETCH PRODUCTS
 ====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
@@ -191,7 +193,6 @@ function fetchProducts(append = false, resetPage = false) {
         ? oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML)
         : oldBox.innerHTML = newBox.innerHTML;
 
-      /* 🔥 RE-INIT ADD TO CART AFTER AJAX */
       if (typeof initAllProductCartEvents === 'function') {
         initAllProductCartEvents();
       }
@@ -202,6 +203,7 @@ function fetchProducts(append = false, resetPage = false) {
       if (loader) loader.hidden = true;
     });
 }
+
 /* ======================================================
   FILTER / SORT TOGGLE + OFFCANVAS
 ====================================================== */
@@ -212,11 +214,9 @@ function initFilterToggle() {
   const sortItem = document.querySelector('.filter-sort');
   const filterActions = document.querySelector('.filter-actions');
 
-
   if (!sidebar || !buttons.length) return;
 
   let activeAction = null;
-
   const isMobile = () => window.innerWidth <= 991;
 
   function hideAll() {
@@ -232,10 +232,7 @@ function initFilterToggle() {
 
   function openSidebar() {
     sidebar.classList.add('is-expanded');
-
-    if (filterActions) {
-      filterActions.classList.remove('hide'); // ✅ SHOW ACTIONS
-    }
+    filterActions?.classList.remove('hide');
 
     if (isMobile()) {
       sidebar.classList.add('is-offcanvas');
@@ -249,19 +246,14 @@ function initFilterToggle() {
     document.body.classList.remove('is-filter-open');
 
     hideAll();
+    filterActions?.classList.add('hide');
     activeAction = null;
-
-    if (filterActions) {
-      filterActions.classList.add('hide'); // ✅ HIDE ACTIONS
-    }
 
     removeOverlay();
   }
 
-
   function addOverlay() {
     if (document.querySelector('.filter-overlay')) return;
-
     const overlay = document.createElement('div');
     overlay.className = 'filter-overlay';
     document.body.appendChild(overlay);
@@ -276,7 +268,6 @@ function initFilterToggle() {
     btn.addEventListener('click', () => {
       const action = btn.dataset.action;
 
-      // 🔁 reverse toggle
       if (activeAction === action) {
         closeSidebar();
         return;
@@ -291,15 +282,23 @@ function initFilterToggle() {
         return;
       }
 
-      if (action === 'filter') {
-        showAllFilters(false);
-      }
-
-      if (action === 'sort' && sortItem) {
-        sortItem.classList.remove('hide');
-      }
+      if (action === 'filter') showAllFilters(false);
+      if (action === 'sort') sortItem?.classList.remove('hide');
     });
   });
 
   window.addEventListener('resize', closeSidebar);
+}
+
+/* ======================================================
+  CLOSE FILTER UI (USED BY APPLY / CLEAR)
+====================================================== */
+function closeFilterUI() {
+  document.querySelectorAll('.filter-item').forEach(i => i.classList.add('hide'));
+  document.querySelector('.filter-actions')?.classList.add('hide');
+  document.querySelector('.product-filter')
+    ?.classList.remove('is-expanded', 'is-offcanvas');
+
+  document.body.classList.remove('is-filter-open');
+  document.querySelector('.filter-overlay')?.remove();
 }
