@@ -205,7 +205,7 @@ function fetchProducts(append = false, resetPage = false) {
 /* ======================================================
   FILTER / SORT TOGGLE + OFFCANVAS
 ====================================================== */
-document.addEventListener('DOMContentLoaded', () => {
+function initFilterToggle() {
   const sidebar = document.querySelector('.product-filter');
   const buttons = document.querySelectorAll('.filter-toggle-btn');
   const filterItems = document.querySelectorAll('.filter-item');
@@ -215,12 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activeAction = null;
 
-  /* ------------------------------
-    Helpers
-  ------------------------------ */
   const isMobile = () => window.innerWidth <= 991;
 
-  function hideAllItems() {
+  function hideAll() {
     filterItems.forEach(item => item.classList.add('hide'));
   }
 
@@ -229,13 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (item.classList.contains('filter-sort') && !includeSort) return;
       item.classList.remove('hide');
     });
-  }
-
-  function closeSidebar() {
-    sidebar.classList.remove('is-expanded', 'is-offcanvas');
-    hideAllItems();
-    activeAction = null;
-    removeOverlay();
   }
 
   function openSidebar() {
@@ -247,16 +237,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  /* ------------------------------
-    Overlay (Mobile)
-  ------------------------------ */
+  function closeSidebar() {
+    sidebar.classList.remove('is-expanded', 'is-offcanvas');
+    hideAll();
+    activeAction = null;
+    removeOverlay();
+  }
+
   function addOverlay() {
     if (document.querySelector('.filter-overlay')) return;
 
     const overlay = document.createElement('div');
     overlay.className = 'filter-overlay';
     document.body.appendChild(overlay);
-
     overlay.addEventListener('click', closeSidebar);
   }
 
@@ -264,30 +257,25 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.filter-overlay')?.remove();
   }
 
-  /* ------------------------------
-    Button Logic (Toggle)
-  ------------------------------ */
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       const action = btn.dataset.action;
 
-      // 🔁 Reverse toggle
+      // 🔁 reverse toggle
       if (activeAction === action) {
         closeSidebar();
         return;
       }
 
       activeAction = action;
-      hideAllItems();
+      hideAll();
       openSidebar();
 
-      // 📱 Mobile → show EVERYTHING
       if (isMobile()) {
         showAllFilters(true);
         return;
       }
 
-      // 🖥 Desktop logic
       if (action === 'filter') {
         showAllFilters(false);
       }
@@ -298,10 +286,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ------------------------------
-    Reset on Resize
-  ------------------------------ */
-  window.addEventListener('resize', () => {
-    closeSidebar();
-  });
-});
+  window.addEventListener('resize', closeSidebar);
+}
