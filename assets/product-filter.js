@@ -1,8 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('CollectionFilters');
+  const applyBtn = document.getElementById('applyFiltersBtn');
+  const clearBtn = document.getElementById('clearFiltersBtn');
+
   window.COLLECTION_AJAX = {
     currentPage: 1,
     isLoading: false
   };
+
+  /* ===============================
+    🚫 BLOCK NORMAL FORM SUBMIT
+  =============================== */
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    });
+  }
 
   setInitialPaginationData();
   initApplyFilters();
@@ -54,13 +69,16 @@ function setInitialPaginationData() {
 }
 
 /* ---------------------------
-  APPLY FILTERS (ONLY BUTTON)
+  APPLY FILTERS (AJAX ONLY)
 ---------------------------- */
 function initApplyFilters() {
   const btn = document.getElementById('applyFiltersBtn');
   if (!btn) return;
 
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (window.COLLECTION_AJAX.isLoading) return;
 
     window.COLLECTION_AJAX.currentPage = 1;
@@ -71,7 +89,7 @@ function initApplyFilters() {
 }
 
 /* ---------------------------
-  CLEAR FILTERS
+  CLEAR FILTERS (AJAX)
 ---------------------------- */
 function initClearFilters() {
   const btn = document.getElementById('clearFiltersBtn');
@@ -79,7 +97,10 @@ function initClearFilters() {
 
   if (!btn || !form) return;
 
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     form.reset();
     window.COLLECTION_AJAX.currentPage = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -168,57 +189,16 @@ function buildQueryParams() {
 /* ---------------------------
   PAGINATION UI
 ---------------------------- */
-function renderPaginationUI(totalPages) {
-  if (!getEnablePagination()) return;
-
-  const wrapper = getPaginationWrapper();
-  if (!wrapper) return;
-
-  const loader = getLoaderElement();
-  if (loader) loader.hidden = true;
-
-  const type = getPaginationType();
-
-  if (type === 'pagination_by_number') {
-    const box = wrapper.querySelector('[data-pagination-numbers]');
-    if (!box || totalPages <= 1) return;
-
-    box.innerHTML = Array.from({ length: totalPages }, (_, i) => {
-      const page = i + 1;
-      return `
-        <button
-          type="button"
-          data-page-number="${page}"
-          class="${page === window.COLLECTION_AJAX.currentPage ? 'active' : ''}">
-          ${page}
-        </button>
-      `;
-    }).join('');
-  }
-
-  if (type === 'load_more_button') {
-    const btn = getLoadMoreBtn();
-    if (!btn) return;
-
-    btn.style.display =
-      window.COLLECTION_AJAX.currentPage >= totalPages ? 'none' : '';
-  }
-}
-
 function updatePaginationUIFromCurrentDOM() {
   const box = getProductsContainer();
   if (!box) return;
 
   window.COLLECTION_AJAX.currentPage =
     parseInt(box.dataset.currentPage || '1', 10);
-
-  renderPaginationUI(
-    parseInt(box.dataset.totalPages || '1', 10)
-  );
 }
 
 /* ---------------------------
-  AJAX FETCH
+  AJAX FETCH PRODUCTS
 ---------------------------- */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
@@ -254,9 +234,8 @@ function fetchProducts(append = false, resetPage = false) {
       append
         ? oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML)
         : oldBox.innerHTML = newBox.innerHTML;
-
-      updatePaginationUIFromCurrentDOM();
     })
+    .catch(err => console.error('AJAX error:', err))
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
       if (loader) loader.hidden = true;
