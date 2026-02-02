@@ -52,7 +52,7 @@
           "type": "tag-filter",
           "settings": {
             "filter_title": "Tags",
-            "custom_filter_tags": "jack"
+            "custom_filter_tags": ""
           }
         }
       },
