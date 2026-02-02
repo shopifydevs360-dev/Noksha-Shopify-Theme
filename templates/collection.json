@@ -12,6 +12,47 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
+        "tag_XnAW8Q": {
+          "type": "tag",
+          "settings": {
+            "filter_title": "Tags",
+            "custom_filter_tags": "Coats"
+          }
+        },
+        "size_Wi93yW": {
+          "type": "size",
+          "settings": {
+            "filter_title": "Size",
+            "sizes": ""
+          }
+        },
+        "color_fcE8Rd": {
+          "type": "color",
+          "settings": {
+            "filter_title": "Color",
+            "allow_colors": "",
+            "disallow_colors": ""
+          }
+        },
+        "collection_EN8pWF": {
+          "type": "collection",
+          "settings": {
+            "filter_title": "Collections",
+            "collection_menu": "main-menu"
+          }
+        },
+        "type_Lc9LAR": {
+          "type": "type",
+          "settings": {
+            "filter_title": "Product Type"
+          }
+        },
+        "vendor_dzfAUV": {
+          "type": "vendor",
+          "settings": {
+            "filter_title": "Brand"
+          }
+        },
         "price_range_nnV4T3": {
           "type": "price_range",
           "settings": {
@@ -20,6 +61,12 @@
         }
       },
       "block_order": [
+        "tag_XnAW8Q",
+        "size_Wi93yW",
+        "color_fcE8Rd",
+        "collection_EN8pWF",
+        "type_Lc9LAR",
+        "vendor_dzfAUV",
         "price_range_nnV4T3"
       ],
       "settings": {
