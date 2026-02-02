@@ -43,7 +43,7 @@ function initMobileFilterToggle() {
     
     if (filtersWrapper && filtersWrapper.classList.contains('active') && 
         !filtersWrapper.contains(e.target) && 
-        !mobileToggle.contains(e.target)) {
+        (!mobileToggle || !mobileToggle.contains(e.target))) {
       filtersWrapper.classList.remove('active');
       document.body.classList.remove('filter-open');
     }
@@ -148,38 +148,66 @@ function initFilters() {
   const form = document.getElementById('CollectionFilters');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    window.COLLECTION_AJAX.currentPage = 1;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Close mobile filter
-    const filtersWrapper = document.getElementById('filtersWrapper');
-    if (filtersWrapper) {
-      filtersWrapper.classList.remove('active');
-      document.body.classList.remove('filter-open');
-    }
-    
-    fetchProducts(false, true);
-  });
-
-  const clearBtn = document.getElementById('clearFiltersBtn');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      form.reset();
-      window.COLLECTION_AJAX.currentPage = 1;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // Close mobile filter
-      const filtersWrapper = document.getElementById('filtersWrapper');
-      if (filtersWrapper) {
-        filtersWrapper.classList.remove('active');
-        document.body.classList.remove('filter-open');
-      }
-      
-      fetchProducts(false, true);
+  // Apply filters button
+  const applyBtn = form.querySelector('.apply-filters-btn');
+  if (applyBtn) {
+    applyBtn.addEventListener('click', () => {
+      applyFilters();
     });
   }
+
+  // Clear filters button
+  const clearBtn = form.querySelector('.clear-filters-btn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      clearFilters();
+    });
+  }
+
+  // Auto-apply on input change for better UX
+  const filterInputs = form.querySelectorAll('[data-filter-input]');
+  filterInputs.forEach(input => {
+    input.addEventListener('change', () => {
+      // Small delay to allow multiple clicks (for checkboxes)
+      setTimeout(() => {
+        applyFilters();
+      }, 100);
+    });
+  });
+}
+
+function applyFilters() {
+  window.COLLECTION_AJAX.currentPage = 1;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  // Close mobile filter
+  const filtersWrapper = document.getElementById('filtersWrapper');
+  if (filtersWrapper) {
+    filtersWrapper.classList.remove('active');
+    document.body.classList.remove('filter-open');
+  }
+  
+  fetchProducts(false, true);
+}
+
+function clearFilters() {
+  const form = document.getElementById('CollectionFilters');
+  if (!form) return;
+
+  // Reset all form inputs
+  form.reset();
+  
+  window.COLLECTION_AJAX.currentPage = 1;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  // Close mobile filter
+  const filtersWrapper = document.getElementById('filtersWrapper');
+  if (filtersWrapper) {
+    filtersWrapper.classList.remove('active');
+    document.body.classList.remove('filter-open');
+  }
+  
+  fetchProducts(false, true);
 }
 
 /* ---------------------------
@@ -255,26 +283,37 @@ function buildQueryParams() {
   const params = new URLSearchParams();
 
   if (form) {
-    const formData = new FormData(form);
-
-    // Allow multiple values
-    for (const [key, value] of formData.entries()) {
-      if (value === '' || value == null) continue;
-      
-      // Handle price range inputs (multiply by 100 for cents)
-      if (key.includes('filter.v.price')) {
-        params.append(key, Math.round(parseFloat(value) * 100));
-      } else {
-        params.append(key, value);
+    // Get all filter inputs
+    const inputs = form.querySelectorAll('[data-filter-input]');
+    
+    inputs.forEach(input => {
+      if (input.type === 'checkbox' || input.type === 'radio') {
+        if (input.checked && input.value) {
+          params.append(input.name, input.value);
+        }
+      } else if (input.type === 'number' || input.type === 'text') {
+        if (input.value) {
+          // Handle price inputs (multiply by 100 for cents)
+          if (input.name.includes('filter.v.price')) {
+            params.append(input.name, Math.round(parseFloat(input.value) * 100));
+          } else {
+            params.append(input.name, input.value);
+          }
+        }
       }
-    }
+    });
   }
 
-  // Collection handle logic
-  const collectionHandle = params.get('collection_handle');
-  params.delete('collection_handle');
+  // Get collection handle from form data attribute
+  const collectionHandle = form?.dataset.collectionHandle || '';
 
   params.set('page', window.COLLECTION_AJAX.currentPage);
+  
+  // Add section ID for AJAX reload
+  const mainContainer = getMainContainer();
+  if (mainContainer) {
+    params.set('section_id', mainContainer.dataset.sectionId);
+  }
 
   return { params, collectionHandle };
 }
@@ -393,11 +432,17 @@ function fetchProducts(append = false, resetPage = false) {
     ? `/collections/${collectionHandle}`
     : window.location.pathname;
 
-  fetch(`${baseUrl}?${params.toString()}&section_id={{ section.id }}`, {
+  // Build the URL
+  let url = `${baseUrl}?${params.toString()}`;
+  
+  // Remove empty price parameters
+  url = url.replace(/filter\.v\.price\.gte=&|filter\.v\.price\.lte=&/g, '');
+
+  fetch(url, {
     method: 'GET',
     headers: { 
       'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json'
+      'Content-Type': 'text/html'
     }
   })
     .then((res) => {
@@ -407,16 +452,17 @@ function fetchProducts(append = false, resetPage = false) {
     .then((html) => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       
-      // Extract the section content
-      const sectionContent = doc.querySelector(`[data-section-id="{{ section.id }}"]`);
-      if (!sectionContent) throw new Error('Section content not found');
-      
-      const newProducts = sectionContent.querySelector('#productsContainer');
+      // Try to find the products container in the response
+      const newProducts = doc.querySelector('#productsContainer');
       const oldProducts = getProductsContainer();
 
-      if (!oldProducts || !newProducts) return;
+      if (!oldProducts || !newProducts) {
+        // If AJAX fails, fallback to full page reload
+        window.location.href = url;
+        return;
+      }
 
-      // Replace dataset info (important)
+      // Replace dataset info
       oldProducts.dataset.totalPages = newProducts.dataset.totalPages || '1';
       oldProducts.dataset.currentPage = newProducts.dataset.currentPage || '1';
       oldProducts.dataset.totalProducts = newProducts.dataset.totalProducts || '';
@@ -428,17 +474,23 @@ function fetchProducts(append = false, resetPage = false) {
         oldProducts.innerHTML = newProducts.innerHTML;
       }
 
+      // Update pagination wrapper if it exists in response
+      const newPagination = doc.querySelector('#paginationWrapper');
+      const oldPagination = getPaginationWrapper();
+      if (oldPagination && newPagination) {
+        oldPagination.innerHTML = newPagination.innerHTML;
+      }
+
       // Update pagination UI
       updatePaginationUIFromCurrentDOM();
       
       // Update URL without reload
-      const newUrl = `${baseUrl}?${params.toString()}`;
-      window.history.pushState({ path: newUrl }, '', newUrl);
+      window.history.pushState({ path: url }, '', url);
     })
     .catch((err) => {
       console.error('AJAX fetch error:', err);
       // Fallback to page reload
-      window.location.reload();
+      window.location.href = url;
     })
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
