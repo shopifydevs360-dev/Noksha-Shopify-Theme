@@ -201,3 +201,106 @@ function fetchProducts(append = false, resetPage = false) {
       if (loader) loader.hidden = true;
     });
 }
+/* ======================================================
+  FILTER / SORT TOGGLE + OFFCANVAS
+====================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.querySelector('.product-filter');
+  const buttons = document.querySelectorAll('.filter-toggle-btn');
+  const filterItems = document.querySelectorAll('.filter-item');
+  const sortItem = document.querySelector('.filter-sort');
+
+  if (!sidebar || !buttons.length) return;
+
+  let activeAction = null;
+
+  /* ------------------------------
+    Helpers
+  ------------------------------ */
+  const isMobile = () => window.innerWidth <= 991;
+
+  function hideAllItems() {
+    filterItems.forEach(item => item.classList.add('hide'));
+  }
+
+  function showAllFilters(includeSort = false) {
+    filterItems.forEach(item => {
+      if (item.classList.contains('filter-sort') && !includeSort) return;
+      item.classList.remove('hide');
+    });
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('is-expanded', 'is-offcanvas');
+    hideAllItems();
+    activeAction = null;
+    removeOverlay();
+  }
+
+  function openSidebar() {
+    sidebar.classList.add('is-expanded');
+
+    if (isMobile()) {
+      sidebar.classList.add('is-offcanvas');
+      addOverlay();
+    }
+  }
+
+  /* ------------------------------
+    Overlay (Mobile)
+  ------------------------------ */
+  function addOverlay() {
+    if (document.querySelector('.filter-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'filter-overlay';
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', closeSidebar);
+  }
+
+  function removeOverlay() {
+    document.querySelector('.filter-overlay')?.remove();
+  }
+
+  /* ------------------------------
+    Button Logic (Toggle)
+  ------------------------------ */
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.action;
+
+      // 🔁 Reverse toggle
+      if (activeAction === action) {
+        closeSidebar();
+        return;
+      }
+
+      activeAction = action;
+      hideAllItems();
+      openSidebar();
+
+      // 📱 Mobile → show EVERYTHING
+      if (isMobile()) {
+        showAllFilters(true);
+        return;
+      }
+
+      // 🖥 Desktop logic
+      if (action === 'filter') {
+        showAllFilters(false);
+      }
+
+      if (action === 'sort' && sortItem) {
+        sortItem.classList.remove('hide');
+      }
+    });
+  });
+
+  /* ------------------------------
+    Reset on Resize
+  ------------------------------ */
+  window.addEventListener('resize', () => {
+    closeSidebar();
+  });
+});
