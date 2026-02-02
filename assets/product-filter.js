@@ -233,12 +233,14 @@ function initFilterToggle() {
 
     if (isMobile()) {
       sidebar.classList.add('is-offcanvas');
+      document.body.classList.add('is-filter-open'); // 🔒 LOCK SCROLL
       addOverlay();
     }
   }
 
   function closeSidebar() {
     sidebar.classList.remove('is-expanded', 'is-offcanvas');
+    document.body.classList.remove('is-filter-open'); // 🔓 UNLOCK SCROLL
     hideAll();
     activeAction = null;
     removeOverlay();
