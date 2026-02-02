@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initApplyFilters();
   initClearFilters();
   initPagination();
+  initFilterToggle();
 });
 
 /* ======================================================
