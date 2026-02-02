@@ -91,7 +91,7 @@
               {% for value in filter.values %}
                 {% assign label_down = value.label | downcase %}
                 {% assign show_color = true %}
-                {% if allow_colors.size > 0 and allow_colors contains label_down == false %}
+                {% if allow_colors.size > 0 and allow_colors contains label_down  %}
                   {% assign show_color = false %}
                 {% endif %}
                 {% if disallow_colors contains label_down %}
