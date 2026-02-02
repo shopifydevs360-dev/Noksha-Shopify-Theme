@@ -223,7 +223,7 @@ function initFilterToggle() {
 
   function showAllFilters(includeSort = false) {
     filterItems.forEach(item => {
-      if (item.classList.contains('filter-sort, filter-actions') && !includeSort) return;
+      if (item.classList.contains('filter-sort') && !includeSort) return;
       item.classList.remove('hide');
     });
   }
