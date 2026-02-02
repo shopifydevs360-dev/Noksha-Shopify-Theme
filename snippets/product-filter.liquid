@@ -189,19 +189,21 @@
 
       {% for value in filter.values %}
         {% assign show_value = false %}
-        {% assign label = value.label %}
+        {% assign label = value.label | strip %}
 
-        {%- comment -%} Extract size code {%- endcomment -%}
-        {% assign size_code = label %}
+        {%- comment -%}
+          Extract short size from label:
+          "Small (S)" -> "S"
+        {%- endcomment -%}
+        {% assign extracted_size = '' %}
         {% if label contains '(' and label contains ')' %}
-          {% assign size_code = label | split: '(' | last | remove: ')' | strip %}
+          {% assign extracted_size = label | split: '(' | last | remove: ')' | strip %}
         {% endif %}
 
-        {%- comment -%} Normalize extracted size {%- endcomment -%}
-        {% assign size_code_normalized = size_code | strip | downcase %}
+        {% assign extracted_size_downcase = extracted_size | downcase %}
 
-        {%- comment -%} Hide "One size" {%- endcomment -%}
-        {% if size_code_normalized == 'one size' %}
+        {%- comment -%} Hide One size {%- endcomment -%}
+        {% if label | downcase == 'one size' %}
           {% continue %}
         {% endif %}
 
@@ -210,8 +212,8 @@
           {% assign show_value = true %}
         {% else %}
           {% for custom_size in custom_sizes %}
-            {% assign custom_size_normalized = custom_size | strip | downcase %}
-            {% if size_code_normalized == custom_size_normalized %}
+            {% assign custom_size_downcase = custom_size | strip | downcase %}
+            {% if extracted_size_downcase == custom_size_downcase %}
               {% assign show_value = true %}
             {% endif %}
           {% endfor %}
@@ -226,7 +228,9 @@
               {% if value.active %}checked{% endif %}
             >
 
-            <span class="filter__label">{{ size_code }}</span>
+            <span class="filter__label">
+              {{ extracted_size | default: label }}
+            </span>
             <span class="filter__count">({{ value.count }})</span>
           </label>
         {% endif %}
