@@ -204,13 +204,13 @@
   {% endfor %}
 
   <div class="filter-actions">
-    <button type="submit" class="btn btn--apply">
+    <button type="submit"  id="applyFiltersBtn" class="btn btn--apply">
       Apply Filters
     </button>
 
     <button
       type="button"
-      class="btn btn--clear" id="applyFiltersBtn"
+      class="btn btn--clear"
       onclick="window.location.href='{{ collection.url }}'">
       Clear All
     </button>
