@@ -47,7 +47,11 @@
     z-index: 1001;
     transition: right 0.3s ease;
   }
-
+.filter-actions-bar {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
   .product-filter.is-offcanvas {
     right: 0;
   }
