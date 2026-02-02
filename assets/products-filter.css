@@ -14,11 +14,6 @@
 /* ===============================
   ACTION BUTTONS
 ================================ */
-.filter-actions-bar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
 
 .filter-toggle-btn {
   display: flex;
