@@ -16,7 +16,7 @@
           "type": "size-filter",
           "settings": {
             "filter_title": "Size",
-            "sizes": ""
+            "sizes": "S"
           }
         },
         "product_type_filter_fHRmjP": {
