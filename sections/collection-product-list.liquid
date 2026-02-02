@@ -1,6 +1,6 @@
-{%- comment -%} File Name: collection-product-list.liquid {%- endcomment -%}
 {{ 'collection-product-list.css' | asset_url | stylesheet_tag }}
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
+
 <div
   class="main-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
   data-section-id="{{ section.id }}"
@@ -8,10 +8,13 @@
   data-pagination-type="{{ section.settings.pagination_type }}"
   data-products-per-page="{{ section.settings.products_per_page }}"
 >
+
   <div class="{{ section.settings.container_type }}">
     <div class="collection-wrapper sidebar-space">
+
       <main class="inner-warpper">
         <div class="product-list">
+
           <!-- Products -->
           {% paginate collection.products by section.settings.products_per_page %}
             <div
@@ -26,9 +29,11 @@
               {% endfor %}
             </div>
           {% endpaginate %}
+
         <!-- Pagination UI -->
         {% if section.settings.enable_pagination %}
           <div id="paginationWrapper" class="custom-pagination">
+
             {% if section.settings.pagination_type == 'pagination_by_number' %}
               <nav class="pagination-ui pagination-ui--numbers">
                 <!-- JS will inject buttons here -->
@@ -39,6 +44,7 @@
                 <button type="button" id="loadMoreBtn" class="load-more-btn">
                   Load More
                 </button>
+
                 <div class="pagination-loader" data-loader hidden>
                   Loading...
                 </div>
@@ -50,20 +56,27 @@
                 </div>
               </div>
             {% endif %}
+
           </div>
         {% endif %}
+
         </div>
+
         <!-- Filters -->
         {% if section.settings.enable_filter %}
           <div class="product-filter">
             {% render 'product-filter', section: section, collection: collection %}
           </div>
         {% endif %}
+
       </main>
+
     </div>
   </div>
 </div>
+
 <script src="{{ 'product-filter.js' | asset_url }}" defer></script>
+
 {% schema %}
 {
   "name": "Collection Product List",
@@ -172,7 +185,7 @@
   ],
   "blocks": [
     {
-      "type": "availability-filter",
+      "type": "availablity-filter",
       "name": "Availability Filter",
       "limit": 1
     },
@@ -193,31 +206,32 @@
       "name": "Vendor Filter",
       "limit": 1
     },
+{
+  "type": "color-filter",
+  "name": "Color Filter",
+  "limit": 1,
+  "settings": [
     {
-      "type": "color-filter",
-      "name": "Color Filter",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "filter_title",
-          "label": "Title",
-          "default": "Color"
-        },
-        {
-          "type": "text",
-          "id": "allow_colors",
-          "label": "Custom Colors (Allow)",
-          "info": "Comma separated values. If filled, only these colors will show."
-        },
-        {
-          "type": "text",
-          "id": "disallow_colors",
-          "label": "Disallow Colors",
-          "info": "Comma separated values. These colors will be hidden."
-        }
-      ]
+      "type": "text",
+      "id": "filter_title",
+      "label": "Title",
+      "default": "Color"
     },
+    {
+      "type": "text",
+      "id": "allow_colors",
+      "label": "Custom Colors (Allow)",
+      "info": "Comma separated values. If filled, only these colors will show."
+    },
+    {
+      "type": "text",
+      "id": "disallow_colors",
+      "label": "Disallow Colors",
+      "info": "Comma separated values. These colors will be hidden."
+    }
+  ]
+},
+
     {
       "type": "tag-filter",
       "name": "Tag Filter (Custom)",
