@@ -210,10 +210,10 @@ function fetchProducts(append = false, resetPage = false) {
         ? oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML)
         : oldBox.innerHTML = newBox.innerHTML;
 
-      /* 🔥 NOTIFY CART SYSTEM THAT PRODUCTS CHANGED */
-      document.dispatchEvent(
-        new CustomEvent('collection:products:updated')
-      );
+      /* 🔥 RE-INIT EXISTING PRODUCT CART JS */
+      if (typeof initAllProductCartEvents === 'function') {
+        initAllProductCartEvents();
+      }
     })
     .catch(err => console.error('Filter AJAX error:', err))
     .finally(() => {
