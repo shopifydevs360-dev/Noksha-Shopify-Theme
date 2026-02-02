@@ -180,29 +180,12 @@
 
 {% when 'size-filter' %}
 
-{% assign custom_sizes = block.settings.sizes | split: ',' | map: 'strip' %}
+  {% for filter in collection.filters %}
+    {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+      <fieldset class="filter filter--size">
+        <legend>{{ block.settings.filter_title }}</legend>
 
-{% for filter in collection.filters %}
-  {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
-    <fieldset class="filter filter--size">
-      <legend>{{ block.settings.filter_title }}</legend>
-
-      {% for value in filter.values %}
-        {% assign show_value = false %}
-        {% assign label_downcase = value.label | downcase %}
-
-        {% if block.settings.sizes == blank %}
-          {% assign show_value = true %}
-        {% else %}
-          {% for custom_size in custom_sizes %}
-            {% assign size_downcase = custom_size | downcase %}
-            {% if label_downcase contains size_downcase %}
-              {% assign show_value = true %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-
-        {% if show_value %}
+        {% for value in filter.values %}
           <label>
             <input
               type="checkbox"
@@ -213,12 +196,10 @@
             {{ value.label }}
             <span>({{ value.count }})</span>
           </label>
-        {% endif %}
-      {% endfor %}
-    </fieldset>
-  {% endif %}
-{% endfor %}
-
+        {% endfor %}
+      </fieldset>
+    {% endif %}
+  {% endfor %}
 
 
     {% endcase %}
