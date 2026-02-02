@@ -194,8 +194,15 @@
             {% assign custom_sizes_array = custom_sizes | split: ',' %}
             {% assign found_size = false %}
             
+            {% comment %} Assign stripped value label to a variable {% endcomment %}
+            {% assign stripped_value_label = value.label | strip %}
+            
             {% for custom_size in custom_sizes_array %}
-              {% if value.label | strip == custom_size | strip %}
+              {% comment %} Assign stripped custom size to a variable {% endcomment %}
+              {% assign stripped_custom_size = custom_size | strip %}
+              
+              {% comment %} Compare the stripped values {% endcomment %}
+              {% if stripped_value_label == stripped_custom_size %}
                 {% assign found_size = true %}
                 {% break %}
               {% endif %}
