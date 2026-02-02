@@ -182,25 +182,51 @@
 
   {% for filter in collection.filters %}
     {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+      {% assign custom_sizes = block.settings.sizes | strip %}
+      
       <fieldset class="filter filter--size">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
-          <label>
-            <input
-              type="checkbox"
-              name="{{ value.param_name }}"
-              value="{{ value.value }}"
-              {% if value.active %}checked{% endif %}
-            >
-            {{ value.label }}
-            <span>({{ value.count }})</span>
-          </label>
+          {% assign display_this_size = true %}
+          
+          {% if custom_sizes != blank and custom_sizes != empty %}
+            {% assign custom_sizes_array = custom_sizes | split: ',' %}
+            {% assign found_size = false %}
+            
+            {% assign normalized_value_label = value.label | strip | downcase %}
+            
+            {% for custom_size in custom_sizes_array %}
+              {% assign normalized_custom_size = custom_size | strip | downcase %}
+              
+              {% if normalized_value_label == normalized_custom_size %}
+                {% assign found_size = true %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+            
+            {% unless found_size %}
+              {% assign display_this_size = false %}
+            {% endunless %}
+          {% endif %}
+          
+          {% if display_this_size %}
+            <label>
+              <input
+                type="checkbox"
+                name="{{ value.param_name }}"
+                value="{{ value.value }}"
+                {% if value.active %}checked{% endif %}
+                {% if value.count == 0 and value.active == false %}disabled{% endif %}
+              >
+              {{ value.label }}
+              <span>({{ value.count }})</span>
+            </label>
+          {% endif %}
         {% endfor %}
       </fieldset>
     {% endif %}
   {% endfor %}
-
 
     {% endcase %}
   {% endfor %}
