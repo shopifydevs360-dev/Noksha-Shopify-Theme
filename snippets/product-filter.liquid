@@ -45,30 +45,40 @@
           {% endif %}
         {% endfor %}
 
-      {% when 'collection-filter' %}
-        <fieldset>
-          <legend>Collections</legend>
-          {% assign menu = linklists[block.settings.collection_menu] %}
-          {% if menu.links.size > 0 %}
-            {% for link in menu.links %}
-              {% assign handle = link.object.handle %}
-              <label>
-                <input
-                  type="radio"
-                  name="collection_handle"
-                  value="{{ handle }}"
-                >
-                {{ link.title }}
-              </label>
-            {% endfor %}
-            <label>
-              <input type="radio" name="collection_handle" value="" checked>
-              All
-            </label>
-          {% else %}
-            <p>No menu selected.</p>
-          {% endif %}
-        </fieldset>
+{% when 'collection-filter' %}
+
+  {% assign menu = linklists[block.settings.collection_menu] %}
+  {% assign has_match = false %}
+
+  {% if menu.links.size > 0 and collection %}
+
+    {% capture collection_items %}
+      {% for link in menu.links %}
+        {% if link.type == 'collection_link' and link.object.handle == collection.handle %}
+          {% assign has_match = true %}
+
+          <label>
+            <input
+              type="radio"
+              name="collection_handle"
+              value="{{ collection.handle }}"
+              checked
+            >
+            {{ link.title }}
+          </label>
+        {% endif %}
+      {% endfor %}
+    {% endcapture %}
+
+    {% if has_match %}
+      <fieldset class="filter filter--collections">
+        <legend>Collections</legend>
+        {{ collection_items }}
+      </fieldset>
+    {% endif %}
+
+  {% endif %}
+
 
       {% when 'color-filter' %}
         {% for filter in collection.filters %}
