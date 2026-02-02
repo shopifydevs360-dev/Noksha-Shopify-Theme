@@ -182,22 +182,54 @@
 
   {% for filter in collection.filters %}
     {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
-      {% assign custom_sizes = block.settings.sizes | strip %}
+      {% assign custom_sizes = block.settings.sizes %}
       
+      {% comment %} DEBUG OUTPUT - make visible {% endcomment %}
+      <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
+        <strong>DEBUG INFO:</strong><br>
+        Filter title: {{ block.settings.filter_title }}<br>
+        Custom sizes setting: <strong>"{{ custom_sizes }}"</strong><br>
+        Is custom_sizes blank? {{ custom_sizes | blank }}<br><br>
+        
+        <strong>All available sizes from Shopify:</strong><br>
+        {% for value in filter.values %}
+          • "{{ value.label }}" (param: {{ value.param_name }}, value: {{ value.value }}, count: {{ value.count }})<br>
+        {% endfor %}
+      </div>
+
       <fieldset class="filter filter--size">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
           {% assign display_this_size = true %}
           
-          {% if custom_sizes != blank and custom_sizes != empty %}
+          {% if custom_sizes != blank %}
             {% assign custom_sizes_array = custom_sizes | split: ',' %}
             {% assign found_size = false %}
+            
+            {% comment %} DEBUG: Show what we're comparing {% endcomment %}
+            <div style="background: #fff8dc; padding: 5px; margin: 5px 0; border: 1px dashed #ccc; font-size: 12px;">
+              <strong>Checking:</strong> "{{ value.label }}"<br>
+              <strong>Against custom sizes:</strong> 
+              {% for custom_size in custom_sizes_array %}
+                "{{ custom_size }}"{% unless forloop.last %}, {% endunless %}
+              {% endfor %}
+            </div>
             
             {% assign normalized_value_label = value.label | strip | downcase %}
             
             {% for custom_size in custom_sizes_array %}
               {% assign normalized_custom_size = custom_size | strip | downcase %}
+              
+              {% comment %} DEBUG: Show each comparison {% endcomment %}
+              <div style="background: #e8f5e8; padding: 3px; margin: 2px 0; font-size: 11px;">
+                Comparing: "{{ normalized_value_label }}" vs "{{ normalized_custom_size }}" → 
+                {% if normalized_value_label == normalized_custom_size %}
+                  <span style="color: green;">MATCH!</span>
+                {% else %}
+                  <span style="color: red;">NO MATCH</span>
+                {% endif %}
+              </div>
               
               {% if normalized_value_label == normalized_custom_size %}
                 {% assign found_size = true %}
@@ -207,17 +239,22 @@
             
             {% unless found_size %}
               {% assign display_this_size = false %}
+              <div style="background: #ffe6e6; padding: 5px; margin: 5px 0; border: 1px solid #ff9999;">
+                ❌ NOT DISPLAYING: "{{ value.label }}" - Not in custom sizes list
+              </div>
             {% endunless %}
           {% endif %}
           
           {% if display_this_size %}
+            <div style="background: #e6ffe6; padding: 5px; margin: 5px 0; border: 1px solid #99cc99;">
+              ✅ DISPLAYING: "{{ value.label }}"
+            </div>
             <label>
               <input
                 type="checkbox"
                 name="{{ value.param_name }}"
                 value="{{ value.value }}"
                 {% if value.active %}checked{% endif %}
-                {% if value.count == 0 and value.active == false %}disabled{% endif %}
               >
               {{ value.label }}
               <span>({{ value.count }})</span>
