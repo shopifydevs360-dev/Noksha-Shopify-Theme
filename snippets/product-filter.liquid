@@ -182,25 +182,59 @@
 
   {% for filter in collection.filters %}
     {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+      {% assign custom_sizes = block.settings.sizes | split: ',' %}
+      {% assign has_custom_sizes = false %}
+      
+      {% if custom_sizes.size > 0 %}
+        {% assign has_custom_sizes = true %}
+        {% assign cleaned_sizes = '' %}
+        
+        {% for size in custom_sizes %}
+          {% assign trimmed_size = size | strip %}
+          {% assign cleaned_sizes = cleaned_sizes | append: trimmed_size %}
+          {% unless forloop.last %}
+            {% assign cleaned_sizes = cleaned_sizes | append: ',' %}
+          {% endunless %}
+        {% endfor %}
+        
+        {% assign custom_sizes_array = cleaned_sizes | split: ',' %}
+      {% endif %}
+
       <fieldset class="filter filter--size">
         <legend>{{ block.settings.filter_title }}</legend>
 
         {% for value in filter.values %}
-          <label>
-            <input
-              type="checkbox"
-              name="{{ value.param_name }}"
-              value="{{ value.value }}"
-              {% if value.active %}checked{% endif %}
-            >
-            {{ value.label }}
-            <span>({{ value.count }})</span>
-          </label>
+          {% assign should_display = true %}
+          
+          {% if has_custom_sizes %}
+            {% assign should_display = false %}
+            {% assign normalized_value = value.label | strip | downcase %}
+            
+            {% for custom_size in custom_sizes_array %}
+              {% assign normalized_custom = custom_size | strip | downcase %}
+              {% if normalized_value == normalized_custom %}
+                {% assign should_display = true %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          
+          {% if should_display %}
+            <label>
+              <input
+                type="checkbox"
+                name="{{ value.param_name }}"
+                value="{{ value.value }}"
+                {% if value.active %}checked{% endif %}
+              >
+              {{ value.label }}
+              <span>({{ value.count }})</span>
+            </label>
+          {% endif %}
         {% endfor %}
       </fieldset>
     {% endif %}
   {% endfor %}
-
 
     {% endcase %}
   {% endfor %}
