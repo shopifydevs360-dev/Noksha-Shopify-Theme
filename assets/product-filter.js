@@ -1,18 +1,97 @@
 document.addEventListener('DOMContentLoaded', () => {
   window.COLLECTION_AJAX = {
     currentPage: 1,
-    isLoading: false,
-    currentCollectionHandle: window.location.pathname.split('/').pop() || ''
+    isLoading: false
   };
 
   setInitialPaginationData();
   initFilters();
   initPagination();
-  updateURLState();
+  initMobileFilterToggle();
+  initPriceRangeSlider();
 
   // Render pagination immediately on first load
   updatePaginationUIFromCurrentDOM();
 });
+
+/* ---------------------------
+  MOBILE FILTER TOGGLE
+---------------------------- */
+function initMobileFilterToggle() {
+  const mobileToggle = document.querySelector('.mobile-filter-toggle');
+  const filtersWrapper = document.getElementById('filtersWrapper');
+  const closeBtn = document.querySelector('.filters-close-btn');
+  
+  if (mobileToggle && filtersWrapper) {
+    mobileToggle.addEventListener('click', () => {
+      filtersWrapper.classList.add('active');
+      document.body.classList.add('filter-open');
+    });
+  }
+  
+  if (closeBtn && filtersWrapper) {
+    closeBtn.addEventListener('click', () => {
+      filtersWrapper.classList.remove('active');
+      document.body.classList.remove('filter-open');
+    });
+  }
+  
+  // Close filter when clicking outside on mobile
+  document.addEventListener('click', (e) => {
+    const filtersWrapper = document.getElementById('filtersWrapper');
+    const mobileToggle = document.querySelector('.mobile-filter-toggle');
+    
+    if (filtersWrapper && filtersWrapper.classList.contains('active') && 
+        !filtersWrapper.contains(e.target) && 
+        !mobileToggle.contains(e.target)) {
+      filtersWrapper.classList.remove('active');
+      document.body.classList.remove('filter-open');
+    }
+  });
+}
+
+/* ---------------------------
+  PRICE RANGE SLIDER
+---------------------------- */
+function initPriceRangeSlider() {
+  const minInput = document.querySelector('[data-min-input]');
+  const maxInput = document.querySelector('[data-max-input]');
+  const minDisplay = document.querySelector('[data-min-display]');
+  const maxDisplay = document.querySelector('[data-max-display]');
+  
+  if (minInput && maxInput && minDisplay && maxDisplay) {
+    function updatePriceDisplay() {
+      const minVal = parseFloat(minInput.value);
+      const maxVal = parseFloat(maxInput.value);
+      
+      // Ensure min doesn't exceed max
+      if (minVal > maxVal) {
+        minInput.value = maxVal;
+        minDisplay.value = maxVal;
+      }
+      
+      // Ensure max doesn't go below min
+      if (maxVal < minVal) {
+        maxInput.value = minVal;
+        maxDisplay.value = minVal;
+      }
+      
+      minDisplay.value = minInput.value;
+      maxDisplay.value = maxInput.value;
+    }
+    
+    minInput.addEventListener('input', updatePriceDisplay);
+    maxInput.addEventListener('input', updatePriceDisplay);
+    minDisplay.addEventListener('input', (e) => {
+      minInput.value = e.target.value;
+      updatePriceDisplay();
+    });
+    maxDisplay.addEventListener('input', (e) => {
+      maxInput.value = e.target.value;
+      updatePriceDisplay();
+    });
+  }
+}
 
 /* ---------------------------
   HELPERS
@@ -51,10 +130,6 @@ function getLoadMoreBtn() {
   return wrapper.querySelector('#loadMoreBtn');
 }
 
-function getApplyFiltersBtn() {
-  return document.getElementById('applyFiltersBtn');
-}
-
 /* ---------------------------
   INITIAL PAGINATION DATA
 ---------------------------- */
@@ -64,13 +139,6 @@ function setInitialPaginationData() {
 
   const page = parseInt(productsBox.dataset.currentPage || '1', 10);
   window.COLLECTION_AJAX.currentPage = page > 0 ? page : 1;
-  
-  // Get collection handle from URL
-  const pathParts = window.location.pathname.split('/');
-  const handle = pathParts[pathParts.length - 1];
-  if (handle && handle !== 'collections') {
-    window.COLLECTION_AJAX.currentCollectionHandle = handle;
-  }
 }
 
 /* ---------------------------
@@ -80,26 +148,19 @@ function initFilters() {
   const form = document.getElementById('CollectionFilters');
   if (!form) return;
 
-  // Apply filters button
-  const applyBtn = getApplyFiltersBtn();
-  if (applyBtn) {
-    applyBtn.addEventListener('click', () => {
-      window.COLLECTION_AJAX.currentPage = 1;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      fetchProducts(false, true);
-    });
-  }
-
-  // Auto-apply for some filters (radio buttons)
-  form.addEventListener('change', (e) => {
-    const target = e.target;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    window.COLLECTION_AJAX.currentPage = 1;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Auto-apply for collection handles (radio buttons)
-    if (target.name === 'collection_handle') {
-      window.COLLECTION_AJAX.currentPage = 1;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      fetchProducts(false, true);
+    // Close mobile filter
+    const filtersWrapper = document.getElementById('filtersWrapper');
+    if (filtersWrapper) {
+      filtersWrapper.classList.remove('active');
+      document.body.classList.remove('filter-open');
     }
+    
+    fetchProducts(false, true);
   });
 
   const clearBtn = document.getElementById('clearFiltersBtn');
@@ -107,14 +168,15 @@ function initFilters() {
     clearBtn.addEventListener('click', () => {
       form.reset();
       window.COLLECTION_AJAX.currentPage = 1;
-      window.COLLECTION_AJAX.currentCollectionHandle = '';
-      
-      // Clear URL parameters
-      const url = new URL(window.location);
-      url.search = '';
-      window.history.replaceState({}, '', url);
-      
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Close mobile filter
+      const filtersWrapper = document.getElementById('filtersWrapper');
+      if (filtersWrapper) {
+        filtersWrapper.classList.remove('active');
+        document.body.classList.remove('filter-open');
+      }
+      
       fetchProducts(false, true);
     });
   }
@@ -195,52 +257,26 @@ function buildQueryParams() {
   if (form) {
     const formData = new FormData(form);
 
-    // Handle special cases
+    // Allow multiple values
     for (const [key, value] of formData.entries()) {
       if (value === '' || value == null) continue;
       
-      // Collection handle - set as new collection
-      if (key === 'collection_handle' && value) {
-        window.COLLECTION_AJAX.currentCollectionHandle = value;
-        continue;
-      }
-      
-      // Price filter - convert to cents
+      // Handle price range inputs (multiply by 100 for cents)
       if (key.includes('filter.v.price')) {
-        params.append(key, Math.round(value * 100));
+        params.append(key, Math.round(parseFloat(value) * 100));
       } else {
         params.append(key, value);
       }
     }
   }
 
-  // Add page parameter
+  // Collection handle logic
+  const collectionHandle = params.get('collection_handle');
+  params.delete('collection_handle');
+
   params.set('page', window.COLLECTION_AJAX.currentPage);
 
-  return { params };
-}
-
-/* ---------------------------
-  UPDATE URL STATE
----------------------------- */
-function updateURLState() {
-  const form = document.getElementById('CollectionFilters');
-  if (!form) return;
-
-  form.addEventListener('change', () => {
-    const params = new URLSearchParams();
-    const formData = new FormData(form);
-    
-    for (const [key, value] of formData.entries()) {
-      if (value && value !== '') {
-        params.append(key, value);
-      }
-    }
-    
-    const url = new URL(window.location);
-    url.search = params.toString();
-    window.history.replaceState({}, '', url);
-  });
+  return { params, collectionHandle };
 }
 
 /* ---------------------------
@@ -267,58 +303,19 @@ function renderPaginationUI(totalPages) {
 
     if (!totalPages || totalPages <= 1) {
       numbersBox.innerHTML = '';
-      wrapper.style.display = 'none';
       return;
     }
 
-    wrapper.style.display = '';
     let html = '';
-    const currentPage = window.COLLECTION_AJAX.currentPage;
-    
-    // Always show first page
-    html += `
-      <button
-        type="button"
-        data-page-number="1"
-        class="${1 === currentPage ? 'active' : ''}"
-      >
-        1
-      </button>
-    `;
-
-    // Show ellipsis if needed
-    if (currentPage > 3) {
-      html += `<span class="pagination-ellipsis">...</span>`;
-    }
-
-    // Show pages around current page
-    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
-      if (i === 1 || i === totalPages) continue;
+    for (let i = 1; i <= totalPages; i++) {
       html += `
         <button
           type="button"
           data-page-number="${i}"
-          class="${i === currentPage ? 'active' : ''}"
+          class="pagination-btn ${i === window.COLLECTION_AJAX.currentPage ? 'active' : ''}"
+          ${i === window.COLLECTION_AJAX.currentPage ? 'disabled' : ''}
         >
           ${i}
-        </button>
-      `;
-    }
-
-    // Show ellipsis if needed
-    if (currentPage < totalPages - 2) {
-      html += `<span class="pagination-ellipsis">...</span>`;
-    }
-
-    // Always show last page if there is more than 1 page
-    if (totalPages > 1) {
-      html += `
-        <button
-          type="button"
-          data-page-number="${totalPages}"
-          class="${totalPages === currentPage ? 'active' : ''}"
-        >
-          ${totalPages}
         </button>
       `;
     }
@@ -335,19 +332,17 @@ function renderPaginationUI(totalPages) {
     if (!btn) return;
 
     if (!totalPages || totalPages <= 1) {
-      wrapper.style.display = 'none';
+      btn.style.display = 'none';
       return;
     }
 
-    wrapper.style.display = '';
-    
     // Hide if last page
     if (window.COLLECTION_AJAX.currentPage >= totalPages) {
       btn.style.display = 'none';
     } else {
       btn.style.display = '';
-      btn.textContent = 'Load More';
     }
+
     return;
   }
 
@@ -355,11 +350,7 @@ function renderPaginationUI(totalPages) {
   // Infinity Loading
   // -------------------------
   if (type === 'infinity_loading') {
-    if (!totalPages || totalPages <= 1) {
-      wrapper.style.display = 'none';
-    } else {
-      wrapper.style.display = '';
-    }
+    // No UI buttons, loader will show only while fetching
     return;
   }
 }
@@ -379,7 +370,7 @@ function updatePaginationUIFromCurrentDOM() {
 /* ---------------------------
   AJAX FETCH PRODUCTS
 ---------------------------- */
-function fetchProducts(append = false, updateURL = false) {
+function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
 
@@ -391,23 +382,18 @@ function fetchProducts(append = false, updateURL = false) {
   const loadMoreBtn = getLoadMoreBtn();
   if (loadMoreBtn) loadMoreBtn.disabled = true;
 
-  const { params } = buildQueryParams();
-
-  // Determine collection URL
-  let collectionUrl = '/collections/all';
-  if (window.COLLECTION_AJAX.currentCollectionHandle) {
-    collectionUrl = `/collections/${window.COLLECTION_AJAX.currentCollectionHandle}`;
-  } else {
-    const pathParts = window.location.pathname.split('/');
-    if (pathParts.includes('collections') && pathParts.length > 2) {
-      collectionUrl = window.location.pathname;
-    }
+  if (resetPage) {
+    window.COLLECTION_AJAX.currentPage = 1;
+    append = false;
   }
 
-  // Build complete URL
-  const url = `${collectionUrl}?${params.toString()}&section_id={{ section.id }}`;
+  const { params, collectionHandle } = buildQueryParams();
 
-  fetch(url, {
+  const baseUrl = collectionHandle
+    ? `/collections/${collectionHandle}`
+    : window.location.pathname;
+
+  fetch(`${baseUrl}?${params.toString()}&section_id={{ section.id }}`, {
     method: 'GET',
     headers: { 
       'X-Requested-With': 'XMLHttpRequest',
@@ -421,22 +407,19 @@ function fetchProducts(append = false, updateURL = false) {
     .then((html) => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       
-      const newProducts = doc.querySelector('#productsContainer');
+      // Extract the section content
+      const sectionContent = doc.querySelector(`[data-section-id="{{ section.id }}"]`);
+      if (!sectionContent) throw new Error('Section content not found');
+      
+      const newProducts = sectionContent.querySelector('#productsContainer');
       const oldProducts = getProductsContainer();
 
-      if (!oldProducts || !newProducts) {
-        // Handle empty results
-        const productsGrid = document.querySelector('.products-grid');
-        if (productsGrid) {
-          productsGrid.innerHTML = '<p class="no-products-found">No products match your filters.</p>';
-        }
-        return;
-      }
+      if (!oldProducts || !newProducts) return;
 
-      // Replace dataset info
+      // Replace dataset info (important)
       oldProducts.dataset.totalPages = newProducts.dataset.totalPages || '1';
       oldProducts.dataset.currentPage = newProducts.dataset.currentPage || '1';
-      oldProducts.dataset.totalProducts = newProducts.dataset.totalProducts || '0';
+      oldProducts.dataset.totalProducts = newProducts.dataset.totalProducts || '';
 
       // Update products HTML
       if (append) {
@@ -445,43 +428,32 @@ function fetchProducts(append = false, updateURL = false) {
         oldProducts.innerHTML = newProducts.innerHTML;
       }
 
-      // Update URL if needed
-      if (updateURL) {
-        const newUrl = new URL(window.location.origin + collectionUrl);
-        params.forEach((value, key) => {
-          if (key !== 'page' || value !== '1') {
-            newUrl.searchParams.set(key, value);
-          }
-        });
-        window.history.replaceState({}, '', newUrl);
-      }
-
       // Update pagination UI
       updatePaginationUIFromCurrentDOM();
       
-      // Dispatch custom event for any external listeners
-      document.dispatchEvent(new CustomEvent('collection:filtered', {
-        detail: { 
-          totalProducts: oldProducts.dataset.totalProducts,
-          currentPage: window.COLLECTION_AJAX.currentPage
-        }
-      }));
+      // Update URL without reload
+      const newUrl = `${baseUrl}?${params.toString()}`;
+      window.history.pushState({ path: newUrl }, '', newUrl);
     })
     .catch((err) => {
       console.error('AJAX fetch error:', err);
-      // Show error message to user
-      const errorElement = document.createElement('div');
-      errorElement.className = 'filter-error-message';
-      errorElement.textContent = 'Failed to load products. Please try again.';
-      
-      const productsContainer = getProductsContainer();
-      if (productsContainer) {
-        productsContainer.innerHTML = '';
-        productsContainer.appendChild(errorElement);
-      }
+      // Fallback to page reload
+      window.location.reload();
     })
     .finally(() => {
       window.COLLECTION_AJAX.isLoading = false;
 
       // Hide loader
-      if (loader) loader
+      const loader = getLoaderElement();
+      if (loader) loader.hidden = true;
+
+      // Enable load more button
+      const loadMoreBtn = getLoadMoreBtn();
+      if (loadMoreBtn) loadMoreBtn.disabled = false;
+    });
+}
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', () => {
+  window.location.reload();
+});
