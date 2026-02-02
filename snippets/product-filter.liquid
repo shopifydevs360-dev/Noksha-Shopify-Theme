@@ -1,278 +1,221 @@
-<form id="CollectionFilters" class="collection-filters-form" data-collection-handle="{{ collection.handle }}">
-  
-  {%- for block in section.blocks -%}
-    {%- case block.type -%}
-    
-      {%- when 'availability-filter' -%}
-        {%- assign availability_filter = collection.filters | where: "label", "Availability" | first -%}
-        {%- if availability_filter -%}
-          <div class="filter-group" {{ block.shopify_attributes }}>
-            <h3>Availability</h3>
-            {%- for value in availability_filter.values -%}
-              <label class="filter-label">
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                  {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                  data-filter-input
-                >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
-              </label>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-      {%- when 'vendor-filter' -%}
-        {%- assign vendor_filter = collection.filters | where: "label", "Vendor" | first -%}
-        {%- if vendor_filter -%}
-          <div class="filter-group" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.filter_title | default: 'Vendor' }}</h3>
-            {%- for value in vendor_filter.values -%}
-              <label class="filter-label">
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                  {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                  data-filter-input
-                >
-                {{ value.label }}
-                <span>({{ value.count }})</span>
-              </label>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-      {%- when 'collection-filter' -%}
-        {%- if block.settings.collection_menu -%}
-          {%- assign menu = linklists[block.settings.collection_menu] -%}
-          <div class="filter-group" {{ block.shopify_attributes }}>
-            <h3>Collections</h3>
-            {%- for link in menu.links -%}
-              {%- if link.type == 'collection_link' -%}
-                <label class="filter-label">
+{%- comment -%} File Name: product-filter.liquid {%- endcomment -%}
+<form id="CollectionFilters">
+  {% if section.settings.enable_sorting %}
+    <fieldset>
+      <legend>Sort by</legend>
+      <select name="sort_by">
+        <option value="manual" {% if collection.sort_by == "manual" %}selected{% endif %}>Featured</option>
+        <option value="best-selling" {% if collection.sort_by == "best-selling" %}selected{% endif %}>Best selling</option>
+        <option value="title-ascending" {% if collection.sort_by == "title-ascending" %}selected{% endif %}>Alphabetically, A-Z</option>
+        <option value="title-descending" {% if collection.sort_by == "title-descending" %}selected{% endif %}>Alphabetically, Z-A</option>
+        <option value="price-ascending" {% if collection.sort_by == "price-ascending" %}selected{% endif %}>Price, low to high</option>
+        <option value="price-descending" {% if collection.sort_by == "price-descending" %}selected{% endif %}>Price, high to low</option>
+        <option value="created-ascending" {% if collection.sort_by == "created-ascending" %}selected{% endif %}>Date, old to new</option>
+        <option value="created-descending" {% if collection.sort_by == "created-descending" %}selected{% endif %}>Date, new to old</option>
+      </select>
+    </fieldset>
+  {% endif %}
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'availability-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Availability' %}
+            <fieldset>
+              <legend>Availability</legend>
+              {% for value in filter.values %}
+                <label>
                   <input
-                    type="radio"
-                    name="collection_handle"
-                    value="{{ link.object.handle }}"
-                    {% if current_tags contains link.object.handle %}checked{% endif %}
-                    data-filter-input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
                   >
-                  {{ link.title }}
+                  {{ value.label }}
+                  <span>({{ value.count }})</span>
                 </label>
-              {%- endif -%}
-            {%- endfor -%}
-            <label class="filter-label">
-              <input 
-                type="radio" 
-                name="collection_handle" 
-                value="" 
-                {% unless current_tags %}checked{% endunless %}
-                data-filter-input
-              >
-              All Collections
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      {% when 'vendor-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Brand' or filter.label == 'Vendor' %}
+            <fieldset>
+              <legend>{{ filter.label }}</legend>
+              {% for value in filter.values %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  {{ value.label }}
+                  <span>({{ value.count }})</span>
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      {% when 'collection-filter' %}
+        <fieldset>
+          <legend>Collections</legend>
+          {% assign menu = linklists[block.settings.collection_menu] %}
+          {% if menu.links.size > 0 %}
+            {% for link in menu.links %}
+              {% assign handle = link.object.handle %}
+              <label>
+                <input
+                  type="radio"
+                  name="collection_handle"
+                  value="{{ handle }}"
+                >
+                {{ link.title }}
+              </label>
+            {% endfor %}
+            <label>
+              <input type="radio" name="collection_handle" value="" checked>
+              All
             </label>
-          </div>
-        {%- endif -%}
-
-      {%- when 'color-filter' -%}
-        {%- assign color_filter = collection.filters | where: "label", "Color" | first -%}
-        {%- if color_filter -%}
-          {%- assign allow_colors = block.settings.allow_colors | downcase | split: ',' | strip_newlines -%}
-          {%- assign disallow_colors = block.settings.disallow_colors | downcase | split: ',' | strip_newlines -%}
-          
-          <div class="filter-group filter-group--color" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.filter_title | default: 'Color' }}</h3>
-            {%- for value in color_filter.values -%}
-              {%- assign value_lower = value.label | downcase | strip -%}
-              {%- assign should_show = true -%}
-              
-              {%- if allow_colors.size > 0 and allow_colors.first != blank -%}
-                {%- unless allow_colors contains value_lower -%}
-                  {%- assign should_show = false -%}
-                {%- endunless -%}
-              {%- endif -%}
-              
-              {%- if disallow_colors.size > 0 and disallow_colors.first != blank -%}
-                {%- if disallow_colors contains value_lower -%}
-                  {%- assign should_show = false -%}
-                {%- endif -%}
-              {%- endif -%}
-              
-              {%- if should_show -%}
-                <label class="filter-label color-filter-label">
-                  <input
-                    type="checkbox"
-                    name="{{ value.param_name }}"
-                    value="{{ value.value }}"
-                    {% if value.active %}checked{% endif %}
-                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                    data-filter-input
-                  >
-                  <span class="color-swatch" style="background-color: {{ value.label | handle }};"></span>
-                  {{ value.label }}
-                  <span>({{ value.count }})</span>
-                </label>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-      {%- when 'tag-filter' -%}
-        {%- assign tag_filter = collection.filters | where: "param_name", "filter.p.tag" | first -%}
-        {%- if tag_filter -%}
-          {%- assign allowed_tags = block.settings.custom_filter_tags | downcase | split: ',' | strip -%}
-          <div class="filter-group" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.filter_title | default: 'Tags' }}</h3>
-            {%- for value in tag_filter.values -%}
-              {%- assign tag_lower = value.label | downcase | strip -%}
-              {%- if allowed_tags.size == 0 or allowed_tags.first == blank or allowed_tags contains tag_lower -%}
-                <label class="filter-label">
-                  <input
-                    type="checkbox"
-                    name="{{ value.param_name }}"
-                    value="{{ value.value }}"
-                    {% if value.active %}checked{% endif %}
-                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                    data-filter-input
-                  >
-                  {{ value.label }}
-                  <span>({{ value.count }})</span>
-                </label>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-      {%- when 'price-filter' -%}
-        {%- assign price_filter = collection.filters | where: "type", "price_range" | first -%}
-        {%- if price_filter -%}
-          <div class="filter-group price-filter" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.filter_title | default: 'Price' }}</h3>
-            <div class="range-input">
-              <input
-                type="range"
-                class="min-price"
-                min="0"
-                max="{{ price_filter.range_max | divided_by: 100.0 }}"
-                value="{{ price_filter.min_value.value | divided_by: 100.0 | default: 0 }}"
-                data-min-input
-              >
-              <input
-                type="range"
-                class="max-price"
-                min="0"
-                max="{{ price_filter.range_max | divided_by: 100.0 }}"
-                value="{{ price_filter.max_value.value | divided_by: 100.0 | default: price_filter.range_max | divided_by: 100.0 }}"
-                data-max-input
-              >
-            </div>
-            <div class="price-input">
+          {% else %}
+            <p>No menu selected.</p>
+          {% endif %}
+        </fieldset>
+      {% when 'color-filter' %}
+        {% assign allow_colors = block.settings.allow_colors | split: ',' | map: 'strip' | map: 'downcase' %}
+        {% assign disallow_colors = block.settings.disallow_colors | split: ',' | map: 'strip' | map: 'downcase' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == block.settings.filter_title or filter.label == 'Color' %}
+            <fieldset>
+              <legend>{{ block.settings.filter_title }}</legend>
+              {% for value in filter.values %}
+                {% assign label_down = value.label | downcase %}
+                {% assign show_color = true %}
+                {% if allow_colors.size > 0 and allow_colors contains label_down == false %}
+                  {% assign show_color = false %}
+                {% endif %}
+                {% if disallow_colors contains label_down %}
+                  {% assign show_color = false %}
+                {% endif %}
+                {% if show_color %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    {{ value.label }}
+                    <span>({{ value.count }})</span>
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      {% when 'tag-filter' %}
+        {% assign allowed_tags = block.settings.custom_filter_tags | split: ',' | map: 'strip' | map: 'downcase' %}
+        {% for filter in collection.filters %}
+          {% if filter.param_name contains '.tag' %}
+            <fieldset class="filter filter--tags">
+              <legend>{{ block.settings.filter_title }}</legend>
+              {% for value in filter.values %}
+                {% assign tag_label = value.label | downcase | strip %}
+                {% if allowed_tags contains tag_label %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    {{ value.label }}
+                    <span>({{ value.count }})</span>
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      {% when 'price-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.type == 'price_range' %}
+            <fieldset>
+              <legend>{{ block.settings.filter_title }}</legend>
               <label>
                 Min
                 <input
                   type="number"
-                  name="{{ price_filter.min_value.param_name }}"
-                  value="{{ price_filter.min_value.value | divided_by: 100.0 }}"
+                  name="{{ filter.min_value.param_name }}"
+                  value="{{ filter.min_value.value }}"
                   min="0"
-                  max="{{ price_filter.range_max | divided_by: 100.0 }}"
-                  placeholder="0"
-                  data-min-display
-                  data-filter-input
+                  max="{{ filter.range_max }}"
+                  placeholder="{{ 0 | money_without_trailing_zeros }}"
                 >
               </label>
               <label>
                 Max
                 <input
                   type="number"
-                  name="{{ price_filter.max_value.param_name }}"
-                  value="{{ price_filter.max_value.value | divided_by: 100.0 }}"
+                  name="{{ filter.max_value.param_name }}"
+                  value="{{ filter.max_value.value }}"
                   min="0"
-                  max="{{ price_filter.range_max | divided_by: 100.0 }}"
-                  placeholder="{{ price_filter.range_max | divided_by: 100.0 }}"
-                  data-max-display
-                  data-filter-input
+                  max="{{ filter.range_max }}"
+                  placeholder="{{ filter.range_max | money_without_trailing_zeros }}"
                 >
               </label>
-            </div>
-          </div>
-        {%- endif -%}
-
-      {%- when 'product-type-filter' -%}
-        {%- assign type_filter = collection.filters | where: "label", "Product type" | first -%}
-        {%- if type_filter or block.settings.product_types -%}
-          <div class="filter-group" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.filter_title | default: 'Product Type' }}</h3>
-            
-            {%- if block.settings.product_types -%}
-              {%- assign custom_types = block.settings.product_types | split: ',' | strip -%}
-              {%- for type in custom_types -%}
-                <label class="filter-label">
-                  <input
-                    type="checkbox"
-                    name="filter.p.product_type"
-                    value="{{ type }}"
-                    {% if current_tags contains type %}checked{% endif %}
-                    data-filter-input
-                  >
-                  {{ type }}
-                </label>
-              {%- endfor -%}
-            {%- else -%}
-              {%- for value in type_filter.values -%}
-                <label class="filter-label">
-                  <input
-                    type="checkbox"
-                    name="{{ value.param_name }}"
-                    value="{{ value.value }}"
-                    {% if value.active %}checked{% endif %}
-                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                    data-filter-input
-                  >
-                  {{ value.label }}
-                  <span>({{ value.count }})</span>
-                </label>
-              {%- endfor -%}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
-      {%- when 'size-filter' -%}
-        {%- assign size_filter = collection.filters | where: "label", "Size" | first -%}
-        {%- if size_filter -%}
-          {%- assign allowed_sizes = block.settings.sizes | downcase | split: ',' | strip -%}
-          <div class="filter-group" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.filter_title | default: 'Size' }}</h3>
-            {%- for value in size_filter.values -%}
-              {%- assign size_lower = value.label | downcase | strip -%}
-              {%- if allowed_sizes.size == 0 or allowed_sizes.first == blank or allowed_sizes contains size_lower -%}
-                <label class="filter-label">
-                  <input
-                    type="checkbox"
-                    name="{{ value.param_name }}"
-                    value="{{ value.value }}"
-                    {% if value.active %}checked{% endif %}
-                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                    data-filter-input
-                  >
-                  {{ value.label }}
-                  <span>({{ value.count }})</span>
-                </label>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-    {%- endcase -%}
-  {%- endfor -%}
-
-  <div class="filter-actions">
-    <button type="button" class="btn btn--primary apply-filters-btn">Apply Filters</button>
-    <button type="button" class="btn btn--secondary clear-filters-btn">Clear All</button>
-  </div>
-
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      {% when 'product-type-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.label == block.settings.filter_title or filter.label == 'Product type' %}
+            <fieldset>
+              <legend>{{ block.settings.filter_title }}</legend>
+              {% assign allowed_types = block.settings.product_types | split: ',' | map: 'strip' | map: 'downcase' %}
+              {% for value in filter.values %}
+                {% assign label_down = value.label | downcase %}
+                {% if allowed_types.size == 0 or allowed_types contains label_down %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    {{ value.label }}
+                    <span>({{ value.count }})</span>
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      {% when 'size-filter' %}
+        {% for filter in collection.filters %}
+          {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
+            <fieldset class="filter filter--size">
+              <legend>{{ block.settings.filter_title }}</legend>
+              {% assign allowed_sizes = block.settings.sizes | split: ',' | map: 'strip' | map: 'downcase' %}
+              {% for value in filter.values %}
+                {% assign label_down = value.label | downcase %}
+                {% if allowed_sizes.size == 0 or allowed_sizes contains label_down %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    {{ value.label }}
+                    <span>({{ value.count }})</span>
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+    {% endcase %}
+  {% endfor %}
+  <button type="button" id="clearFiltersBtn">Clear All</button>
 </form>
