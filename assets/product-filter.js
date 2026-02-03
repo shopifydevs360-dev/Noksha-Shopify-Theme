@@ -77,9 +77,6 @@ function initApplyFilters() {
 /* ======================================================
   SHOW FILTER RESULT FUNCTION
 ====================================================== */
-/* ======================================================
-  SHOW FILTER RESULT FUNCTION - COMPLETE WITH FIXED PRICE
-====================================================== */
 function showFilterResult() {
   const form = document.getElementById('CollectionFilters');
   const activeFiltersContainer = document.querySelector('[data-active-filters]');
@@ -131,42 +128,13 @@ function showFilterResult() {
   const maxPrice = form.querySelector('input[name*="price.lte"]');
   
   if ((minPrice && minPrice.value) || (maxPrice && maxPrice.value)) {
-    let minVal = minPrice?.value || 0;
-    let maxVal = maxPrice?.value || '∞';
+    const minVal = minPrice?.value || 0;
+    const maxVal = maxPrice?.value || '∞';
     
-    // Parse values
-    const minNum = parseFloat(minVal);
-    const maxNum = maxVal === '∞' ? Infinity : parseFloat(maxVal);
-    
-    // Check if we should add this filter
-    const shouldAddFilter = minNum > 0 || (maxNum < Infinity && maxNum > 0);
-    
-    if (shouldAddFilter) {
-      // For display: Always show in dollars
-      // If value is likely in cents (> 100), divide by 100
-      const formatPriceForDisplay = (val) => {
-        if (val === '∞' || val === 0 || val === '0') return '0';
-        
-        const num = parseFloat(val);
-        
-        // Check if this looks like a price in cents
-        // (Most products aren't over $1000, so values > 1000 are likely cents)
-        if (num >= 1000) {
-          // It's in cents, convert to dollars
-          return (num / 100).toFixed(2);
-        } else if (num >= 100) {
-          // Could be dollars or cents - check context
-          // If max is "100" and products show up to 1000, then "100" was treated as cents
-          // So divide by 100
-          return (num / 100).toFixed(2);
-        } else {
-          // Small number, likely already in dollars
-          return num % 1 === 0 ? num.toString() : num.toFixed(2);
-        }
-      };
-      
-      const minDisplay = formatPriceForDisplay(minVal);
-      const maxDisplay = maxVal === '∞' ? '∞' : formatPriceForDisplay(maxVal);
+    if (minVal > 0 || maxVal !== '∞') {
+      // SIMPLIFIED PRICE FORMAT - JUST SHOW THE NUMBERS
+      const minDisplay = minVal === 0 ? '0' : (minVal / 100).toFixed(2);
+      const maxDisplay = maxVal === '∞' ? '∞' : (maxVal / 100).toFixed(2);
       
       activeFilters.push({
         type: 'price_range',
