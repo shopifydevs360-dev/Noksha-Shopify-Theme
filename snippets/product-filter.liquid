@@ -204,9 +204,9 @@
       <div class="filter-item filter-size hide">
         {% for filter in collection.filters %}
           {% if filter.type == 'list' and filter.label == block.settings.filter_title %}
-            <fieldset class="filter">
-              <legend class="filter-title">{{ block.settings.filter_title }}</legend>
-              <div class="filter-body">
+            <fieldset class="filter accordion-item">
+              <legend class="filter-title accordion-trigger">{{ block.settings.filter_title }}</legend>
+              <div class="filter-body accordion-content">
                 {% for value in filter.values %}
                   {% assign short_label = value.label | split: '(' | last | split: ')' | first | strip %}
                   <label>
