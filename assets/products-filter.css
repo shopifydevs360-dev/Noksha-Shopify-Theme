@@ -107,3 +107,49 @@
 .product-filter legend {
   padding: 0;
 }
+/* ===============================
+  PRICE FILTER – DISTINCT STYLE
+================================ */
+
+.product-filter .filter-item.filter-price {
+  padding: 1rem 0;
+  border-bottom: 0; /* remove divider for uniqueness */
+}
+
+/* Wrapper look */
+.product-filter .filter-item.filter-price .filter-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  background: rgb(var(--color-background));
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 6px;
+}
+
+/* Label layout */
+.product-filter .filter-item.filter-price label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  gap: 0.3rem;
+}
+
+/* Inputs */
+.product-filter .filter-item.filter-price input[type="number"] {
+  width: 100%;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.85rem;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 4px;
+  background: transparent;
+  color: rgb(var(--color-heading));
+}
+
+/* Focus state */
+.product-filter .filter-item.filter-price input[type="number"]:focus {
+  outline: none;
+  border-color: #000;
+}
