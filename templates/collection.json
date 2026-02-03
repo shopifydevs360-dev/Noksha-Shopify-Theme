@@ -26,13 +26,13 @@
         },
         "product_type_filter_fHRmjP": {
           "type": "product-type-filter",
-          "disabled": true,
           "settings": {
             "filter_title": "Product Type"
           }
         },
         "vendor_filter_pY8BW4": {
           "type": "vendor-filter",
+          "disabled": true,
           "settings": {}
         },
         "size_filter_G9C7xj": {
