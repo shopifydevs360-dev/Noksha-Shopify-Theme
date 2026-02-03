@@ -185,3 +185,12 @@
     margin-top: 1rem;
     color: rgb(var(--color-heading));
 }
+
+/* ===============================
+  Filter Result
+================================ */
+
+filter-result .active-filters {
+  display: flex;
+  gap: 1rem;
+}
