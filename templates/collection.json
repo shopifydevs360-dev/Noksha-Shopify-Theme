@@ -26,6 +26,7 @@
         },
         "product_type_filter_fHRmjP": {
           "type": "product-type-filter",
+          "disabled": true,
           "settings": {
             "filter_title": "Product Type"
           }
