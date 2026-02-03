@@ -193,4 +193,15 @@
 .filter-result .active-filters {
   display: flex;
   gap: 1rem;
+  margin-top: 0.8rem;
+}
+.active-filter-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f3535324;
+    font-size: 0.7em;
+    padding: 3px 12px;
+    border-radius: 12px;
+    border: 1px solid rgb(var(--color-border));
 }
