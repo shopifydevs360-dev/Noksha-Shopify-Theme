@@ -132,10 +132,14 @@ function showFilterResult() {
     const maxVal = maxPrice?.value || '∞';
     
     if (minVal > 0 || maxVal !== '∞') {
+      // SIMPLIFIED PRICE FORMAT - JUST SHOW THE NUMBERS
+      const minDisplay = minVal === 0 ? '0' : (minVal / 100).toFixed(2);
+      const maxDisplay = maxVal === '∞' ? '∞' : (maxVal / 100).toFixed(2);
+      
       activeFilters.push({
         type: 'price_range',
         value: `${minVal}-${maxVal}`,
-        label: `Price: ${formatCurrency(minVal)} - ${formatCurrency(maxVal)}`
+        label: `Price: ${minDisplay} - ${maxDisplay}`
       });
     }
   }
@@ -176,26 +180,6 @@ function showFilterResult() {
       });
     });
   }
-}
-
-/* ======================================================
-  FORMAT CURRENCY HELPER
-====================================================== */
-function formatCurrency(value) {
-  if (value === '∞' || value === '' || value === '0' || value === 0) return '∞';
-  if (typeof value === 'string' && value.toLowerCase() === 'max') return '∞';
-  
-  // Try to parse as number
-  const numValue = parseFloat(value);
-  if (isNaN(numValue)) return value;
-  
-  // Format as currency (assuming value is in cents)
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(numValue / 100);
 }
 
 /* ======================================================
