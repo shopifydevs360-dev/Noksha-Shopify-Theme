@@ -163,3 +163,16 @@
 .product-filter .accordion-content {
     border-bottom: none;
 }
+
+
+.filter-actions .btn {
+    background: rgb(var(--color-heading));
+    margin-top: 1rem;
+    color: rgb(var(--color-background));
+    border: 1px solid rgb(var(--color-heading));
+}
+.filter-actions .btn {
+    background: rgb(var(--color-background));
+    margin-top: 1rem;
+    color: rgb(var(--color-heading));
+}
