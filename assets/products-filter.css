@@ -153,3 +153,6 @@
   outline: none;
   border-color: #000;
 }
+.product-filter .accordion-trigger:first-child {
+    border-top: none;
+}
