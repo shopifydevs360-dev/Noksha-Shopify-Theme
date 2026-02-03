@@ -4,6 +4,9 @@
     gap: 30px;
     margin: 1rem 0 4rem 0;
 }
+.main-product-list .collection-header{
+  margin-top: 3rem;
+}
 .main-product-list .inner-warpper {
     display: flex;
     gap: 2rem;
