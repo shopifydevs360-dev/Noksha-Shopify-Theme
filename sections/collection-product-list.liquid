@@ -85,51 +85,6 @@
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-  const sidebar = document.querySelector('.product-filter');
-  const buttons = document.querySelectorAll('.filter-toggle-btn');
-  const filterItems = document.querySelectorAll('.filter-item');
-  const sortItem = document.querySelector('.filter-sort');
-
-  const isMobile = () => window.innerWidth <= 991;
-
-  function hideAll() {
-    filterItems.forEach(item => item.classList.add('hide'));
-  }
-
-  function showAllFilters(includeSort = false) {
-    filterItems.forEach(item => {
-      if (item.classList.contains('filter-sort') && !includeSort) return;
-      item.classList.remove('hide');
-    });
-  }
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const action = btn.dataset.action;
-
-      sidebar.classList.add('is-expanded');
-      hideAll();
-
-      if (isMobile()) {
-        // Mobile: Filter shows EVERYTHING
-        showAllFilters(true);
-        return;
-      }
-
-      if (action === 'filter') {
-        showAllFilters(false);
-      }
-
-      if (action === 'sort' && sortItem) {
-        sortItem.classList.remove('hide');
-      }
-    });
-  });
-});
-
-</script>
 <script src="{{ 'product-filter.js' | asset_url }}" defer></script>
 
 {% schema %}
