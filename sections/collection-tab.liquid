@@ -3,7 +3,7 @@
 <div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
   <div class="product-carousel section-{{ section.id }}-padding">
     <!-- ================= MOBILE TITLE ================= -->
-    <h2 class="container hide-desktop hide-large-screens">
+    <h2 class="container hide-desktop hide-large-screens {{ section.settings.title_font_size }}">
       <a href="{{ section.settings.title_link }}" aria-label="{{ section.settings.title }}">
         <div data-reveal="lines-masked" class="info-title">
           {{ section.settings.title }}
@@ -36,7 +36,7 @@
         <!-- Desktop Lead Card -->
         <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
           <div class="collection-lead-info">
-            <h2 class="h-3">
+            <h2 class="{{ section.settings.title_font_size }}">
               <a href="{{ section.settings.title_link }}">
                 <div data-reveal="lines-masked" class="info-title">
                   {{ section.settings.title }}
