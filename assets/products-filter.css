@@ -171,7 +171,7 @@
     color: rgb(var(--color-background));
     border: 1px solid rgb(var(--color-heading));
 }
-.filter-actions .btn {
+.filter-actions .btn:hover {
     background: rgb(var(--color-background));
     margin-top: 1rem;
     color: rgb(var(--color-heading));
