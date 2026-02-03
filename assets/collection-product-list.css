@@ -8,3 +8,6 @@
     display: flex;
     gap: 2rem;
 }
+.main-product-list .product-list {
+    width: 100%;
+}
