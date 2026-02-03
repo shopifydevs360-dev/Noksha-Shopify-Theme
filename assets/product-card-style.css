@@ -102,7 +102,7 @@ text-decoration: underline;
 }
 /* Product Information */
 
-.split-aligner {
+.product-card .split-aligner {
     display: flex;
     justify-content: space-between;
     border-top: 1px solid rgb(var(--color-border));
@@ -110,7 +110,8 @@ text-decoration: underline;
     gap: 0.5rem;
 }
 @media (max-width: 991px){
-    .split-aligner {
+   .product-card .split-aligner {
+    flex-direction: column;
 }
 }
 .product-card .title a {
@@ -122,5 +123,4 @@ text-decoration: underline;
     color: rgb(var(--color-price-regular));
     min-width: fit-content;
     font-size: 0.9em;
-    padding-left: 4px;
 }
