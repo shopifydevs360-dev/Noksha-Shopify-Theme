@@ -108,6 +108,11 @@ text-decoration: underline;
     padding: 6px;
     color: inherit;
 }
-.split-aligner .title a{
+.product-card .title a{
   color: rgb(var(--color-heading));
+  font-size: 0.8em
+}
+.product-card .price{
+  color: rgb(var(--color-heading));
+  font-size: 0.8em
 }
