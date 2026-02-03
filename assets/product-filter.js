@@ -1,3 +1,4 @@
+// product-filter.js
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('CollectionFilters');
 
@@ -54,7 +55,7 @@ function setInitialPaginationData() {
 }
 
 /* ======================================================
-  APPLY FILTERS
+  APPLY FILTERS - UPDATED TO SHOW FILTER RESULT
 ====================================================== */
 function initApplyFilters() {
   const btn = document.getElementById('applyFiltersBtn');
@@ -68,12 +69,175 @@ function initApplyFilters() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     fetchProducts(false, true);
-    closeFilterUI(); // ✅ CLOSE & HIDE EVERYTHING
+    showFilterResult(); // Add this line to show filter result
+    closeFilterUI();
   });
 }
 
 /* ======================================================
-  CLEAR FILTERS
+  SHOW FILTER RESULT FUNCTION
+====================================================== */
+function showFilterResult() {
+  const form = document.getElementById('CollectionFilters');
+  const activeFiltersContainer = document.querySelector('[data-active-filters]');
+  const clearAllBtn = document.querySelector('[data-clear-all-filters]');
+  
+  if (!form || !activeFiltersContainer) return;
+  
+  // Get all active filter inputs
+  const activeFilters = [];
+  
+  // Check checkboxes
+  form.querySelectorAll('input[type="checkbox"]:checked').forEach(input => {
+    const label = input.closest('label');
+    if (label) {
+      let text = label.textContent.trim();
+      // Remove count from text (e.g., "Red (12)" becomes "Red")
+      text = text.split('(')[0].trim();
+      if (text) {
+        activeFilters.push({
+          type: input.name,
+          value: input.value,
+          label: text
+        });
+      }
+    }
+  });
+  
+  // Check radio buttons
+  form.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+    // Skip default sort if needed
+    if (input.name === 'sort_by' && input.value === 'manual') return;
+    
+    const label = input.closest('label');
+    if (label) {
+      let text = label.textContent.trim();
+      text = text.split('(')[0].trim();
+      if (text) {
+        activeFilters.push({
+          type: input.name,
+          value: input.value,
+          label: text
+        });
+      }
+    }
+  });
+  
+  // Check price range inputs
+  const minPrice = form.querySelector('input[name*="price.gte"]');
+  const maxPrice = form.querySelector('input[name*="price.lte"]');
+  
+  if ((minPrice && minPrice.value) || (maxPrice && maxPrice.value)) {
+    const minVal = minPrice?.value || 0;
+    const maxVal = maxPrice?.value || '∞';
+    
+    if (minVal > 0 || maxVal !== '∞') {
+      activeFilters.push({
+        type: 'price_range',
+        value: `${minVal}-${maxVal}`,
+        label: `Price: ${minVal} - ${maxVal}`
+      });
+    }
+  }
+  
+  // Update UI - Show active filters
+  if (activeFilters.length === 0) {
+    activeFiltersContainer.innerHTML = '';
+    if (clearAllBtn) clearAllBtn.classList.add('hide');
+  } else {
+    // Build active filters HTML
+    const filtersHtml = activeFilters.map(filter => {
+      // Create display text
+      let displayText = filter.label;
+      
+      return `
+        <div class="active-filter-tag" 
+             data-filter-type="${filter.type}" 
+             data-filter-value="${filter.value}">
+          <span class="filter-label">${displayText}</span>
+          <span class="remove-icon">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+      `;
+    }).join('');
+    
+    activeFiltersContainer.innerHTML = filtersHtml;
+    if (clearAllBtn) clearAllBtn.classList.remove('hide');
+    
+    // Add click event to remove buttons
+    activeFiltersContainer.querySelectorAll('.active-filter-tag').forEach(tag => {
+      tag.addEventListener('click', function() {
+        const filterType = this.dataset.filterType;
+        const filterValue = this.dataset.filterValue;
+        removeSingleFilter(filterType, filterValue);
+      });
+    });
+  }
+}
+
+/* ======================================================
+  REMOVE SINGLE FILTER
+====================================================== */
+function removeSingleFilter(filterType, filterValue) {
+  const form = document.getElementById('CollectionFilters');
+  if (!form) return;
+  
+  // Handle price range
+  if (filterType === 'price_range') {
+    const minInput = form.querySelector('input[name*="price.gte"]');
+    const maxInput = form.querySelector('input[name*="price.lte"]');
+    if (minInput) minInput.value = '';
+    if (maxInput) maxInput.value = '';
+  } 
+  // Handle sort by - reset to default
+  else if (filterType === 'sort_by') {
+    const defaultSort = form.querySelector('input[name="sort_by"][value="manual"]');
+    if (defaultSort) defaultSort.checked = true;
+  }
+  // Handle other inputs
+  else {
+    const input = form.querySelector(`[name="${filterType}"][value="${filterValue}"]`);
+    if (input) input.checked = false;
+  }
+  
+  // Update UI and fetch new results
+  window.COLLECTION_AJAX.currentPage = 1;
+  fetchProducts(false, false);
+  showFilterResult(); // Update the filter result display
+}
+
+/* ======================================================
+  CLEAR ALL FILTERS (RESULT BAR BUTTON)
+====================================================== */
+function initClearAllFilters() {
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-clear-all-filters]')) {
+      e.preventDefault();
+      clearAllFilters();
+    }
+  });
+}
+
+function clearAllFilters() {
+  const form = document.getElementById('CollectionFilters');
+  if (!form) return;
+  
+  // Reset form
+  form.reset();
+  
+  // Update UI and fetch results
+  window.COLLECTION_AJAX.currentPage = 1;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  fetchProducts(false, false);
+  showFilterResult(); // Update filter result (will be empty)
+  closeFilterUI();
+}
+
+/* ======================================================
+  REST OF YOUR EXISTING CODE (MINIMAL CHANGES)
 ====================================================== */
 function initClearFilters() {
   const btn = document.getElementById('clearFiltersBtn');
@@ -88,13 +252,11 @@ function initClearFilters() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     fetchProducts(false, true);
+    showFilterResult(); // Add this line
     closeFilterUI();
   });
 }
 
-/* ======================================================
-  PAGINATION
-====================================================== */
 function initPagination() {
   window.removeEventListener('scroll', infiniteScrollHandler);
 
@@ -134,9 +296,6 @@ function infiniteScrollHandler() {
   }
 }
 
-/* ======================================================
-  QUERY PARAMS
-====================================================== */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
   const params = new URLSearchParams();
@@ -155,9 +314,6 @@ function buildQueryParams() {
   return { params, collectionHandle };
 }
 
-/* ======================================================
-  FETCH PRODUCTS
-====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
@@ -196,6 +352,9 @@ function fetchProducts(append = false, resetPage = false) {
       if (typeof initAllProductCartEvents === 'function') {
         initAllProductCartEvents();
       }
+      
+      // Update product count in filter result
+      updateProductCount();
     })
     .catch(err => console.error('Filter AJAX error:', err))
     .finally(() => {
@@ -205,7 +364,20 @@ function fetchProducts(append = false, resetPage = false) {
 }
 
 /* ======================================================
-  FILTER / SORT TOGGLE + OFFCANVAS
+  UPDATE PRODUCT COUNT
+====================================================== */
+function updateProductCount() {
+  const filterResultCount = document.querySelector('[data-filter-result-count]');
+  const productsContainer = getProductsContainer();
+  
+  if (!filterResultCount || !productsContainer) return;
+  
+  const totalProducts = productsContainer.dataset.totalProducts || '0';
+  filterResultCount.textContent = `${totalProducts} Products Found`;
+}
+
+/* ======================================================
+  FILTER TOGGLE & OTHER FUNCTIONS (UNCHANGED)
 ====================================================== */
 function initFilterToggle() {
   const sidebar = document.querySelector('.product-filter');
@@ -290,9 +462,6 @@ function initFilterToggle() {
   window.addEventListener('resize', closeSidebar);
 }
 
-/* ======================================================
-  CLOSE FILTER UI (USED BY APPLY / CLEAR)
-====================================================== */
 function closeFilterUI() {
   document.querySelectorAll('.filter-item').forEach(i => i.classList.add('hide'));
   document.querySelector('.filter-actions')?.classList.add('hide');
@@ -302,3 +471,8 @@ function closeFilterUI() {
   document.body.classList.remove('is-filter-open');
   document.querySelector('.filter-overlay')?.remove();
 }
+
+// Initialize clear all filters on page load
+document.addEventListener('DOMContentLoaded', () => {
+  initClearAllFilters();
+});
