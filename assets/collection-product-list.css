@@ -7,6 +7,7 @@
 .main-product-list .inner-warpper {
     display: flex;
     gap: 2rem;
+    width: 100%;
 }
 .main-product-list .product-list {
     width: 100%;
