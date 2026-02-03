@@ -133,8 +133,8 @@ function showFilterResult() {
     
     if (minVal > 0 || maxVal !== '∞') {
       // SIMPLIFIED PRICE FORMAT - JUST SHOW THE NUMBERS
-      const minDisplay = minVal === 0 ? '0' : (minVal / 100).toFixed(2);
-      const maxDisplay = maxVal === '∞' ? '∞' : (maxVal / 100).toFixed(2);
+      const minDisplay = minVal === 0 ? '0' : (minVal).toFixed(2);
+      const maxDisplay = maxVal === '∞' ? '∞' : (maxVal).toFixed(2);
       
       activeFilters.push({
         type: 'price_range',
