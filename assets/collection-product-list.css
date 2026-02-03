@@ -2,7 +2,7 @@
 .collection-wrapper {
     display: flex;
     gap: 30px;
-    margin: 1rem 0;
+    margin: 1rem 0 4rem 0;
 }
 .main-product-list .inner-warpper {
     display: flex;
