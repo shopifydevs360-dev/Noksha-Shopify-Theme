@@ -90,12 +90,12 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    margin-bottom: 0.8rem;
 }
 .product-filter .filter-body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-top: 0.8rem;
 }
 .product-filter fieldset {
   border: 0;
