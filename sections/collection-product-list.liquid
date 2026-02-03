@@ -25,13 +25,24 @@
         {% endif %}
       </div>
     </div>
-    {% comment %} Filter Result {% endcomment %}
-     <div class="filter-result sidebar-space">
-      <span class="filter-result-count" data-filter-result-count>
-        {{ collection.products_count }} Products Found
-      </span>
-      
-     </div>
+{% comment %} Filter Result {% endcomment %}
+<div class="filter-result sidebar-space">
+  <div class="filter-result-header">
+    <span class="filter-result-count" data-filter-result-count>
+      {{ collection.products_count }} Products Found
+    </span>
+    {% if collection.products_count > 0 %}
+    <button type="button" class="filter-clear-all hide" data-clear-all-filters>
+      Clear All
+      <span class="clear-icon">{%- render 'theme-icon', icon: 'close' -%}</span>
+    </button>
+    {% endif %}
+  </div>
+  
+  <div class="active-filters" data-active-filters>
+    {% comment %} Active filters will be injected here via JS {% endcomment %}
+  </div>
+</div>
     <div class="collection-wrapper sidebar-space">
       <main class="inner-warpper">
         

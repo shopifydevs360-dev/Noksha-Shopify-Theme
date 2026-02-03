@@ -23,7 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
 initRemoveSingleFilter(); // Add this
 initClearAllFilters(); // Add this
 });
-
+// Also add this event listener for filter changes
+const form = document.getElementById('CollectionFilters');
+if (form) {
+  form.addEventListener('change', () => {
+    updateActiveFiltersDisplay();
+  });
+}
 /* ======================================================
   HELPERS
 ====================================================== */
@@ -305,6 +311,7 @@ function closeFilterUI() {
   document.body.classList.remove('is-filter-open');
   document.querySelector('.filter-overlay')?.remove();
 }
+
 
 
 /* ======================================================
