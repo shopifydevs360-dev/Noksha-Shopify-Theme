@@ -189,7 +189,22 @@
 /* ===============================
   Filter Result
 ================================ */
-
+.filter-result-header {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+.filter-result .filter-clear-all {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    font-size: 0.8em;
+    border-left: 1px solid;
+    padding-left: 1rem;
+}
+.filter-result .filter-clear-all svg{
+  width: 1rem;
+}
 .filter-result .active-filters {
     display: flex;
     gap: 0.5rem;
