@@ -52,7 +52,10 @@ function initVariantAjaxAddToCart() {
     if (button.dataset.ajaxInit === 'true') return;
     button.dataset.ajaxInit = 'true';
 
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation(); // ✅ FIX mobile double-tap
+
       if (this.disabled) return;
 
       const wrapper = this.closest('.cart-button-wrapper');
@@ -70,11 +73,11 @@ function initVariantAjaxAddToCart() {
         .then(() => {
           refreshAllCartsUI();
           if (isDrawer) openBagDrawer();
-        })
-        .catch(err => console.error('Variant add error:', err));
+        });
     });
   });
 }
+
 
 /* ---------------------------------
    CART COUNT UPDATE
