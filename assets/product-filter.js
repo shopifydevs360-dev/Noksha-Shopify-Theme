@@ -56,7 +56,7 @@ function setInitialPaginationData() {
 }
 
 /* ======================================================
-  APPLY FILTERS
+  APPLY FILTERS - UPDATED TO SHOW FILTER RESULT
 ====================================================== */
 function initApplyFilters() {
   const btn = document.getElementById('applyFiltersBtn');
@@ -128,28 +128,13 @@ function showFilterResult() {
   const maxPrice = form.querySelector('input[name*="price.lte"]');
   
   if ((minPrice && minPrice.value) || (maxPrice && maxPrice.value)) {
-    let minVal = minPrice?.value || 0;
-    let maxVal = maxPrice?.value || '∞';
+    const minVal = minPrice?.value || 0;
+    const maxVal = maxPrice?.value || '∞';
     
-    // Parse values
-    const minNum = parseFloat(minVal);
-    const maxNum = maxVal === '∞' ? Infinity : parseFloat(maxVal);
-    
-    // Check if we should add this filter
-    const shouldAddFilter = minNum > 0 || (maxNum < Infinity && maxNum > 0);
-    
-    if (shouldAddFilter) {
-      // Format price for display - convert cents to dollars
-      const formatPriceForDisplay = (val) => {
-        if (val === '∞' || val === 0 || val === '0') return '0';
-        
-        const num = parseFloat(val);
-        // Convert cents to dollars and show 2 decimal places
-        return (num / 100).toFixed(2);
-      };
-      
-      const minDisplay = formatPriceForDisplay(minVal);
-      const maxDisplay = maxVal === '∞' ? '∞' : formatPriceForDisplay(maxVal);
+    if (minVal > 0 || maxVal !== '∞') {
+      // SIMPLIFIED PRICE FORMAT - JUST SHOW THE NUMBERS
+      const minDisplay = minVal === 0 ? '0' : (minVal / 100).toFixed(2);
+      const maxDisplay = maxVal === '∞' ? '∞' : (maxVal / 100).toFixed(2);
       
       activeFilters.push({
         type: 'price_range',
@@ -316,7 +301,7 @@ function infiniteScrollHandler() {
 }
 
 /* ======================================================
-  QUERY PARAMS - UPDATED WITH PRICE CONVERSION
+  QUERY PARAMS
 ====================================================== */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
@@ -328,17 +313,7 @@ function buildQueryParams() {
       if (value && value.toString().trim()) {
         // Skip default sort
         if (key === 'sort_by' && value === 'manual') continue;
-        
-        // Convert price values to cents (Shopify expects cents)
-        if (key.includes('price')) {
-          const numValue = parseFloat(value);
-          if (!isNaN(numValue)) {
-            // Multiply by 100 to convert dollars to cents
-            params.append(key, Math.round(numValue * 100).toString());
-          }
-        } else {
-          params.append(key, value);
-        }
+        params.append(key, value);
       }
     }
   }
@@ -351,7 +326,7 @@ function buildQueryParams() {
 }
 
 /* ======================================================
-  FETCH PRODUCTS
+  FETCH PRODUCTS - UPDATED WITH COUNTER
 ====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
