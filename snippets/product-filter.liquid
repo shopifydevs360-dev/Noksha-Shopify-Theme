@@ -233,8 +233,8 @@
 
       <div class="filter-item filter-sort hide">
         <fieldset class="filter">
-          <legend class="filter-title">Sort By</legend>
-          <div class="filter-body">
+          <legend class="filter-title accordion-trigger">Sort By</legend>
+          <div class="filter-body accordion-content">
             {% for option in collection.sort_options %}
               <label>
                 <input
@@ -253,14 +253,14 @@
     {% endcase %}
   {% endfor %}
 
-  <div class="filter-actions">
-    <button type="button" id="applyFiltersBtn" class="btn btn--apply hide">
+  <div class="filter-actions hide">
+    <button type="button" id="applyFiltersBtn" class="btn btn--apply">
       Apply Filters
     </button>
 
     <button
       type="button"
-      class="btn btn--clear hide"
+      class="btn btn--clear"
       onclick="window.location.href='{{ collection.url }}'">
       Clear All
     </button>
