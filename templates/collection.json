@@ -26,6 +26,7 @@
         },
         "size_filter_G9C7xj": {
           "type": "size-filter",
+          "disabled": true,
           "settings": {
             "filter_title": "Size"
           }
