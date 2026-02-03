@@ -35,8 +35,8 @@
           "type": "image_slide",
           "settings": {
             "text_color_scheme": "default",
-            "image": "shopify://shop_images/banner_image_2.png",
-            "mobile_image": "shopify://shop_images/DSC06172.jpg",
+            "image": "shopify://shop_images/slider_image_2.png",
+            "mobile_image": "shopify://shop_images/6-IMG_9209.jpg",
             "subheading": "PREMIUM HIJABS FOR DAILY WEAR",
             "sub_heading_font_size": "h4",
             "heading": "NEW IN HIJAB",
