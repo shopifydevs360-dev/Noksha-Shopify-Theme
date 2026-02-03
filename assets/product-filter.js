@@ -56,7 +56,7 @@ function setInitialPaginationData() {
 }
 
 /* ======================================================
-  APPLY FILTERS - UPDATED TO SHOW FILTER RESULT
+  APPLY FILTERS
 ====================================================== */
 function initApplyFilters() {
   const btn = document.getElementById('applyFiltersBtn');
@@ -326,7 +326,7 @@ function buildQueryParams() {
 }
 
 /* ======================================================
-  FETCH PRODUCTS - UPDATED WITH COUNTER
+  FETCH PRODUCTS
 ====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
@@ -387,7 +387,7 @@ function fetchProducts(append = false, resetPage = false) {
 }
 
 /* ======================================================
-  UPDATE PRODUCT COUNTER
+  UPDATE PRODUCT COUNTER - SIMPLIFIED
 ====================================================== */
 function updateProductCounter() {
   const filterResultCount = document.querySelector('[data-filter-result-count]');
@@ -396,20 +396,9 @@ function updateProductCounter() {
   if (!filterResultCount || !productsContainer) return;
   
   const totalProducts = parseInt(productsContainer.dataset.totalProducts || '0', 10);
-  const productsPerPage = parseInt(getMainContainer()?.dataset.productsPerPage || '24', 10);
-  const currentPage = parseInt(productsContainer.dataset.currentPage || '1', 10);
   
-  if (totalProducts === 0) {
-    filterResultCount.textContent = '0 Products Found';
-  } else if (totalProducts <= productsPerPage || currentPage === 1) {
-    // First page or less than one page
-    filterResultCount.textContent = `${totalProducts} Products Found`;
-  } else {
-    // Calculate range for current page
-    const start = ((currentPage - 1) * productsPerPage) + 1;
-    const end = Math.min(currentPage * productsPerPage, totalProducts);
-    filterResultCount.textContent = `Showing ${start}-${end} of ${totalProducts} Products`;
-  }
+  // ALWAYS show "X Products Found" - never show "Showing X-Y of Z Products"
+  filterResultCount.textContent = `${totalProducts} Products Found`;
 }
 
 /* ======================================================
