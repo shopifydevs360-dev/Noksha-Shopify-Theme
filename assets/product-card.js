@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   initAllProductCartEvents();
 });
 
@@ -8,11 +8,57 @@ document.addEventListener("DOMContentLoaded", () => {
 function initAllProductCartEvents() {
   initAjaxAddToCart();
   initVariantAjaxAddToCart();
+  initSafeMobileNavigation();
 }
 
-/* ---------------------------------
-   SINGLE PRODUCT – AJAX MODE
----------------------------------- */
+/* ======================================================
+   ✅ SAFE MOBILE PRODUCT CARD NAVIGATION
+   - Allows tap
+   - Blocks scroll/swipe
+====================================================== */
+function initSafeMobileNavigation() {
+  const TAP_THRESHOLD = 10; // px – movement allowed for a tap
+
+  document.querySelectorAll('.product-card a[href]').forEach(link => {
+    if (link.dataset.navInit === 'true') return;
+    link.dataset.navInit = 'true';
+
+    let startX = 0;
+    let startY = 0;
+    let moved = false;
+
+    link.addEventListener('touchstart', e => {
+      const touch = e.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      moved = false;
+    }, { passive: true });
+
+    link.addEventListener('touchmove', e => {
+      const touch = e.touches[0];
+      const diffX = Math.abs(touch.clientX - startX);
+      const diffY = Math.abs(touch.clientY - startY);
+
+      if (diffX > TAP_THRESHOLD || diffY > TAP_THRESHOLD) {
+        moved = true; // user is scrolling
+      }
+    }, { passive: true });
+
+    link.addEventListener('touchend', e => {
+      // If user scrolled, DO NOT navigate
+      if (moved) return;
+
+      // Ignore taps on cart buttons
+      if (e.target.closest('.cart-button-wrapper')) return;
+
+      window.location.href = link.href;
+    });
+  });
+}
+
+/* ======================================================
+   SINGLE PRODUCT – AJAX ADD TO CART
+====================================================== */
 function initAjaxAddToCart() {
   document.querySelectorAll(
     '.cart-button-wrapper.btn-action--ajax .product-form,' +
@@ -23,6 +69,7 @@ function initAjaxAddToCart() {
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      e.stopPropagation();
 
       const wrapper = this.closest('.cart-button-wrapper');
       const isDrawer = wrapper?.classList.contains('btn-action--ajax_drawer');
@@ -34,6 +81,7 @@ function initAjaxAddToCart() {
         .then(res => res.json())
         .then(() => {
           refreshAllCartsUI();
+          updateCartCount();
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error('Add to cart error:', err));
@@ -41,9 +89,9 @@ function initAjaxAddToCart() {
   });
 }
 
-/* ---------------------------------
-   MULTI VARIANT – AJAX MODE
----------------------------------- */
+/* ======================================================
+   MULTI VARIANT – AJAX ADD TO CART
+====================================================== */
 function initVariantAjaxAddToCart() {
   document.querySelectorAll(
     '.cart-button-wrapper.btn-action--ajax .card-variant-btn,' +
@@ -52,7 +100,10 @@ function initVariantAjaxAddToCart() {
     if (button.dataset.ajaxInit === 'true') return;
     button.dataset.ajaxInit = 'true';
 
-    button.addEventListener('click', function () {
+    const handler = function (e) {
+      e.preventDefault();
+      e.stopPropagation(); // 🔑 critical for mobile
+
       if (this.disabled) return;
 
       const wrapper = this.closest('.cart-button-wrapper');
@@ -69,16 +120,20 @@ function initVariantAjaxAddToCart() {
         .then(res => res.json())
         .then(() => {
           refreshAllCartsUI();
+          updateCartCount();
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error('Variant add error:', err));
-    });
+    };
+
+    button.addEventListener('click', handler);
+    button.addEventListener('touchend', handler);
   });
 }
 
-/* ---------------------------------
+/* ======================================================
    CART COUNT UPDATE
----------------------------------- */
+====================================================== */
 function updateCartCount() {
   fetch('/cart.js')
     .then(res => res.json())
@@ -89,9 +144,9 @@ function updateCartCount() {
     });
 }
 
-/* ---------------------------------
+/* ======================================================
    OPEN BAG DRAWER
----------------------------------- */
+====================================================== */
 function openBagDrawer() {
   const trigger = document.querySelector('[data-trigger-section="bag-drawer"]');
   if (trigger) trigger.click();
