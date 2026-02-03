@@ -139,20 +139,8 @@
         "image_kECNVX": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/ABAYAS_15cc78c0-b1eb-41af-88c6-2.jpg",
+            "image": "shopify://shop_images/DSC06449.jpg",
             "title": "ABAYAS",
-            "cta_text": "SHOP NOW",
-            "link": "",
-            "button_type": "btn--animation",
-            "animation_type": "hover-underline",
-            "image_background_color": "#f3f3f4"
-          }
-        },
-        "image_aqwiNQ": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/MAXIS_2_81740592-609c-471a-96f9.jpg",
-            "title": "MAXI DRESSES",
             "cta_text": "SHOP NOW",
             "link": "",
             "button_type": "btn--animation",
@@ -163,8 +151,20 @@
         "image_y36x6i": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Co-Ords_1_4ac1d864-feb8-4340-a9f.jpg",
+            "image": "shopify://shop_images/DSC06366.jpg",
             "title": "HIJABS",
+            "cta_text": "SHOP NOW",
+            "link": "",
+            "button_type": "btn--animation",
+            "animation_type": "hover-underline",
+            "image_background_color": "#f3f3f4"
+          }
+        },
+        "image_aqwiNQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/8-IMG_9612_d4d6a911-67dc-45cf-92dd-b626ce837d5a.jpg",
+            "title": "MAXI DRESSES",
             "cta_text": "SHOP NOW",
             "link": "",
             "button_type": "btn--animation",
@@ -175,7 +175,7 @@
         "image_aAzyWm": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/HIJABS_1_2b0fca8a-4c36-4dcd-b998.jpg",
+            "image": "shopify://shop_images/DSC06443.jpg",
             "title": "CO-ORDS",
             "cta_text": "SHOP NOW",
             "link": "",
@@ -187,8 +187,8 @@
       },
       "block_order": [
         "image_kECNVX",
-        "image_aqwiNQ",
         "image_y36x6i",
+        "image_aqwiNQ",
         "image_aAzyWm"
       ],
       "name": "Image Overlay Grid",
