@@ -230,10 +230,10 @@
     SORT FILTER (RADIO STYLE)
     ============================
     {%- endcomment -%}
-
+    {%- when 'sort-filter' -%}
       <div class="filter-item filter-sort hide">
         <fieldset class="filter">
-          <legend class="filter-title">Sort By</legend>
+          <legend class="filter-title">{{ block.settings.filter_title }}</legend>
           <div class="filter-body">
             {% for option in collection.sort_options %}
               <label>
