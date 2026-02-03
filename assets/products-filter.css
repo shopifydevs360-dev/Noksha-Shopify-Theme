@@ -75,7 +75,6 @@
 .product-filter input[type="radio"]
  {
   accent-color: #000; /* dark color */
-  background: red;
 }
 
 .product-filter .filter-item{
