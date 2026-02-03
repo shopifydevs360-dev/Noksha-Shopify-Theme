@@ -119,6 +119,7 @@ body.has-promo-bar .m-sidebar__content {
     position: relative;
 }
 .navigation .cart-count-icon {
+    font-size: 0.8em;
     position: absolute;
     top: -13px;
     left: 16px;
