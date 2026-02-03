@@ -127,6 +127,7 @@
   background: rgb(var(--color-background));
   border: 1px solid rgb(var(--color-border));
   border-radius: 6px;
+  margin-top: 0.8rem;
 }
 
 /* Label layout */
