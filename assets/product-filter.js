@@ -294,7 +294,7 @@ function infiniteScrollHandler() {
   const totalPages = parseInt(box.dataset.totalPages || '1', 10);
   if (window.COLLECTION_AJAX.currentPage >= totalPages) return;
 
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
     window.COLLECTION_AJAX.currentPage++;
     fetchProducts(true, false);
   }
