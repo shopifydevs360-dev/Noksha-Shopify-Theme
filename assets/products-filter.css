@@ -156,3 +156,6 @@
 .product-filter .accordion-trigger:first-child {
     border-top: none;
 }
+.product-filter .accordion-content {
+    border-bottom: none;
+}
