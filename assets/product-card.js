@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   initAllProductCartEvents();
 });
 
@@ -8,32 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function initAllProductCartEvents() {
   initAjaxAddToCart();
   initVariantAjaxAddToCart();
-  fixMobileProductCardNavigation();
 }
 
-/* ======================================================
-   ✅ MOBILE FIX – PRODUCT CARD NAVIGATION
-   Prevents double-tap issue
-====================================================== */
-function fixMobileProductCardNavigation() {
-  // Make sure product links always navigate on first tap
-  document.querySelectorAll('.product-card a[href]').forEach(link => {
-    if (link.dataset.navInit === 'true') return;
-    link.dataset.navInit = 'true';
-
-    // Touch devices fix
-    link.addEventListener('touchend', function (e) {
-      // If tap came from cart/variant button, ignore
-      if (e.target.closest('.cart-button-wrapper')) return;
-
-      window.location.href = this.href;
-    });
-  });
-}
-
-/* ======================================================
-   SINGLE PRODUCT – AJAX ADD TO CART
-====================================================== */
+/* ---------------------------------
+   SINGLE PRODUCT – AJAX MODE
+---------------------------------- */
 function initAjaxAddToCart() {
   document.querySelectorAll(
     '.cart-button-wrapper.btn-action--ajax .product-form,' +
@@ -43,11 +22,7 @@ function initAjaxAddToCart() {
     form.dataset.ajaxInit = 'true';
 
     form.addEventListener('submit', function (e) {
-      // ✅ Allow normal navigation clicks
-      if (e.submitter && e.submitter.closest('a')) return;
-
       e.preventDefault();
-      e.stopPropagation();
 
       const wrapper = this.closest('.cart-button-wrapper');
       const isDrawer = wrapper?.classList.contains('btn-action--ajax_drawer');
@@ -59,7 +34,6 @@ function initAjaxAddToCart() {
         .then(res => res.json())
         .then(() => {
           refreshAllCartsUI();
-          updateCartCount();
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error('Add to cart error:', err));
@@ -67,9 +41,9 @@ function initAjaxAddToCart() {
   });
 }
 
-/* ======================================================
-   MULTI VARIANT – AJAX ADD TO CART
-====================================================== */
+/* ---------------------------------
+   MULTI VARIANT – AJAX MODE
+---------------------------------- */
 function initVariantAjaxAddToCart() {
   document.querySelectorAll(
     '.cart-button-wrapper.btn-action--ajax .card-variant-btn,' +
@@ -78,10 +52,7 @@ function initVariantAjaxAddToCart() {
     if (button.dataset.ajaxInit === 'true') return;
     button.dataset.ajaxInit = 'true';
 
-    const handler = function (e) {
-      e.preventDefault();
-      e.stopPropagation(); // 🔑 CRITICAL FIX FOR MOBILE
-
+    button.addEventListener('click', function () {
       if (this.disabled) return;
 
       const wrapper = this.closest('.cart-button-wrapper');
@@ -98,21 +69,16 @@ function initVariantAjaxAddToCart() {
         .then(res => res.json())
         .then(() => {
           refreshAllCartsUI();
-          updateCartCount();
           if (isDrawer) openBagDrawer();
         })
         .catch(err => console.error('Variant add error:', err));
-    };
-
-    // Attach to BOTH click & touchend (mobile fix)
-    button.addEventListener('click', handler);
-    button.addEventListener('touchend', handler);
+    });
   });
 }
 
-/* ======================================================
+/* ---------------------------------
    CART COUNT UPDATE
-====================================================== */
+---------------------------------- */
 function updateCartCount() {
   fetch('/cart.js')
     .then(res => res.json())
@@ -123,9 +89,9 @@ function updateCartCount() {
     });
 }
 
-/* ======================================================
+/* ---------------------------------
    OPEN BAG DRAWER
-====================================================== */
+---------------------------------- */
 function openBagDrawer() {
   const trigger = document.querySelector('[data-trigger-section="bag-drawer"]');
   if (trigger) trigger.click();
