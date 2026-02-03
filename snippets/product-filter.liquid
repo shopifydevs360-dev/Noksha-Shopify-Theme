@@ -206,18 +206,15 @@
             <legend class="filter-title">{{ block.settings.filter_title }}</legend>
             <div class="filter-body">
 
-              {%- assign min_value = filter.min_value.value | default: 0 -%}
-              {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
-
               <label>
                 Min
                 <input
                   type="number"
                   name="{{ filter.min_value.param_name }}"
-                  value="{{ min_value }}"
+                  value="{{ filter.min_value.value }}"
                   min="0"
                   max="{{ filter.range_max }}"
-                  placeholder="{{ 0 }}"
+                  placeholder="0"
                 >
               </label>
 
@@ -226,7 +223,7 @@
                 <input
                   type="number"
                   name="{{ filter.max_value.param_name }}"
-                  value="{{ max_value }}"
+                  value="{{ filter.max_value.value }}"
                   min="0"
                   max="{{ filter.range_max }}"
                   placeholder="{{ filter.range_max | divided_by: 100 }}"
