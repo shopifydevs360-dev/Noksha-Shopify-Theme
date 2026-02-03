@@ -12,9 +12,11 @@
     "main": {
       "type": "collection-product-list",
       "blocks": {
-        "availablity_filter_rWmQwq": {
-          "type": "availablity-filter",
-          "settings": {}
+        "sort_filter_kPLbbw": {
+          "type": "sort-filter",
+          "settings": {
+            "filter_title": "Sort By"
+          }
         },
         "price_filter_LpwPgK": {
           "type": "price-filter",
@@ -32,6 +34,12 @@
           "type": "vendor-filter",
           "settings": {}
         },
+        "size_filter_G9C7xj": {
+          "type": "size-filter",
+          "settings": {
+            "filter_title": "Size"
+          }
+        },
         "color_filter_qAd3XG": {
           "type": "color-filter",
           "settings": {
@@ -46,29 +54,28 @@
             "collection_menu": "main-menu"
           }
         },
-        "size_filter_G9C7xj": {
-          "type": "size-filter",
-          "settings": {
-            "filter_title": "Size"
-          }
-        },
         "tag_filter_8pPicW": {
           "type": "tag-filter",
           "settings": {
             "filter_title": "Tags",
             "custom_filter_tags": ""
           }
+        },
+        "availablity_filter_rWmQwq": {
+          "type": "availablity-filter",
+          "settings": {}
         }
       },
       "block_order": [
-        "availablity_filter_rWmQwq",
+        "sort_filter_kPLbbw",
         "price_filter_LpwPgK",
         "product_type_filter_fHRmjP",
         "vendor_filter_pY8BW4",
+        "size_filter_G9C7xj",
         "color_filter_qAd3XG",
         "collection_filter_ABBHdr",
-        "size_filter_G9C7xj",
-        "tag_filter_8pPicW"
+        "tag_filter_8pPicW",
+        "availablity_filter_rWmQwq"
       ],
       "settings": {
         "container_type": "container",
@@ -77,8 +84,6 @@
         "enable_pagination": true,
         "products_per_page": 4,
         "pagination_type": "pagination_by_number",
-        "enable_sorting": false,
-        "enable_filter": true,
         "custom_class": "",
         "color_control": "section-light"
       }
