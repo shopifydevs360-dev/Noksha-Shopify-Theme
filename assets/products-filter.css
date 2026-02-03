@@ -2,13 +2,13 @@
   FILTER SIDEBAR BASE
 ================================ */
 .product-filter {
-  width: 120px;
+  width: 10rem;
   transition: width 0.3s ease;
   overflow: hidden;
 }
 
 .product-filter.is-expanded {
-  width: 240px;
+  width: 20rem;
 }
 
 /* ===============================
