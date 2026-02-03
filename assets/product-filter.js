@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initClearFilters();
   initPagination();
   initFilterToggle();
-  initClearAllFilters(); // Initialize clear all filters
 });
 
 /* ======================================================
@@ -70,6 +69,7 @@ function initApplyFilters() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     fetchProducts(false, true);
+    showFilterResult(); // Add this line to show filter result
     closeFilterUI();
   });
 }
@@ -132,14 +132,10 @@ function showFilterResult() {
     const maxVal = maxPrice?.value || '∞';
     
     if (minVal > 0 || maxVal !== '∞') {
-      // SIMPLIFIED PRICE FORMAT - JUST SHOW THE NUMBERS
-      const minDisplay = minVal === 0 ? '0' : (minVal / 100).toFixed(2);
-      const maxDisplay = maxVal === '∞' ? '∞' : (maxVal / 100).toFixed(2);
-      
       activeFilters.push({
         type: 'price_range',
         value: `${minVal}-${maxVal}`,
-        label: `Price: ${minDisplay} - ${maxDisplay}`
+        label: `Price: ${minVal} - ${maxVal}`
       });
     }
   }
@@ -203,13 +199,14 @@ function removeSingleFilter(filterType, filterValue) {
   }
   // Handle other inputs
   else {
-    const input = form.querySelector(`[name="${filterType}"][value="${CSS.escape(filterValue)}"]`);
+    const input = form.querySelector(`[name="${filterType}"][value="${filterValue}"]`);
     if (input) input.checked = false;
   }
   
   // Update UI and fetch new results
   window.COLLECTION_AJAX.currentPage = 1;
   fetchProducts(false, false);
+  showFilterResult(); // Update the filter result display
 }
 
 /* ======================================================
@@ -235,11 +232,12 @@ function clearAllFilters() {
   window.COLLECTION_AJAX.currentPage = 1;
   window.scrollTo({ top: 0, behavior: 'smooth' });
   fetchProducts(false, false);
+  showFilterResult(); // Update filter result (will be empty)
   closeFilterUI();
 }
 
 /* ======================================================
-  CLEAR FILTERS (FORM BUTTON)
+  REST OF YOUR EXISTING CODE (MINIMAL CHANGES)
 ====================================================== */
 function initClearFilters() {
   const btn = document.getElementById('clearFiltersBtn');
@@ -254,13 +252,11 @@ function initClearFilters() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     fetchProducts(false, true);
+    showFilterResult(); // Add this line
     closeFilterUI();
   });
 }
 
-/* ======================================================
-  PAGINATION
-====================================================== */
 function initPagination() {
   window.removeEventListener('scroll', infiniteScrollHandler);
 
@@ -300,9 +296,6 @@ function infiniteScrollHandler() {
   }
 }
 
-/* ======================================================
-  QUERY PARAMS
-====================================================== */
 function buildQueryParams() {
   const form = document.getElementById('CollectionFilters');
   const params = new URLSearchParams();
@@ -310,11 +303,7 @@ function buildQueryParams() {
   if (form) {
     const data = new FormData(form);
     for (const [key, value] of data.entries()) {
-      if (value && value.toString().trim()) {
-        // Skip default sort
-        if (key === 'sort_by' && value === 'manual') continue;
-        params.append(key, value);
-      }
+      if (value) params.append(key, value);
     }
   }
 
@@ -325,9 +314,6 @@ function buildQueryParams() {
   return { params, collectionHandle };
 }
 
-/* ======================================================
-  FETCH PRODUCTS - UPDATED WITH COUNTER
-====================================================== */
 function fetchProducts(append = false, resetPage = false) {
   if (window.COLLECTION_AJAX.isLoading) return;
   window.COLLECTION_AJAX.isLoading = true;
@@ -356,28 +342,19 @@ function fetchProducts(append = false, resetPage = false) {
 
       if (!newBox || !oldBox) return;
 
-      // Update product container data
-      oldBox.dataset.totalPages = newBox.dataset.totalPages || '1';
-      oldBox.dataset.currentPage = newBox.dataset.currentPage || '1';
-      oldBox.dataset.totalProducts = newBox.dataset.totalProducts || '0';
+      oldBox.dataset.totalPages = newBox.dataset.totalPages;
+      oldBox.dataset.currentPage = newBox.dataset.currentPage;
 
-      // Update products
-      if (append) {
-        oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML);
-      } else {
-        oldBox.innerHTML = newBox.innerHTML;
-      }
+      append
+        ? oldBox.insertAdjacentHTML('beforeend', newBox.innerHTML)
+        : oldBox.innerHTML = newBox.innerHTML;
 
-      // Update product events
       if (typeof initAllProductCartEvents === 'function') {
         initAllProductCartEvents();
       }
       
-      // UPDATE THE PRODUCT COUNTER
-      updateProductCounter();
-      
-      // Show filter result tags
-      showFilterResult();
+      // Update product count in filter result
+      updateProductCount();
     })
     .catch(err => console.error('Filter AJAX error:', err))
     .finally(() => {
@@ -387,33 +364,20 @@ function fetchProducts(append = false, resetPage = false) {
 }
 
 /* ======================================================
-  UPDATE PRODUCT COUNTER
+  UPDATE PRODUCT COUNT
 ====================================================== */
-function updateProductCounter() {
+function updateProductCount() {
   const filterResultCount = document.querySelector('[data-filter-result-count]');
   const productsContainer = getProductsContainer();
   
   if (!filterResultCount || !productsContainer) return;
   
-  const totalProducts = parseInt(productsContainer.dataset.totalProducts || '0', 10);
-  const productsPerPage = parseInt(getMainContainer()?.dataset.productsPerPage || '24', 10);
-  const currentPage = parseInt(productsContainer.dataset.currentPage || '1', 10);
-  
-  if (totalProducts === 0) {
-    filterResultCount.textContent = '0 Products Found';
-  } else if (totalProducts <= productsPerPage || currentPage === 1) {
-    // First page or less than one page
-    filterResultCount.textContent = `${totalProducts} Products Found`;
-  } else {
-    // Calculate range for current page
-    const start = ((currentPage - 1) * productsPerPage) + 1;
-    const end = Math.min(currentPage * productsPerPage, totalProducts);
-    filterResultCount.textContent = `Showing ${start}-${end} of ${totalProducts} Products`;
-  }
+  const totalProducts = productsContainer.dataset.totalProducts || '0';
+  filterResultCount.textContent = `${totalProducts} Products Found`;
 }
 
 /* ======================================================
-  FILTER TOGGLE & OTHER FUNCTIONS
+  FILTER TOGGLE & OTHER FUNCTIONS (UNCHANGED)
 ====================================================== */
 function initFilterToggle() {
   const sidebar = document.querySelector('.product-filter');
@@ -507,3 +471,8 @@ function closeFilterUI() {
   document.body.classList.remove('is-filter-open');
   document.querySelector('.filter-overlay')?.remove();
 }
+
+// Initialize clear all filters on page load
+document.addEventListener('DOMContentLoaded', () => {
+  initClearAllFilters();
+});
