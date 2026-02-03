@@ -189,38 +189,54 @@
     PRICE FILTER
     ============================
     {%- endcomment -%}
-    {%- when 'price-filter' -%}
-      <div class="filter-item filter-price hide">
-        {% for filter in collection.filters %}
-          {% if filter.type == 'price_range' %}
-            <fieldset class="filter">
-              <legend class="filter-title">{{ block.settings.filter_title }}</legend>
-              <div class="filter-body">
-                <label>
-                  Min
-                  <input
-                    type="number"
-                    name="{{ filter.min_value.param_name }}"
-                    value="{{ filter.min_value.value }}"
-                    min="0"
-                    max="{{ filter.range_max }}"
-                  >
-                </label>
-                <label>
-                  Max
-                  <input
-                    type="number"
-                    name="{{ filter.max_value.param_name }}"
-                    value="{{ filter.max_value.value }}"
-                    min="0"
-                    max="{{ filter.range_max }}"
-                  >
-                </label>
-              </div>
-            </fieldset>
-          {% endif %}
-        {% endfor %}
-      </div>
+{%- when 'price-filter' -%}
+  {% assign show_price = false %}
+
+  {% for filter in collection.filters %}
+    {% if filter.type == 'price_range' %}
+      {% assign show_price = true %}
+    {% endif %}
+  {% endfor %}
+
+  {% if show_price %}
+    <div class="filter-item filter-price hide">
+      {% for filter in collection.filters %}
+        {% if filter.type == 'price_range' %}
+          <fieldset class="filter">
+            <legend class="filter-title">{{ block.settings.filter_title }}</legend>
+            <div class="filter-body">
+
+              <label>
+                Min
+                <input
+                  type="number"
+                  name="{{ filter.min_value.param_name }}"
+                  value="{{ filter.min_value.value }}"
+                  min="0"
+                  max="{{ filter.range_max }}"
+                  placeholder="0"
+                >
+              </label>
+
+              <label>
+                Max
+                <input
+                  type="number"
+                  name="{{ filter.max_value.param_name }}"
+                  value="{{ filter.max_value.value }}"
+                  min="0"
+                  max="{{ filter.range_max }}"
+                  placeholder="{{ filter.range_max }}"
+                >
+              </label>
+
+            </div>
+          </fieldset>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
 
     {%- comment -%}
     ============================
