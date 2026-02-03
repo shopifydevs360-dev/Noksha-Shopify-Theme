@@ -2,7 +2,7 @@
 .collection-wrapper {
     display: flex;
     gap: 30px;
-    margin: 4rem 0;
+    margin: 1rem 0;
 }
 .main-product-list .inner-warpper {
     display: flex;
@@ -11,4 +11,8 @@
 }
 .main-product-list .product-list {
     width: 100%;
+}
+.main-product-list .pagination-loader {
+    padding: 2rem 0;
+    text-align: center;
 }
