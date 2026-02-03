@@ -80,7 +80,7 @@
       "settings": {
         "container_type": "container",
         "product_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "grid_columns_desktop": "3",
+        "grid_columns_desktop": "6",
         "enable_pagination": true,
         "products_per_page": 4,
         "pagination_type": "infinity_loading",
