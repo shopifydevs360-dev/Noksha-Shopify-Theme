@@ -191,9 +191,10 @@
 ================================ */
 
 .filter-result .active-filters {
-  display: flex;
-  gap: 1rem;
-  margin-top: 0.8rem;
+    display: flex;
+    gap: 1rem;
+    margin-top: .8rem;
+    flex-wrap: wrap;
 }
 .active-filter-tag {
     display: flex;
