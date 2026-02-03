@@ -138,6 +138,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   gap: 0.3rem;
+  margin-top: 0;
 }
 
 /* Inputs */
