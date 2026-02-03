@@ -72,9 +72,9 @@
       <div class="filter-item filter-collection hide">
         {% assign menu = linklists[block.settings.collection_menu] %}
         {% if menu and menu.links.size > 0 %}
-          <fieldset class="filter">
-            <legend class="filter-title">Collections</legend>
-            <div class="filter-body">
+          <fieldset class="filter accordion-item">
+            <legend class="filter-title accordion-trigger">Collections</legend>
+            <div class="filter-body accordion-content">
               {% for link in menu.links %}
                 {% if link.type == 'collection_link' %}
                   <label>
@@ -102,9 +102,9 @@
       <div class="filter-item filter-color hide">
         {% for filter in collection.filters %}
           {% if filter.label == 'Color' and filter.values.size > 0 %}
-            <fieldset class="filter">
-              <legend class="filter-title">Color</legend>
-              <div class="filter-body">
+            <fieldset class="filter accordion-item">
+              <legend class="filter-title accordion-trigger">Color</legend>
+              <div class="filter-body accordion-content">
                 {% for value in filter.values %}
                   <label>
                     <input
@@ -134,9 +134,9 @@
 
         {% for filter in collection.filters %}
           {% if filter.param_name contains '.tag' %}
-            <fieldset class="filter">
-              <legend class="filter-title">{{ block.settings.filter_title }}</legend>
-              <div class="filter-body">
+            <fieldset class="filter accordion-item">
+              <legend class="filter-title accordion-trigger">{{ block.settings.filter_title }}</legend>
+              <div class="filter-body accordion-content">
                 {% for value in filter.values %}
                   {% assign tag_label = value.label | downcase | strip %}
                   {% if raw_allowed_tags == blank or allowed_tags contains tag_label %}
