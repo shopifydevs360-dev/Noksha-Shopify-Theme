@@ -70,6 +70,10 @@
   touch-action: none;
 }
 }
+.product-filter input, 
+.product-filter label{
+  color: rbg(var(--color-heading));
+}
 
 .product-filter input[type="checkbox"],
 .product-filter input[type="radio"]
