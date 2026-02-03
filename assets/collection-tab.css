@@ -113,7 +113,9 @@
   transition: opacity 0.6s cubic-bezier(0.72, 0, 0.28, 1),
     transform 1.5s cubic-bezier(0, 0, 0.002, 1);
 }
-
+.product-carousel .swiper-slide:first-child {
+    max-width: 350px;
+}
 .product-carousel .product-card {
   opacity: 1;
   transform: none;
