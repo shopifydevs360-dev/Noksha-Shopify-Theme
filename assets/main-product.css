@@ -66,9 +66,9 @@
 
 .main-product .product-title-price {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: .6rem;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 1.2rem;
 }
