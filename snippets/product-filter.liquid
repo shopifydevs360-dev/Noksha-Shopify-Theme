@@ -68,30 +68,36 @@
     COLLECTION FILTER
     ============================
     {%- endcomment -%}
-    {%- when 'collection-filter' -%}
+{%- when 'collection-filter' -%}
+
+  {% if collection and collection.handle == 'all' %}
+
+    {% assign menu = linklists[block.settings.collection_menu] %}
+    {% if menu and menu.links.size > 0 %}
       <div class="filter-item filter-collection hide">
-        {% assign menu = linklists[block.settings.collection_menu] %}
-        {% if menu and menu.links.size > 0 %}
-          <fieldset class="filter accordion-item">
-            <legend class="filter-title accordion-trigger">Collections</legend>
-            <div class="filter-body accordion-content">
-              {% for link in menu.links %}
-                {% if link.type == 'collection_link' %}
-                  <label>
-                    <input
-                      type="radio"
-                      name="collection_handle"
-                      value="{{ link.object.handle }}"
-                      {% if collection and link.object.handle == collection.handle %}checked{% endif %}
-                    >
-                    {{ link.title }}
-                  </label>
-                {% endif %}
-              {% endfor %}
-            </div>
-          </fieldset>
-        {% endif %}
+        <fieldset class="filter accordion-item">
+          <legend class="filter-title accordion-trigger">Collections</legend>
+          <div class="filter-body accordion-content">
+            {% for link in menu.links %}
+              {% if link.type == 'collection_link' %}
+                <label>
+                  <input
+                    type="radio"
+                    name="collection_handle"
+                    value="{{ link.object.handle }}"
+                    {% if link.object.handle == collection.handle %}checked{% endif %}
+                  >
+                  {{ link.title }}
+                </label>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </fieldset>
       </div>
+    {% endif %}
+
+  {% endif %}
+
 
     {%- comment -%}
     ============================
