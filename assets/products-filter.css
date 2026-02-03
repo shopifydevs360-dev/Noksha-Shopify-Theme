@@ -75,6 +75,9 @@
 /* ===============================
   REMOVE FIELDSET BORDERS
 ================================ */
+.product-filter .filter-item{
+  border-bottom: 1px solid var(--color-border);
+}
 .product-filter fieldset {
   border: 0;
   margin: 0;
