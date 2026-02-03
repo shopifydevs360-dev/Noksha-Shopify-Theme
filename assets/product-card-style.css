@@ -114,7 +114,7 @@ text-decoration: underline;
     display: block;
 }
 .product-card .price {
-    color: rgb(var(--color-price));
+    color: rgb(var(--color-price-regular));
     min-width: fit-content;
     font-size: 1em;
     padding-left: 4px;
