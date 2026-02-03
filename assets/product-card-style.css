@@ -116,11 +116,11 @@ text-decoration: underline;
 }
 .product-card .title a {
     color: rgb(var(--color-heading));
-    font-size: .8em;
+    font-size: .9em;
     display: block;
 }
 .product-card .price {
     color: rgb(var(--color-price-regular));
     min-width: fit-content;
-    font-size: 0.9em;
+    font-size: 1em;
 }
