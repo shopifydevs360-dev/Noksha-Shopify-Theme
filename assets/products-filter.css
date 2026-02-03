@@ -217,6 +217,7 @@
     font-size: 0.8em;
     border-left: 1px solid;
     padding-left: 1rem;
+    background: transparent;
 }
 .filter-result .filter-clear-all svg{
   width: 1rem;
