@@ -52,7 +52,7 @@
         "collection_filter_ABBHdr": {
           "type": "collection-filter",
           "settings": {
-            "collection_menu": "main-menu"
+            "collection_menu": "collection-menu"
           }
         },
         "tag_filter_8pPicW": {
