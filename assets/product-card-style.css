@@ -108,8 +108,14 @@ text-decoration: underline;
     padding: 6px;
     color: inherit;
 }
-.product-card .title a, .product-card .price {
+.product-card .title a {
     color: rgb(var(--color-heading));
     font-size: .8em;
     display: block;
+}
+.product-card .price {
+    color: rgb(var(--color-price));
+    min-width: fit-content;
+    font-size: 1em;
+    padding-left: 4px;
 }
