@@ -172,7 +172,7 @@
     border: 1px solid rgb(var(--color-heading));
 }
 .filter-actions .btn:hover {
-    background: rgb(var(--color-background));
+    background: transparent;
     margin-top: 1rem;
     color: rgb(var(--color-heading));
 }
