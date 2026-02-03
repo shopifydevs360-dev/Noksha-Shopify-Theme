@@ -37,9 +37,6 @@
       <span class="clear-icon">{%- render 'theme-icon', icon: 'close' -%}</span>
     </button>
     {% endif %}
-    {% if collection.products_count < 0 %}
-      No Found
-    {% endif %}
   </div>
   
   <div class="active-filters" data-active-filters>
@@ -52,19 +49,28 @@
         <div class="product-list">
 
           <!-- Products -->
-          {% paginate collection.products by section.settings.products_per_page %}
-            <div
-              class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
-              id="productsContainer"
-              data-total-products="{{ collection.products_count }}"
-              data-total-pages="{{ paginate.pages }}"
-              data-current-page="{{ paginate.current_page }}"
-            >
-              {% for product in collection.products %}
-                {% render 'product-card', product: product %}
-              {% endfor %}
-            </div>
-          {% endpaginate %}
+{% paginate collection.products by section.settings.products_per_page %}
+
+  {% if collection.products_count > 0 %}
+    <div
+      class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
+      id="productsContainer"
+      data-total-products="{{ collection.products_count }}"
+      data-total-pages="{{ paginate.pages }}"
+      data-current-page="{{ paginate.current_page }}"
+    >
+      {% for product in collection.products %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="collection-empty-state" id="productsContainer">
+      <p>No products found.</p>
+    </div>
+  {% endif %}
+
+{% endpaginate %}
+
 
         <!-- Pagination UI -->
         {% if section.settings.enable_pagination %}
