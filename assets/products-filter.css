@@ -153,3 +153,53 @@
   outline: none;
   border-color: #000;
 }
+/* ===============================
+  FILTER ACCORDION BASE
+================================ */
+
+.product-filter fieldset.filter {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title as clickable header */
+.product-filter legend.filter-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  padding-right: 1.2rem;
+  position: relative;
+}
+
+/* Arrow indicator */
+.product-filter legend.filter-title::after {
+  content: "+";
+  font-size: 1rem;
+  font-weight: 400;
+  position: absolute;
+  right: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.7;
+}
+
+/* Body collapsed by default */
+.product-filter .filter-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+  opacity: 0;
+}
+
+/* Open state */
+.product-filter .filter-item.is-open .filter-body {
+  max-height: 500px; /* safe large value */
+  opacity: 1;
+}
+
+/* Open arrow state */
+.product-filter .filter-item.is-open legend.filter-title::after {
+  content: "−";
+  opacity: 1;
+}
