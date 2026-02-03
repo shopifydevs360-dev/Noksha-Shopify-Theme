@@ -24,13 +24,13 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     gap: .5rem;
-    padding: 8px 10px;
+    padding: 0.5rem 0;
     color: rgb(var(--color-heading));
     background: transparent;
     width: 100%;
 }
 .filter-toggle-btn svg{
-  width: 1em;
+  width: 1.4em;
 }
 /* ===============================
   FILTER ITEMS
