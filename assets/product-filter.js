@@ -131,10 +131,19 @@ function showFilterResult() {
     const minVal = minPrice?.value || 0;
     const maxVal = maxPrice?.value || '∞';
     
-    if (minVal > 0 || maxVal !== '∞') {
-      // SIMPLIFIED PRICE FORMAT - JUST SHOW THE NUMBERS
-      const minDisplay = minVal === 0 ? '0' : (minVal * 1).toFixed(2);
-      const maxDisplay = maxVal === '∞' ? '∞' : (maxVal * 1).toFixed(2);
+    // Only add if at least one value is meaningful
+    if (parseFloat(minVal) > 0 || (maxVal !== '∞' && parseFloat(maxVal) > 0)) {
+      // FIX: Show the exact value the user entered, no division
+      // If the value has decimal, show 2 decimal places, otherwise show as is
+      const minDisplay = minVal === '0' || minVal === 0 ? '0' : 
+                         parseFloat(minVal) % 1 === 0 ? 
+                         parseFloat(minVal).toString() : 
+                         parseFloat(minVal).toFixed(2);
+      
+      const maxDisplay = maxVal === '∞' ? '∞' : 
+                         parseFloat(maxVal) % 1 === 0 ? 
+                         parseFloat(maxVal).toString() : 
+                         parseFloat(maxVal).toFixed(2);
       
       activeFilters.push({
         type: 'price_range',
@@ -181,7 +190,6 @@ function showFilterResult() {
     });
   }
 }
-
 /* ======================================================
   REMOVE SINGLE FILTER
 ====================================================== */
