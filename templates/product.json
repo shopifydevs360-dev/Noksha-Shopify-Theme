@@ -45,10 +45,10 @@
           "settings": {
             "show_compare": false,
             "show_wishlist": false,
-            "show_ask_question": false,
+            "show_ask_question": true,
             "show_size_guide": true,
             "show_social_share": true,
-            "show_track_order": true
+            "show_track_order": false
           }
         },
         "accordion_GJhgHM": {
