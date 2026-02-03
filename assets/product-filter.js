@@ -294,11 +294,15 @@ function infiniteScrollHandler() {
   const totalPages = parseInt(box.dataset.totalPages || '1', 10);
   if (window.COLLECTION_AJAX.currentPage >= totalPages) return;
 
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+  const scrollPosition = window.scrollY + window.innerHeight;
+  const triggerPoint = box.offsetTop + box.offsetHeight - 80; // 👈 only 80px from bottom
+
+  if (scrollPosition >= triggerPoint) {
     window.COLLECTION_AJAX.currentPage++;
     fetchProducts(true, false);
   }
 }
+
 
 /* ======================================================
   QUERY PARAMS
