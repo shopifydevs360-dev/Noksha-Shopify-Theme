@@ -133,35 +133,56 @@
     TAG FILTER
     ============================
     {%- endcomment -%}
-    {%- when 'tag-filter' -%}
-      <div class="filter-item filter-tags hide">
-        {% assign raw_allowed_tags = block.settings.custom_filter_tags | strip %}
-        {% assign allowed_tags = raw_allowed_tags | downcase | split: ',' %}
+{%- when 'tag-filter' -%}
 
-        {% for filter in collection.filters %}
-          {% if filter.param_name contains '.tag' %}
-            <fieldset class="filter accordion-item">
-              <legend class="filter-title accordion-trigger">{{ block.settings.filter_title }}</legend>
-              <div class="filter-body accordion-content">
-                {% for value in filter.values %}
-                  {% assign tag_label = value.label | downcase | strip %}
-                  {% if raw_allowed_tags == blank or allowed_tags contains tag_label %}
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="{{ value.param_name }}"
-                        value="{{ value.value }}"
-                        {% if value.active %}checked{% endif %}
-                      >
-                      {{ value.label }} ({{ value.count }})
-                    </label>
-                  {% endif %}
-                {% endfor %}
-              </div>
-            </fieldset>
-          {% endif %}
-        {% endfor %}
-      </div>
+  {% assign raw_allowed_tags = block.settings.custom_filter_tags | strip %}
+  {% assign allowed_tags = raw_allowed_tags | downcase | split: ',' %}
+  {% assign show_tag_filter = false %}
+
+  {%- comment -%}
+  First pass: check if ANY tag matches allowed list
+  {%- endcomment -%}
+  {% for filter in collection.filters %}
+    {% if filter.param_name contains '.tag' %}
+      {% for value in filter.values %}
+        {% assign tag_label = value.label | downcase | strip %}
+        {% if raw_allowed_tags == blank or allowed_tags contains tag_label %}
+          {% assign show_tag_filter = true %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+
+  {% if show_tag_filter %}
+    <div class="filter-item filter-tags hide">
+      {% for filter in collection.filters %}
+        {% if filter.param_name contains '.tag' %}
+          <fieldset class="filter accordion-item">
+            <legend class="filter-title accordion-trigger">
+              {{ block.settings.filter_title }}
+            </legend>
+            <div class="filter-body accordion-content">
+              {% for value in filter.values %}
+                {% assign tag_label = value.label | downcase | strip %}
+                {% if raw_allowed_tags == blank or allowed_tags contains tag_label %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                    >
+                    {{ value.label }} ({{ value.count }})
+                  </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
 
     {%- comment -%}
     ============================
