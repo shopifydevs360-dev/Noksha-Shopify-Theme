@@ -56,13 +56,12 @@
     top: 8.4rem;
     right: -100%;
     width: 280px;
-    height: 100vh;
+    height: 87vh;
     background: #fff;
     z-index: 9;
     transition: right .3s ease;
     overflow-y: auto;
-    padding-top: 9.2rem;
-    padding-bottom: 2rem;
+    padding: 1.5rem 1rem 4rem 1rem;
 }
 .filter-actions-bar {
     position: fixed;
@@ -84,6 +83,14 @@
   overflow: hidden;
   touch-action: none;
 }
+.product-filter .filter-item:first-child {
+    border-top: none;
+}
+}
+@media (max-width: 440px) {
+  .product-filter {
+      top: 7.4rem;
+  }
 }
 .product-filter input, 
 .product-filter label{
