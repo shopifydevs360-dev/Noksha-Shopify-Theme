@@ -101,12 +101,17 @@
 text-decoration: underline;
 }
 /* Product Information */
+
 .split-aligner {
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid #e3c7bf;
+    border-top: 1px solid rgb(var(--color-border));
     padding: 6px;
-    color: inherit;
+    gap: 0.5rem;
+}
+@media (max-width: 991px){
+    .split-aligner {
+}
 }
 .product-card .title a {
     color: rgb(var(--color-heading));
