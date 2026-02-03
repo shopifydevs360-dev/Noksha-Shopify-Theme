@@ -114,7 +114,7 @@
     transform 1.5s cubic-bezier(0, 0, 0.002, 1);
 }
 .product-carousel .swiper-slide:first-child {
-    max-width: 350px;
+    max-width: 22rem;
 }
 .product-carousel .product-card {
   opacity: 1;
