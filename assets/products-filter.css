@@ -190,7 +190,7 @@
   Filter Result
 ================================ */
 
-filter-result .active-filters {
+.filter-result .active-filters {
   display: flex;
   gap: 1rem;
 }
