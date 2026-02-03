@@ -31,16 +31,16 @@
     <span class="filter-result-count" data-filter-result-count>
       {{ collection.products_count }} Products Found
     </span>
-    {% if collection.products_count > 0 %}
+  </div>
+  
+  <div class="active-filters" data-active-filters>
+    {% comment %} Active filters will be injected here via JS {% endcomment %}
+         {% if collection.products_count > 0 %}
     <button type="button" class="filter-clear-all hide" data-clear-all-filters>
       Clear All
       <span class="clear-icon">{%- render 'theme-icon', icon: 'close' -%}</span>
     </button>
     {% endif %}
-  </div>
-  
-  <div class="active-filters" data-active-filters>
-    {% comment %} Active filters will be injected here via JS {% endcomment %}
   </div>
 </div>
     <div class="collection-wrapper sidebar-space">
@@ -49,27 +49,27 @@
         <div class="product-list">
 
           <!-- Products -->
-{% paginate collection.products by section.settings.products_per_page %}
+        {% paginate collection.products by section.settings.products_per_page %}
 
-  {% if collection.products_count > 0 %}
-    <div
-      class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
-      id="productsContainer"
-      data-total-products="{{ collection.products_count }}"
-      data-total-pages="{{ paginate.pages }}"
-      data-current-page="{{ paginate.current_page }}"
-    >
-      {% for product in collection.products %}
-        {% render 'product-card', product: product %}
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="collection-empty-state" id="productsContainer">
-      <p>No products found.</p>
-    </div>
-  {% endif %}
+          {% if collection.products_count > 0 %}
+            <div
+              class="products-grid cols-{{ section.settings.grid_columns_desktop }}"
+              id="productsContainer"
+              data-total-products="{{ collection.products_count }}"
+              data-total-pages="{{ paginate.pages }}"
+              data-current-page="{{ paginate.current_page }}"
+            >
+              {% for product in collection.products %}
+                {% render 'product-card', product: product %}
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="collection-empty-state" id="productsContainer">
+              <p>No products found.</p>
+            </div>
+          {% endif %}
 
-{% endpaginate %}
+        {% endpaginate %}
 
 
         <!-- Pagination UI -->
