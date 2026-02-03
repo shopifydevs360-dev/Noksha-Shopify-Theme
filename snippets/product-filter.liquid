@@ -232,9 +232,9 @@
     {%- endcomment -%}
 
       <div class="filter-item filter-sort hide">
-        <fieldset class="filter">
-          <legend class="filter-title">Sort By</legend>
-          <div class="filter-body">
+        <fieldset class="filter accordion-item">
+          <legend class="filter-title accordion-trigger">Sort By</legend>
+          <div class="filter-body accordion-content">
             {% for option in collection.sort_options %}
               <label>
                 <input
