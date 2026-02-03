@@ -37,6 +37,9 @@
       <span class="clear-icon">{%- render 'theme-icon', icon: 'close' -%}</span>
     </button>
     {% endif %}
+    {% if collection.products_count < 0 %}
+      No Found
+    {% endif %}
   </div>
   
   <div class="active-filters" data-active-filters>
