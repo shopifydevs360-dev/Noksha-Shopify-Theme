@@ -71,7 +71,6 @@
           "type": "tab",
           "settings": {
             "tab_label": "Borkini",
-            "tab_link": "",
             "collection": "borkini"
           }
         },
@@ -79,7 +78,6 @@
           "type": "tab",
           "settings": {
             "tab_label": "Plain Hijab",
-            "tab_link": "",
             "collection": "plain-hijab"
           }
         }
@@ -95,7 +93,7 @@
         "title_font_size": "h3",
         "title_link": "",
         "padding_top": 100,
-        "padding_bottom": 52,
+        "padding_bottom": 0,
         "custom_class": "",
         "color_control": "section-light"
       }
@@ -107,7 +105,6 @@
           "type": "tab",
           "settings": {
             "tab_label": "Everyday Essentials",
-            "tab_link": "",
             "collection": "jersey-hijab"
           }
         },
@@ -115,7 +112,6 @@
           "type": "tab",
           "settings": {
             "tab_label": "Noor Essentials",
-            "tab_link": "",
             "collection": "cotton-hijab"
           }
         }
