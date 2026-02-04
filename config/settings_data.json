@@ -38,6 +38,7 @@
     "min_page_margin": 18,
     "body_background": "#f3f3f4",
     "body_link": "#d33636",
+    "body_link_hover": "#c68b2f",
     "primary_button_bg": "#d33636",
     "primary_button_border": "#e02b2b",
     "gradient_button_hover_bg": "",
