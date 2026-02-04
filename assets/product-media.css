@@ -270,7 +270,7 @@
   }
 }
 @media (min-width: 992px) {
-.product-media__thumbs .swiper-slide:first-child{
+.product-media__thumbs .swiper-wrapper:first-child{
   order: 2;
 }
 }
