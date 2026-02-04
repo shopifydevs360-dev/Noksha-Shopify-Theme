@@ -204,7 +204,6 @@
     },
     "article_wrapper_tkFWde": {
       "type": "article-wrapper",
-      "disabled": true,
       "name": "Articles Wrapper",
       "settings": {
         "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
