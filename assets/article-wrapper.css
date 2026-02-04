@@ -24,6 +24,7 @@
   margin-top: clamp(5rem,7vh,6.3rem);
   margin-bottom: clamp(3rem,5vh,4.3rem);
   color: rgb(var(--color-heading));
+  margin-left: 0;
 }
 @media (min-width: 992px) {
   .featured-posts .article-pin-card .text-wrap {
