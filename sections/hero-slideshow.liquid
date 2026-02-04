@@ -126,7 +126,7 @@
       },
       {% if section.settings.enable_autoplay %}
       autoplay: {
-        delay: 3000,
+        delay: {{ section.settings.autoplay_speed | times: 1000 }},
         disableOnInteraction: false
       }
       {% endif %}
@@ -150,6 +150,16 @@
       "id": "enable_autoplay",
       "label": "Enable autoplay",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "default": 3
     },
     {
       "type": "text",
