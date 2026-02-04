@@ -58,7 +58,7 @@
       "name": "Hero Slideshow",
       "settings": {
         "sidebar_image": "shopify://shop_images/pexels-thirdman-8489273.jpg",
-        "enable_autoplay": true,
+        "enable_autoplay": false,
         "custom_class": "",
         "color_control": "section-dark"
       }
