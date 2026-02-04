@@ -43,14 +43,16 @@
                 </div>
               </a>
             </h2>
-            {% for block in section.blocks %}
-            <a href="{{ block.settings.collection.handle }}" class="btn btn-arrow">
+            <a
+              href="#"
+              class="btn btn-arrow js-shop-now-btn"
+            >
               SHOP NOW
               <span class="icon">
                 {% render 'theme-icon', icon: 'right-arrow' %}
               </span>
             </a>
-            {% endfor %}
+
           </div>
         </div>
 
@@ -87,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const tabs = section.querySelectorAll('.js-slider-filter');
   const slides = section.querySelectorAll('.product-slide');
+  const shopNowBtn = section.querySelector('.js-shop-now-btn');
 
   /* ---------------- SWIPERS ---------------- */
   new Swiper(section.querySelector('.swiper-container-filter'), {
@@ -112,45 +115,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const firstTab = tabs[0];
   const firstFilter = firstTab.dataset.filter;
 
-  firstTab.closest('.related-product-caps').classList.add('active');
-
-  slides.forEach(slide => {
-    if (slide.dataset.collection === firstFilter) {
-      slide.style.display = 'block';
-    }
-  });
-
-  productSwiper.update();
+  activateTab(firstFilter, firstTab);
 
   /* ---------------- TAB CLICK ---------------- */
   tabs.forEach(tab => {
     tab.addEventListener('click', e => {
       e.preventDefault();
-
-      const filter = tab.dataset.filter;
-
-      /* active tab */
-      section.querySelectorAll('.related-product-caps')
-        .forEach(el => el.classList.remove('active'));
-      tab.closest('.related-product-caps').classList.add('active');
-
-      /* reset slides */
-      slides.forEach(slide => {
-        slide.style.display = '';
-      });
-
-      /* show matching slides */
-      slides.forEach(slide => {
-        if (slide.dataset.collection === filter) {
-          slide.style.display = 'block';
-        }
-      });
-
-      productSwiper.update();
-      productSwiper.slideTo(0);
+      activateTab(tab.dataset.filter, tab);
     });
   });
+
+  /* ---------------- FUNCTIONS ---------------- */
+  function activateTab(filter, tab) {
+    // Active tab UI
+    section.querySelectorAll('.related-product-caps')
+      .forEach(el => el.classList.remove('active'));
+    tab.closest('.related-product-caps').classList.add('active');
+
+    // Reset slides
+    slides.forEach(slide => {
+      slide.style.display = 'none';
+    });
+
+    // Show matching slides
+    slides.forEach(slide => {
+      if (slide.dataset.collection === filter) {
+        slide.style.display = 'block';
+      }
+    });
+
+    // ✅ UPDATE SHOP NOW BUTTON
+    if (shopNowBtn) {
+      shopNowBtn.href = `/collections/${filter}`;
+    }
+
+    productSwiper.update();
+    productSwiper.slideTo(0);
+  }
 });
+
 </script>
 
 
