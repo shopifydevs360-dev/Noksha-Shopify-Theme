@@ -15,8 +15,8 @@
 }
 @media (min-width: 991px) {
   .product-carousel .swiper-container-filter {
-    width: calc(73.6% - 8rem);
-    margin-left: 30rem;
+    width: 100%;
+    padding-left: 30rem;
     margin-right: 0;
   }
 }
