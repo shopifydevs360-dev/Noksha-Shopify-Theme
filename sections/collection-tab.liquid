@@ -43,13 +43,14 @@
                 </div>
               </a>
             </h2>
-
-            <a href="{{ section.settings.title_link }}" class="btn btn-arrow">
+            {% for block in section.blocks %}
+            <a href="{{ block.settings.collection.handle }}" class="btn btn-arrow">
               SHOP NOW
               <span class="icon">
                 {% render 'theme-icon', icon: 'right-arrow' %}
               </span>
             </a>
+            {% endfor %}
           </div>
         </div>
 
