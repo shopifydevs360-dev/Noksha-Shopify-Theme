@@ -112,42 +112,15 @@
         "label": "Default font weight",
         "default": "400",
         "options": [
-          {
-            "value": "100",
-            "label": "Thin 100"
-          },
-          {
-            "value": "200",
-            "label": "Extra-light 200"
-          },
-          {
-            "value": "300",
-            "label": "Light 300"
-          },
-          {
-            "value": "400",
-            "label": "Regular 400"
-          },
-          {
-            "value": "500",
-            "label": "Medium 500"
-          },
-          {
-            "value": "600",
-            "label": "Semi-bold 600"
-          },
-          {
-            "value": "700",
-            "label": "Bold 700"
-          },
-          {
-            "value": "800",
-            "label": "Extra-bold 800"
-          },
-          {
-            "value": "900",
-            "label": "Black 900"
-          }
+          { "value": "100", "label": "Thin 100" },
+          { "value": "200", "label": "Extra-light 200" },
+          { "value": "300", "label": "Light 300" },
+          { "value": "400", "label": "Regular 400" },
+          { "value": "500", "label": "Medium 500" },
+          { "value": "600", "label": "Semi-bold 600" },
+          { "value": "700", "label": "Bold 700" },
+          { "value": "800", "label": "Extra-bold 800" },
+          { "value": "900", "label": "Black 900" }
         ]
       },
       {
@@ -478,130 +451,46 @@
   {
     "name": "Section",
     "settings": [
-      {
-        "type": "header",
-        "content": "Spacing"
-      },
-      {
-        "type": "range",
-        "id": "spacing_sections",
-        "min": 0,
-        "max": 250,
-        "step": 5,
-        "default": 100,
-        "unit": "px",
-        "label": "Space between sections"
-      },
-      {
-        "type": "range",
-        "id": "spacing_sections_mobile",
-        "min": 0,
-        "max": 60,
-        "step": 2,
-        "default": 48,
-        "unit": "px",
-        "label": "Space between sections on mobile"
-      }
+      { "type": "header",  "content": "Spacing" },
+      { "type": "range", "id": "spacing_sections",  "min": 0, "max": 250, "step": 5, "default": 100, "unit": "px", "label": "Space between sections" },
+      { "type": "range", "id": "spacing_sections_mobile", "min": 0, "max": 60, "step": 2, "default": 48, "unit": "px", "label": "Space between sections on mobile" }
     ]
   },
   {
 		"name": "Animations",
 		"settings": [
-			{
-        "type": "checkbox",
-        "id": "page_transition",
-        "default": true,
-        "label": "Enable page transition"
-      },
-    ]
-  },
-  {
-    "name": "Search",
-    "settings": [
+			{ "type": "checkbox", "id": "page_transition", "default": true, "label": "Enable page transition" },
       {
         "type": "select",
-        "id": "search_type",
-        "label": "Search type",
-        "default": "page",
+        "id": "animation_type",
+        "label": "Animation",
+        "default": "fade-in",
         "options": [
-          {
-            "value": "page",
-            "label": "Search page"
-          },
-          {
-            "value": "drawer",
-            "label": "Search drawer"
-          }
+          { "value": "none", "label": "None"},
+          { "value": "fade-in", "label": "Fade in"},
+          { "value": "fade-in-up", "label": "Fade in up"},
+          { "value": "fade-in-left", "label": "Fade in left"},
+          { "value": "fade-in-right", "label": "Fade in right"},
         ]
-      },
-      {
-        "type": "color_scheme",
-        "id": "search_color_scheme",
-        "label": "Color scheme",
-        "default": "inverse"
-      },
-    ]
-  },
-  {
-    "name": "Content Card",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Corner Radius"
-      },
-      {
-        "type": "range",
-        "id": "corner-radius-style-one",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 4,
-        "unit": "px",
-        "label": "Style One"
-      },
-      {
-        "type": "range",
-        "id": "corner-radius-style-two",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 12,
-        "unit": "px",
-        "label": "Style Two"
       }
     ]
   },
   {
     "name": "Product card",
     "settings": [
-      {
-        "type": "header",
-        "content": "Add to cart behavior"
-      },
+      { "type": "header", "content": "Add to cart behavior" },
       {
         "type": "select",
         "id": "cart_behavior",
         "label": "Action",
         "options": [
-          {
-            "value": "redirect",
-            "label": "Redirect to Cart Page"
-          },
-          {
-            "value": "ajax",
-            "label": "Ajax - No Redirect"
-          },
-          {
-            "value": "ajax_drawer",
-            "label": "Ajax + Open Cart Drawer"
-          }
+          { "value": "redirect", "label": "Redirect to Cart Page" },
+          { "value": "ajax", "label": "Ajax - No Redirect" },
+          { "value": "ajax_drawer", "label": "Ajax + Open Cart Drawer" }
         ],
         "default": "redirect"
       },
-      {
-        "type": "header",
-        "content": "Image"
-      },
+      { "type": "header", "content": "Image" },
       {
         "type": "select",
         "id": "aspect_ratio",
@@ -615,24 +504,6 @@
         ],
         "default": "cropped-image--square"
       },
-    ]
-  },
-  {
-    "name": "Collections card",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Collections card"
-      }
-    ]
-  },
-  {
-    "name": "Article card",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Article card"
-      }
     ]
   },
   {
@@ -663,187 +534,76 @@
     ]
   },
   {
-    "name": "Drawer & popup",
+    "name": "Popup",
     "settings": [
-      {
-        "type": "header",
-        "content": "Product inventory"
-      }
+      { "type": "header", "content": "Newsletter" },
+      { "type": "checkbox", "id": "enable_newsletter", "label": "Enable Newsletter" },
+      { "type": "color_scheme", "id": "popup_color_scheme", "label": "Color Scheme", "default": "background-1" }
     ]
   },
   {
     "name": "Badges",
     "settings": [
-      {
-        "type": "header",
-        "content": "Product inventory"
-      }
-    ]
-  },
-  {
-    "name": "Social sharing",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Product inventory"
-      }
+      { "type": "header", "content": "Product badges" },
+      { "type": "color_scheme", "id": "hot_badge", "label": "Hot badge color", "default": "background-1" },
+      { "type": "color_scheme", "id": "new_badge", "label": "New badge color", "default": "background-1" },
+      { "type": "color_scheme", "id": "sale_badge", "label": "Sale badge color", "default": "background-1" },
+      { "type": "color_scheme", "id": "preorder_badge", "label": "Preorder badge color", "default": "background-1" },
+      { "type": "color_scheme", "id": "sold_out_badge", "label": "Sold Out badge color", "default": "background-1" },
     ]
   },
   {
     "name": "Store Contact",
     "settings": [
-      {
-        "type": "paragraph",
-        "content": "[Watch tutorial](https://codecraftmehedi.com/noksha)"
-      },
-      {
-        "type": "text",
-        "id": "contact_phone_number",
-        "label": "Phone number",
-        "default": "+84 (0)387 392 056"
-      },
-      {
-        "type": "text",
-        "id": "contact_email",
-        "label": "Email",
-        "default": "hello@domain.com"
-      },
-      {
-        "type": "header",
-        "content": "Social links"
-      },
-      {
-        "type": "text",
-        "id": "whatsapp_number",
-        "label": "Whatsapp number"
-      },
-      {
-        "type": "text",
-        "id": "social_whatsapp_link",
-        "label": "Whatsapp link"
-      },
-      {
-        "type": "text",
-        "id": "social_twitter_link",
-        "label": "Twitter link"
-      },
-      {
-        "type": "text",
-        "id": "social_facebook_link",
-        "label": "Facebook link"
-      },
-      {
-        "type": "text",
-        "id": "social_pinterest_link",
-        "label": "Pinterest link"
-      },
-      {
-        "type": "text",
-        "id": "social_instagram_link",
-        "label": "Instagram link"
-      },
-      {
-        "type": "text",
-        "id": "social_snapchat_link",
-        "label": "Snapchat link"
-      },
-      {
-        "type": "text",
-        "id": "social_tumblr_link",
-        "label": "Tumblr link"
-      },
-      {
-        "type": "text",
-        "id": "social_youtube_link",
-        "label": "Youtube link"
-      },
-      {
-        "type": "text",
-        "id": "social_vimeo_link",
-        "label": "Vimeo link"
-      },
-      {
-        "type": "text",
-        "id": "social_tiktok_link",
-        "label": "Tiktok link"
-      },
-      {
-        "type": "text",
-        "id": "social_discord_link",
-        "label": "Discord link"
-      },
-      {
-        "type": "text",
-        "id": "social_spotify_link",
-        "label": "Spotify link"
-      },
-      {
-        "type": "text",
-        "id": "social_linkedin_link",
-        "label": "Linkedin link"
-      },
-      {
-        "type": "text",
-        "id": "social_line_link",
-        "label": "Line link"
-      },
+      { "type": "paragraph", "content": "[Watch tutorial](https://codecraftmehedi.com/noksha)" },
+      { "type": "text", "id": "contact_phone_number", "label": "Phone number", "default": "+84 (0)387 392 056" },
+      { "type": "text", "id": "contact_email", "label": "Email", "default": "hello@domain.com" },
+      { "type": "header", "content": "Social links" },
+      { "type": "text", "id": "whatsapp_number", "label": "Whatsapp number" },
+      { "type": "text", "id": "social_whatsapp_link", "label": "Whatsapp link" },
+      { "type": "text", "id": "social_twitter_link", "label": "Twitter link" },
+      { "type": "text", "id": "social_facebook_link", "label": "Facebook link" },
+      { "type": "text", "id": "social_pinterest_link", "label": "Pinterest link" },
+      { "type": "text", "id": "social_instagram_link", "label": "Instagram link" },
+      { "type": "text", "id": "social_snapchat_link", "label": "Snapchat link" },
+      { "type": "text", "id": "social_tumblr_link", "label": "Tumblr link" },
+      { "type": "text", "id": "social_youtube_link", "label": "Youtube link" },
+      { "type": "text", "id": "social_vimeo_link", "label": "Vimeo link" },
+      { "type": "text", "id": "social_tiktok_link", "label": "Tiktok link" },
+      { "type": "text", "id": "social_discord_link", "label": "Discord link" },
+      { "type": "text", "id": "social_spotify_link", "label": "Spotify link" },
+      { "type": "text", "id": "social_linkedin_link", "label": "Linkedin link" },
+      { "type": "text", "id": "social_line_link", "label": "Line link" }
     ]
   },
   {
     "name": "Cart",
     "settings": [
-      {
-        "type": "header",
-        "content": "Product inventory"
-      }
-    ]
-  },
-  {
-    "name": "Search",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Product inventory"
-      }
+      { "type": "header", "content": "Cart addons", },
+      { "type": "checkbox", "id": "show_cart_note", "label": "Show cart note", "default":true },
+      { "type": "checkbox", "id": "show_discount_code", "label": "Show cart note", "default":true },
+      { "type": "checkbox", "id": "show_delivery_days", "label": "Show estimate delivery days", "default":true },
     ]
   },
   {
     "name": "Additional pages",
     "settings": [
-      {
-        "type": "url",
-        "id": "wishlist_page_url",
-        "label": "Wish List"
-      
-      },
-      {
-        "type": "url",
-        "id": "compare_page_url",
-        "label": "Compare"
-      },
-      {
-        "type": "url",
-        "id": "track_order_page_url",
-        "label": "Track Order"
-      }
+      { "type": "url", "id": "wishlist_page_url", "label": "Wish List" },
+      { "type": "url", "id": "compare_page_url", "label": "Compare" },
+      { "type": "url", "id": "track_order_page_url", "label": "Track Order"  }
     ]
   },
   {
     "name": "GDPR",
     "settings": [
-      {
-        "type": "header",
-        "content": "Product inventory"
-      }
+      { "type": "header", "content": "GDPR" }
     ]
   },
   {
     "name": "Currency format",
     "settings": [
-      {
-        "type": "header",
-        "content": "Product inventory"
-      }
+      { "type": "header", "content": "Currency codes" },
+      { "type": "checkbox", "id": "show_currency_code", "label": "Show currency code", "info": "Cart and checkout prices always show currency codes. Example: $1.00 USD." }
     ]
   },
   {
@@ -851,7 +611,11 @@
     "settings": [
       {
         "type": "header",
-        "content": "Product inventory"
+        "content": "Custom CSS"
+      },
+      {
+        "type": "header",
+        "content": "Custom JS"
       }
     ]
   },
