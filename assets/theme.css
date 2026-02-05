@@ -92,7 +92,7 @@ select {
   font: inherit;
   border-radius: var(--input_corner_radius, 4px);
   border: 1px solid var(--color-border, #eee);
-  background-color: transpa;
+  background-color: transparent;
   color: var(--color-form-field-text, #222);
   padding: 0.6em 0.8em;
 }
