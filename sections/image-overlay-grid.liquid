@@ -40,16 +40,18 @@
                 ></div>
 
 {% if block.settings.image %}
-{% render 'image',
-  image: block.settings.image_mobile,
-  class: 'cropped-image-wrapper cropped-image--square',
-  device: 'mobile'
-%}
-{% render 'image',
-  image: block.settings.image,
-  class: 'cropped-image-wrapper cropped-image--square'
-%}
-
+  {% if block.settings.image_mobile %}
+    {% render 'image',
+      image: block.settings.image_mobile,
+      class: 'cropped-image-wrapper cropped-image--square',
+      device: 'mobile'
+    %}
+  {% else %}
+    {% render 'image',
+      image: block.settings.image,
+      class: 'cropped-image-wrapper cropped-image--square is-hover-zoom-in'
+    %}
+  {% endif %}
 {% endif %}
 
               </div>
