@@ -316,6 +316,7 @@ a:hover {
 button{
   border: none;
   cursor: pointer;
+  background: transparent;
 }
 .btn,
 .shopify-payment-button button {
@@ -339,42 +340,37 @@ button{
   background-color: var(--color-heading);
   color: var(--color-background);
   border: 1px solid var(--color-heading);
+  font-size: var(--btn_link_font_size);
 
 }
 .btn--primary:hover {
-  background-color: var(--btn-primary-hover-bg);
-  color: var(--btn-primary-hover-label);
-  border-color: var(--btn-primary-hover-border);
+  background-color: var(--color-background);
+  color: var(--color-heading);
 }
 
 /* Secondary Button */
 .btn--secondary {
-  background-color: var(--btn-secondary-bg);
-  color: var(--btn-secondary-label);
-  border: 1px solid var(--btn-secondary-border);
-  font-family: var(--btn-secondary-font);
-  font-size: var(--btn-secondary-font-size);
-  letter-spacing: var(--btn-secondary-letter-space);
+  background-color: var(--color-background-secondary);
+  color: var(--color-heading);
+  border: 1px solid var(--color-background-secondary);
+  font-size: var(--btn_link_font_size);
 }
 .btn--secondary:hover {
-  background-color: var(--btn-secondary-hover-bg);
-  color: var(--btn-secondary-hover-label);
-  border-color: var(--btn-secondary-hover-border);
+  background-color: var(--color-heading);
+  color: var(--color-background-secondary);
 }
 
 /* Underline Button */
 .btn--underline {
-  background: none;
+  background: transparent;
   border: none;
-  color: var(--btn-underline-color);
-  font-family: var(--btn-underline-font);
+  font-size: var(--btn_link_font_size);
+  color: var(--color-link);
   text-decoration: underline;
-  font-size: var(--btn-underline-font-size);
-  letter-spacing: var(--btn-underline-letter-space);
 }
 .btn--underline:hover {
-  color: var(--btn-underline-hover-color);
-  text-decoration-color: var(--btn-underline-hover-color);
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
 }
 
 /* ======================
@@ -383,10 +379,8 @@ button{
 /* Hover to underline */
 .btn--animation.hover-underline {
   background: transparent;
-  color: var(--btn-animation-label);
-  font-family: var(--btn-animation-font);
-  font-size: var(--btn-animation-font-size);
-  letter-spacing: var(--btn-animation-letter-space);
+  font-size: var(--btn_link_font_size);
+  color: var(--color-link);
   padding-bottom: 8px;
   position: relative;
   overflow: hidden;
@@ -401,14 +395,14 @@ button{
   height: 1px;
   transform: translateX(-130%);
   transition: all .3s cubic-bezier(.34,.615,.4,.985);
-  background: var(--btn-animation-hover-label);
+  background: var(--color-link-hover);
 }
 .active-underline:hover .btn--animation.hover-underline:before{
   transform: none;
   transition-delay: .3s;
 }
 .active-underline:hover .btn--animation.hover-underline{
-  color: var(--btn-animation-hover-label);
+  color: var(--color-link-hover);
 }
 
 @media (max-width: 767px) {
