@@ -46,20 +46,9 @@
   height: 0;
   width: 0;
 }
-
-/* Firefox (no arrows by default, but keep clean) */
-* {
-  scrollbar-width: thin;
-}
-
 ::selection{
   background: #AF6B3E;
   color: #ffffff;
-}
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100svh;
 }
 
 html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {
@@ -189,6 +178,9 @@ dialog {
    TYPOGRAPHY & BASE COLORS
 ------------------------------- */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
   font-family: var(--font-body-family, sans-serif);
   font-weight: var(--font-body-weight, 400);
   font-size: calc(var(--font-body-size, 16px) * 0.95);
@@ -201,10 +193,13 @@ body {
   }
 }
 
-p,
 h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
   color: rgb(var(--color-heading));
+}
+p {
+  overflow-wrap: break-word;
+  color: rgb(var(--color-text));
 }
 ul, ol {
   padding: 0;
@@ -271,18 +266,6 @@ h6, .h6 { font-size: calc(var(--font-h6-size, 16px) * 0.9); }
   h6, .h6 { font-size: calc(var(--font-h6-size, 16px) * 1.1); }
 }
 /* ------------------------------
-   LINKS
-------------------------------- */
-a {
-  color: rgb(var(--color-link));
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: rgb(var(--color-link-hover));
-}
-/* ------------------------------
    RTL Mode
 ------------------------------- */
 /* General RTL support */
@@ -312,6 +295,21 @@ body.rtl .container {
 }
 }
 
+
+/* ------------------------------
+   LINKS
+------------------------------- */
+a {
+  color: rgb(var(--color-link));
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-family: var(--font-body-family, sans-serif);
+  font-size: var(--link_font_size);
+}
+
+a:hover {
+  color: rgb(var(--color-link-hover));
+}
 /* ------------------------------
    BUTTON STYLES
 ------------------------------- */
@@ -324,6 +322,8 @@ button{
   cursor: pointer;
   border-radius: var(--input_corner_radius, 4px);
   font-family: var(--font-body-family);
+  font-size: var(--btn_link_font_size);
+  letter-spacing: var(--link_letter_spacing);
   font-weight: 500;
   line-height: 1.2;
   transition: all 0.2s ease-in-out;
@@ -336,12 +336,9 @@ button{
 
 /* Primary Button */
 .btn--primary {
-  background-color: var(--btn-primary-bg);
-  color: var(--btn-primary-label);
-  border: 1px solid var(--btn-primary-border);
-  font-family: var(--btn-primary-font);
-  font-size: var(--btn-primary-font-size);
-  letter-spacing: var(--btn-primary-letter-space);
+  background-color: var(--color-heading);
+  color: var(--color-background);
+  border: 1px solid var(--color-heading);
 
 }
 .btn--primary:hover {
@@ -412,34 +409,6 @@ button{
 }
 .active-underline:hover .btn--animation.hover-underline{
   color: var(--btn-animation-hover-label);
-}
-/* Next Button */
-/* .btn--animation- {
-  background: var(--btn-animation-bg, linear-gradient(to right, #000, #333));
-  color: var(--btn-animation-label);
-  border: 1px solid var(--btn-animation-border);
-  font-family: var(--btn-animation-font);
-  font-size: var(--btn-animation-font-size);
-  letter-spacing: ver(--btn-animation-letter-space);
-}
-.btn--animation-:hover {
-  background: var(--btn-gradient-hover-bg, var(--btn-gradient-bg));
-  color: var(--btn-gradient-hover-label);
-  border-color: var(--btn-animation-border-hover);
-} */
-
-/* Gradient Button */
-.btn--gradient {
-  background: var(--btn-gradient-bg, linear-gradient(to right, #000, #333));
-  color: var(--btn-gradient-label);
-  border: none;
-  font-family: var(--btn-gradient-font);
-  font-size: var(--btn-gradient-font-size);
-  letter-spacing: var(--btn-gradient-letter-space);
-}
-.btn--gradient:hover {
-  background: var(--btn-gradient-hover-bg, var(--btn-gradient-bg));
-  color: var(--btn-gradient-hover-label);
 }
 
 @media (max-width: 767px) {
