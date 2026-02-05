@@ -91,7 +91,7 @@
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "title": "Best Sellers",
         "title_font_size": "h3",
-        "title_link": "",
+        "title_link": "shopify://collections/all",
         "padding_top": 100,
         "padding_bottom": 0,
         "custom_class": "",
