@@ -7,13 +7,14 @@
   <!-- ================= IMAGE WRAP ================= -->
   <div class="image-wrap">
     <a href="{{ product.url }}" aria-label="{{ product.title }}">
-      <div class="cropped-image-wrapper {{ settings.aspect_ratio }} is-hover-zoom-out">
         <!-- ================= BADGE ================= -->
         {% if product.tags contains 'best seller' %}
           <div class="product-badges-wrapper">
             <span>Best Seller</span>
           </div>
         {% endif %}
+        
+      <div class="cropped-image-wrapper {{ settings.aspect_ratio }} is-hover-zoom-out">
 
         <!-- ================= PRIMARY IMAGE ================= -->
         {% if product.featured_image %}
