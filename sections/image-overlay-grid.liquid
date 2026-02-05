@@ -18,6 +18,13 @@
           else
             assign button_class = button_class | append: ' btn'
           endif
+
+          assign image_wapper_classes = 'image'
+          unless section.settings.aspect_ratio == 'adapt-to-image'
+            
+          endunless
+          assign image_wapper_classes = 'cropped-image-wrapper'
+          assign image_wapper_classes = section.settings.aspect_ratio
         %}
 
         <div class="grid-item" {{ block.shopify_attributes }}>
@@ -140,6 +147,7 @@
         "id": "aspect_ratio",
         "label": "Aspect Ratio",
         "options": [
+          { "value": "adapt-to-image", "label": "Adapt to image" },
           { "value": "cropped-image--square", "label": "square" },
           { "value": "cropped-image--portrait", "label": "portrait" },
           { "value": "cropped-image--portrait-tall", "label": "portrait-tall" },
