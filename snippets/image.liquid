@@ -9,8 +9,8 @@
 
   @param {image} image - The image to be rendered
   @param {string} [url] - An optional destination URL for the image
-  @param {string} [class] - Optional class to be added to the image wrapper
-  @param {number} [width] - The highest resolution width of the image to be rendered
+  @param {string} [class] - Optional class to be added to the image wrapper {{ product.featured_image.width }} {{ section.settings.image.width }}
+  @param {number} [width] - The highest resolution width of the image to be rendered {{ product.featured_image.height }}
   @param {number} [height] - The highest resolution height of the image to be rendered
   @param {string} [crop] - The crop position of the image
   @param {string} [mobile_image] - Responsize image can added
@@ -19,12 +19,13 @@
   {% render 'image', image: product.featured_image %}
   {% render 'image', image: product.featured_image, url: product.url %}
   {% render 'image',
-    class: 'product__image',
+    class: 'product__image {{ section.settings.image_wapper_class }}',
     image: product.featured_image,
     url: product.url,
-    width: 1200,
-    height: 800,
+    width: {{ image.width }},
+    height: {{ image.height }},
     crop: 'center',
+    mobile_image: block.settings.image_mobile,
   %}
 {% enddoc %}
 
