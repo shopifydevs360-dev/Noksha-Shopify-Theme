@@ -140,7 +140,6 @@
           "settings": {
             "image": "shopify://shop_images/DSC06449.jpg",
             "aspect_ratio": "cropped-image--square",
-            "mobile_aspect_ratio": "cropped-image--square",
             "title": "ABAYAS",
             "cta_text": "SHOP NOW",
             "link": "",
@@ -153,9 +152,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/DSC06366.jpg",
-            "aspect_ratio": "cropped-image--square",
-            "image_mobile": "shopify://shop_images/6-IMG_9209.jpg",
-            "mobile_aspect_ratio": "cropped-image--square",
+            "aspect_ratio": "adapt-to-image",
             "title": "HIJABS",
             "cta_text": "SHOP NOW",
             "link": "",
@@ -169,7 +166,6 @@
           "settings": {
             "image": "shopify://shop_images/8-IMG_9612_d4d6a911-67dc-45cf-92dd-b626ce837d5a.jpg",
             "aspect_ratio": "cropped-image--square",
-            "mobile_aspect_ratio": "cropped-image--square",
             "title": "MAXI DRESSES",
             "cta_text": "SHOP NOW",
             "link": "",
@@ -183,7 +179,6 @@
           "settings": {
             "image": "shopify://shop_images/DSC06443.jpg",
             "aspect_ratio": "cropped-image--square",
-            "mobile_aspect_ratio": "cropped-image--square",
             "title": "CO-ORDS",
             "cta_text": "SHOP NOW",
             "link": "",
