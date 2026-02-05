@@ -404,7 +404,34 @@ a:hover .btn--animation.hover-underline:before{
 a:hover .btn--animation.hover-underline{
   color: var(--color-link-hover);
 }
-
+/* Hover to fill Background */
+.hover-fill-bg {
+  background: transparent;
+  font-size: var(--btn_link_font_size);
+  color: var(--color-link);
+  padding: 8px 16px;
+  position: relative;
+  overflow: hidden;
+}
+.hover-fill-bg:before{
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-130%);
+  transition: all .3s cubic-bezier(.34,.615,.4,.985);
+  background: var(--color-link-hover);
+}
+a:hover .hover-fill-bg:before{
+  transform: none;
+  transition-delay: .3s;
+}
+a:hover .hover-fill-bg{
+  color: var(--color-background);
+}
 @media (max-width: 767px) {
 .btn,
 .shopify-payment-button button {
