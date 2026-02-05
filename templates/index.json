@@ -140,7 +140,7 @@
           "settings": {
             "image": "shopify://shop_images/DSC06449.jpg",
             "aspect_ratio": "cropped-image--square",
-            "hover_effect_action": "is-hover-cinematic",
+            "hover_effect_action": "is-hover-zoom-in",
             "title": "ABAYAS",
             "cta_text": "SHOP NOW",
             "link": "",
@@ -154,7 +154,7 @@
           "settings": {
             "image": "shopify://shop_images/DSC06366.jpg",
             "aspect_ratio": "cropped-image--square",
-            "hover_effect_action": "is-hover-cinematic",
+            "hover_effect_action": "is-hover-zoom-in",
             "title": "HIJABS",
             "cta_text": "SHOP NOW",
             "link": "",
