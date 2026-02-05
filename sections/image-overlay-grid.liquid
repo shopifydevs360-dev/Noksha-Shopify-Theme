@@ -38,15 +38,15 @@
                   class="img-slide-bg"
                   style="background-color: {{ block.settings.image_background_color }};"
                 ></div>
+{% if block.settings.image %}
+  {% render 'image',
+    image: block.settings.image,
+    mobile_image: block.settings.image_mobile,
+    class: block.settings.aspect_ratio,
+    mobile_class: block.settings.mobile_aspect_ratio
+  %}
+{% endif %}
 
-                {% if block.settings.image %}
-                {% render 'image',
-                    image: block.settings.image,
-                    mobile_image: block.settings.image_mobile,
-                    class: 'cropped-image-wrapper cropped-image--square'
-                  %}
-
-                {% endif %}
               </div>
             </div>
 
