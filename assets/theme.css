@@ -569,43 +569,43 @@ button:disabled,
    Image Hover Effect
    ========================================= */
    /* Zoom (soft) */
-.cropped-image-wrapper.is-hover-zoom-in:hover img {
+.image.is-hover-zoom-in:hover img {
   transform: translate(-50%, -50%) scale(1.08);
 }
 /* Zoom Out */
-.cropped-image-wrapper.is-hover-zoom-out img {
+.image.is-hover-zoom-out img {
   transform: translate(-50%, -50%) scale(1.08);
 }
-.cropped-image-wrapper.is-hover-zoom-out:hover img {
+.image.is-hover-zoom-out:hover img {
   transform: translate(-50%, -50%) scale(1);
 }
 /* Zoom + slide up */
-.cropped-image-wrapper.is-hover-zoom-up:hover img {
+.image.is-hover-zoom-up:hover img {
   transform: translate(-50%, -55%) scale(1.08);
 }
 /* Fade in (good for secondary images) */
-.cropped-image-wrapper.is-hover-fade img {
+.image.is-hover-fade img {
   opacity: 0.85;
 }
 
-.cropped-image-wrapper.is-hover-fade:hover img {
+.image.is-hover-fade:hover img {
   opacity: 1;
 }
 /* Slow cinematic zoom (luxury feel) */
-.cropped-image-wrapper.is-hover-cinematic img {
+.image.is-hover-cinematic img {
   transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cropped-image-wrapper.is-hover-cinematic:hover img {
+.image.is-hover-cinematic:hover img {
   transform: translate(-50%, -50%) scale(1.12);
 }
 /* Parallax-style drift */
-.cropped-image-wrapper.is-hover-drift:hover img {
+.image.is-hover-drift:hover img {
   transform: translate(-48%, -52%) scale(1.1);
 }
 /* =========================== */
 /* Dark overlay on hover */
-.cropped-image-wrapper.is-hover-overlay::after {
+.image.is-hover-overlay::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -615,7 +615,7 @@ button:disabled,
   pointer-events: none;
 }
 
-.cropped-image-wrapper.is-hover-overlay:hover::after {
+.image.is-hover-overlay:hover::after {
   opacity: 1;
 }
 /* ------------------------------
