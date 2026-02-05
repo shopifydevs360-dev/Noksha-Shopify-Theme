@@ -21,7 +21,7 @@
 
           assign image_wapper_classes = 'image'
           unless section.settings.aspect_ratio == 'adapt-to-image'
-            assign image_wapper_classes = 'cropped-image-wrapper'
+            assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
             assign image_wapper_classes = image_wapper_classes | append : block.settings.aspect_ratio
           endunless
         %}
@@ -48,7 +48,7 @@
                 {% if block.settings.image %}
                 {% render 'image',
                     image: block.settings.image,
-                    class: '{% image_wapper_classes %} is-hover-zoom-in'
+                    class: '{{ image_wapper_classes }} is-hover-zoom-in'
                   %}
 
                 {% endif %}
