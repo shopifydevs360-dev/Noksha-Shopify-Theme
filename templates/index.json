@@ -152,7 +152,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/DSC06366.jpg",
-            "aspect_ratio": "adapt-to-image",
+            "aspect_ratio": "cropped-image--square",
             "title": "HIJABS",
             "cta_text": "SHOP NOW",
             "link": "",
