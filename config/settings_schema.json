@@ -265,8 +265,6 @@
       { "type": "range", "id": "h6_letter_spacing", "label": "H6 letter spacing", "default": 0, "min": -5, "max": 20, "step": 1, "unit": "px" },
 
       { "type": "header", "content": "Link Style" },
-      { "type": "range", "id":"link_font_size", "label": "Link font size", "min": 0.4, "max": 3, "step": 0.1, "unit": "em", "default": 1 },
-      { "type": "range", "id":"btn_link_font_size", "label": "Button Link font size", "min": 0.4, "max": 3, "step": 0.1, "unit": "em", "default": 1.8 },
       { "type": "range", "id": "link_letter_spacing", "label": "Link letter spacing", "default": 0, "min": -5, "max": 20, "step": 1, "unit": "px" }
     ]
   },
