@@ -397,11 +397,11 @@ button{
   transition: all .3s cubic-bezier(.34,.615,.4,.985);
   background: var(--color-link-hover);
 }
-.active-underline:hover .btn--animation.hover-underline:before{
+a:hover .btn--animation.hover-underline:before{
   transform: none;
   transition-delay: .3s;
 }
-.active-underline:hover .btn--animation.hover-underline{
+a:hover .btn--animation.hover-underline{
   color: var(--color-link-hover);
 }
 
