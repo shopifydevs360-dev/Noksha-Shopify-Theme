@@ -29,6 +29,8 @@
     "h3_font_size": 40,
     "h4_font_size": 28,
     "h5_font_size": 22,
+    "link_font_size": 18,
+    "btn_link_font_size": 22,
     "link_letter_spacing": 1,
     "container_max_width": 1480,
     "container_fluid_width": 1620,
