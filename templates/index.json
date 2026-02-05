@@ -159,7 +159,7 @@
             "cta_text": "SHOP NOW",
             "link": "",
             "button_type": "btn--animation",
-            "animation_type": "hover-underline",
+            "animation_type": "hover-fill-bg",
             "image_background_color": "#f3f3f4"
           }
         },
