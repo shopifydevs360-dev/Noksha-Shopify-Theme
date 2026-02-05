@@ -29,7 +29,7 @@
     "h3_font_size": 40,
     "h4_font_size": 28,
     "h5_font_size": 22,
-    "link_font_size": 0.8,
+    "link_font_size": 1,
     "btn_link_font_size": 1.6,
     "link_letter_spacing": 1,
     "container_max_width": 1480,
