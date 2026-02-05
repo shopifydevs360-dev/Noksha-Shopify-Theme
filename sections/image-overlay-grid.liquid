@@ -24,7 +24,7 @@
             assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
             assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.aspect_ratio
           endunless
-          assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.hover_action
+          assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.hover_effect_action
         %}
 
         <div class="grid-item" {{ block.shopify_attributes }}>
@@ -142,10 +142,24 @@
           "id": "image",
           "label": "Image"
         },
-              {
+        {
         "type": "select",
         "id": "aspect_ratio",
         "label": "Aspect Ratio",
+        "options": [
+          { "value": "adapt-to-image", "label": "Adapt to image" },
+          { "value": "cropped-image--square", "label": "Square" },
+          { "value": "cropped-image--portrait", "label": "Portrait" },
+          { "value": "cropped-image--portrait-tall", "label": "Portrait-tall" },
+          { "value": "cropped-image--landscape", "label": "Landscape" },
+          { "value": "cropped-image--wide", "label": "Wide" }
+        ],
+        "default": "cropped-image--square"
+      },
+        {
+        "type": "select",
+        "id": "hover_effect_action",
+        "label": "Image Hover Effect",
         "options": [
           { "value": "adapt-to-image", "label": "Adapt to image" },
           { "value": "cropped-image--square", "label": "Square" },
