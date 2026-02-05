@@ -92,3 +92,20 @@
 {% endif %}
 
 </{{ wrapper }}>
+<style>
+  /* Desktop default */
+.image--mobile {
+  display: none;
+}
+
+@media (max-width: 441px) {
+  picture.image {
+    display: none;
+  }
+
+  .image--mobile {
+    display: block;
+  }
+}
+
+</style>
