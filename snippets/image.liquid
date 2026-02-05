@@ -46,28 +46,44 @@
     href="{{ url }}"
   {% endif %}
 >
-  {% if mobile_image %}
-    <picture>
-      <!-- Mobile image -->
-      <source
-        media="(max-width: 441px)"
-        srcset="{{ mobile_image | image_url: width: 441 }}"
-      >
+{% if mobile_image %}
+  <picture class="image">
+    <!-- Mobile image -->
+    <source
+      media="(max-width: 441px)"
+      srcset="{{ mobile_image | image_url: width: 441 }}"
+    >
 
-      <!-- Desktop / default image -->
+    <!-- Desktop image -->
+    <div class="cropped-image-wrapper {{ class }}">
       {{ image
-        | image_url: width: width, height: height, crop: crop
+        | image_url: width: 2000
         | image_tag:
           loading: 'lazy',
           decoding: 'async'
       }}
-    </picture>
-  {% else %}
-    {{ image
-      | image_url: width: width, height: height, crop: crop
+    </div>
+  </picture>
+
+  <!-- Mobile wrapper (CSS-controlled ratio) -->
+  <div class="cropped-image-wrapper {{ mobile_class }} image--mobile">
+    {{ mobile_image
+      | image_url: width: 441
       | image_tag:
         loading: 'lazy',
         decoding: 'async'
     }}
-  {% endif %}
+  </div>
+
+{% else %}
+  <div class="cropped-image-wrapper {{ class }}">
+    {{ image
+      | image_url: width: 2000
+      | image_tag:
+        loading: 'lazy',
+        decoding: 'async'
+    }}
+  </div>
+{% endif %}
+
 </{{ wrapper }}>
