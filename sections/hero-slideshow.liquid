@@ -52,12 +52,18 @@
 
             {% if block.type == 'video_slide' and block.settings.video_url_desktop != blank %}
               <div class="media-wrapper">
-                <video autoplay muted loop playsinline preload="metadata">
-                  <source src="{{ block.settings.video_url_desktop }}" media="(min-width: 768px)">
-                  {% if block.settings.video_url_mobile != blank %}
-                    <source src="{{ block.settings.video_url_mobile }}" media="(max-width: 767px)">
-                  {% endif %}
-                </video>
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              aria-hidden="true"
+              poster="{{ block.settings.poster | image_url: width: 1200 }}"
+            >
+              {{ block.settings.video_desktop | video_tag: autoplay: true, loop: true, muted: true }}
+            </video>
+
               </div>
             {% endif %}
 
