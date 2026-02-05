@@ -498,59 +498,6 @@
     ]
   },
   {
-    "name": "Button",
-    "settings": [
-      { "type": "header", "content": "Primary Button" },
-      { "type": "color", "id": "primary_button_bg", "label": "Background", "default": "#222222" },
-      { "type": "color", "id": "primary_button_label", "label": "Text Color", "default": "#FFFFFF" },
-      { "type": "color", "id": "primary_button_border", "label": "Border Color", "default": "#222222" },
-      { "type": "color", "id": "primary_button_hover_bg", "label": "Hover Background", "default": "#111111" },
-      { "type": "color", "id": "primary_button_hover_label", "label": "Hover Text Color", "default": "#FFFFFF" },
-      { "type": "color", "id": "primary_button_hover_border", "label": "Hover Border Color", "default": "#111111" },
-      { "type": "font_picker", "id": "primary_button_font", "label": "Font Family", "default": "helvetica_n7" },
-      { "type": "range", "id": "primary_button_font_size", "label": "Font size", "default": 16, "min": 12, "max": 100, "step": 1, "unit": "px"},
-      { "type": "range", "id": "primary_button_letter_space", "label": "Letter Space", "default": 0, "min": 0, "max": 20, "step": 1, "unit": "px"},
-
-      { "type": "header", "content": "Secondary Button" },
-      { "type": "color", "id": "secondary_button_bg", "label": "Background", "default": "#FFFFFF" },
-      { "type": "color", "id": "secondary_button_label", "label": "Text Color", "default": "#222222" },
-      { "type": "color", "id": "secondary_button_border", "label": "Border Color", "default": "#DDDDDD" },
-      { "type": "color", "id": "secondary_button_hover_bg", "label": "Hover Background", "default": "#F5F5F5" },
-      { "type": "color", "id": "secondary_button_hover_label", "label": "Hover Text Color", "default": "#222222" },
-      { "type": "color", "id": "secondary_button_hover_border", "label": "Hover Border Color", "default": "#CCCCCC" },
-      { "type": "font_picker", "id": "secondary_button_font", "label": "Font Family", "default": "helvetica_n7" },
-      { "type": "range", "id": "secondary_button_font_size", "label": "Font size", "default": 16, "min": 12, "max": 100, "step": 1, "unit": "px"},
-      { "type": "range", "id": "secondary_button_letter_space", "label": "Letter Space", "default": 0, "min": 0, "max": 20, "step": 1, "unit": "px"},
-
-      { "type": "header", "content": "Underline Button" },
-      { "type": "color", "id": "underline_button_color", "label": "Text & Underline Color", "default": "#222222" },
-      { "type": "color", "id": "underline_button_hover_color", "label": "Hover Text & Underline Color", "default": "#000000" },
-      { "type": "font_picker", "id": "underline_button_font", "label": "Font Family", "default": "helvetica_n7" },
-      { "type": "range", "id": "underline_button_font_size", "label": "Font size", "default": 16, "min": 12, "max": 100, "step": 1, "unit": "px"},
-      { "type": "range", "id": "underline_button_letter_space", "label": "Letter Space", "default": 0, "min": 0, "max": 20, "step": 1, "unit": "px"},
-
-      { "type": "header", "content": "Gradient Button" },
-      { "type": "color_background", "id": "gradient_button_bg", "label": "Gradient Background" },
-      { "type": "color_background", "id": "gradient_button_hover_bg", "label": "Hover Gradient Background" },
-      { "type": "color", "id": "gradient_button_label", "label": "Text Color", "default": "#FFFFFF" },
-      { "type": "color", "id": "gradient_button_hover_label", "label": "Hover Text Color", "default": "#FFFFFF" },
-      { "type": "font_picker", "id": "gradient_button_font", "label": "Font Family", "default": "helvetica_n7" },
-      { "type": "range", "id": "gradient_button_font_size", "label": "Font size", "default": 16, "min": 12, "max": 100, "step": 1, "unit": "px"},
-      { "type": "range", "id": "gradient_button_letter_space", "label": "Letter Space", "default": 0, "min": 0, "max": 20, "step": 1, "unit": "px"},
-
-      { "type": "header", "content": "Animation Button" },
-      { "type": "color_background", "id": "animation_button_bg", "label": "Background" },
-      { "type": "color_background", "id": "animation_button_hover_bg", "label": "Hover Background" },
-      { "type": "color", "id": "animation_button_border", "label": "Border Color", "default": "#DDDDDD" },
-      { "type": "color", "id": "animation_button_hover_border", "label": "Hover Border", "default": "#F5F5F5" },
-      { "type": "color", "id": "animation_button_label", "label": "Text Color", "default": "#FFFFFF" },
-      { "type": "color", "id": "animation_button_hover_label", "label": "Hover Text Color", "default": "#FFFFFF" },
-      { "type": "font_picker", "id": "animation_button_font", "label": "Font Family", "default": "helvetica_n7" },
-      { "type": "range", "id": "animation_button_font_size", "label": "Font size", "default": 16, "min": 12, "max": 100, "step": 1, "unit": "px"},
-      { "type": "range", "id": "animation_button_letter_space", "label": "Letter Space", "default": 0, "min": 0, "max": 20, "step": 1, "unit": "px"},
-    ]
-  },
-  {
     "name": "Section",
     "settings": [
       {
