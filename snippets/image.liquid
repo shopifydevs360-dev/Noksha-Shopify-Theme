@@ -38,11 +38,6 @@
     assign wrapper = 'div'
   endif
 
-  assign mobile_image = mobile_image | default: nil
-  assign class = class | default: ''
-  assign mobile_class = mobile_class | default: class
-
-
 %}
 
 <{{ wrapper }}
@@ -51,61 +46,28 @@
     href="{{ url }}"
   {% endif %}
 >
-{% if mobile_image %}
-  <picture class="image">
-    <!-- Mobile image -->
-    <source
-      media="(max-width: 441px)"
-      srcset="{{ mobile_image | image_url: width: 441 }}"
-    >
+  {% if mobile_image %}
+    <picture>
+      <!-- Mobile image -->
+      <source
+        media="(max-width: 441px)"
+        srcset="{{ mobile_image | image_url: width: 441 }}"
+      >
 
-    <!-- Desktop image -->
-    <div class="cropped-image-wrapper {{ class }}">
+      <!-- Desktop / default image -->
       {{ image
-        | image_url: width: 2000
+        | image_url: width: width, height: height, crop: crop
         | image_tag:
           loading: 'lazy',
           decoding: 'async'
       }}
-    </div>
-  </picture>
-
-  <!-- Mobile wrapper (CSS-controlled ratio) -->
-  <div class="cropped-image-wrapper {{ mobile_class }} image--mobile">
-    {{ mobile_image
-      | image_url: width: 441
-      | image_tag:
-        loading: 'lazy',
-        decoding: 'async'
-    }}
-  </div>
-
-{% else %}
-  <div class="cropped-image-wrapper {{ class }}">
+    </picture>
+  {% else %}
     {{ image
-      | image_url: width: 2000
+      | image_url: width: width, height: height, crop: crop
       | image_tag:
         loading: 'lazy',
         decoding: 'async'
     }}
-  </div>
-{% endif %}
-
+  {% endif %}
 </{{ wrapper }}>
-<style>
-  /* Desktop default */
-.image--mobile {
-  display: none;
-}
-
-@media (max-width: 441px) {
-  picture.image {
-    display: none;
-  }
-
-  .image--mobile {
-    display: block;
-  }
-}
-
-</style>
