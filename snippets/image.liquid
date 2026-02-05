@@ -26,10 +26,8 @@
     crop: 'center',
   %}
 {% enddoc %}
-{% liquid
-  assign device = device | default: 'all'
-  assign mobile_image = mobile_image | default: nil
 
+{% liquid
   unless height
     assign width = width | default: image.width
   endunless
@@ -39,6 +37,7 @@
   else
     assign wrapper = 'div'
   endif
+
 %}
 
 <{{ wrapper }}
@@ -47,28 +46,15 @@
     href="{{ url }}"
   {% endif %}
 >
-
-  {%- comment -%}
-  1️⃣ Explicit device rendering (device: 'mobile')
-  {%- endcomment -%}
-  {% if device == 'mobile' %}
-    {{ image
-      | image_url: width: 441
-      | image_tag:
-        loading: 'lazy',
-        decoding: 'async'
-    }}
-
-  {%- comment -%}
-  2️⃣ Automatic responsive rendering (desktop + mobile via picture)
-  {%- endcomment -%}
-  {% elsif mobile_image %}
+  {% if mobile_image %}
     <picture>
+      <!-- Mobile image -->
       <source
         media="(max-width: 441px)"
         srcset="{{ mobile_image | image_url: width: 441 }}"
       >
 
+      <!-- Desktop / default image -->
       {{ image
         | image_url: width: width, height: height, crop: crop
         | image_tag:
@@ -76,10 +62,6 @@
           decoding: 'async'
       }}
     </picture>
-
-  {%- comment -%}
-  3️⃣ Default image rendering
-  {%- endcomment -%}
   {% else %}
     {{ image
       | image_url: width: width, height: height, crop: crop
@@ -88,5 +70,4 @@
         decoding: 'async'
     }}
   {% endif %}
-
 </{{ wrapper }}>
