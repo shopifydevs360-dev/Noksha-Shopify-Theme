@@ -40,20 +40,22 @@
                 ></div>
 
                 {% if block.settings.image %}
-                  <div class="cropped-image-wrapper cropped-image--square is-hover-zoom-in">
-                    <img
-                      src="{{ block.settings.image | img_url: '720x' }}"
-                      srcset="
-                        {{ block.settings.image | img_url: '720x' }} 720w,
-                        {{ block.settings.image | img_url: '1024x' }} 1024w,
-                        {{ block.settings.image | img_url: '1440x' }} 1440w
-                      "
-                      sizes="(min-width: 1200px) 50vw, 100vw"
-                      alt="{{ block.settings.image.alt | escape }}"
-                      width="{{ block.settings.image.width }}"
-                      height="{{ block.settings.image.height }}"
-                    >
-                  </div>
+                <div class="cropped-image-wrapper cropped-image--square is-hover-zoom-in">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 720 }}"
+                    srcset="
+                      {{ block.settings.image | image_url: width: 720 }} 720w,
+                      {{ block.settings.image | image_url: width: 1024 }} 1024w,
+                      {{ block.settings.image | image_url: width: 1440 }} 1440w
+                    "
+                    sizes="(min-width: 1200px) 50vw, 100vw"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
                 {% endif %}
               </div>
             </div>
