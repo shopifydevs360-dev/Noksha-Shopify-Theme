@@ -46,31 +46,28 @@
     href="{{ url }}"
   {% endif %}
 >
-{% if mobile_image %}
-  <picture class="image__picture">
-    <source
-      media="(max-width: {{ mobile_max }}px)"
-      srcset="{{ mobile_image | image_url: width: mobile_max }}"
-    >
+  {% if mobile_image %}
+    <picture>
+      <!-- Mobile image -->
+      <source
+        media="(max-width: 441px)"
+        srcset="{{ mobile_image | image_url: width: 441 }}"
+      >
 
-    <div class="{% if mobile_ratio %}ratio ratio--{{ mobile_ratio }}{% endif %}">
+      <!-- Desktop / default image -->
       {{ image
         | image_url: width: width, height: height, crop: crop
         | image_tag:
           loading: 'lazy',
           decoding: 'async'
       }}
-    </div>
-  </picture>
-{% else %}
-  <div class="{% if mobile_ratio %}ratio ratio--{{ mobile_ratio }}{% endif %}">
+    </picture>
+  {% else %}
     {{ image
       | image_url: width: width, height: height, crop: crop
       | image_tag:
         loading: 'lazy',
         decoding: 'async'
     }}
-  </div>
-{% endif %}
-
+  {% endif %}
 </{{ wrapper }}>
