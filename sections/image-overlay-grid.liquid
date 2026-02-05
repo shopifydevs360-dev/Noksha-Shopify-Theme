@@ -20,7 +20,7 @@
           endif
 
           assign image_wapper_classes = ''
-          unless section.settings.aspect_ratio == 'adapt-to-image'
+          unless block.settings.aspect_ratio == 'adapt-to-image'
             assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
             assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.aspect_ratio
           endunless
