@@ -395,7 +395,7 @@ button{
   height: 1px;
   transform: translateX(-130%);
   transition: all .3s cubic-bezier(.34,.615,.4,.985);
-  background: var(--color-link-hover);
+  background: rgb(var(--color-link-hover));
 }
 a:hover .btn--animation.hover-underline:before{
   transform: none;
