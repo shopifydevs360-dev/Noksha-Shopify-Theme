@@ -114,17 +114,6 @@
   transform: translate3d(0, 0, 0);
 }
 /* first few get stagger */
-.product-slide.viewed:first-of-type .product-card.is-animated {
-  transition-delay: 0.05s;
-}
-
-.product-slide.viewed:nth-of-type(2) .product-card.is-animated {
-  transition-delay: 0.12s;
-}
-
-.product-slide.viewed:nth-of-type(3) .product-card.is-animated {
-  transition-delay: 0.2s;
-}
 
 
 
