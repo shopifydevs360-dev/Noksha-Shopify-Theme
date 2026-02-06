@@ -119,13 +119,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------- ANIMATION HANDLER ---------------- */
   function animateVisibleCards() {
-    const visibleCards = section.querySelectorAll(
+    const cards = section.querySelectorAll(
       '.product-slide:not([style*="display: none"]) .product-card'
     );
 
-    visibleCards.forEach(card => {
+    // Remove animation class
+    cards.forEach(card => {
       card.classList.remove('is-animated');
-      card.offsetHeight; // force reflow
+    });
+
+    // Force layout recalculation
+    void section.offsetHeight;
+
+    // Re-apply animation class
+    cards.forEach(card => {
       card.classList.add('is-animated');
     });
   }
@@ -154,11 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
-    productSwiper.update();
-    productSwiper.slideTo(0);
+productSwiper.update();
+productSwiper.slideTo(0, 0);
 
-    // Animate cards on tab switch
-    animateVisibleCards();
+// ⏱ wait for DOM + Swiper layout
+requestAnimationFrame(() => {
+  animateVisibleCards();
+});
+
   }
 
   /* ---------------- INIT FIRST TAB ---------------- */
