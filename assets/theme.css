@@ -860,6 +860,9 @@ button:disabled,
 .toggle-icon {
     margin-bottom: -10px;
 }
+.toggle-icon svg{
+    width: 1.8rem;
+}
   .accordion-content {
     max-height: 0;
     overflow: hidden;
