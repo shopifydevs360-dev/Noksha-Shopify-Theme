@@ -114,10 +114,9 @@
   transform: translate3d(24px, 0, 0);
   transition-property: opacity, transform;
   transition-duration: 0.45s;
-  transition-timing-function: cubic-bezier(0.72, 0, 0.28, 1);
+  transition-timing-function: ease;
   will-change: transform, opacity;
 }
-
 
 .product-carousel .product-card.is-animated {
   opacity: 1;
