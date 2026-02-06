@@ -112,31 +112,29 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     on: {
       slideChangeTransitionEnd() {
-        animateVisibleCards();
+        replayCardAnimation();
       }
     }
   });
 
-  /* ---------------- ANIMATION HANDLER ---------------- */
-function animateVisibleCards() {
-  const cards = section.querySelectorAll(
-    '.product-slide:not([style*="display: none"]) .product-card'
-  );
+  /* ---------------- ANIMATION (LOOP SAFE) ---------------- */
+  function replayCardAnimation() {
+    const cards = section.querySelectorAll(
+      '.product-slide:not([style*="display: none"]) .product-card'
+    );
 
-  // Step 1: remove animation
-  cards.forEach(card => {
-    card.classList.remove('is-animated');
-  });
-
-  // Step 2: wait one frame
-  requestAnimationFrame(() => {
-    // Step 3: re-add animation
+    // 1️⃣ Remove animation
     cards.forEach(card => {
-      card.classList.add('is-animated');
+      card.classList.remove('is-animated');
     });
-  });
-}
 
+    // 2️⃣ REAL delay so browser commits state
+    setTimeout(() => {
+      cards.forEach(card => {
+        card.classList.add('is-animated');
+      });
+    }, 30);
+  }
 
   /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
@@ -162,20 +160,19 @@ function animateVisibleCards() {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
+    // Reset swiper position
     productSwiper.update();
     productSwiper.slideTo(0, 0);
 
-    // 🔁 force replay every tab click
-    requestAnimationFrame(() => {
-      animateVisibleCards();
-    });
-
+    // 🔁 Always replay animation (even same tab)
+    setTimeout(() => {
+      replayCardAnimation();
+    }, 50);
   }
 
   /* ---------------- INIT FIRST TAB ---------------- */
-  const firstTab = tabs[0];
-  if (firstTab) {
-    activateTab(firstTab.dataset.filter, firstTab);
+  if (tabs.length) {
+    activateTab(tabs[0].dataset.filter, tabs[0]);
   }
 
   /* ---------------- TAB CLICK EVENTS ---------------- */
@@ -187,6 +184,7 @@ function animateVisibleCards() {
   });
 });
 </script>
+
 
 
 
