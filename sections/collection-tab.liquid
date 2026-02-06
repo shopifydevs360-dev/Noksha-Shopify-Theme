@@ -4,7 +4,7 @@
   <div class="product-carousel section-{{ section.id }}-padding">
     <!-- ================= MOBILE TITLE ================= -->
     <h2 class="container hide-desktop hide-large-screens {{ section.settings.title_font_size }}">
-      <a href="{{ section.settings.title_link }}" aria-label="{{ section.settings.title }}">
+      <a class="{{ section.settings.title_font_size }}" href="{{ section.settings.title_link }}" aria-label="{{ section.settings.title }}">
         <div data-reveal="lines-masked" class="info-title">
           {{ section.settings.title }}
         </div>
@@ -37,7 +37,7 @@
         <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
           <div class="collection-lead-info">
             <h2 class="{{ section.settings.title_font_size }}">
-              <a href="{{ section.settings.title_link }}">
+              <a class="{{ section.settings.title_font_size }}" href="{{ section.settings.title_link }}">
                 <div data-reveal="lines-masked" class="info-title">
                   {{ section.settings.title }}
                 </div>
