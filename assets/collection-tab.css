@@ -129,14 +129,7 @@
   transition-delay: 0.2s;
 }
 
-.product-slide.viewed:nth-of-type(4) .product-card.is-animated {
-  transition-delay: 0.28s;
-}
 
-/* EVERYTHING ELSE gets capped */
-.product-slide.viewed:nth-of-type(n+5) .product-card.is-animated {
-  transition-delay: 0.32s;
-}
 
 /* stagger */
 /* .product-carousel .product-slide.viewed:nth-child(1) .product-card.is-animated { transition-delay: 0.02s; }
