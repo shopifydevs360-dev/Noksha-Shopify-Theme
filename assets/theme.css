@@ -879,9 +879,7 @@ button:disabled,
 .toggle-icon .icon-minus,
 .accordion-item.active .toggle-icon .icon-plus{
   display: none;
-  transition: all .6s cubic-bezier(.72,0,.28,1);
 }
 .accordion-item.active .toggle-icon .icon-minus{
   display: block;
-  transition: all .6s cubic-bezier(.72,0,.28,1);
 } 
