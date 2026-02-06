@@ -118,26 +118,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------------- ANIMATION HANDLER ---------------- */
-  function animateVisibleCards() {
-    const cards = section.querySelectorAll(
-      '.product-slide:not([style*="display: none"]) .product-card'
-    );
+function animateVisibleCards() {
+  const cards = section.querySelectorAll(
+    '.product-slide:not([style*="display: none"]) .product-card'
+  );
 
-    // Remove animation class from all cards
-    cards.forEach(card => {
-      card.classList.remove('is-animated');
-    });
+  // Remove animation class
+  cards.forEach(card => {
+    card.classList.remove('is-animated');
+  });
 
-    // Force reflow
-    void cards[0]?.offsetHeight;
+  // Force layout recalculation
+  void section.offsetHeight;
 
-    // Add animation class with staggered delay
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        card.classList.add('is-animated');
-      }, index * 100);
-    });
-  }
+  // Re-apply animation class
+  cards.forEach(card => {
+    card.classList.add('is-animated');
+  });
+}
 
   /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
@@ -152,11 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Show selected collection slides
-    const visibleSlides = [];
     slides.forEach(slide => {
       if (slide.dataset.collection === filter) {
         slide.style.display = 'block';
-        visibleSlides.push(slide);
       }
     });
 
@@ -165,24 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
-    // Update swiper and reset to first slide
     productSwiper.update();
     productSwiper.slideTo(0);
 
-    // Reset stagger delay based on new visible slides
-    section.querySelectorAll('.product-card').forEach(card => {
-      card.style.transitionDelay = '';
-    });
-
-    // Apply new stagger delay to visible slides
-    visibleSlides.forEach((slide, index) => {
-      const card = slide.querySelector('.product-card');
-      if (card) {
-        card.style.transitionDelay = `${(index + 1) * 0.1}s`;
-      }
-    });
-
-    // Trigger animation
+    // Animate cards on tab switch
     animateVisibleCards();
   }
 
@@ -201,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
 
 
 {% schema %}
