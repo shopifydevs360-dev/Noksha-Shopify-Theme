@@ -113,9 +113,6 @@
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-.product-card.is-animated {
-  transition-delay: calc(var(--delay, 0) * 0.08s);
-}
 /* first few get stagger */
 .product-slide.viewed:first-of-type .product-card.is-animated {
   transition-delay: 0.05s;
