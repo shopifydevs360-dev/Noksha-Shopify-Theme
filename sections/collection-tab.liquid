@@ -109,27 +109,33 @@ document.addEventListener('DOMContentLoaded', () => {
       580: { slidesPerView: 2.5 },
       991: { slidesPerView: 3 },
       1321: { slidesPerView: 3.5 }
+    },
+    on: {
+      slideChangeTransitionEnd() {
+        animateVisibleCards();
+      }
     }
   });
 
-  /* ---------------- FORCE REPLAY CARD ANIMATION ---------------- */
-  function replayAnimation(filter) {
-    const cards = section.querySelectorAll(
-      `.product-slide[data-collection="${filter}"] .product-card`
-    );
+  /* ---------------- ANIMATION HANDLER ---------------- */
+function animateVisibleCards() {
+  const cards = section.querySelectorAll(
+    '.product-slide:not([style*="display: none"]) .product-card'
+  );
 
-    // Remove animation
-    cards.forEach(card => {
-      card.classList.remove('is-animated');
-    });
+  // Remove animation class
+  cards.forEach(card => {
+    card.classList.remove('is-animated');
+  });
 
-    // Real delay so browser commits reset
-    setTimeout(() => {
-      cards.forEach(card => {
-        card.classList.add('is-animated');
-      });
-    }, 40);
-  }
+  // Force layout recalculation
+  void section.offsetHeight;
+
+  // Re-apply animation class
+  cards.forEach(card => {
+    card.classList.add('is-animated');
+  });
+}
 
   /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
@@ -140,13 +146,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide all slides
     slides.forEach(slide => {
-      slide.classList.add('is-hidden');
+      slide.style.display = 'none';
     });
 
-    // Show selected slides
+    // Show selected collection slides
     slides.forEach(slide => {
       if (slide.dataset.collection === filter) {
-        slide.classList.remove('is-hidden');
+        slide.style.display = 'block';
       }
     });
 
@@ -155,19 +161,17 @@ document.addEventListener('DOMContentLoaded', () => {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
-    // Reset swiper
     productSwiper.update();
-    productSwiper.slideTo(0, 0);
+    productSwiper.slideTo(0);
 
-    // 🔁 Always replay animation
-    setTimeout(() => {
-      replayAnimation(filter);
-    }, 60);
+    // Animate cards on tab switch
+    animateVisibleCards();
   }
 
-  /* ---------------- INIT DEFAULT TAB ---------------- */
-  if (tabs.length) {
-    activateTab(tabs[0].dataset.filter, tabs[0]);
+  /* ---------------- INIT FIRST TAB ---------------- */
+  const firstTab = tabs[0];
+  if (firstTab) {
+    activateTab(firstTab.dataset.filter, firstTab);
   }
 
   /* ---------------- TAB CLICK EVENTS ---------------- */
