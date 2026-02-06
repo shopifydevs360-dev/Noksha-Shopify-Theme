@@ -163,10 +163,13 @@ function animateVisibleCards() {
     }
 
     productSwiper.update();
-    productSwiper.slideTo(0);
+    productSwiper.slideTo(0, 0);
 
-    // Animate cards on tab switch
-    animateVisibleCards();
+    // 🔁 force replay every tab click
+    requestAnimationFrame(() => {
+      animateVisibleCards();
+    });
+
   }
 
   /* ---------------- INIT FIRST TAB ---------------- */
