@@ -112,24 +112,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ---------------- FORCE REPLAY ANIMATION ---------------- */
+  /* ---------------- FORCE REPLAY CARD ANIMATION ---------------- */
   function replayAnimation(filter) {
     const cards = section.querySelectorAll(
       `.product-slide[data-collection="${filter}"] .product-card`
     );
 
-    // 1. Remove animation
+    // Remove animation
     cards.forEach(card => {
       card.classList.remove('is-animated');
     });
 
-    // 2. Force layout reset
-    void section.offsetHeight;
-
-    // 3. Re-add animation (always restarts)
-    cards.forEach(card => {
-      card.classList.add('is-animated');
-    });
+    // Real delay so browser commits reset
+    setTimeout(() => {
+      cards.forEach(card => {
+        card.classList.add('is-animated');
+      });
+    }, 40);
   }
 
   /* ---------------- TAB ACTIVATION ---------------- */
@@ -139,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .forEach(el => el.classList.remove('active'));
     tab.closest('.related-product-caps').classList.add('active');
 
-    // Hide all slides (WITHOUT display:none)
+    // Hide all slides
     slides.forEach(slide => {
       slide.classList.add('is-hidden');
     });
@@ -160,10 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
     productSwiper.update();
     productSwiper.slideTo(0, 0);
 
-    // 🔁 ALWAYS replay animation
+    // 🔁 Always replay animation
     setTimeout(() => {
       replayAnimation(filter);
-    }, 50);
+    }, 60);
   }
 
   /* ---------------- INIT DEFAULT TAB ---------------- */
