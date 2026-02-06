@@ -186,7 +186,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+<script>
+  const viewedSlides = section.querySelectorAll('.product-slide.viewed');
 
+viewedSlides.forEach((slide, index) => {
+  const card = slide.querySelector('.product-card');
+  if (card) {
+    card.style.setProperty('--delay', Math.min(index, 4));
+  }
+});
+
+</script>
 
 
 
