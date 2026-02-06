@@ -129,6 +129,12 @@
 .product-carousel .product-slide:nth-child(3) .product-card { transition-delay: 0.3s; }
 .product-carousel .product-slide:nth-child(4) .product-card { transition-delay: 0.4s; }
 
+.product-slide.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
 
 /* Slider Css */
 .swiper-slide.product-slide{
