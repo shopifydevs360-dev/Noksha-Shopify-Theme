@@ -118,24 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------------- ANIMATION HANDLER ---------------- */
-function animateVisibleCards() {
-  const cards = section.querySelectorAll(
-    '.product-slide:not([style*="display: none"]) .product-card'
-  );
+  function animateVisibleCards() {
+    // 1️⃣ Remove animation from ALL cards
+    section.querySelectorAll('.product-card').forEach(card => {
+      card.classList.remove('is-animated');
+    });
 
-  // Remove animation class
-  cards.forEach(card => {
-    card.classList.remove('is-animated');
-  });
+    // 2️⃣ Force browser to register the removal
+    void section.offsetHeight;
 
-  // Force layout recalculation
-  void section.offsetHeight;
-
-  // Re-apply animation class
-  cards.forEach(card => {
-    card.classList.add('is-animated');
-  });
-}
+    // 3️⃣ Add animation ONLY to visible slides
+    section.querySelectorAll(
+      '.product-slide[style*="display: block"] .product-card'
+    ).forEach(card => {
+      card.classList.add('is-animated');
+    });
+  }
 
   /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
@@ -144,12 +142,15 @@ function animateVisibleCards() {
       .forEach(el => el.classList.remove('active'));
     tab.closest('.related-product-caps').classList.add('active');
 
-    // Hide all slides
+    // Hide all slides + remove animation
     slides.forEach(slide => {
       slide.style.display = 'none';
+      slide.querySelectorAll('.product-card').forEach(card => {
+        card.classList.remove('is-animated');
+      });
     });
 
-    // Show selected collection slides
+    // Show selected slides
     slides.forEach(slide => {
       if (slide.dataset.collection === filter) {
         slide.style.display = 'block';
@@ -161,17 +162,17 @@ function animateVisibleCards() {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
+    // Reset swiper
     productSwiper.update();
-    productSwiper.slideTo(0);
+    productSwiper.slideTo(0, 0);
 
-    // Animate cards on tab switch
+    // 🔁 Animate ONLY visible cards (every tab click)
     animateVisibleCards();
   }
 
   /* ---------------- INIT FIRST TAB ---------------- */
-  const firstTab = tabs[0];
-  if (firstTab) {
-    activateTab(firstTab.dataset.filter, firstTab);
+  if (tabs.length) {
+    activateTab(tabs[0].dataset.filter, tabs[0]);
   }
 
   /* ---------------- TAB CLICK EVENTS ---------------- */
