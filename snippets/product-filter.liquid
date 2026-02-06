@@ -109,7 +109,14 @@
         {% for filter in collection.filters %}
           {% if filter.label == 'Color' and filter.values.size > 0 %}
             <fieldset class="filter accordion-item">
-              <legend class="filter-title accordion-trigger">Color</legend>
+              <legend class="filter-title accordion-trigger">
+               <span class="text">Color</span>
+              <span class="toggle-icon">
+                <span class="icon-plus">{%- render 'theme-icon', icon: 'plus' -%}</span>
+                <span class="icon-minus">{%- render 'theme-icon', icon: 'minus' -%}</span>
+                <span></span>
+              </span>
+              </legend>
               <div class="filter-body accordion-content">
                 {% for value in filter.values %}
                   <label>
