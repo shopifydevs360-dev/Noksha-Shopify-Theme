@@ -123,25 +123,47 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    new Swiper('.myswiper-{{ section.id }}', {
+    const effect = '{{ section.settings.slide_effect }}';
+
+    const swiper = new Swiper('.myswiper-{{ section.id }}', {
       loop: true,
-      effect: 'fade',
+      effect: effect,
+
+      {% if section.settings.slide_effect == 'fade' %}
       fadeEffect: {
         crossFade: true
       },
+      {% endif %}
+
+      {% if section.settings.slide_effect == 'coverflow' %}
+      coverflowEffect: {
+        rotate: 30,
+        depth: 100,
+        slideShadows: false
+      },
+      {% endif %}
+
+      {% if section.settings.slide_effect == 'cube' %}
+      cubeEffect: {
+        shadow: false
+      },
+      {% endif %}
+
       navigation: {
         nextEl: '.js-next-{{ section.id }}',
         prevEl: '.js-prev-{{ section.id }}'
       },
+
       {% if section.settings.enable_autoplay %}
       autoplay: {
         delay: {{ section.settings.autoplay_speed | times: 1000 }},
         disableOnInteraction: false
-      }
+      },
       {% endif %}
     });
   });
 </script>
+
 
 {% schema %}
 {
@@ -153,6 +175,19 @@
       "type": "image_picker",
       "id": "sidebar_image",
       "label": "Sidebar Image (Desktop)"
+    },
+    {
+      "type": "select",
+      "id": "slide_effect",
+      "label": "Slide transition effect",
+      "default": "fade",
+      "options": [
+        { "value": "fade", "label": "Fade" },
+        { "value": "slide", "label": "Slide" },
+        { "value": "cube", "label": "Cube" },
+        { "value": "coverflow", "label": "Coverflow" },
+        { "value": "flip", "label": "Flip" }
+      ]
     },
     {
       "type": "checkbox",
