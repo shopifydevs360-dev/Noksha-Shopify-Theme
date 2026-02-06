@@ -11,13 +11,7 @@
       {% for block in section.blocks %}
 
         {% liquid
-          assign button_class = block.settings.button_type
-
-          if block.settings.button_type == 'btn--animation'
-            assign button_class = button_class | append: ' ' | append: block.settings.animation_type
-          else
-            assign button_class = button_class | append: ' btn'
-          endif
+          assign button_class = 'btn' | append: block.settings.button_type
 
           assign image_wapper_classes = ''
           unless block.settings.aspect_ratio == 'adapt-to-image'
