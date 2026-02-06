@@ -111,7 +111,7 @@
 }
 .product-carousel .product-card {
   opacity: 0;
-  transform: translate3d(-24px, 0, 0);
+  transform: translate3d(24px, 0, 0);
   transition-property: opacity, transform;
   transition-duration: 0.45s;
   transition-timing-function: ease;
