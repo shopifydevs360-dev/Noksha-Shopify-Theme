@@ -170,7 +170,7 @@
             "title": "MAXI DRESSES",
             "cta_text": "SHOP NOW",
             "link": "",
-            "button_type": "btn--animation",
+            "button_type": "hover-fill-bg",
             "image_background_color": "#f3f3f4"
           }
         },
