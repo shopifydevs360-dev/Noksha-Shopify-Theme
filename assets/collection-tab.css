@@ -115,10 +115,10 @@
 }
 
 /* stagger */
-/* .product-carousel .product-slide:nth-child(1) .product-card.is-animated { transition-delay: 0.02s; }
+.product-carousel .product-slide:nth-child(1) .product-card.is-animated { transition-delay: 0.02s; }
 .product-carousel .product-slide:nth-child(2) .product-card.is-animated { transition-delay: 0.1s; }
 .product-carousel .product-slide:nth-child(3) .product-card.is-animated { transition-delay: 0.2s; }
-.product-carousel .product-slide:nth-child(4) .product-card.is-animated { transition-delay: 0.3s; } */
+.product-carousel .product-slide:nth-child(4) .product-card.is-animated { transition-delay: 0.3s; }
 
 
 
