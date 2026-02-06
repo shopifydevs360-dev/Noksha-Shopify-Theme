@@ -375,7 +375,7 @@ button{
     Animation Button
 =========================*/
 /* Hover to underline */
-.btn--animation.hover-underline {
+.hover-underline {
   background: transparent;
   font-size: rgb(var(--btn_link_font_size));
   color: rgb(var(--color-link));
@@ -383,7 +383,7 @@ button{
   position: relative;
   overflow: hidden;
 }
-.btn--animation.hover-underline:before{
+.hover-underline:before{
   content: "";
   display: block;
   position: absolute;
@@ -395,11 +395,11 @@ button{
   transition: all .3s cubic-bezier(.34,.615,.4,.985);
   background: rgb(var(--color-link-hover));
 }
-a:hover .btn--animation.hover-underline:before{
+a:hover .hover-underline:before{
   transform: none;
   transition-delay: .3s;
 }
-a:hover .btn--animation.hover-underline{
+a:hover .hover-underline{
   color: rgb(var(--color-link-hover));
 }
 /* Hover to fill Background */
