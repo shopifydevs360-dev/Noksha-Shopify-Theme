@@ -110,23 +110,23 @@
     max-width: 22rem;
 }
 /* Initial state */
-.product-card {
+.product-carousel .product-card {
   opacity: 0;
   transform: translateX(-24px);
   transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
 /* Animated state */
-.product-card.is-animated {
+.product-carousel .product-card.is-animated {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* Optional stagger for nicer effect */
-.product-slide:nth-child(1) .product-card { transition-delay: 0.05s; }
-.product-slide:nth-child(2) .product-card { transition-delay: 0.1s; }
-.product-slide:nth-child(3) .product-card { transition-delay: 0.15s; }
-.product-slide:nth-child(4) .product-card { transition-delay: 0.2s; }
+.product-carousel .product-slide:nth-child(1) .product-card { transition-delay: 0.05s; }
+.product-carousel .product-slide:nth-child(2) .product-card { transition-delay: 0.1s; }
+.product-carousel .product-slide:nth-child(3) .product-card { transition-delay: 0.15s; }
+.product-carousel .product-slide:nth-child(4) .product-card { transition-delay: 0.2s; }
 
 
 /* Slider Css */
