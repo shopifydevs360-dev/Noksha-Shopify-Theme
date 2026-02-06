@@ -112,11 +112,12 @@
 .product-carousel .product-card {
   opacity: 0;
   transform: translate3d(24px, 0, 0);
-  transition-property: opacity cubic-bezier(0.72, 0, 0.28, 1), transform cubic-bezier(0.72, 0, 0.28, 1);
+  transition-property: opacity, transform;
   transition-duration: 0.45s;
-  transition-timing-function: ease;
+  transition-timing-function: cubic-bezier(0.72, 0, 0.28, 1);
   will-change: transform, opacity;
 }
+
 
 .product-carousel .product-card.is-animated {
   opacity: 1;
