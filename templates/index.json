@@ -75,6 +75,13 @@
             "collection": "borkini"
           }
         },
+        "tab_KtWxa4": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Borkini",
+            "collection": "borkini"
+          }
+        },
         "tab_CNPqei": {
           "type": "tab",
           "settings": {
@@ -85,6 +92,7 @@
       },
       "block_order": [
         "tab_Nq43z7",
+        "tab_KtWxa4",
         "tab_CNPqei"
       ],
       "name": "Product Tabs Carousel",
