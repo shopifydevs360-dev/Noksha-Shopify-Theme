@@ -321,12 +321,10 @@ button{
 .btn,
 .shopify-payment-button button {
   cursor: pointer;
-  border-radius: var(--input_corner_radius, 4px);
   font-family: var(--font-body-family);
   font-size: var(--btn_link_font_size);
   letter-spacing: var(--link_letter_spacing);
   font-weight: 500;
-  line-height: 1.2;
   transition: all 0.2s ease-in-out;
   display: inline-flex;
   align-items: center;
