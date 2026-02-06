@@ -91,13 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const slides = section.querySelectorAll('.product-slide');
   const shopNowBtn = section.querySelector('.js-shop-now-btn');
 
-  /* ---------------- SWIPERS ---------------- */
+  /* ---------------- FILTER TABS SWIPER ---------------- */
   new Swiper(section.querySelector('.swiper-container-filter'), {
     slidesPerView: 'auto',
     freeMode: true,
     spaceBetween: 40
   });
 
+  /* ---------------- PRODUCTS SWIPER ---------------- */
   const productSwiper = new Swiper(section.querySelector('.swiper-container-product'), {
     slidesPerView: 1.2,
     scrollbar: {
@@ -108,53 +109,74 @@ document.addEventListener('DOMContentLoaded', () => {
       580: { slidesPerView: 2.5 },
       991: { slidesPerView: 3 },
       1321: { slidesPerView: 3.5 }
+    },
+    on: {
+      slideChangeTransitionEnd() {
+        animateVisibleCards();
+      }
     }
   });
 
-  /* ---------------- INIT FIRST TAB ---------------- */
-  const firstTab = tabs[0];
-  const firstFilter = firstTab.dataset.filter;
+  /* ---------------- ANIMATION HANDLER ---------------- */
+  function animateVisibleCards() {
+    const visibleCards = section.querySelectorAll(
+      '.product-slide:not([style*="display: none"]) .product-card'
+    );
 
-  activateTab(firstFilter, firstTab);
-
-  /* ---------------- TAB CLICK ---------------- */
-  tabs.forEach(tab => {
-    tab.addEventListener('click', e => {
-      e.preventDefault();
-      activateTab(tab.dataset.filter, tab);
+    visibleCards.forEach(card => {
+      card.classList.remove('is-animated');
+      card.offsetHeight; // force reflow
+      card.classList.add('is-animated');
     });
-  });
+  }
 
-  /* ---------------- FUNCTIONS ---------------- */
+  /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
     // Active tab UI
     section.querySelectorAll('.related-product-caps')
       .forEach(el => el.classList.remove('active'));
     tab.closest('.related-product-caps').classList.add('active');
 
-    // Reset slides
+    // Hide all slides
     slides.forEach(slide => {
       slide.style.display = 'none';
     });
 
-    // Show matching slides
+    // Show selected collection slides
     slides.forEach(slide => {
       if (slide.dataset.collection === filter) {
         slide.style.display = 'block';
       }
     });
 
-    // ✅ UPDATE SHOP NOW BUTTON
+    // Update Shop Now button
     if (shopNowBtn) {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
     productSwiper.update();
     productSwiper.slideTo(0);
-  }
-});
 
+    // Animate cards on tab switch
+    animateVisibleCards();
+  }
+
+  /* ---------------- INIT FIRST TAB ---------------- */
+  const firstTab = tabs[0];
+  if (firstTab) {
+    activateTab(firstTab.dataset.filter, firstTab);
+  }
+
+  /* ---------------- TAB CLICK EVENTS ---------------- */
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      activateTab(tab.dataset.filter, tab);
+    });
+  });
+});
 </script>
+
 
 
 {% schema %}
