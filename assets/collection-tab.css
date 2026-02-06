@@ -109,24 +109,25 @@
 .product-carousel .swiper-slide:first-child {
     max-width: 22rem;
 }
-/* Initial state */
-.product-card {
+.product-carousel .product-card {
   opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
+  transform: translate3d(-24px, 0, 0);
+  transition-property: opacity, transform;
+  transition-duration: 0.45s;
+  transition-timing-function: ease;
+  will-change: transform, opacity;
 }
 
-/* Animated state */
-.product-card.is-animated {
+.product-carousel .product-card.is-animated {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate3d(0, 0, 0);
 }
 
-/* Optional stagger for nicer effect */
-.product-slide:nth-child(1) .product-card { transition-delay: 0.1s; }
-.product-slide:nth-child(2) .product-card { transition-delay: 0.2s; }
-.product-slide:nth-child(3) .product-card { transition-delay: 0.3s; }
-.product-slide:nth-child(4) .product-card { transition-delay: 0.4s; }
+/* stagger */
+.product-carousel .product-slide:nth-child(1) .product-card { transition-delay: 0.08s; }
+.product-carousel .product-slide:nth-child(2) .product-card { transition-delay: 0.16s; }
+.product-carousel .product-slide:nth-child(3) .product-card { transition-delay: 0.24s; }
+.product-carousel .product-slide:nth-child(4) .product-card { transition-delay: 0.32s; }
 
 
 /* Slider Css */
