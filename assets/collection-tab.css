@@ -115,6 +115,22 @@
 }
 
 /* stagger */
+/* .product-carousel .product-slide:nth-child(1) .product-card.is-animated { transition-delay: 0.02s; }
+.product-carousel .product-slide:nth-child(2) .product-card.is-animated { transition-delay: 0.1s; }
+.product-carousel .product-slide:nth-child(3) .product-card.is-animated { transition-delay: 0.2s; }
+.product-carousel .product-slide:nth-child(4) .product-card.is-animated { transition-delay: 0.3s; }
+.product-carousel .product-slide:nth-child(5) .product-card.is-animated { transition-delay: 0.4s; }
+.product-carousel .product-slide:nth-child(6) .product-card.is-animated { transition-delay: 0.5s; }
+.product-carousel .product-slide:nth-child(7) .product-card.is-animated { transition-delay: 0.6s; }
+.product-carousel .product-slide:nth-child(8) .product-card.is-animated { transition-delay: 0.7s; }
+.product-carousel .product-slide:nth-child(9) .product-card.is-animated { transition-delay: 0.8s; }
+.product-carousel .product-slide:nth-child(10) .product-card.is-animated { transition-delay: 0.9s; }
+.product-carousel .product-slide:nth-child(11) .product-card.is-animated { transition-delay: 0.10s; }
+.product-carousel .product-slide:nth-child(12) .product-card.is-animated { transition-delay: 0.11s; }
+.product-carousel .product-slide:nth-child(13) .product-card.is-animated { transition-delay: 0.12s; }
+.product-carousel .product-slide:nth-child(14) .product-card.is-animated { transition-delay: 0.13s; }
+.product-carousel .product-slide:nth-child(15) .product-card.is-animated { transition-delay: 0.14s; }
+.product-carousel .product-slide:nth-child(16) .product-card.is-animated { transition-delay: 0.15s; } */
 .product-carousel .product-slide:nth-child(1) .product-card.is-animated { transition-delay: 0.02s; }
 .product-carousel .product-slide:nth-child(2) .product-card.is-animated { transition-delay: 0.1s; }
 .product-carousel .product-slide:nth-child(3) .product-card.is-animated { transition-delay: 0.2s; }
