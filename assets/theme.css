@@ -376,12 +376,14 @@ button{
 =========================*/
 /* Hover to underline */
 .hover-underline {
-  background: transparent;
-  font-size: rgb(var(--btn_link_font_size));
-  color: rgb(var(--color-link));
-  padding-bottom: 8px;
-  position: relative;
-  overflow: hidden;
+    background: transparent;
+    font-size: rgb(var(--btn_link_font_size));
+    color: rgb(var(--color-link));
+    padding-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
 }
 .hover-underline:before{
   content: "";
