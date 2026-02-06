@@ -123,20 +123,19 @@ function animateVisibleCards() {
     '.product-slide:not([style*="display: none"]) .product-card'
   );
 
-  // Step 1: remove animation
+  // Remove animation class
   cards.forEach(card => {
     card.classList.remove('is-animated');
   });
 
-  // Step 2: wait one frame
-  requestAnimationFrame(() => {
-    // Step 3: re-add animation
-    cards.forEach(card => {
-      card.classList.add('is-animated');
-    });
+  // Force layout recalculation
+  void section.offsetHeight;
+
+  // Re-apply animation class
+  cards.forEach(card => {
+    card.classList.add('is-animated');
   });
 }
-
 
   /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
@@ -163,13 +162,10 @@ function animateVisibleCards() {
     }
 
     productSwiper.update();
-    productSwiper.slideTo(0, 0);
+    productSwiper.slideTo(0);
 
-    // 🔁 force replay every tab click
-    requestAnimationFrame(() => {
-      animateVisibleCards();
-    });
-
+    // Animate cards on tab switch
+    animateVisibleCards();
   }
 
   /* ---------------- INIT FIRST TAB ---------------- */
