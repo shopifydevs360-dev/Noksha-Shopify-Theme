@@ -183,7 +183,7 @@
             "title": "CO-ORDS",
             "cta_text": "SHOP NOW",
             "link": "",
-            "button_type": "hover-fill-bg",
+            "button_type": "hover-underline",
             "image_background_color": "#f3f3f4"
           }
         }
