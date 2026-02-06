@@ -184,7 +184,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-
+<style>
+  {% for i in (1..20) %}
+    .product-carousel .product-slide:nth-child({{ i }}) .product-card {
+      transition-delay: {{ i | times: 0.1 }}s;
+    }
+  {% endfor %}
+</style>
 
 
 {% schema %}

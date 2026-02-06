@@ -1,5 +1,0 @@
-@for $i from 1 through 20 {
-  .product-carousel .product-slide:nth-child(#{$i}) .product-card {
-    transition-delay: #{$i * 0.1}s;
-  }
-}
