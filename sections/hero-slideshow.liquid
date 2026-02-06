@@ -123,7 +123,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    new Swiper('.myswiper-{{ section.id }}', {
+    const swiper = new Swiper('.myswiper-{{ section.id }}', {
       loop: true,
       effect: 'fade',
       fadeEffect: {
@@ -137,11 +137,37 @@
       autoplay: {
         delay: {{ section.settings.autoplay_speed | times: 1000 }},
         disableOnInteraction: false
-      }
+      },
       {% endif %}
+
+      on: {
+        slideChangeTransitionStart() {
+          // reset animation
+          document
+            .querySelectorAll('.myswiper-{{ section.id }} .text-content > *')
+            .forEach(el => {
+              el.style.transition = 'none';
+              el.style.opacity = '0';
+              el.style.transform = 'translateY(20px)';
+            });
+        },
+
+        slideChangeTransitionEnd() {
+          // re-trigger animation
+          document
+            .querySelectorAll('.myswiper-{{ section.id }} .swiper-slide-active .text-content > *')
+            .forEach(el => {
+              el.offsetHeight; // force reflow
+              el.style.transition = '';
+              el.style.opacity = '';
+              el.style.transform = '';
+            });
+        }
+      }
     });
   });
 </script>
+
 
 {% schema %}
 {
