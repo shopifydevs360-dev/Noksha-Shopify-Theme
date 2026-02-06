@@ -109,33 +109,28 @@ document.addEventListener('DOMContentLoaded', () => {
       580: { slidesPerView: 2.5 },
       991: { slidesPerView: 3 },
       1321: { slidesPerView: 3.5 }
-    },
-    on: {
-      slideChangeTransitionEnd() {
-        animateVisibleCards();
-      }
     }
   });
 
-  /* ---------------- ANIMATION HANDLER ---------------- */
-function animateVisibleCards() {
-  const cards = section.querySelectorAll(
-    '.product-slide:not([style*="display: none"]) .product-card'
-  );
+  /* ---------------- FORCE REPLAY ANIMATION ---------------- */
+  function replayAnimation(filter) {
+    const cards = section.querySelectorAll(
+      `.product-slide[data-collection="${filter}"] .product-card`
+    );
 
-  // Remove animation class
-  cards.forEach(card => {
-    card.classList.remove('is-animated');
-  });
+    // 1. Remove animation
+    cards.forEach(card => {
+      card.classList.remove('is-animated');
+    });
 
-  // Force layout recalculation
-  void section.offsetHeight;
+    // 2. Force layout reset
+    void section.offsetHeight;
 
-  // Re-apply animation class
-  cards.forEach(card => {
-    card.classList.add('is-animated');
-  });
-}
+    // 3. Re-add animation (always restarts)
+    cards.forEach(card => {
+      card.classList.add('is-animated');
+    });
+  }
 
   /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
@@ -144,15 +139,15 @@ function animateVisibleCards() {
       .forEach(el => el.classList.remove('active'));
     tab.closest('.related-product-caps').classList.add('active');
 
-    // Hide all slides
+    // Hide all slides (WITHOUT display:none)
     slides.forEach(slide => {
-      slide.style.display = 'none';
+      slide.classList.add('is-hidden');
     });
 
-    // Show selected collection slides
+    // Show selected slides
     slides.forEach(slide => {
       if (slide.dataset.collection === filter) {
-        slide.style.display = 'block';
+        slide.classList.remove('is-hidden');
       }
     });
 
@@ -161,17 +156,19 @@ function animateVisibleCards() {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
+    // Reset swiper
     productSwiper.update();
-    productSwiper.slideTo(0);
+    productSwiper.slideTo(0, 0);
 
-    // Animate cards on tab switch
-    animateVisibleCards();
+    // 🔁 ALWAYS replay animation
+    setTimeout(() => {
+      replayAnimation(filter);
+    }, 50);
   }
 
-  /* ---------------- INIT FIRST TAB ---------------- */
-  const firstTab = tabs[0];
-  if (firstTab) {
-    activateTab(firstTab.dataset.filter, firstTab);
+  /* ---------------- INIT DEFAULT TAB ---------------- */
+  if (tabs.length) {
+    activateTab(tabs[0].dataset.filter, tabs[0]);
   }
 
   /* ---------------- TAB CLICK EVENTS ---------------- */
