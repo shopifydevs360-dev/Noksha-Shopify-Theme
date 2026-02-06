@@ -848,6 +848,7 @@ button:disabled,
     justify-content: space-between;
     transition: all .6s cubic-bezier(.72,0,.28,1);
     letter-spacing: 1px;
+    width: 100%;
 }
 
 .accordion-trigger:first-child{
