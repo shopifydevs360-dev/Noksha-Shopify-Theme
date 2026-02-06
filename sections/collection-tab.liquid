@@ -118,24 +118,25 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------------- ANIMATION HANDLER ---------------- */
-  function animateVisibleCards() {
-    const cards = section.querySelectorAll(
-      '.product-slide:not([style*="display: none"]) .product-card'
-    );
+function animateVisibleCards() {
+  const cards = section.querySelectorAll(
+    '.product-slide:not([style*="display: none"]) .product-card'
+  );
 
-    // Remove animation class
-    cards.forEach(card => {
-      card.classList.remove('is-animated');
-    });
+  // Step 1: remove animation
+  cards.forEach(card => {
+    card.classList.remove('is-animated');
+  });
 
-    // Force layout recalculation
-    void section.offsetHeight;
-
-    // Re-apply animation class
+  // Step 2: wait one frame
+  requestAnimationFrame(() => {
+    // Step 3: re-add animation
     cards.forEach(card => {
       card.classList.add('is-animated');
     });
-  }
+  });
+}
+
 
   /* ---------------- TAB ACTIVATION ---------------- */
   function activateTab(filter, tab) {
@@ -161,14 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
       shopNowBtn.href = `/collections/${filter}`;
     }
 
-productSwiper.update();
-productSwiper.slideTo(0, 0);
+    productSwiper.update();
+    productSwiper.slideTo(0);
 
-// ⏱ wait for DOM + Swiper layout
-requestAnimationFrame(() => {
-  animateVisibleCards();
-});
-
+    // Animate cards on tab switch
+    animateVisibleCards();
   }
 
   /* ---------------- INIT FIRST TAB ---------------- */
