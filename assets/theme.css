@@ -412,6 +412,7 @@ a:hover .btn--animation.hover-underline{
   padding: 8px 16px;
   position: relative;
   overflow: hidden;
+  z-index: 9;
 }
 .hover-fill-bg:before{
   content: "";
@@ -424,6 +425,7 @@ a:hover .btn--animation.hover-underline{
   transform: translateX(-130%);
   transition: all .3s cubic-bezier(.34,.615,.4,.985);
   background: rgb(var(--color-link-hover));
+  z-index: -1;
 }
 a:hover .hover-fill-bg:before{
   transform: none;
