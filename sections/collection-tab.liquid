@@ -119,17 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------- ANIMATION HANDLER ---------------- */
   function animateVisibleCards() {
-    // Remove animation from all cards
+    // 1️⃣ Remove animation from ALL cards
     section.querySelectorAll('.product-card').forEach(card => {
       card.classList.remove('is-animated');
     });
 
-    // Force reflow
+    // 2️⃣ Force browser to register the removal
     void section.offsetHeight;
 
-    // Animate only viewed slides
+    // 3️⃣ Add animation ONLY to visible slides
     section.querySelectorAll(
-      '.product-slide.viewed .product-card'
+      '.product-slide[style*="display: block"] .product-card'
     ).forEach(card => {
       card.classList.add('is-animated');
     });
@@ -142,20 +142,18 @@ document.addEventListener('DOMContentLoaded', () => {
       .forEach(el => el.classList.remove('active'));
     tab.closest('.related-product-caps').classList.add('active');
 
-    // Hide all slides + reset state
+    // Hide all slides + remove animation
     slides.forEach(slide => {
       slide.style.display = 'none';
-      slide.classList.remove('viewed');
       slide.querySelectorAll('.product-card').forEach(card => {
         card.classList.remove('is-animated');
       });
     });
 
-    // Show selected slides + mark as viewed
+    // Show selected slides
     slides.forEach(slide => {
       if (slide.dataset.collection === filter) {
         slide.style.display = 'block';
-        slide.classList.add('viewed');
       }
     });
 
@@ -168,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     productSwiper.update();
     productSwiper.slideTo(0, 0);
 
-    // Animate visible cards
+    // 🔁 Animate ONLY visible cards (every tab click)
     animateVisibleCards();
   }
 
@@ -186,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-
 
 
 
