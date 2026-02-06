@@ -135,26 +135,6 @@
       },
       {% endif %}
 
-      {% if section.settings.slide_effect == 'coverflow' %}
-      coverflowEffect: {
-        rotate: 30,
-        depth: 100,
-        slideShadows: false
-      },
-      {% endif %}
-
-      {% if section.settings.slide_effect == 'creative' %}
-      creativeEffect: {
-        prev: {
-          shadow: true,
-          translate: [0, 0, -400],
-        },
-        next: {
-          translate: ["100%", 0, 0],
-        },
-      },
-      {% endif %}
-
       navigation: {
         nextEl: '.js-next-{{ section.id }}',
         prevEl: '.js-prev-{{ section.id }}'
@@ -189,10 +169,7 @@
       "default": "fade",
       "options": [
         { "value": "fade", "label": "Fade" },
-        { "value": "slide", "label": "Slide" },
-        { "value": "creative", "label": "creative" },
-        { "value": "coverflow", "label": "Coverflow" },
-        { "value": "flip", "label": "Flip" }
+        { "value": "slide", "label": "Slide" }
       ]
     },
     {
