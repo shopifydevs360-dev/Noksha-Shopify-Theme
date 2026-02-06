@@ -119,19 +119,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------- ANIMATION HANDLER ---------------- */
   function animateVisibleCards() {
-    // 1️⃣ Remove animation from ALL cards
+    // Remove animation from all cards
     section.querySelectorAll('.product-card').forEach(card => {
       card.classList.remove('is-animated');
     });
 
-    // 2️⃣ Force browser to register the removal
+    // Force reflow
     void section.offsetHeight;
 
-    // 3️⃣ Add animation ONLY to visible slides
+    // Animate only visible cards
     section.querySelectorAll(
       '.product-slide[style*="display: block"] .product-card'
     ).forEach(card => {
       card.classList.add('is-animated');
+    });
+  }
+
+  /* ---------------- ASSIGN VISIBLE INDEX ---------------- */
+  function updateVisibleIndexes() {
+    const visibleSlides = Array.from(slides).filter(
+      slide => slide.style.display === 'block'
+    );
+
+    visibleSlides.forEach((slide, index) => {
+      slide.setAttribute('item-index', index + 1);
     });
   }
 
@@ -142,9 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
       .forEach(el => el.classList.remove('active'));
     tab.closest('.related-product-caps').classList.add('active');
 
-    // Hide all slides + remove animation
+    // Hide all slides
     slides.forEach(slide => {
       slide.style.display = 'none';
+      slide.removeAttribute('item-index');
       slide.querySelectorAll('.product-card').forEach(card => {
         card.classList.remove('is-animated');
       });
@@ -157,6 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Assign fresh indexes ONLY to visible slides
+    updateVisibleIndexes();
+
     // Update Shop Now button
     if (shopNowBtn) {
       shopNowBtn.href = `/collections/${filter}`;
@@ -166,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     productSwiper.update();
     productSwiper.slideTo(0, 0);
 
-    // 🔁 Animate ONLY visible cards (every tab click)
+    // Animate visible cards
     animateVisibleCards();
   }
 
@@ -184,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
 
 
 
