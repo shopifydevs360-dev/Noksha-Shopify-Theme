@@ -1,5 +1,16 @@
+{% liquid
+  assign firstClass = 'collections-list ' | append: 'm-color-' | append: section.settings.color_scheme
+  assign firstClass = firstClass | append: section.settings.custom_class
+  assign firstClass = firstClass | append: section.settings.color_control
 
-<div class="collections-list m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }} {{ section.settings.color_control }}">
+  assign image_wapper_classes = ''
+  unless block.settings.aspect_ratio == 'adapt-to-image'
+    assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
+    assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.aspect_ratio
+  endunless
+  assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.hover_effect_action
+%}
+<div class="{{ firstClass }}">
   <div class="container">
     <div class="title-wrapper sidebar-space">
       <h2 class="h2">{{ 'collections.title' | t }}</h2>
