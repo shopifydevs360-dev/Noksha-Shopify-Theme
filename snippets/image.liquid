@@ -67,8 +67,9 @@
     </picture>
   {% else %}
     {{ image
-      | image_url: width: width, height: height, crop: crop, alt: img_alt
+      | image_url: width: width, height: height, crop: crop
       | image_tag:
+        alt: 'img_alt'
         loading: 'lazy',
         decoding: 'async'
     }}
