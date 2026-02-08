@@ -638,6 +638,16 @@ button:disabled,
     --cols: min(2, var(--cols-desktop));
   }
 }
+@media (min-width: 769px) {
+  [class*="cols-"] {
+    --cols: min(3, var(--cols-desktop));
+  }
+}
+@media (min-width: 992px) {
+  [class*="cols-"] {
+    --cols: min(4, var(--cols-desktop));
+  }
+}
 
 /* Will Update the css Grid
 
