@@ -75,7 +75,7 @@
       "settings": {
         "container_type": "container-fluid",
         "product_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "grid_columns_desktop": "3",
+        "grid_columns_desktop": "4",
         "enable_pagination": true,
         "products_per_page": 6,
         "pagination_type": "infinity_loading",
