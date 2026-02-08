@@ -1,7 +1,7 @@
 <h1>{{ 'collections.title' | t }}</h1>
 
 <div
-  class="collections {{ section.settings.grid_item_width }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
+  class="collections {{ section.settings.grid_item_width }} {{ section.settings.color_control }} {{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
   style="--grid-gap: {{ section.settings.grid_gap }}px"
 >
   {% for collection in collections %}
@@ -10,8 +10,6 @@
         {% render 'image',
           class: 'collection-card__image',
           image: collection.featured_image,
-          width: 600,
-          height: 600,
           crop: 'center'
         %}
       {% endif %}
@@ -60,6 +58,11 @@
         { "value": "collections--full", "label": "t:options.size.large" }
       ],
       "default": "collections--full"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
     },
     {
       "type": "range",
