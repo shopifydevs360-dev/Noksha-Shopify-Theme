@@ -1,5 +1,5 @@
 
-<div class="collections-list">
+<div class="collections-list m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }} {{ section.settings.color_control }}">
   <div class="container">
     <div class="title-wrapper sidebar-space">
       <h1 class="h1">{{ 'collections.title' | t }}</h1>
@@ -7,7 +7,7 @@
     
     <div class="inner-collections-list sidebar-space">
     <div
-      class="collections {{ section.settings.grid_item_width }} {{ section.settings.color_control }} m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
+      class="collections {{ section.settings.grid_item_width }}"
       style="--grid-gap: {{ section.settings.grid_gap }}px"
     >
       {% for collection in collections %}
