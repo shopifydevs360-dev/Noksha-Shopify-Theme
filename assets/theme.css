@@ -217,9 +217,7 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: var(--font-heading-spacing, 0);
   color: rgb(var(--color-heading, var(--color-text)));
 }
-:root {
-  --heading-scale: 0.6;
-}
+
 
 @media (min-width: 441px) { --heading-scale: 0.75; }
 @media (min-width: 769px) { --heading-scale: 0.9; }
