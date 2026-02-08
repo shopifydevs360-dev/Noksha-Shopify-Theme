@@ -73,7 +73,7 @@
         "tag_filter_8pPicW"
       ],
       "settings": {
-        "container_type": "container-fluid",
+        "container_type": "extended",
         "product_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "grid_columns": "3",
         "enable_pagination": true,
