@@ -8,6 +8,8 @@
 
 /* Firefox */
 * {
+  box-sizing: border-box;
+  margin: 0;
   scrollbar-width: thin;
   scrollbar-color: #bdbdbd transparent;
 }
@@ -32,10 +34,6 @@
   background-color: #9e9e9e;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-}
 /* ===============================
    HIDE SCROLLBAR ARROWS (GLOBAL)
 ================================ */
