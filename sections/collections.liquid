@@ -1,28 +1,34 @@
 
+<div class="collections-list">
+  <div class="container">
+    <h1>{{ 'collections.title' | t }}</h1>
+    <div class="inner-collections-list">
+    <div
+      class="collections {{ section.settings.grid_item_width }} {{ section.settings.color_control }} m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
+      style="--grid-gap: {{ section.settings.grid_gap }}px"
+    >
+      {% for collection in collections %}
+        <a class="collection-card" href="{{ collection.url }}">
+          {% if collection.featured_image %}
+            {% render 'image',
+              class: 'collection-card__image',
+              image: collection.featured_image,
+              crop: 'center'
+            %}
+          {% endif %}
 
-<div
-  class="collections {{ section.settings.grid_item_width }} {{ section.settings.color_control }} m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
-  style="--grid-gap: {{ section.settings.grid_gap }}px"
->
-  {% for collection in collections %}
-    <a class="collection-card" href="{{ collection.url }}">
-      {% if collection.featured_image %}
-        {% render 'image',
-          class: 'collection-card__image',
-          image: collection.featured_image,
-          crop: 'center'
-        %}
-      {% endif %}
+          <div class="collection-card__content">
+            <p>{{ collection.title }}</p>
 
-      <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
-
-        {% if collection.description %}
-          <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
-        {% endif %}
-      </div>
-    </a>
-  {% endfor %}
+            {% if collection.description %}
+              <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
+            {% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+    </div>
+  </div>
 </div>
 
 {% stylesheet %}
