@@ -13,7 +13,7 @@
   assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.hover_effect_action
 %}
 <div class="{{ first_class }}">
-  <div class="container">
+  <div class="{{ container_width }}">
     <div class="title-wrapper sidebar-space">
       <h2 class="h2">{{ 'collections.title' | t }}</h2>
     </div>
