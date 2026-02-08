@@ -613,7 +613,7 @@ button:disabled,
 /* ------------------------------
    Grid Item
 ------------------------------- */
-[class*=cols] {
+/* [class*=cols] {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: auto;
@@ -763,7 +763,7 @@ button:disabled,
   .cols-9 {
     grid-template-columns: repeat(9,1fr);
   }
-}
+} */
 /* ------------------------------
   Hide elements by viewport width
 ------------------------------- */
