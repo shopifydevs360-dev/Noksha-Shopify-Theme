@@ -441,21 +441,21 @@ a:hover .hover-fill-bg{
 }
 /* Primary Button */
 .btn--primary {
-  font-size: calc(var(--btn-primary-font-size) * 0.8);
+  font-size: calc(var(--btn_link_font_size) * 0.8);
 }
 
 /* Secondary Button */
 .btn--secondary {
-  font-size: calc(var(--btn-secondary-font-size) * 0.8);
+  font-size: calc(var(--btn_link_font_size) * 0.8);
 }
 
 /* Underline Button */
 .btn--underline {
-  font-size: calc(var(--btn-underline-font-size) * 0.8);
+  font-size: calc(var(--btn_link_font_size) * 0.8);
 }
 /* Gradient Button */
 .btn--gradient {
-  font-size: calc(var(--btn-gradient-font-size) * 0.8);
+  font-size: calc(var(--btn_link_font_size) * 0.8);
 }
 }
 /* Disabled buttons */
