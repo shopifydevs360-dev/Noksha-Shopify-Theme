@@ -5,6 +5,7 @@
   width: 10rem;
   transition: width 0.3s ease;
   overflow: hidden;
+  margin-right: 2rem;
 }
 
 .product-filter.is-expanded {
