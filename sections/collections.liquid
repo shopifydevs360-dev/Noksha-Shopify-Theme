@@ -1,7 +1,7 @@
 {% liquid
-  assign first_class = 'collections-list ' | append: 'm-color-' | append: section.settings.color_scheme
-  assign first_class = first_class | append: section.settings.custom_class
-  assign first_class = first_class | append: section.settings.color_control
+  assign first_class = 'collections-list ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
 
   assign image_wapper_classes = ''
   unless section.settings.aspect_ratio == 'adapt-to-image'
