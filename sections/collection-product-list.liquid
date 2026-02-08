@@ -21,7 +21,10 @@
       </div>
       <div class="collection-image">
         {% if collection.image %}
-          {{ collection.image | img_tag: 'medium_large', alt: collection.title }}
+            {% render 'image',
+              image: collection.image
+              img_alt: collection.title
+            %}
         {% endif %}
       </div>
     </div>
