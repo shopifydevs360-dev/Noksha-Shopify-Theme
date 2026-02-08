@@ -4,7 +4,6 @@
   class="collections {{ section.settings.grid_item_width }} {{ section.settings.color_control }} m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
   style="--grid-gap: {{ section.settings.grid_gap }}px"
 >
-  <h1>{{ 'collections.title' | t }}</h1>
   {% for collection in collections %}
     <a class="collection-card" href="{{ collection.url }}">
       {% if collection.featured_image %}
