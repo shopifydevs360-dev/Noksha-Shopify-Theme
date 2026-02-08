@@ -114,9 +114,10 @@ input[type="search"]::-webkit-search-results-decoration {
 /* Standard */
 ::placeholder {
   color: rgb(var(--color-form-field-text, 34 34 34) / 0.6);
-  opacity: 1; /* Firefox fix */
   font-size: 0.7em;
+  opacity: 1;
 }
+
 
 /* Chrome, Safari, Edge */
 ::-webkit-input-placeholder {
