@@ -613,20 +613,16 @@ button:disabled,
 /* ------------------------------
    Grid Item
 ------------------------------- */
-[class*=cols] {
-  display: -ms-grid;
+[class*="cols-"] {
   display: grid;
-  -ms-grid-rows: auto;
-  grid-template-rows: auto;
-  -ms-grid-columns: 1fr;
-  grid-template-columns: 1fr;
-  column-gap: 2rem;
-  row-gap: 2rem;
+  grid-template-columns: repeat(var(--cols, 1), 1fr);
+  gap: var(--grid-gap, 2rem);
 }
+
 .no-gap {
-  column-gap: 0;
-  row-gap: 0;
+  gap: 0;
 }
+
 .cols-2 {
   grid-template-columns: repeat(1,1fr);
 }
@@ -764,6 +760,10 @@ button:disabled,
     grid-template-columns: repeat(9,1fr);
   }
 }
+/* Will Update the css Grid
+
+
+*/
 /* ------------------------------
   Hide elements by viewport width
 ------------------------------- */
