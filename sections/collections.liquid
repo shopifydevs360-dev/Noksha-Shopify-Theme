@@ -25,8 +25,8 @@
         <a class="collection-card" href="{{ collection.url }}">
           {% if collection.featured_image %}
             {% render 'image',
-              class: 'collection-card__image',
               image: collection.featured_image,
+              class: image_wapper_classes
             %}
           {% endif %}
 
