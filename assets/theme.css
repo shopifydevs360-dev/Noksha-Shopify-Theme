@@ -630,6 +630,14 @@ button:disabled,
 .cols-7 { --cols-desktop: 7; }
 .cols-8 { --cols-desktop: 8; }
 .cols-9 { --cols-desktop: 9; }
+[class*="cols-"] {
+  --cols: 1;
+}
+@media (min-width: 441px) {
+  [class*="cols-"] {
+    --cols: min(2, var(--cols-desktop));
+  }
+}
 
 /* Will Update the css Grid
 
