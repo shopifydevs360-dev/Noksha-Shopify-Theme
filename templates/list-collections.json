@@ -12,9 +12,10 @@
     "main": {
       "type": "collections",
       "settings": {
-        "container_width": "container",
+        "container_width": "container-fluid",
         "grid_item_width": "collections--full",
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "grid_columns": "4",
         "grid_gap": 20,
         "aspect_ratio": "cropped-image--portrait",
         "hover_effect_action": "is-hover-zoom-in",
