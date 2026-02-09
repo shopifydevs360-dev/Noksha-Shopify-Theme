@@ -1,5 +1,5 @@
 {% liquid
-  assign first_class = 'default-page ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = 'login-page ' | append: 'm-color-' | append: section.settings.color_scheme 
   assign first_class = first_class | append: ' ' | append: section.settings.color_control
   assign first_class = first_class | append: ' ' | append: section.settings.custom_class
 
@@ -7,7 +7,7 @@
 %}
 <div class="{{ first_class }}">
   <div class="{{ container_width }}">
-    <div class="content-wrapper sidebar-space">
+    <div class="login-wrapper sidebar-space">
       <h2 class="h3">Sign in</h2>
         {% form 'customer_login' %}
           {{ form.errors | default_errors }}
@@ -39,12 +39,12 @@
           </button>
 
           <p>
-            <a href="{{ routes.customer_recover_url }}">Forgot password?</a>
+            <a href="{{ routes.account_recover_url }}">Forgot password?</a>
           </p>
 
           <p>
             New customer?
-            <a href="{{ routes.customer_register_url }}">Create account</a>
+            <a href="{{ routes.account_register_url }}">Create account</a>
           </p>
         {% endform %}
     </div>
@@ -52,10 +52,10 @@
 </div>
 
 {% stylesheet %}
-.default-page {
+.login-page {
     padding: 6rem 0 3rem 0;
 }
-.default-page .content-wrapper h2 {
+.login-page .content-wrapper h2 {
     text-transform: uppercase;
     margin-bottom: 2rem;
 }
