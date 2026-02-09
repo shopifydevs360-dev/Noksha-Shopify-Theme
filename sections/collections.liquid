@@ -20,7 +20,7 @@
     
     <div class="inner-collections-list sidebar-space">
     <div
-      class="collections cols-{{ section.settings.grid_columns }}"
+      class="collections cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}"
       style="--grid-gap: {{ section.settings.grid_gap }}px"
     >
       {% for collection in collections %}
@@ -104,6 +104,13 @@
         { "value": "6", "label": "6" }
       ],
       "default": "4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_two_mobile",
+      "label": "Show 2 col mobile",
+      "info": "You can show 2 column in a mobile",
+      "default": false
     },
     {
       "type": "range",
