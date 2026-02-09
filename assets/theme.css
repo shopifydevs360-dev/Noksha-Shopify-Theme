@@ -654,7 +654,7 @@ button:disabled,
 }
 @media (min-width: 1600px) {
   [class*="cols-"] {
-    --cols: max(5, var(--cols-desktop));
+    --cols: max(calc(--cols-desktop + 1), var(--cols-desktop));
   }
 }
 
