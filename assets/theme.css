@@ -316,6 +316,7 @@ button{
   border: none;
   cursor: pointer;
   background: transparent;
+  transition: all .3s cubic-bezier(.34,.615,.4,.985);
 }
 .btn,
 .shopify-payment-button button {
