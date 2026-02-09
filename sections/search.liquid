@@ -72,14 +72,18 @@
     text-transform: uppercase;
     margin-bottom: 2rem;
 }
-
-.search-products  .search-form input[type=search] {
+.search-products .search-form form{
+  display: flex;
+  align-items: center;
+}
+.search-products .search-form input[type=search] {
     background: transparent;
     border: 1px solid rgb(var(--color-border));
     border-right: 0;
     color: rgb(var(--color-text));
-    padding: 0.7rem 0;
+    padding: .65rem;
     border-radius: 0;
+    line-height: 1;
 }
 .search-products button.search__submit {
     background: #222;
