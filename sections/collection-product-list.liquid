@@ -78,13 +78,7 @@
         <!-- Pagination UI -->
         {% if section.settings.enable_pagination %}
           <div id="paginationWrapper" class="custom-pagination">
-
-            {% if section.settings.pagination_type == 'pagination_by_number' %}
-              <nav class="pagination-ui pagination-ui--numbers">
-                <!-- JS will inject buttons here -->
-                <div class="pagination-numbers" data-pagination-numbers></div>
-              </nav>
-            {% elsif section.settings.pagination_type == 'load_more_button' %}
+            {% if section.settings.pagination_type == 'load_more_button' %}
               <div class="pagination-ui pagination-ui--loadmore">
                 <button type="button" id="loadMoreBtn" class="load-more-btn">
                   Load More
