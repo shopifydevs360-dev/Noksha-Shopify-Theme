@@ -55,6 +55,29 @@
 {% schema %}
 {
   "name": "t:general.404",
-  "settings": []
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "custom class"
+
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "info": "These settings control the color of the sidebar text. If you select Dark, it will be a light shade of the sidebar text/icon color, and if you select Light, it will be a dark shade of the sidebar text/icon color.",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+  ]
 }
 {% endschema %}
