@@ -22,7 +22,9 @@
   position: relative;
   z-index: 1;
   height: 100%;
-  padding: 32px;
+  padding: 2rem;
+  padding-right: 0;
+  background: rgb(var(--color-background));
 }
 body.has-promo-bar .m-sidebar__content {
     top: 3.2rem;
