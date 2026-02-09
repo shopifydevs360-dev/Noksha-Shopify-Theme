@@ -4,7 +4,67 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/404
 {% endcomment %}
+{% liquid
+  assign first_class = 'collections-list ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
 
+  assign container_width = section.settings.container_width
+
+  assign image_wapper_classes = ''
+  unless section.settings.aspect_ratio == 'adapt-to-image'
+    assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
+    assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.aspect_ratio
+  endunless
+  assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.hover_effect_action
+%}
+<div class="{{ first_class }}">
+  <div class="{{ container_width }}">
+    <div class="title-wrapper sidebar-space">
+      <h2 class="h3">{{ 'collections.title' | t }}</h2>
+    </div>
+    
+    <div class="inner-collections-list sidebar-space">
+    <div
+      class="collections cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}"
+      style="--grid-gap: {{ section.settings.grid_gap }}px"
+    >
+      {% for collection in collections %}
+        <a class="collection-card" href="{{ collection.url }}">
+          {% if collection.featured_image %}
+            {% render 'image',
+              image: collection.featured_image,
+              class: image_wapper_classes,
+              img_alt: collection.title
+            %}
+          {% endif %}
+          
+
+          <div class="collection-card__content">
+            <p>{{ collection.title }} <span>({{ collection.products_count }})</span></p>
+            {% if collection.description %}
+              <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
+            {% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.collections-list {
+    padding: 6rem 0 4rem 0;
+}
+.collections-list .title-wrapper h2 {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+.collection-card__content p{
+  padding: 0.5rem;
+}
+{% endstylesheet %}
 <h1>{{ '404.title' | t }}</h1>
 
 <p>
