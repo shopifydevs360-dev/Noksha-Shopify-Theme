@@ -12,7 +12,7 @@
     "main": {
       "type": "search",
       "settings": {
-        "container_type": "container",
+        "container_type": "extended",
         "product_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "grid_columns": "4",
         "show_two_mobile": false,
