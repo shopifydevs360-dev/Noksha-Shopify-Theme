@@ -10,6 +10,18 @@
     <div class="search-header sidebar-space"> 
       <h2 class="search-title"><h1>{{ 'search.title' | t }}</h1></h2>
     </div>
+    <div class="search-form sidebar-space"> 
+      <form action="{{ routes.search_url }}" method="get" role="search">
+        <input
+          type="search"
+          size="50"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'search.placeholder' | t }}"
+        >
+        <button type="submit">{{ 'search.submit' | t }}</button>
+      </form>
+    </div>
     <div class="collection-wrapper sidebar-space">
       <main class="inner-warpper">
         
