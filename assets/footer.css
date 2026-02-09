@@ -229,7 +229,7 @@
 /* =====================
    SIDEBAR SPACING
 ===================== */
-@media (min-width: 991px) {
+/* @media (min-width: 991px) {
   .full-width .footer-sidebar-space {
     padding-left: 5rem;
   }
@@ -247,4 +247,4 @@
   .container .footer-sidebar-space {
     padding-left: 5rem;
   }
-}
+} */
