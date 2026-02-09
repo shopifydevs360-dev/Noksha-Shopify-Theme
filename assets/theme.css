@@ -785,9 +785,11 @@ button:disabled,
 .pagination-wrapper {
     padding: 2rem 1rem;
     margin: auto;
+    width: fit-content;
 }
 .pagination-inner{
     display: flex;
     gap: 1rem;
     justify-content: center;
+    border-bottom: 2px solid rgb(var(--color-border));
 }
