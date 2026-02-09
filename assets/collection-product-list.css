@@ -25,7 +25,7 @@
     text-align: right;
     margin-top: 0.5rem;
 }
-.main-product-list pagination-ui--loadmore .load-more-btn{
+.main-product-list .pagination-ui--loadmore .load-more-btn{
     background: rgb(var(--color-heading));
     color: rgb(var(--color-background));
     padding: 0.8rem 2rem;
@@ -34,7 +34,7 @@
     letter-spacing: 1.5px;
     border: 1px solid rgb(var(--color-heading));
 }
-.main-product-list pagination-ui--loadmore .load-more-btn:hover{
+.main-product-list .pagination-ui--loadmore .load-more-btn:hover{
     background: transparent;
     color: rgb(var(--color-heading));
 }
