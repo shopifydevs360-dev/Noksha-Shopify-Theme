@@ -432,6 +432,30 @@ a:hover .hover-fill-bg:before{
 a:hover .hover-fill-bg{
   color: rgb(var(--color-background));
 }
+
+
+/* Link List Hover animation */
+
+.linklist-hover-underline li a {
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
+    padding-bottom: 7px;
+}
+.linklist-hover-underline li a:after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: rgb(var(--color-border));
+    left: 0;
+    bottom: 0;
+    transition: all .3s cubic-bezier(.34,.615,.4,.985);
+    transform: translate(-130%);
+}
+.linklist-hover-underline li:hover a:after {
+    transform: translate(0);
+}
 @media (max-width: 767px) {
 .btn,
 .shopify-payment-button button {
