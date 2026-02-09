@@ -1,3 +1,36 @@
+{% liquid
+  assign first_class = 'default-page ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+
+  assign container_width = section.settings.container_width
+%}
+<div class="{{ first_class }}">
+  <div class="{{ container_width }}">
+    <div class="content-wrapper sidebar-space">
+      <h2 class="h3">{{ page.title }}</h2>
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.default-page {
+    padding: 6rem 0 3rem 0;
+}
+.default-page .content-wrapper h2 {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+.default-page p{
+  margin: 1rem 0;
+}
+{% endstylesheet %}
+
+
+
+
+
 <section class="customer customer-login">
   <div class="page-width">
 
