@@ -5,7 +5,7 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/404
 {% endcomment %}
 {% liquid
-  assign first_class = 'collections-list ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = 'not-found ' | append: 'm-color-' | append: section.settings.color_scheme 
   assign first_class = first_class | append: ' ' | append: section.settings.color_control
   assign first_class = first_class | append: ' ' | append: section.settings.custom_class
 
@@ -20,44 +20,17 @@
 %}
 <div class="{{ first_class }}">
   <div class="{{ container_width }}">
-    <div class="title-wrapper sidebar-space">
-      <h2 class="h3">{{ 'collections.title' | t }}</h2>
-    </div>
-    
-    <div class="inner-collections-list sidebar-space">
-    <div
-      class="collections cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}"
-      style="--grid-gap: {{ section.settings.grid_gap }}px"
-    >
-      {% for collection in collections %}
-        <a class="collection-card" href="{{ collection.url }}">
-          {% if collection.featured_image %}
-            {% render 'image',
-              image: collection.featured_image,
-              class: image_wapper_classes,
-              img_alt: collection.title
-            %}
-          {% endif %}
-          
-
-          <div class="collection-card__content">
-            <p>{{ collection.title }} <span>({{ collection.products_count }})</span></p>
-            {% if collection.description %}
-              <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
-            {% endif %}
-          </div>
-        </a>
-      {% endfor %}
-    </div>
+    <div class="inner-not-found sidebar-space">
+      
     </div>
   </div>
 </div>
 
 {% stylesheet %}
-.collections-list {
+.not-found {
     padding: 6rem 0 4rem 0;
 }
-.collections-list .title-wrapper h2 {
+.not-found .title-wrapper h2 {
     text-transform: uppercase;
     margin-bottom: 2rem;
 }
