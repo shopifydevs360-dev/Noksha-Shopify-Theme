@@ -5,10 +5,15 @@
 
   assign container_width = section.settings.container_width
 %}
-<div class="{{ first_class }}">
+
+<div id="customer-login-page" class="{{ first_class }}">
   <div class="{{ container_width }}">
     <div class="login-wrapper sidebar-space">
-      <h2 class="h3">Sign in</h2>
+
+      <!-- LOGIN FORM -->
+      <div data-login-form>
+        <h2 class="h3">Sign in</h2>
+
         {% form 'customer_login' %}
           {{ form.errors | default_errors }}
 
@@ -39,19 +44,83 @@
           <button type="submit" class="button">
             Sign in
           </button>
-
-          <p>
-            <a class="recover-link" href="{{ routes.account_recover_url }}">Forgot password?</a>
-          </p>
-
-          <p class="customer-create-link">
-            New customer?
-            <a href="{{ routes.account_register_url }}">Create account</a>
-          </p>
         {% endform %}
+
+        <!-- MOVED OUTSIDE FORM (IMPORTANT) -->
+        <p>
+          <button type="button" class="recover-link" data-show-recover>
+            Forgot password?
+          </button>
+        </p>
+
+        <p class="customer-create-link">
+          New customer?
+          <a href="{{ routes.account_register_url }}">Create account</a>
+        </p>
+      </div>
+
+      <!-- RECOVER FORM -->
+      <div data-recover-form hidden>
+        <h2 class="h3">Reset password</h2>
+
+        {% form 'recover_customer_password' %}
+          {{ form.errors | default_errors }}
+
+          <div class="field">
+            <label for="RecoverEmail">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="RecoverEmail"
+              placeholder="Enter your email"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <button type="submit" class="button">
+            Send reset link
+          </button>
+        {% endform %}
+
+        <p>
+          <button type="button" class="recover-link" data-hide-recover>
+            Back to login
+          </button>
+        </p>
+      </div>
+
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const page = document.getElementById('customer-login-page');
+    if (!page) return;
+
+    page.addEventListener('click', function (e) {
+      const showBtn = e.target.closest('[data-show-recover]');
+      const hideBtn = e.target.closest('[data-hide-recover]');
+      const loginForm = page.querySelector('[data-login-form]');
+      const recoverForm = page.querySelector('[data-recover-form]');
+
+      if (!loginForm || !recoverForm) return;
+
+      if (showBtn) {
+        e.preventDefault();
+        loginForm.style.display = 'none';
+        recoverForm.style.display = 'block';
+      }
+
+      if (hideBtn) {
+        e.preventDefault();
+        recoverForm.style.display = 'none';
+        loginForm.style.display = 'block';
+      }
+    });
+  });
+</script>
+
 
 {% stylesheet %}
 .login-page {
@@ -99,8 +168,10 @@
     border-bottom: 1px solid rgb(var(--color-border));
 }
 .login-page .recover-link {
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem;
     display: block;
+    padding: 0;
+    font-size: 1em;
 }
 {% endstylesheet %}
 
