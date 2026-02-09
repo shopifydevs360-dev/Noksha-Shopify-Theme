@@ -16,7 +16,8 @@
         <div class="product-list">
 
           <!-- Products -->
-          {% if collection.products_count > 0 %}
+          {% if search.performed %}
+            {% if search.results_count == 0 %}
             <div class="products-grid cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}" >
               {% for result in search.results %}
                 {% render 'product-card', product: product %}
@@ -27,6 +28,7 @@
               <p>No products found.</p>
             </div>
           {% endif %}
+        {% endif %}
         </div>
       </main>
 
