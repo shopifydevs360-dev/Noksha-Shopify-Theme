@@ -11,7 +11,12 @@
   "sections": {
     "main": {
       "type": "404",
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "text": "<p>Apologies, but the page you requested could not be found. Perhaps you can return back to the site's homepage and see if you can find what you are looking for.</p>",
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     },
     "custom_section_c8Pjxk": {
       "type": "custom-section",
@@ -31,7 +36,24 @@
         "text_7ryAkb"
       ],
       "name": "t:general.custom_section",
-      "settings": {}
+      "settings": {
+        "container_width": "container",
+        "height_type": "content",
+        "height_desktop": 800,
+        "height_tablet": 600,
+        "height_mobile": 500,
+        "background_color": "#ffffff",
+        "overlay_enable": false,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "border_radius_top": 0,
+        "border_radius_bottom": 0,
+        "padding_y": 60,
+        "padding_x": 30,
+        "justify_content": "center",
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
