@@ -10,18 +10,12 @@
   assign first_class = first_class | append: ' ' | append: section.settings.custom_class
 
   assign container_width = section.settings.container_width
-
-  assign image_wapper_classes = ''
-  unless section.settings.aspect_ratio == 'adapt-to-image'
-    assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
-    assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.aspect_ratio
-  endunless
-  assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.hover_effect_action
 %}
 <div class="{{ first_class }}">
   <div class="{{ container_width }}">
     <div class="content-wrapper sidebar-space">
-      <h2 class="h3">{{ 'collections.title' | t }}</h2>
+      <h2 class="h3">{{ page.title }}</h2>
+      {{ page.content }}
     </div>
   </div>
 </div>
