@@ -637,7 +637,7 @@ button:disabled,
   [class*="cols-"] {
     --cols: min(2, var(--cols-desktop));
   }
-  [class*="cols-"] {
+  [class*="cols-mobile-"] {
     --cols: min(1, var(--cols-mobile)) !important;
   }
 }
