@@ -4,7 +4,7 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/search
 {% endcomment %}
-<div class="search-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
+<div class="search-products m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
   <div class="{{ section.settings.container_type }}">
 
     <!-- Header -->
@@ -64,7 +64,13 @@
 
 
 {% stylesheet %}
-
+.search-products {
+    padding: 6rem 0 4rem 0;
+}
+.collections-list .search-title h2 {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
 {% endstylesheet %}
 
 {% schema %}
