@@ -47,3 +47,8 @@
         padding: 0 9rem 3rem;
     }
 }
+@media (min-width: 1600px) {
+  [class*="cols-"] {
+    --cols: max(var(--cols-desktop)) !important;
+  }
+}
