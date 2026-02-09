@@ -67,9 +67,16 @@
 
           {% if form.posted_successfully? %}
             {% assign recover_success = true %}
-            <p class="form-success">
-              We’ve sent you an email with a link to reset your password.
-            </p>
+            <div class="form-success">
+              <p>
+                If an account exists for this email, you’ll receive a password reset link shortly.
+              </p>
+
+              <a href="mailto:" class="button button--secondary">
+                Open email app
+              </a>
+            </div>
+
           {% endif %}
 
           {{ form.errors | default_errors }}
