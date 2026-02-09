@@ -121,6 +121,88 @@
 {% schema %}
 {
   "name": "t:general.search",
-  "settings": []
+  "settings": [
+        {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container Type",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container Fluid" },
+        { "value": "container-narrow", "label": "Container Narrow" },
+        { "value": "container-extra-narrow", "label": "Container Extra Narrow" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "color_scheme",
+      "id": "product_color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Product Grid"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns",
+      "label": "Grid Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_two_mobile",
+      "label": "Show 2 col mobile",
+      "info": "You can show 2 column in a mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Pagination"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_pagination",
+      "label": "Enable Pagination",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 2,
+      "max": 48,
+      "step": 1,
+      "label": "Products per page",
+      "default": 24
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ]
 }
 {% endschema %}
