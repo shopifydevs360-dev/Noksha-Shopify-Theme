@@ -1,13 +1,17 @@
 /* ===============================
   FILTER SIDEBAR BASE
 ================================ */
+
 .product-filter {
   width: 10rem;
   transition: width 0.3s ease;
   overflow: hidden;
+}
+@media (min-width: 991px){
+  .product-filter {
   margin-right: 2rem;
 }
-
+}
 .product-filter.is-expanded {
   width: 22rem;
 }
