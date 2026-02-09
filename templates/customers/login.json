@@ -11,7 +11,12 @@
   "sections": {
     "main": {
       "type": "main-login",
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "extended",
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
