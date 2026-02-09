@@ -25,7 +25,11 @@
       </form>
     </div>
     <div class="search-result-note">
-      
+        {% if search.results_count == 0 %}
+          <p>{{ 'search.no_results_html' | t: terms: search.terms }}</p>
+        {% else %}
+          <p>{{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count }}</p>
+    {% endif %}
     </div>
     <!-- Results -->
     <div class="collection-wrapper sidebar-space">
