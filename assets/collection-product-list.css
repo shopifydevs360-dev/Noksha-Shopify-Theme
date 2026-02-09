@@ -23,7 +23,14 @@
 
 .main-product-list pagination-ui--loadmore {
     text-align: right;
+    margin-top: 0.5rem;
 }
 .main-product-list pagination-ui--loadmore .load-more-btn{
-    text-align: right;
+        background: #222;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    font-size: .8em;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: 1px solid #222;
 }
