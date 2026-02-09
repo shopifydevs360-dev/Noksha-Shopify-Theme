@@ -26,7 +26,7 @@
             "link": "shopify://collections/all",
             "background_color": "#f3e3d3",
             "overlay_color": "#000000",
-            "overlay_opacity": 0.3,
+            "overlay_opacity": 0,
             "horizontal_alignment": "left",
             "vertical_alignment": "bottom"
           }
