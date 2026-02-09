@@ -14,9 +14,12 @@
       "settings": {
         "color_scheme": "default",
         "background_image": "shopify://shop_images/404_background.jpg",
+        "overlay_enable": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 0.3,
         "text": "<p>Apologies, but the page you requested could not be found. Perhaps you can return back to the site's homepage and see if you can find what you are looking for.</p>",
         "custom_class": "",
-        "color_control": "section-light"
+        "color_control": "section-dark"
       }
     }
   },
