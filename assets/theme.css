@@ -635,7 +635,7 @@ button:disabled,
   --cols: 1;
 }
 [class*="cols-mobile-"] {
-  --cols: min(2, var(--cols-mobile)) !important;
+  --cols: min(2, var(--cols-mobile));
 }
 @media (min-width: 441px) {
   [class*="cols-"] {
