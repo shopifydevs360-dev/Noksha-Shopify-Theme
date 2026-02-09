@@ -4,6 +4,7 @@
   assign first_class = first_class | append: ' ' | append: section.settings.custom_class
 
   assign container_width = section.settings.container_width
+  assign recover_success = false
 %}
 
 <div id="customer-login-page" class="{{ first_class }}">
@@ -46,7 +47,6 @@
           </button>
         {% endform %}
 
-        <!-- MOVED OUTSIDE FORM (IMPORTANT) -->
         <p>
           <button type="button" class="recover-link" data-show-recover>
             Forgot password?
@@ -60,10 +60,18 @@
       </div>
 
       <!-- RECOVER FORM -->
-      <div data-recover-form hidden>
+      <div data-recover-form style="display:none;">
         <h2 class="h3">Reset password</h2>
 
         {% form 'recover_customer_password' %}
+
+          {% if form.posted_successfully? %}
+            {% assign recover_success = true %}
+            <p class="form-success">
+              We’ve sent you an email with a link to reset your password.
+            </p>
+          {% endif %}
+
           {{ form.errors | default_errors }}
 
           <div class="field">
@@ -81,6 +89,7 @@
           <button type="submit" class="button">
             Send reset link
           </button>
+
         {% endform %}
 
         <p>
@@ -93,16 +102,18 @@
     </div>
   </div>
 </div>
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const page = document.getElementById('customer-login-page');
     if (!page) return;
 
+    const loginForm = page.querySelector('[data-login-form]');
+    const recoverForm = page.querySelector('[data-recover-form]');
+
     page.addEventListener('click', function (e) {
       const showBtn = e.target.closest('[data-show-recover]');
       const hideBtn = e.target.closest('[data-hide-recover]');
-      const loginForm = page.querySelector('[data-login-form]');
-      const recoverForm = page.querySelector('[data-recover-form]');
 
       if (!loginForm || !recoverForm) return;
 
@@ -118,8 +129,14 @@
         loginForm.style.display = 'block';
       }
     });
+
+    {% if recover_success %}
+      loginForm.style.display = 'none';
+      recoverForm.style.display = 'block';
+    {% endif %}
   });
 </script>
+
 
 
 {% stylesheet %}
