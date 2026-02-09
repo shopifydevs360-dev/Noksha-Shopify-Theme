@@ -29,7 +29,7 @@
     margin-bottom: 2rem;
 }
 .collection-card__content p{
-/* margin-bottom: 2rem; */
+margin-bottom: 2rem;
 }
 {% endstylesheet %}
 
@@ -38,7 +38,12 @@
 {
   "name": "t:general.page",
   "settings": [
-        {
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
       "type": "select",
       "id": "container_width",
       "label": "Container width",
@@ -49,86 +54,7 @@
         { "value": "container-extra-narrow", "label": "Container extra narrow" },
         { "value": "extended", "label": "Extended" }
       ],
-      "default": "container"
-    },
-    {
-      "type": "select",
-      "id": "grid_item_width",
-      "label": "t:labels.grid_item_width",
-      "options": [
-        { "value": "collections--compact", "label": "t:options.size.small" },
-        { "value": "collections--full", "label": "t:options.size.large" }
-      ],
-      "default": "collections--full"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme"
-    },
-    {
-      "type": "header",
-      "content": "Product Grid"
-    },
-    {
-      "type": "select",
-      "id": "grid_columns",
-      "label": "Grid Columns",
-      "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" }
-      ],
-      "default": "4"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_two_mobile",
-      "label": "Show 2 col mobile",
-      "info": "You can show 2 column in a mobile",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "t:labels.grid_gap",
-      "min": 0,
-      "max": 50,
-      "step": 5,
-      "unit": "px",
-      "default": 10
-    },
-    {
-      "type": "select",
-      "id": "aspect_ratio",
-      "label": "Aspect Ratio",
-      "options": [
-        { "value": "adapt-to-image", "label": "Adapt to image" },
-        { "value": "cropped-image--square", "label": "Square" },
-        { "value": "cropped-image--portrait", "label": "Portrait" },
-        { "value": "cropped-image--portrait-tall", "label": "Portrait-tall" },
-        { "value": "cropped-image--landscape", "label": "Landscape" },
-        { "value": "cropped-image--wide", "label": "Wide" }
-      ],
-      "default": "cropped-image--square"
-    },
-      {
-      "type": "select",
-      "id": "hover_effect_action",
-      "label": "Image Hover Effect",
-      "options": [
-        { "value": "no-effect", "label": "No effect" },
-        { "value": "is-hover-zoom-in", "label": "Zoom in" },
-        { "value": "is-hover-zoom-out", "label": "Zoom out" },
-        { "value": "is-hover-zoom-up", "label": "Zoom up" },
-        { "value": "is-hover-fade", "label": "Fade" },
-        { "value": "is-hover-cinematic", "label": "Cinematic" },
-        { "value": "is-hover-drift", "label": "Drift" },
-        { "value": "is-hover-overlay", "label": "Overlay" }
-      ],
-      "default": "no-effect"
+      "default": "extended"
     },
     {
       "type": "text",
