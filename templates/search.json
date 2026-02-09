@@ -14,7 +14,7 @@
       "settings": {
         "container_type": "extended",
         "product_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "grid_columns": "4",
+        "grid_columns": "3",
         "show_two_mobile": false,
         "enable_pagination": true,
         "products_per_page": 24,
