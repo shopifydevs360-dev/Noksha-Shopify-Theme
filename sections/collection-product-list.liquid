@@ -72,6 +72,12 @@
             </div>
           {% endif %}
 
+            {% if section.settings.pagination_type == 'pagination_by_number' %}
+              <div class="pagination-wrapper">
+                <div class="pagination-inner">{{ paginate | default_pagination }}</div>
+              </div>
+            {% endif %}
+
         {% endpaginate %}
 
 
