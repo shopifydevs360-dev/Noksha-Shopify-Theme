@@ -5,16 +5,18 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/search
 {% endcomment %}
 <div class="search-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
-
   <div class="{{ section.settings.container_type }}">
+
+    <!-- Header -->
     <div class="search-header sidebar-space"> 
-      <h2 class="search-title"><h1>{{ 'search.title' | t }}</h1></h2>
+      <h1 class="search-title">{{ 'search.title' | t }}</h1>
     </div>
+
+    <!-- Search Form -->
     <div class="search-form sidebar-space"> 
       <form action="{{ routes.search_url }}" method="get" role="search">
         <input
           type="search"
-          size="50"
           name="q"
           value="{{ search.terms | escape }}"
           placeholder="{{ 'search.placeholder' | t }}"
@@ -22,31 +24,44 @@
         <button type="submit">{{ 'search.submit' | t }}</button>
       </form>
     </div>
+
+    <!-- Results -->
     <div class="collection-wrapper sidebar-space">
       <main class="inner-warpper">
-        
         <div class="product-list">
 
-          <!-- Products -->
           {% if search.performed %}
-            {% if search.results_count == 0 %}
-            <div class="products-grid cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}" >
-              {% for result in search.results %}
-                {% render 'product-card', product: product %}
-              {% endfor %}
-            </div>
-          {% else %}
-            <div class="collection-empty-state" id="productsContainer">
-              <p>No products found.</p>
-            </div>
+
+            {% paginate search.results by 20 %}
+
+              {% assign product_results = search.results | where: "object_type", "product" %}
+
+              {% if product_results.size > 0 %}
+                <div class="products-grid cols-{{ section.settings.grid_columns }}{% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}">
+                  {% for result in product_results %}
+                    {% render 'product-card', product: result %}
+                  {% endfor %}
+                </div>
+
+                {{ paginate | default_pagination }}
+
+              {% else %}
+                <div class="collection-empty-state">
+                  <p>{{ 'search.no_results_html' | t: terms: search.terms }}</p>
+                </div>
+              {% endif %}
+
+            {% endpaginate %}
+
           {% endif %}
-        {% endif %}
+
         </div>
       </main>
-
     </div>
+
   </div>
 </div>
+
 
 <form action="{{ routes.search_url }}" method="get" role="search">
   <input
