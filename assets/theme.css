@@ -652,7 +652,7 @@ button:disabled,
     --cols: var(--cols-desktop);
   }
 }
-@media (min-width: 1321px) {
+@media (min-width: 1600px) {
   [class*="cols-"] {
     --cols: min(5, var(--cols-desktop));
   }
