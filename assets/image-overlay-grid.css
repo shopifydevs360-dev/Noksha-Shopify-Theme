@@ -48,7 +48,7 @@
     }
 }
 @media (min-width: 1600px) {
-  [class*="cols-"] {
+ .image-overlay-grid [class*="cols-"] {
     --cols: max(var(--cols-desktop)) !important;
   }
 }
