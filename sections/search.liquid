@@ -44,11 +44,6 @@
                 </div>
 
                 {{ paginate | default_pagination }}
-
-              {% else %}
-                <div class="collection-empty-state">
-                  <p>{{ 'search.no_results_html' | t: terms: search.terms }}</p>
-                </div>
               {% endif %}
 
             {% endpaginate %}
