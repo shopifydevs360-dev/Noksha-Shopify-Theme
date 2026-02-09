@@ -24,3 +24,6 @@
 .main-product-list pagination-ui--loadmore {
     text-align: right;
 }
+.main-product-list pagination-ui--loadmore .load-more-btn{
+    text-align: right;
+}
