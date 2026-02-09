@@ -11,7 +11,16 @@
   "sections": {
     "main": {
       "type": "search",
-      "settings": {}
+      "settings": {
+        "container_type": "container",
+        "product_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "grid_columns": "4",
+        "show_two_mobile": false,
+        "enable_pagination": true,
+        "products_per_page": 24,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
