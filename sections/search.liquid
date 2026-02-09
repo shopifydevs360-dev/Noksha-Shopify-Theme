@@ -38,7 +38,7 @@
 
           {% if search.performed %}
 
-            {% paginate search.results by 20 %}
+            {% paginate search.results by section.settings.products_per_page %}
 
               {% assign product_results = search.results | where: "object_type", "product" %}
 
