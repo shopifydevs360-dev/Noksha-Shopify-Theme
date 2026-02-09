@@ -191,11 +191,6 @@ body {
   font-size: var(--font-body-size, 16px);
   }
 }
-
-h1, h2, h3, h4, h5, h6 {
-  overflow-wrap: break-word;
-  color: rgb(var(--color-heading));
-}
 p {
   overflow-wrap: break-word;
   color: rgb(var(--color-text));
@@ -211,11 +206,14 @@ p:empty {
     touch-action: manipulation;
     color: rgb(var(--color-heading));
 }
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, 
+.h1, .h2, .h3, .h4, .h5, .h6
+{
+  overflow-wrap: break-word;
+  color: rgb(var(--color-heading));
   font-family: var(--font-heading-family, sans-serif);
   font-weight: var(--font-heading-weight, 600);
   letter-spacing: var(--font-heading-spacing, 0);
-  color: rgb(var(--color-heading, var(--color-text)));
 }
 /* Mobile */
 h1, .h1 { font-size: calc(var(--font-h1-size, 36px) * 0.6); }
