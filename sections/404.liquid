@@ -21,8 +21,8 @@
         {{ '404.back_to_shopping' | t }}
       </a>
     </div>
-
-    <div class="not-found-background">
+  </div>
+      <div class="not-found-background">
       {% if section.settings.background_image %}
         {{ section.settings.background_image | image_url: width: 2000 | image_tag: class: 'background-image', loading: 'lazy' }}
       {% endif %}
@@ -31,12 +31,17 @@
     {% if section.settings.overlay_enable %}
       <div class="not-found-overlay" aria-hidden="true"></div>
     {% endif %}
-  </div>
 </div>
 
 {% stylesheet %}
 .not-found {
-    padding: 6rem 0 4rem 0;
+    padding: 6rem 0 4rem;
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
 }
 .inner-not-found {
     text-align: center;
