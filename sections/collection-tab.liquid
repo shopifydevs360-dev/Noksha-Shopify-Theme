@@ -81,8 +81,7 @@
     </div>
   </div>
 </div>
-
-<script>
+{% javascript %}
 document.addEventListener('DOMContentLoaded', () => {
   const section = document.querySelector('.js-product-carousel-{{ section.id }}');
   if (!section) return;
@@ -198,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-</script>
+{% endjavascript %}
 
 
 
