@@ -16,7 +16,7 @@
         <div title="404">404</div>
       </div>
       <h1>{{ '404.not_found' | t }}</h1>
-      <p></p>
+      <div class="text">{{ section.settings.text }}</div>
     </div>
   </div>
 </div>
@@ -51,6 +51,12 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Apologies, but the page you requested could not be found. Perhaps you can return back to the site's homepage and see if you can find what you are looking for.</p>"
     },
     {
       "type": "text",
