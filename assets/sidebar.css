@@ -269,6 +269,7 @@ body.disable-scrollbars {
 }
 .sidebar-footer p {
     font-size: 0.7em;
+    width: max-content;
 }
 
 
