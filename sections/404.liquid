@@ -21,21 +21,17 @@
         {{ '404.back_to_shopping' | t }}
       </a>
     </div>
-  </div>
 
-
-
-      <div class="not-found-background">
-        {% if section.settings.background_image %}
-          {{ section.settings.background_image
-            | image_url: width: 2000
-            | image_tag: class: 'background-image', loading: 'lazy' }}
-        {% endif %}
-      </div>
+    <div class="not-found-background">
+      {% if section.settings.background_image %}
+        {{ section.settings.background_image | image_url: width: 2000 | image_tag: class: 'background-image', loading: 'lazy' }}
+      {% endif %}
+    </div>
 
     {% if section.settings.overlay_enable %}
       <div class="not-found-overlay" aria-hidden="true"></div>
     {% endif %}
+  </div>
 </div>
 
 {% stylesheet %}
