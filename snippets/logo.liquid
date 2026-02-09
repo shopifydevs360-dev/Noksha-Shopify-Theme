@@ -78,9 +78,9 @@
   width: calc(var(--logo-tablet-width) * 1.2);
   }
 }
-
+{% endstylesheet %}
 {% if section.settings.white_logo != blank %}
-
+<style>
   .color-control.color-dark .light-logo,
   .color-control.color-light .dark-logo
   {
@@ -97,6 +97,5 @@
   {
     display: block !important;
   }
-
+</style>
 {% endif %}
-{% endstylesheet %}
