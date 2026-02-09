@@ -14,7 +14,7 @@
 <footer class="{{ f_outer_classes }}" {{ section.shopify_attributes }}>
  <section class="{{ f_inner_classes }}">
   <div class="sidebar-space">
-    <div class="footer__inner {% if section.settings.container_width == 'full-width' %}section-x-padding{% endif %}">
+    <div class="footer__inner">
 
       {% for block in section.blocks %}
         {% case block.type %}
