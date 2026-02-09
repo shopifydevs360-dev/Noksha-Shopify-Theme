@@ -43,7 +43,8 @@
                 {% if block.settings.image %}
                 {% render 'image',
                     image: block.settings.image,
-                    class: image_wapper_classes
+                    class: image_wapper_classes,
+                    img_alt: block.settings.title
                   %}
 
                 {% endif %}
