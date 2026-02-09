@@ -654,7 +654,7 @@ button:disabled,
 }
 @media (min-width: 1600px) {
   [class*="cols-"] {
-    --cols: min(5, var(--cols-desktop));
+    --cols: max(5, var(--cols-desktop));
   }
 }
 
