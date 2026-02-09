@@ -4,7 +4,38 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/search
 {% endcomment %}
+<div class="search-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
 
+  <div class="{{ section.settings.container_type }}">
+    <div class="collection-header sidebar-space"> 
+      <div class="collection-info">
+        <h2 class="collection-title">{{ collection.title }}</h2>
+      </div>
+    </div>
+{% comment %} Filter Result {% endcomment %}
+    <div class="collection-wrapper sidebar-space">
+      <main class="inner-warpper">
+        
+        <div class="product-list">
+
+          <!-- Products -->
+          {% if collection.products_count > 0 %}
+            <div class="products-grid cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}" >
+              {% for product in collection.products %}
+                {% render 'product-card', product: product %}
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="collection-empty-state" id="productsContainer">
+              <p>No products found.</p>
+            </div>
+          {% endif %}
+        </div>
+      </main>
+
+    </div>
+  </div>
+</div>
 <h1>{{ 'search.title' | t }}</h1>
 
 <form action="{{ routes.search_url }}" method="get" role="search">
