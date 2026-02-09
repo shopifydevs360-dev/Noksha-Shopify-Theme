@@ -8,7 +8,7 @@
 %}
 
 <div id="customer-login-page" class="{{ first_class }}">
-  <div class="{{ container_width }}">
+  <div class="{{ container_width }} container-wrapper">
     <div class="login-wrapper sidebar-space">
 
       <!-- LOGIN FORM -->
@@ -71,10 +71,6 @@
               <p>
                 If an account exists for this email, you’ll receive a password reset link shortly.
               </p>
-
-              <a href="mailto:" class="button button--secondary">
-                Open email app
-              </a>
             </div>
           {% endif %}
 
@@ -149,6 +145,9 @@
 .login-page {
     padding: 6rem 0 3rem 0;
 }
+.login-page .container-wrapper{
+    margin-left: 0;
+}
 .login-page .login-wrapper h2 {
     text-transform: uppercase;
     margin-bottom: 2rem;
@@ -195,6 +194,10 @@
     display: block;
     padding: 0;
     font-size: 1em;
+}
+.login-page .form-success {
+    font-size: 0.8em;
+    margin-bottom: 1rem;
 }
 {% endstylesheet %}
 
