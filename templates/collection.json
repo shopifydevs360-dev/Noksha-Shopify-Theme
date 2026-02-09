@@ -79,7 +79,7 @@
         "show_two_mobile": false,
         "enable_pagination": true,
         "products_per_page": 6,
-        "pagination_type": "pagination_by_number",
+        "pagination_type": "load_more_button",
         "custom_class": "",
         "color_control": "section-light"
       }
