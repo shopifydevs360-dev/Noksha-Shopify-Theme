@@ -22,7 +22,7 @@
   position: relative;
   z-index: 1;
   height: 100%;
-  padding: 2rem;
+  padding: 2.5rem;
   padding-right: 0;
 }
 body.has-promo-bar .m-sidebar__content {
