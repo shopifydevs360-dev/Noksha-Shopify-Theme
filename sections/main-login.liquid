@@ -18,6 +18,7 @@
               type="email"
               name="customer[email]"
               id="CustomerEmail"
+              placeholder="Enter your email"
               autocomplete="email"
               required
             >
@@ -29,6 +30,7 @@
               type="password"
               name="customer[password]"
               id="CustomerPassword"
+              placeholder="Enter Password"
               autocomplete="current-password"
               required
             >
@@ -39,10 +41,10 @@
           </button>
 
           <p>
-            <a href="{{ routes.account_recover_url }}">Forgot password?</a>
+            <a class="recover-link" href="{{ routes.account_recover_url }}">Forgot password?</a>
           </p>
 
-          <p>
+          <p class="customer-create-link">
             New customer?
             <a href="{{ routes.account_register_url }}">Create account</a>
           </p>
@@ -55,9 +57,50 @@
 .login-page {
     padding: 6rem 0 3rem 0;
 }
-.login-page .content-wrapper h2 {
+.login-page .login-wrapper h2 {
     text-transform: uppercase;
     margin-bottom: 2rem;
+}
+.login-page form {
+  max-width: 26rem;
+}
+.login-page .field {
+    display: flex;
+    flex-direction: column;
+}
+.login-page label {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+.login-page input {
+    padding: .8rem 0;
+    border-bottom: 2px solid rgb(var(--color-border));
+    border-radius: 0;
+    margin-bottom: 1.4rem;
+}
+.login-page .button {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    border: 2px solid rgb(var(--color-heading));
+    padding: 0.8rem 2rem;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 1rem;
+}
+.login-page .button:hover {
+    background: transparent;
+    color: rgb(var(--color-heading));
+}
+.login-page .customer-create-link a {
+  color: rgb(var(--color-border));
+    border-bottom: 1px solid rgb(var(--color-border));
+}
+.login-page .recover-link {
+    margin-bottom: 0.5rem;
+    display: block;
 }
 {% endstylesheet %}
 

@@ -1,8 +1,14 @@
-<section class="customer customer-register">
-  <div class="page-width">
+{% liquid
+  assign first_class = 'register-page ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
 
-    <h1>Create account</h1>
-
+  assign container_width = section.settings.container_width
+%}
+<div class="{{ first_class }}">
+  <div class="{{ container_width }}">
+    <div class="register-wrapper sidebar-space">
+      <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
 
       {{ form.errors | default_errors }}
@@ -13,6 +19,7 @@
           type="text"
           name="customer[first_name]"
           id="RegisterFirstName"
+          placeholder="Enter your first name"
           value="{{ form.first_name }}"
           autocomplete="given-name"
           required
@@ -26,6 +33,7 @@
           name="customer[last_name]"
           id="RegisterLastName"
           value="{{ form.last_name }}"
+          placeholder="Enter your last name"
           autocomplete="family-name"
           required
         >
@@ -37,6 +45,7 @@
           type="email"
           name="customer[email]"
           id="RegisterEmail"
+          placeholder="Enter your email"
           value="{{ form.email }}"
           autocomplete="email"
           required
@@ -49,6 +58,7 @@
           type="password"
           name="customer[password]"
           id="RegisterPassword"
+          placeholder="Enter a strong password"
           autocomplete="new-password"
           required
         >
@@ -64,13 +74,97 @@
       </p>
 
     {% endform %}
-
+    </div>
   </div>
-</section>
+</div>
+
+{% stylesheet %}
+.register-page {
+    padding: 6rem 0 3rem 0;
+}
+.register-page .register-wrapper h2 {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+.register-page form {
+  max-width: 26rem;
+}
+.register-page .field {
+    display: flex;
+    flex-direction: column;
+}
+.register-page label {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+.register-page input {
+    padding: .8rem 0;
+    border-bottom: 2px solid rgb(var(--color-border));
+    border-radius: 0;
+    margin-bottom: 1.4rem;
+}
+.register-page .button {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    border: 2px solid rgb(var(--color-heading));
+    padding: 0.8rem 2rem;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 1rem;
+}
+.register-page .button:hover {
+    background: transparent;
+    color: rgb(var(--color-heading));
+}
+.register-page .customer-login-link a {
+  color: rgb(var(--color-border));
+    border-bottom: 1px solid rgb(var(--color-border));
+}
+{% endstylesheet %}
+
 
 {% schema %}
 {
   "name": "Customer register",
-  "settings": []
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "extended"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "custom class"
+
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "info": "These settings control the color of the sidebar text. If you select Dark, it will be a light shade of the sidebar text/icon color, and if you select Light, it will be a dark shade of the sidebar text/icon color.",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+  ]
 }
 {% endschema %}
