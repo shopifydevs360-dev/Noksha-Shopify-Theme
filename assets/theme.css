@@ -621,7 +621,7 @@ button:disabled,
 .no-gap {
   gap: 0;
 }
-.cols-1 { --cols-mobile: 1; }
+.cols-mobile-1 { --cols-mobile: 1; }
 .cols-2 { --cols-desktop: 2; }
 .cols-3 { --cols-desktop: 3; }
 .cols-4 { --cols-desktop: 4; }
@@ -636,6 +636,9 @@ button:disabled,
 @media (min-width: 441px) {
   [class*="cols-"] {
     --cols: min(2, var(--cols-desktop));
+  }
+  [class*="cols-"] {
+    --cols: min(1, var(--cols-mobile)) !important;
   }
 }
 @media (min-width: 769px) {
