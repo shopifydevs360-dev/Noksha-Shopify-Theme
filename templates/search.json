@@ -17,7 +17,7 @@
         "grid_columns": "3",
         "show_two_mobile": false,
         "enable_pagination": true,
-        "products_per_page": 24,
+        "products_per_page": 18,
         "custom_class": "",
         "color_control": "section-light"
       }
