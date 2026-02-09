@@ -791,5 +791,6 @@ button:disabled,
     display: flex;
     gap: 1rem;
     justify-content: center;
+    padding-bottom: 0.5rem;
     border-bottom: 2px solid rgb(var(--color-border));
 }
