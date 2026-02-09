@@ -48,8 +48,8 @@
                     {% render 'product-card', product: result %}
                   {% endfor %}
                 </div>
-
-                {{ paginate | default_pagination }}
+                
+                <div class="pagination-wrapper">{{ paginate | default_pagination }}</div>
               {% endif %}
 
             {% endpaginate %}
