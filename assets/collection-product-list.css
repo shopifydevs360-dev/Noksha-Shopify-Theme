@@ -26,11 +26,15 @@
     margin-top: 0.5rem;
 }
 .main-product-list pagination-ui--loadmore .load-more-btn{
-        background: #222;
-    color: #fff;
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
     padding: 0.8rem 2rem;
     font-size: .8em;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    border: 1px solid #222;
+    border: 1px solid rgb(var(--color-heading));
+}
+.main-product-list pagination-ui--loadmore .load-more-btn:hover{
+    background: transparent;
+    color: rgb(var(--color-heading));
 }
