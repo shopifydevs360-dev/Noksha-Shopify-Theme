@@ -1,50 +1,121 @@
-<section class="customer customer-account">
-  <div class="page-width">
+{% liquid
+  assign first_class = 'main-account ' | append: 'm-color-' | append: settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: settings.color_control
+  assign first_class = first_class | append: ' ' | append: settings.custom_class
 
-    <h1>My account</h1>
+  assign container_width = settings.container_width
+%}
+<div class="{{ first_class }}">
+  <div class="{{ container_width }}">
+    <div class="register-wrapper sidebar-space">
+      <h2 class="h3">My account</h2>
+      <p>Welcome, {{ customer.first_name }}</p>
 
-    <p>Welcome, {{ customer.first_name }}</p>
+      <div class="order-list-wrapper">
+        <h3 class="title">Orders</h3>
 
-    <h2>Orders</h2>
+        {% if customer.orders.size > 0 %}
+        <div class="order-list">
+          <table>
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Payment</th>
+                <th>Fulfillment</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in customer.orders %}
+                <tr>
+                  <td>
+                    <a href="{{ order.customer_url }}">
+                      {{ order.name }}
+                    </a>
+                  </td>
+                  <td>{{ order.created_at | date: "%B %d, %Y" }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.fulfillment_status_label }}</td>
+                  <td>{{ order.total_price | money }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+          <p>You haven’t placed any orders yet.</p>
+        {% endif %}
+      </div>
 
-    {% if customer.orders.size > 0 %}
-      <table>
-        <thead>
-          <tr>
-            <th>Order</th>
-            <th>Date</th>
-            <th>Payment</th>
-            <th>Fulfillment</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order in customer.orders %}
-            <tr>
-              <td>
-                <a href="{{ order.customer_url }}">
-                  {{ order.name }}
-                </a>
-              </td>
-              <td>{{ order.created_at | date: "%B %d, %Y" }}</td>
-              <td>{{ order.financial_status_label }}</td>
-              <td>{{ order.fulfillment_status_label }}</td>
-              <td>{{ order.total_price | money }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>You haven’t placed any orders yet.</p>
-    {% endif %}
 
-    <ul class="account-links">
-      <li><a href="{{ routes.account_addresses_url }}">Manage addresses</a></li>
-      <li><a href="{{ routes.account_logout_url }}">Log out</a></li>
-    </ul>
+      
+      <ul class="account-links linklist-hover-underline">
+        <li>
+          <a href="{{ routes.account_addresses_url }}">
+            <span class="icon">{%- render 'theme-icon', icon: 'location' -%}</span>
+            <span class="text">Manage addresses</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ routes.account_logout_url }}">
+          <span class="icon">{%- render 'theme-icon', icon: 'logout' -%}</span>
+          <span class="text">Log out</span>
+          </a>
+          </li>
+      </ul>
 
+    </div>
   </div>
-</section>
+</div>
+
+{% stylesheet %}
+.main-account {
+    padding: 6rem 0 3rem 0;
+}
+.main-account .register-wrapper h2 {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.main-account .title {
+    font-size: .9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin: 2rem 0 .5rem;
+    padding-bottom: 2px;
+    border-bottom: 1px solid rgb(var(--color-border));
+    width: fit-content;
+}
+.main-account .order-list-wrapper {
+  margin-bottom: 2rem;
+}
+
+.main-account ul.account-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 20rem;
+    border-top: 2px solid rgb(var(--color-border));
+    padding-top: 1rem;
+}
+.main-account ul.account-links svg {
+    width: 1.5rem;
+    margin-bottom: -7px;
+}
+.main-account ul.account-links li a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+    text-transform: uppercase;
+}
+
+
+{% endstylesheet %}
 
 {% schema %}
 {
