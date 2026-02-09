@@ -56,7 +56,7 @@
 
           {% if collection.products_count > 0 %}
             <div
-              class="products-grid cols-{{ section.settings.grid_columns }} cols-mobile-2"
+              class="products-grid cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}"
               id="productsContainer"
               data-total-products="{{ collection.products_count }}"
               data-total-pages="{{ paginate.pages }}"
@@ -176,6 +176,14 @@
         { "value": "6", "label": "6" }
       ],
       "default": "4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_two_mobile",
+      "label": "Show 2 col mobile",
+      "info": "You can show 2 column in a mobile",
+      "default": false
+
     },
     {
       "type": "header",
