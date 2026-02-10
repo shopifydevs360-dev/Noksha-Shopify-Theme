@@ -120,24 +120,17 @@
 }
 {% endstylesheet %}
 <script>
-document.addEventListener('click', function (e) {
-  const newBtn = e.target.closest('.js-toggle-new-address');
-  if (newBtn) {
-    document
-      .querySelector('.new-address-form')
-      ?.toggleAttribute('hidden');
-  }
+  document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.js-edit-address');
+  if (!btn) return;
 
-  const editBtn = e.target.closest('.js-edit-address');
-  if (editBtn) {
-    const id = editBtn.dataset.addressId;
-    document
-      .getElementById(`edit-address-${id}`)
-      ?.toggleAttribute('hidden');
-  }
+  const id = btn.dataset.addressId;
+  const form = document.getElementById(`edit-address-${id}`);
+
+  if (form) form.toggleAttribute('hidden');
 });
-</script>
 
+</script>
 {% schema %}
 {
   "name": "Customer addresses",
