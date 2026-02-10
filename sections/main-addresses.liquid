@@ -43,47 +43,70 @@
       {% endform %}
 
 
+      {% if has_addresses %}
         <h3 class="title">Saved addresses</h3>
 
-{% for address in customer.addresses %}
-  <div class="address-card">
-    {{ address | format_address }}
+        <div class="address-list">
+          {% for address in customer.addresses %}
+            <div class="address-card">
 
-    <button
-      type="button"
-      class="js-edit-address"
-      data-address-id="{{ address.id }}"
-    >
-      Edit
-    </button>
+              {% if address == customer.default_address %}
+                <span class="default-badge">Default</span>
+              {% endif %}
 
-    {% form 'customer_address', address %}
-      <div class="address-edit-form" id="edit-address-{{ address.id }}" hidden>
-        {{ form.errors | default_errors }}
+              <div class="address-content">
+                {{ address | format_address }}
+              </div>
 
-        <input name="address[first_name]" value="{{ form.first_name }}">
-        <input name="address[last_name]" value="{{ form.last_name }}">
-        <input name="address[address1]" value="{{ form.address1 }}">
-        <input name="address[city]" value="{{ form.city }}">
-        <input name="address[zip]" value="{{ form.zip }}">
-        <input name="address[country]" value="{{ form.country }}">
-        <input name="address[phone]" value="{{ form.phone }}">
+              <div class="address-actions">
+                <button
+                  type="button"
+                  class="link-button js-edit-address"
+                  data-address-id="{{ address.id }}"
+                >
+                  Edit
+                </button>
 
-        <button class="button" type="submit">Update address</button>
-      </div>
-    {% endform %}
+                <form method="post" action="{{ address.url }}">
+                  <input type="hidden" name="_method" value="delete">
+                  <button
+                    type="submit"
+                    class="link-button link-button--danger"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </div>
 
-    <form method="post" action="{{ address.url }}">
-      <input type="hidden" name="_method" value="delete">
-      <button type="submit">Delete</button>
-    </form>
-  </div>
-{% endfor %}
+              {% form 'customer_address', address %}
+                <div
+                  class="address-edit-form"
+                  id="edit-address-{{ address.id }}"
+                  hidden
+                >
+                  {{ form.errors | default_errors }}
 
+                  <input name="address[first_name]" value="{{ form.first_name }}">
+                  <input name="address[last_name]" value="{{ form.last_name }}">
+                  <input name="address[address1]" value="{{ form.address1 }}">
+                  <input name="address[city]" value="{{ form.city }}">
+                  <input name="address[zip]" value="{{ form.zip }}">
+                  <input name="address[country]" value="{{ form.country }}">
+                  <input name="address[phone]" value="{{ form.phone }}">
 
-    <p>
-      <a href="{{ routes.account_url }}">← Back to account</a>
-    </p>
+                  <button class="button" type="submit">
+                    Update address
+                  </button>
+                </div>
+              {% endform %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <p class="back-link">
+        <a href="{{ routes.account_url }}">← Back to account</a>
+      </p>
 
     </div>
   </div>
@@ -133,19 +156,73 @@
   background: transparent;
   color: rgb(var(--color-heading));
 }
+
+
+
+.address-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.address-card {
+  position: relative;
+  padding: 1.5rem;
+  border: 1px solid rgb(var(--color-border));
+}
+
+.default-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgb(var(--color-border));
+}
+
+.address-actions {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.link-button--danger {
+  color: #b3261e;
+}
+
+.back-link {
+  margin-top: 3rem;
+}
 {% endstylesheet %}
 <script>
-  document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.js-edit-address');
-  if (!btn) return;
+document.addEventListener('click', function (e) {
+  const newBtn = e.target.closest('.js-toggle-new-address');
+  if (newBtn) {
+    document
+      .querySelector('.new-address-form')
+      ?.toggleAttribute('hidden');
+  }
 
-  const id = btn.dataset.addressId;
-  const form = document.getElementById(`edit-address-${id}`);
-
-  if (form) form.toggleAttribute('hidden');
+  const editBtn = e.target.closest('.js-edit-address');
+  if (editBtn) {
+    const id = editBtn.dataset.addressId;
+    document
+      .getElementById(`edit-address-${id}`)
+      ?.toggleAttribute('hidden');
+  }
 });
-
 </script>
+
 {% schema %}
 {
   "name": "Customer addresses",
