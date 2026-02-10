@@ -11,26 +11,12 @@
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
 
-{% if form.errors %}
-  <div class="form-errors" role="alert">
-    <ul>
-      {%- for field in form.errors -%}
-        {%- assign field_name = field[0] -%}
-        {%- assign field_errors = field[1] -%}
+      {% if form.errors %}
+        <div class="form-errors">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
 
-        {%- for message in field_errors -%}
-          {%- if field_name == 'email' and message contains 'already associated with an account' -%}
-            <li>
-              
-            </li>
-          {%- else -%}
-            <li>{{ message }}</li>
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endfor -%}
-    </ul>
-  </div>
-{% endif %}
 
       <div class="field">
         <label for="RegisterFirstName">First name</label>
