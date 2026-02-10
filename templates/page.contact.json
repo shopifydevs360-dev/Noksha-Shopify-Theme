@@ -21,6 +21,169 @@
     "custom_section_tJ4xze": {
       "type": "custom-section",
       "blocks": {
+        "row_qxmLYk": {
+          "type": "row",
+          "name": "Row Layout",
+          "settings": {
+            "align_items": "center",
+            "justify_content": "space-between",
+            "gap": 20,
+            "padding": 0
+          },
+          "blocks": {
+            "column_kVwKRx": {
+              "type": "column",
+              "name": "Column Layout",
+              "settings": {
+                "align_items": "flex-start",
+                "justify_content": "flex-start",
+                "gap": 20,
+                "padding": 0
+              },
+              "blocks": {
+                "button_tnrFWi": {
+                  "type": "button",
+                  "name": "Button",
+                  "settings": {
+                    "button_label": "Test Button",
+                    "button_link": "",
+                    "text_color_scheme": "",
+                    "button_type": "btn--primary"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_tnrFWi"
+              ]
+            },
+            "column_jEdFpa": {
+              "type": "column",
+              "name": "Column Layout",
+              "settings": {
+                "align_items": "flex-start",
+                "justify_content": "flex-start",
+                "gap": 20,
+                "padding": 0
+              },
+              "blocks": {
+                "button_3tnhT7": {
+                  "type": "button",
+                  "name": "Button",
+                  "settings": {
+                    "button_label": "Test Button",
+                    "button_link": "",
+                    "text_color_scheme": "",
+                    "button_type": "btn--primary"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_3tnhT7"
+              ]
+            },
+            "column_KMzy7L": {
+              "type": "column",
+              "name": "Column Layout",
+              "settings": {
+                "align_items": "flex-start",
+                "justify_content": "flex-start",
+                "gap": 20,
+                "padding": 0
+              },
+              "blocks": {
+                "button_HxheNx": {
+                  "type": "button",
+                  "name": "Button",
+                  "settings": {
+                    "button_label": "Test Button",
+                    "button_link": "",
+                    "text_color_scheme": "",
+                    "button_type": "btn--primary"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_HxheNx"
+              ]
+            }
+          },
+          "block_order": [
+            "column_kVwKRx",
+            "column_jEdFpa",
+            "column_KMzy7L"
+          ]
+        },
+        "column_XQT3Mw": {
+          "type": "column",
+          "name": "Column Layout",
+          "settings": {
+            "align_items": "flex-start",
+            "justify_content": "flex-start",
+            "gap": 20,
+            "padding": 0
+          },
+          "blocks": {
+            "row_eeczmz": {
+              "type": "row",
+              "name": "Row Layout",
+              "settings": {
+                "align_items": "center",
+                "justify_content": "space-between",
+                "gap": 20,
+                "padding": 0
+              },
+              "blocks": {
+                "button_DjYVNT": {
+                  "type": "button",
+                  "name": "Button",
+                  "settings": {
+                    "button_label": "Test Button",
+                    "button_link": "",
+                    "text_color_scheme": "",
+                    "button_type": "btn--primary"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_DjYVNT"
+              ]
+            },
+            "row_DdpFJL": {
+              "type": "row",
+              "name": "Row Layout",
+              "settings": {
+                "align_items": "center",
+                "justify_content": "space-between",
+                "gap": 20,
+                "padding": 0
+              },
+              "blocks": {
+                "button_UPKeQE": {
+                  "type": "button",
+                  "name": "Button",
+                  "settings": {
+                    "button_label": "Test Button",
+                    "button_link": "",
+                    "text_color_scheme": "",
+                    "button_type": "btn--primary"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_UPKeQE"
+              ]
+            }
+          },
+          "block_order": [
+            "row_eeczmz",
+            "row_DdpFJL"
+          ]
+        },
         "button_jYVnt7": {
           "type": "button",
           "name": "Button",
@@ -34,6 +197,8 @@
         }
       },
       "block_order": [
+        "row_qxmLYk",
+        "column_XQT3Mw",
         "button_jYVnt7"
       ],
       "name": "Custom Section",
