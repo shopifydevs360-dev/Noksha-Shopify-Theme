@@ -9,96 +9,94 @@
   <div class="{{ container_width }} container-wrapper">
     <div class="register-wrapper sidebar-space">
       <h2 class="h3">Create account</h2>
-    {% form 'create_customer' %}
+{% form 'create_customer' %}
 
-{% if form.errors %}
-  <div class="form__message" tabindex="-1" autofocus>
-    <span class="svg-wrapper">
-      {{ 'icon-error.svg' | inline_asset_content }}
-    </span>
-    <span>There was a problem creating your account.</span>
+  {% if form.errors %}
+    <div class="form-errors" tabindex="-1" autofocus>
+      <strong>There was a problem creating your account.</strong>
+
+      <ul>
+        {% for field in form.errors %}
+          {% for message in form.errors.messages[field] %}
+            <li>
+              {% if field == 'email' and message contains 'already' %}
+                This email address is already associated with an account.
+                If this account is yours, you can
+                {{ 'account/login#recover' | customer_login_link: 'reset your password' }}.
+              {% else %}
+                {{ message }}
+              {% endif %}
+            </li>
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <div class="field">
+    <label for="RegisterFirstName">First name</label>
+    <input
+      type="text"
+      name="customer[first_name]"
+      id="RegisterFirstName"
+      value="{{ form.first_name }}"
+      autocomplete="given-name"
+      required
+    >
   </div>
 
-  <ul class="form-errors-list">
-    {% for field in form.errors %}
-      {% for message in form.errors.messages[field] %}
-        <li>
-          {% if field == 'email' and message contains 'already' %}
-            This email address is already associated with an account.
-            If this account is yours, you can
-            {{ 'account/login#recover' | customer_login_link: 'reset your password' }}.
-          {% else %}
-            {{ message }}
-          {% endif %}
-        </li>
-      {% endfor %}
-    {% endfor %}
-  </ul>
-{% endif %}
+  <div class="field">
+    <label for="RegisterLastName">Last name</label>
+    <input
+      type="text"
+      name="customer[last_name]"
+      id="RegisterLastName"
+      value="{{ form.last_name }}"
+      autocomplete="family-name"
+      required
+    >
+  </div>
 
+  <div class="field">
+    <label for="RegisterEmail">Email</label>
+    <input
+      type="email"
+      name="customer[email]"
+      id="RegisterEmail"
+      value="{{ form.email }}"
+      autocomplete="email"
+      required
+      {% if form.errors contains 'email' %}
+        aria-invalid="true"
+      {% endif %}
+    >
+  </div>
 
+  <div class="field">
+    <label for="RegisterPassword">Password</label>
+    <input
+      type="password"
+      name="customer[password]"
+      id="RegisterPassword"
+      autocomplete="new-password"
+      required
+      {% if form.errors contains 'password' %}
+        aria-invalid="true"
+      {% endif %}
+    >
+  </div>
 
-      <div class="field">
-        <label for="RegisterFirstName">First name</label>
-        <input
-          type="text"
-          name="customer[first_name]"
-          id="RegisterFirstName"
-          placeholder="Enter your first name"
-          value="{{ form.first_name }}"
-          autocomplete="given-name"
-          required
-        >
-      </div>
+  <button type="submit" class="button">
+    Create account
+  </button>
 
-      <div class="field">
-        <label for="RegisterLastName">Last name</label>
-        <input
-          type="text"
-          name="customer[last_name]"
-          id="RegisterLastName"
-          value="{{ form.last_name }}"
-          placeholder="Enter your last name"
-          autocomplete="family-name"
-          required
-        >
-      </div>
+  <p class="customer-login-link">
+    Already have an account?
+    <a href="{{ routes.account_login_url }}">Sign in</a>
+  </p>
 
-      <div class="field">
-        <label for="RegisterEmail">Email</label>
-        <input
-          type="email"
-          name="customer[email]"
-          id="RegisterEmail"
-          placeholder="Enter your email"
-          value="{{ form.email }}"
-          autocomplete="email"
-          required
-        >
-      </div>
+{% endform %}
 
-      <div class="field">
-        <label for="RegisterPassword">Password</label>
-        <input
-          type="password"
-          name="customer[password]"
-          id="RegisterPassword"
-          placeholder="Enter a strong password"
-          autocomplete="new-password"
-          required
-        >
-      </div>
-
-      <button type="submit" class="button">
-        Create account
-      </button>
-
-      <p class="customer-login-link">
-        Already have an account?
-        <a href="{{ routes.account_login_url }}">Sign in</a>
-      </p>
-
-    {% endform %}
     </div>
   </div>
 </div>
