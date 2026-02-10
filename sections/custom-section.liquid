@@ -24,6 +24,11 @@
   if section.settings.background_image_mobile != blank and height_type == "image"
     assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
   endif
+
+if section.settings.enable_sidebar_space
+  assign inner_content_classes = 'inner-section-content'
+  assign inner_content_classes = inner_content_classes | append: ' sidebar-space'
+endif
 %}
 {% style %}
   /* Section wrapper */
@@ -152,7 +157,7 @@
 
 
     <div class="custom-section__content">
-      <div class="inner-section-content {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
+      <div class="{{ inner_content_classes }}">
         {% content_for 'blocks' %}
       </div>
     </div>
