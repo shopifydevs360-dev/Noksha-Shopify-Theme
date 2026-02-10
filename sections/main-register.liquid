@@ -11,33 +11,30 @@
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
 
-{%- if form.errors -%}
+{% if form.errors %}
   <div class="form__message" tabindex="-1" autofocus>
     <span class="svg-wrapper">
-      {{- 'icon-error.svg' | inline_asset_content -}}
+      {{ 'icon-error.svg' | inline_asset_content }}
     </span>
-    <span class="form__message-text">
-      There was a problem creating your account.
-    </span>
+    <span>There was a problem creating your account.</span>
   </div>
 
   <ul class="form-errors-list">
-    {%- for field in form.errors -%}
-      {%- for message in form.errors.messages[field] -%}
+    {% for field in form.errors %}
+      {% for message in form.errors.messages[field] %}
         <li>
-          {%- if field == 'form' -%}
+          {% if field == 'email' and message contains 'already' %}
+            This email address is already associated with an account.
+            If this account is yours, you can
+            {{ 'account/login#recover' | customer_login_link: 'reset your password' }}.
+          {% else %}
             {{ message }}
-          {%- else -%}
-            <a href="#Register{{ field | capitalize }}">
-              {{ form.errors.translated_fields[field] | capitalize }}
-              {{ message }}
-            </a>
-          {%- endif -%}
+          {% endif %}
         </li>
-      {%- endfor -%}
-    {%- endfor -%}
+      {% endfor %}
+    {% endfor %}
   </ul>
-{%- endif -%}
+{% endif %}
 
 
 
