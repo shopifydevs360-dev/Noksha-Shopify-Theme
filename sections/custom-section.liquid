@@ -301,10 +301,28 @@
       "visible_if": "{{ section.settings.overlay_enable == true }}"
     },
     {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background style",
+      "options": [
+        { "value": "solid", "label": "Solid color" },
+        { "value": "gradient", "label": "Gradient" }
+      ],
+      "default": "solid"
+    },
+    {
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.background_style == 'solid' }}"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient",
+      "default": "linear-gradient(180deg, #ffffff, #000000)",
+      "visible_if": "{{ section.settings.background_style == 'gradient' }}"
     },
     {
       "type": "range",
