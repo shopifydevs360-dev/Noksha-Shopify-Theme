@@ -40,8 +40,8 @@
       "settings": {
         "container_width": "full-width",
         "enable_sidebar_space": true,
-        "height_type": "content",
-        "height_desktop": 620,
+        "height_type": "custom",
+        "height_desktop": 200,
         "height_tablet": 360,
         "height_mobile": 200,
         "background_type": "image",
