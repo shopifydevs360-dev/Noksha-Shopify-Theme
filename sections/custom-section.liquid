@@ -316,7 +316,7 @@
       "id": "background_color",
       "label": "Background color",
       "default": "#ffffff",
-      "visible_if": "{{ section.settings.background_style == 'solid' }}"
+      "visible_if": "{{ section.settings.background_style == 'solid' and section.settings.background_type == 'color' }}"
     },
     {
       "type": "color_background",
