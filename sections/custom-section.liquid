@@ -17,6 +17,18 @@
     assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
   endif
 %}
+
+{% stylesheet %}
+
+    .custom-section__background .mobile-bg { display: none; }
+    @media (max-width: 768px) {
+      .custom-section__background .desktop-bg { display: none; }
+      .custom-section__background .mobile-bg { display: block; }
+    }
+
+
+{% endstylesheet %}
+
 {% style %}
   .section-{{ section.id }}-id .custom-section__inner{
     position: relative;
