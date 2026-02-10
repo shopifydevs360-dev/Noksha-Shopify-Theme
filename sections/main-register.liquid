@@ -18,10 +18,9 @@
     <ul>
       {% for field in form.errors %}
         {% for message in form.errors.messages[field] %}
-          {% if field == 'email' and message contains 'already' %}
+          {% if error contains 'already associated' %}
             <li>
-              This email address is already associated with an account.
-              If this account is yours, you can
+              This email address is already
               <a href="/account/login#recover">reset your password</a>.
             </li>
           {% else %}
