@@ -94,11 +94,14 @@
 
         {% endform %}
 
-        <p>
-          <button type="button" class="recover-link" data-hide-recover>
-            Back to login
-          </button>
-        </p>
+        <ul class="linklist-hover-underline">
+          <li>
+            <a type="button" class="back-link" data-hide-recover>
+                <span class="icon">{%- render 'theme-icon', icon: 'logout' -%}</span>
+                <span class="text">Back to login</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
     </div>
@@ -211,6 +214,25 @@
 .login-page .form-success {
     font-size: 0.8em;
     margin-bottom: 1rem;
+}
+
+
+.login-page ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+.login-page ul svg {
+    width: 1.5rem;
+    margin-bottom: -5px;
+}
+.login-page ul li a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+    text-transform: uppercase;
+    cursor: pointer;
 }
 {% endstylesheet %}
 
