@@ -27,8 +27,8 @@
           "settings": {
             "button_label": "Test Button",
             "button_link": "",
-            "text_color_scheme": "",
-            "button_type": "btn--primary"
+            "text_color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+            "button_type": "hover-fill-bg"
           },
           "blocks": {}
         }
