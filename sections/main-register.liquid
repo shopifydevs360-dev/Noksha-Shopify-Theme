@@ -10,6 +10,7 @@
     <div class="register-wrapper sidebar-space">
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
+{% assign debug_force_error = true %}
 
 {% if form.errors %}
   <div class="form-errors" tabindex="-1" autofocus>
