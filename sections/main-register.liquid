@@ -20,8 +20,7 @@
         {% for message in form.errors.messages[field] %}
           {% if field == 'email' and message contains 'already' %}
             <li>
-              {{ form.errors | default_errors }}
-              {{ 'account/login#recover' | customer_login_link: 'reset your password' }}.
+              <p>{{ form.errors | default_errors }}</p>
             </li>
           {% else %}
             <li>{{ message }}</li>

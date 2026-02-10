@@ -112,32 +112,45 @@
 
     const loginForm = page.querySelector('[data-login-form]');
     const recoverForm = page.querySelector('[data-recover-form]');
+    if (!loginForm || !recoverForm) return;
 
-    page.addEventListener('click', function (e) {
-      const showBtn = e.target.closest('[data-show-recover]');
-      const hideBtn = e.target.closest('[data-hide-recover]');
+    function showRecover() {
+      loginForm.style.display = 'none';
+      recoverForm.style.display = 'block';
+    }
 
-      if (!loginForm || !recoverForm) return;
+    function showLogin() {
+      recoverForm.style.display = 'none';
+      loginForm.style.display = 'block';
+    }
 
-      if (showBtn) {
+    // Handle button clicks
+    page.addEventListener('click', (e) => {
+      if (e.target.closest('[data-show-recover]')) {
         e.preventDefault();
-        loginForm.style.display = 'none';
-        recoverForm.style.display = 'block';
+        showRecover();
+        history.replaceState(null, '', '#recover');
       }
 
-      if (hideBtn) {
+      if (e.target.closest('[data-hide-recover]')) {
         e.preventDefault();
-        recoverForm.style.display = 'none';
-        loginForm.style.display = 'block';
+        showLogin();
+        history.replaceState(null, '', window.location.pathname);
       }
     });
 
+    // 🔥 Handle direct link: /account/login#recover
+    if (window.location.hash === '#recover') {
+      showRecover();
+    }
+
+    // After successful submit, keep recover visible
     {% if recover_success %}
-      loginForm.style.display = 'none';
-      recoverForm.style.display = 'block';
+      showRecover();
     {% endif %}
   });
 </script>
+
 
 
 
