@@ -11,11 +11,28 @@
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
 
-      {% if form.errors %}
-        <div class="form-errors">
-          {{ form.errors | default_errors }}
-        </div>
-      {% endif %}
+    {%- if form.errors -%}
+      <h2 class="form__message" tabindex="-1" autofocus>
+        <span class="svg-wrapper">
+          {{- 'icon-error.svg' | inline_asset_content -}}
+        </span>
+        Error Massage here
+      </h2>
+      <ul>
+        {%- for field in form.errors -%}
+          <li>
+            {%- if field == 'form' -%}
+              {{ form.errors.messages[field] }}
+            {%- else -%}
+              <a href="#RegisterForm-{{ field }}">
+                {{ form.errors.translated_fields[field] | capitalize }}
+                {{ form.errors.messages[field] }}
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
 
 
       <div class="field">
