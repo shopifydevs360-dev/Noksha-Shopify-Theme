@@ -11,11 +11,27 @@
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
 
-      {% if form.errors %}
-        <div class="form-errors">
-          {{ form.errors | default_errors }}
-        </div>
-      {% endif %}
+{% if form.errors %}
+  <div class="form-errors" tabindex="-1" autofocus>
+    <strong>There was a problem creating your account.</strong>
+
+    <ul>
+      {% for field in form.errors %}
+        {% for message in form.errors.messages[field] %}
+          {% if field == 'email' and message contains 'already' %}
+            <li>
+              {{ 'errors.reset_password_html' | t }}
+              {{ 'account/login#recover' | customer_login_link: 'reset your password' }}.
+            </li>
+          {% else %}
+            <li>{{ message }}</li>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
 
 
       <div class="field">
