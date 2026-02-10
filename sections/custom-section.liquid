@@ -136,7 +136,7 @@
   <div class="custom-section__inner" data-height="{{ height_type }}">
     {% if has_bg_image %}
       <div class="custom-section__background">
-        {% if section.settings.background_image %}
+        {% comment %} {% if section.settings.background_image %}
           {{ section.settings.background_image
             | image_url: width: 2000
             | image_tag: class: 'desktop-bg', loading: 'lazy' }}
@@ -145,15 +145,17 @@
           {{ section.settings.background_image_mobile
             | image_url: width: 1000
             | image_tag: class: 'mobile-bg', loading: 'lazy' }}
-        {% endif %}
-         {% comment %} {% render 'image',
+        {% endif %} {% endcomment %}
+
+         {% render 'image',
           class: '',
           image: section.settings.background_image,
           width: {{ image.width }},
           height: {{ image.height }},
           mobile_image: section.settings.background_image_mobile,
           img_alt: image.alt
-        %} {% endcomment %}
+        %} 
+
       </div>
     {% endif %}
 
