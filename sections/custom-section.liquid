@@ -132,10 +132,10 @@
   }
 
   {% if section.settings.background_image_mobile %}
-    .custom-section__background .mobile-bg { display: none; }
+    .section-{{ section.id }}-id .custom-section__background .mobile-bg { display: none; }
     @media (max-width: 768px) {
-      .custom-section__background .desktop-bg { display: none; }
-      .custom-section__background .mobile-bg { display: block; }
+      .section-{{ section.id }}-id .custom-section__background .desktop-bg { display: none; }
+      .section-{{ section.id }}-id .custom-section__background .mobile-bg { display: block; }
     }
   {% endif %}
 
