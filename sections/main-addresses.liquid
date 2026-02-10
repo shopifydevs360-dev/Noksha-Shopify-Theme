@@ -4,13 +4,25 @@
   assign first_class = first_class | append: ' ' | append: settings.custom_class
 
   assign container_width = settings.container_width
+
+    assign has_addresses = false
+  if customer.addresses.size > 0
+    assign has_addresses = true
+  endif
 %}
 
 <div class="{{ first_class }}">
   <div class="{{ container_width }} container-wrapper">
     <div class="addresses-wrapper sidebar-space">
       <h2 class="h3">My addresses</h2>
-
+      {% if has_addresses %}
+        <button
+          type="button"
+          class="button button--secondary js-toggle-new-address"
+        >
+          Add new address
+        </button>
+      {% endif %}
           {% form 'customer_address', customer.new_address %}
       <h3 class="title">Add new address</h3>
 
