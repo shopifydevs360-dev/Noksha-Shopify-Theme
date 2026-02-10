@@ -9,101 +9,87 @@
   <div class="{{ container_width }} container-wrapper">
     <div class="register-wrapper sidebar-space">
       <h2 class="h3">Create account</h2>
-      
-      {% comment %} Custom error handling section {% endcomment %}
-      {% if form.errors %}
-        <div class="form-errors">
-          <ul>
-            {% for field in form.errors %}
-              {% if field == 'email' %}
-                {% comment %} Check if it's the "already taken" error {% endcomment %}
-                {% for message in form.errors.messages[field] %}
-                  {% if message contains 'has already been taken' or message contains 'already associated' %}
-                    <li>
-                      This email address is already associated with an account. 
-                      If this account is yours, you can 
-                      <a href="/account/login#recover">reset your password</a>.
-                    </li>
-                  {% else %}
-                    <li>{{ message }}</li>
-                  {% endif %}
-                {% endfor %}
-              {% else %}
-                {% comment %} Handle other field errors {% endcomment %}
-                {% for message in form.errors.messages[field] %}
-                  <li>{{ field | capitalize }} {{ message }}</li>
-                {% endfor %}
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
+    {% form 'create_customer' %}
+
+{% if form.errors %}
+  <div class="errors">
+    {% for field in form.errors %}
+      {% if field == 'email' and form.errors.messages[field] contains 'already been taken' %}
+        <p>This email address is already associated with an account. 
+          If this account is yours, you can 
+          <a href="/account/login#recover">reset your password</a>.</p>
+      {% else %}
+        <p>{{ form.errors.messages[field] }}</p>
       {% endif %}
-      
-      {% form 'create_customer' %}
-        <div class="field">
-          <label for="RegisterFirstName">First name</label>
-          <input
-            type="text"
-            name="customer[first_name]"
-            id="RegisterFirstName"
-            placeholder="Enter your first name"
-            value="{{ form.first_name }}"
-            autocomplete="given-name"
-            required
-          >
-        </div>
+    {% endfor %}
+  </div>
+{% endif %}
 
-        <div class="field">
-          <label for="RegisterLastName">Last name</label>
-          <input
-            type="text"
-            name="customer[last_name]"
-            id="RegisterLastName"
-            value="{{ form.last_name }}"
-            placeholder="Enter your last name"
-            autocomplete="family-name"
-            required
-          >
-        </div>
 
-        <div class="field">
-          <label for="RegisterEmail">Email</label>
-          <input
-            type="email"
-            name="customer[email]"
-            id="RegisterEmail"
-            placeholder="Enter your email"
-            value="{{ form.email }}"
-            autocomplete="email"
-            required
-            {% if form.errors contains 'email' %}
-              aria-invalid="true"
-              aria-describedby="email-error"
-            {% endif %}
-          >
-        </div>
 
-        <div class="field">
-          <label for="RegisterPassword">Password</label>
-          <input
-            type="password"
-            name="customer[password]"
-            id="RegisterPassword"
-            placeholder="Enter a strong password"
-            autocomplete="new-password"
-            required
-          >
-        </div>
 
-        <button type="submit" class="button">
-          Create account
-        </button>
 
-        <p class="customer-login-link">
-          Already have an account?
-          <a href="{{ routes.account_login_url }}">Sign in</a>
-        </p>
-      {% endform %}
+      <div class="field">
+        <label for="RegisterFirstName">First name</label>
+        <input
+          type="text"
+          name="customer[first_name]"
+          id="RegisterFirstName"
+          placeholder="Enter your first name"
+          value="{{ form.first_name }}"
+          autocomplete="given-name"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="RegisterLastName">Last name</label>
+        <input
+          type="text"
+          name="customer[last_name]"
+          id="RegisterLastName"
+          value="{{ form.last_name }}"
+          placeholder="Enter your last name"
+          autocomplete="family-name"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="RegisterEmail">Email</label>
+        <input
+          type="email"
+          name="customer[email]"
+          id="RegisterEmail"
+          placeholder="Enter your email"
+          value="{{ form.email }}"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="RegisterPassword">Password</label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="RegisterPassword"
+          placeholder="Enter a strong password"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="button">
+        Create account
+      </button>
+
+      <p class="customer-login-link">
+        Already have an account?
+        <a href="{{ routes.account_login_url }}">Sign in</a>
+      </p>
+
+    {% endform %}
     </div>
   </div>
 </div>
@@ -157,6 +143,7 @@
     border-bottom: 1px solid rgb(var(--color-border));
 }
 
+
 .register-page .form-errors {
   margin-bottom: 1.5rem;
   padding: 1rem;
@@ -182,9 +169,12 @@
 
 {% endstylesheet %}
 
+
 {% schema %}
 {
   "name": "Customer register",
-  "settings": []
+  "settings": [
+
+  ]
 }
 {% endschema %}
