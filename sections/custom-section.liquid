@@ -146,6 +146,20 @@
     {% if has_bg_image %}
       <div class="custom-section__background">
 
+         {% render 'image',
+          class: 'product__image {{ section.settings.image_wapper_class }}',
+          image: section.settings.background_image,
+          width: {{ image.width }},
+          height: {{ image.height }},
+          mobile_image: block.settings.image_mobile,
+          img_alt: image.alt
+        %}
+        {% if section.settings.background_image %}
+          {{ section.settings.background_image | image_url: width: 2000 | image_tag: class: 'desktop-bg', loading: 'lazy' }}
+        {% endif %}
+        {% if section.settings.background_image_mobile %}
+          {{ section.settings.background_image_mobile | image_url: width: 1000 | image_tag: class: 'mobile-bg', loading: 'lazy' }}
+        {% endif %}
       </div>
     {% endif %}
 
