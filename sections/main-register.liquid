@@ -21,7 +21,7 @@
         {%- for message in field_errors -%}
           {%- if field_name == 'email' and message contains 'already associated with an account' -%}
             <li>
-              {{ 'customers.register.error_email_taken' | t }}
+              {{ 'customer.register.error_email_taken' | t }}
             </li>
           {%- else -%}
             <li>{{ message }}</li>
