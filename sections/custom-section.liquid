@@ -287,7 +287,7 @@
       "id": "overlay_color",
       "label": "Overlay color",
       "default": "#000000",
-      "visible_if": "{{ section.settings.overlay_color }}"
+      "visible_if": "{{ section.settings.overlay_color == true }}"
     },
     {
       "type": "range",
@@ -298,7 +298,7 @@
       "step": 5,
       "unit": "%",
       "default": 40,
-      "visible_if": "{{ section.settings.overlay_color }}"
+      "visible_if": "{{ section.settings.overlay_color == true }}"
     },
     {
       "type": "color",
