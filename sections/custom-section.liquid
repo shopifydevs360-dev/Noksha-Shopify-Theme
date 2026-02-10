@@ -5,20 +5,30 @@
   assign main_classes = main_classes | append: ' ' | append: section.settings.color_control
   assign main_classes = main_classes | append: ' ' | append: section.settings.custom_class
 
-  if section.settings.background_type ==  'image'
-    assign has_bg_image = false
+  assign has_bg_image = false
+  assign bg_color = ''
+
+  if section.settings.background_type == 'image'
     if section.settings.background_image != blank or section.settings.background_image_mobile != blank
       assign has_bg_image = true
     endif
   endif
-  if section.settings.background_type ==  'color'
+
+  if section.settings.background_type == 'color'
     assign bg_color = section.settings.background_color
   endif
 
+  if section.settings.background_type == 'image'
+    assign height_type = section.settings.height_type_image
+  else
+    assign height_type = section.settings.height_type_non_image
+  endif
 
-
-  assign height_type = section.settings.height_type
   assign justify_content = section.settings.justify_content
+  assign inner_content_classes = 'inner-section-content'
+  if section.settings.enable_sidebar_space
+    assign inner_content_classes = inner_content_classes | append: ' sidebar-space'
+  endif
   
   if section.settings.background_image != blank and height_type == "image"
     assign aspect_ratio = section.settings.background_image.aspect_ratio
@@ -27,71 +37,18 @@
   if section.settings.background_image_mobile != blank and height_type == "image"
     assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
   endif
-
-
-  
-if section.settings.enable_sidebar_space
-  assign inner_content_classes = 'inner-section-content'
-  assign inner_content_classes = inner_content_classes | append: ' sidebar-space'
-endif
 %}
+
 {% style %}
-  /* Section wrapper */
-  .section-id-{{ section.id }} .custom-section__inner{
-    {% unless has_bg_image %}
+  .section-id-{{ section.id }} .custom-section__inner {
+    {% if section.settings.background_type == 'color' and bg_color != '' and has_bg_image == false %}
       background-color: {{ bg_color }};
-    {% endunless %}
-  }
-  .section-id-{{ section.id }} .custom-section__inner{
+    {% endif %}
     justify-content: {{ justify_content }};
-    padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
-  }
-
-
-/* Apply height modes to the inner wrapper */
-.section-id-{{ section.id }} .custom-section__inner[data-height="content"] { height: auto; }
-.section-id-{{ section.id }} .custom-section__inner[data-height="custom"] { height: {{ section.settings.height_desktop }}px; }
-
-{% if height_type == "image" and aspect_ratio %}
-  .section-id-{{ section.id }} .custom-section__inner[data-height="image"] { 
-    height: auto;
-    position: relative;
-  }
-  .section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
-    content: "";
-    display: block;
-    width: 100%;
-    padding-top: calc(100% / {{ aspect_ratio }});
-  }
-  .section-id-{{ section.id }} .custom-section__inner[data-height="image"] > .custom-section__background,
-  .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__overlay,
-  .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__content {
-    display: flex;
-    flex-direction: column;
-    justify-content: {{ justify_content }};
-    z-index: 1;
     padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
   }
-  
-  {% if aspect_ratio_mobile %}
-    @media (max-width: 768px) {
-      .section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
-        padding-top: calc(100% / {{ aspect_ratio_mobile }});
-      }
-    }
-  {% endif %}
-{% endif %}
-{% endstyle %}
-{% style %}
-  /* Section wrapper */
-.custom-section__inner{
+
+  .custom-section__inner {
     position: relative;
     overflow: hidden;
     display: flex;
@@ -99,23 +56,72 @@ endif
     z-index: 1;
   }
 
-
-@media (max-width: 1024px) {
-  .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
-    height: {{ section.settings.height_tablet }}px;
+  .section-id-{{ section.id }} .custom-section__inner[data-height="content"] {
+    height: auto;
   }
-}
-@media (max-width: 768px) {
+
   .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
-    height: {{ section.settings.height_mobile }}px;
+    height: {{ section.settings.height_desktop }}px;
   }
-}
 
+  @media (max-width: 1024px) {
+    .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
+      height: {{ section.settings.height_tablet }}px;
+    }
+  }
 
-  /* Background wrapper (fills section height including padding) */
+  @media (max-width: 768px) {
+    .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
+      height: {{ section.settings.height_mobile }}px;
+    }
+  }
+
+  {% if height_type == "image" and aspect_ratio %}
+    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] {
+      height: auto;
+      position: relative;
+    }
+
+    .section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
+      content: "";
+      display: block;
+      width: 100%;
+      padding-top: calc(100% / {{ aspect_ratio }});
+    }
+
+    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] > .custom-section__background,
+    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__overlay,
+    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: {{ justify_content }};
+      z-index: 1;
+      padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
+    }
+
+    {% if aspect_ratio_mobile %}
+      @media (max-width: 768px) {
+        .section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
+          padding-top: calc(100% / {{ aspect_ratio_mobile }});
+        }
+      }
+    {% endif %}
+  {% endif %}
+
   .section-id-{{ section.id }} .custom-section__background {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
     width: 100%;
     height: 100%;
     z-index: -2;
@@ -129,7 +135,7 @@ endif
     object-fit: cover;
     display: block;
   }
-  /* Overlay */
+
   {% if section.settings.overlay_enable %}
     .section-id-{{ section.id }} .custom-section__overlay {
       position: absolute;
@@ -146,30 +152,36 @@ endif
 <div class="{{ main_classes }}">
   <div class="custom-section__inner" data-height="{{ height_type }}">
     {% if has_bg_image %}
-         {% render 'image',
-          class: 'custom-section__background',
-          image: section.settings.background_image,
-          width: {{ image.width }},
-          height: {{ image.height }},
-          mobile_image: section.settings.background_image_mobile,
-          img_alt: image.alt
-        %} 
+      <div class="custom-section__background" aria-hidden="true">
+        {% if section.settings.background_image_mobile != blank %}
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="{{ section.settings.background_image_mobile | image_url: width: 1200 }}"
+            >
+            {% if section.settings.background_image != blank %}
+              {{ section.settings.background_image | image_url: width: 2000 | image_tag }}
+            {% else %}
+              {{ section.settings.background_image_mobile | image_url: width: 2000 | image_tag }}
+            {% endif %}
+          </picture>
+        {% elsif section.settings.background_image != blank %}
+          {{ section.settings.background_image | image_url: width: 2000 | image_tag }}
+        {% endif %}
+      </div>
     {% endif %}
 
     {% if section.settings.overlay_enable %}
       <div class="custom-section__overlay" aria-hidden="true"></div>
     {% endif %}
 
-
     <div class="custom-section__content">
       <div class="{{ inner_content_classes }}">
         {% content_for 'blocks' %}
       </div>
     </div>
-
   </div>
 </div>
-
 
 
 {% schema %}
