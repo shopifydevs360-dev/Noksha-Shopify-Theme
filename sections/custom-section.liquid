@@ -323,7 +323,7 @@
       "id": "background_gradient",
       "label": "Background gradient",
       "default": "linear-gradient(180deg, #ffffff, #000000)",
-      "visible_if": "{{ section.settings.background_style == 'gradient' }}"
+      "visible_if": "{{ section.settings.background_style == 'gradient' and section.settings.background_type == 'color' }}"
     },
     {
       "type": "range",
