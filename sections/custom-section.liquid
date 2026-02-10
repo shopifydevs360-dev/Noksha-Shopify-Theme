@@ -17,13 +17,7 @@
 
 
 
-  if section.settings.background_type == 'image'
-  assign height_type = section.settings.height_type_image
-
-  assign height_type = section.settings.height_type_non_image
-  endif
-
-
+  assign height_type = section.settings.height_type
   assign justify_content = section.settings.justify_content
   
   if section.settings.background_image != blank and height_type == "image"
@@ -35,7 +29,7 @@
   endif
 
 
-
+  
 if section.settings.enable_sidebar_space
   assign inner_content_classes = 'inner-section-content'
   assign inner_content_classes = inner_content_classes | append: ' sidebar-space'
@@ -205,26 +199,14 @@ endif
     },
     {
       "type": "select",
-      "id": "height_type_image",
+      "id": "height_type",
       "label": "Section height",
       "options": [
         { "value": "content", "label": "Adapt to content" },
-        { "value": "image",   "label": "Adapt to bg image" },
-        { "value": "custom",  "label": "Custom height" }
+        { "value": "image", "label": "Adapt to bg image" },
+        { "value": "custom", "label": "Custom height" }
       ],
-      "default": "image",
-      "visible_if": "{{ section.settings.background_type == 'image' }}"
-    },
-    {
-      "type": "select",
-      "id": "height_type_non_image",
-      "label": "Section height",
-      "options": [
-        { "value": "content", "label": "Adapt to content" },
-        { "value": "custom",  "label": "Custom height" }
-      ],
-      "default": "content",
-      "visible_if": "{{ section.settings.background_type != 'image' }}"
+      "default": "content"
     },
     {
       "type": "range",
@@ -235,7 +217,7 @@ endif
       "step": 20,
       "unit": "px",
       "default": 800,
-      "visible_if": "{{ section.settings.height_type_non_image ==  'custom' or section.settings.height_type_image ==  'custom' }}"
+      "visible_if": "{{ section.settings.height_type ==  'custom' }}"
     },
     {
       "type": "range",
@@ -246,7 +228,7 @@ endif
       "step": 20,
       "unit": "px",
       "default": 600,
-      "visible_if": "{{ section.settings.height_type_non_image ==  'custom' or section.settings.height_type_image ==  'custom' }}"
+      "visible_if": "{{ section.settings.height_type ==  'custom' }}"
     },
     {
       "type": "range",
@@ -257,7 +239,7 @@ endif
       "step": 20,
       "unit": "px",
       "default": 500,
-      "visible_if": "{{ section.settings.height_type_non_image ==  'custom' or section.settings.height_type_image ==  'custom' }}"
+      "visible_if": "{{ section.settings.height_type ==  'custom' }}"
     },
     {
       "type": "header",
