@@ -57,14 +57,15 @@
 
       <div class="field">
         <label for="RegisterEmail">Email</label>
- <input type="email"
-         name="customer[email]"
-         id="CustomerEmail"
-         value="{{ form.email }}"
-         autocorrect="off"
-         autocapitalize="off"
-         autocomplete="email"
-         required>
+        <input
+          type="email"
+          name="customer[email]"
+          id="RegisterEmail"
+          placeholder="Enter your email"
+          value="{{ form.email }}"
+          autocomplete="email"
+          required
+        >
       </div>
 
       <div class="field">
