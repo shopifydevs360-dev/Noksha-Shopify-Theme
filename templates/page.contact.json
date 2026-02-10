@@ -38,7 +38,7 @@
       ],
       "name": "Custom Section",
       "settings": {
-        "container_width": "container",
+        "container_width": "full-width",
         "enable_sidebar_space": true,
         "height_type": "content",
         "height_desktop": 800,
