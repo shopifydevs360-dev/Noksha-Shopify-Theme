@@ -13,7 +13,7 @@
 
 {% if form.errors %}
   <div class="form-errors" tabindex="-1" autofocus>
-    <strong>There was a problem creating your account.</strong>
+    <strong>There was a problem creating your account. <a href="/account/login#recover">reset your password</a>.</strong>
 
     <ul>
       {% for field in form.errors %}
