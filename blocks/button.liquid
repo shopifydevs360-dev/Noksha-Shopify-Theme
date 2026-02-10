@@ -3,23 +3,8 @@
   Button Block – Color Scheme Test
 {%- endcomment -%}
 
-<div
-  class="
-    m-color-{{ block.settings.text_color_scheme | default: section.settings.text_color_scheme }}
-    button-block-wrapper
-  "
->
-  <a
-    href="{{ block.settings.button_link | default: '#' }}"
-    class="
-      btn
-      {{ block.settings.button_type }}
-      {% if block.settings.button_type == 'btn--animation' %}
-        {{ block.settings.animation_type }}
-      {% endif %}
-    "
-  >
-    {{ block.settings.button_label | default: 'Test Button' }}
+<div class=" m-color-{{ block.settings.text_color_scheme | default: section.settings.text_color_scheme }} button-block-wrapper">
+  <a href="{{ block.settings.button_link | default: '#' }}" class=" btn {{ block.settings.button_type }} {% if block.settings.button_type == 'btn--animation' %} {{ block.settings.animation_type }}{% endif %}">{{ block.settings.button_label | default: 'Test Button' }}
   </a>
 </div>
 
@@ -43,30 +28,19 @@
           "id": "text_color_scheme",
           "label": "Text color scheme"
         },
-                {
+        {
           "type": "select",
           "id": "button_type",
           "label": "Button type",
           "options": [
-            {"value": "btn--primary", "label": "Primary"},
-            {"value": "btn--secondary", "label": "Secondary"},
-            {"value": "btn--underline", "label": "Underline"},
-            {"value": "btn--gradient", "label": "Gradient"},
-            {"value": "btn--animation", "label": "Animation"},
+            { "value": "btn--primary", "label": "Primary" },
+            { "value": "btn--secondary", "label": "Secondary" },
+            { "value": "btn--underline", "label": "Underline" },
+            { "value": "hover-underline", "label": "Hover Underline" },
+            { "value": "hover-fill-bg", "label": "Hover Fill Background" }
           ],
           "default": "btn--primary"
         },
-        {
-          "type": "select",
-          "id": "animation_type",
-          "label": "Animation type",
-          "visible_if": "{{ block.settings.button_type == 'btn--animation' }}",
-          "options": [
-            {"value": "hover-underline", "label": "Hover Underline"},
-            {"value": "upcomming", "label": "Upcomming"},
-          ],
-          "default": "hover-underline"
-        }
   ],
   "presets": [{ "name": "Button" }]
 }
