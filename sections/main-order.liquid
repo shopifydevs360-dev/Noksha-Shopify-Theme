@@ -1,39 +1,177 @@
-<section class="customer customer-order">
-  <div class="page-width">
+{% liquid
+  assign first_class = 'main-order ' | append: 'm-color-' | append: settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: settings.color_control
+  assign first_class = first_class | append: ' ' | append: settings.custom_class
 
-    <h1>Order {{ order.name }}</h1>
+  assign container_width = settings.container_width
+%}
 
-    <p>
-      Placed on {{ order.created_at | date: "%B %d, %Y" }}
-    </p>
+<div class="{{ first_class }}">
+  <div class="{{ container_width }} container-wrapper">
+    <div class="order-wrapper sidebar-space">
 
-    <table>
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Qty</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for line_item in order.line_items %}
+      <h2 class="h3">Order {{ order.name }}</h2>
+      <p>Placed on {{ order.created_at | date: "%B %d, %Y" }}</p>
+
+      <table>
+        <thead>
           <tr>
-            <td>{{ line_item.title }}</td>
-            <td>{{ line_item.quantity }}</td>
-            <td>{{ line_item.final_line_price | money }}</td>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Total</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for line_item in order.line_items %}
+            <tr>
+              <td class="order-product">
+                {% if line_item.image %}
+                    {% render 'image',
+                      class: 'order-product-image',
+                      url: line_item.product.url,
+                      image: line_item.image,
+                      width: 180,
+                      height: 180,
+                      crop: 'top',
+                      img_alt: line_item.title
+                    %}
+                {% endif %}
 
-    <p><strong>Order total:</strong> {{ order.total_price | money }}</p>
+                <div class="order-product-info">
+                  <div class="order-product-title">
+                    {% if line_item.product %}
+                      <a href="{{ line_item.product.url }}">
+                        {{ line_item.title }}
+                      </a>
+                    {% else %}
+                      {{ line_item.title }}
+                    {% endif %}
+                  </div>
 
-    <p>
-      <a href="{{ routes.account_url }}">← Back to account</a>
-    </p>
+                  {% if line_item.variant_title != 'Default Title' %}
+                    <div class="order-product-variant">
+                      {{ line_item.variant_title }}
+                    </div>
+                  {% endif %}
 
+                  {% if line_item.sku != blank %}
+                    <div class="order-product-sku">
+                      SKU: {{ line_item.sku }}
+                    </div>
+                  {% endif %}
+                </div>
+              </td>
+
+              <td>{{ line_item.quantity }}</td>
+              <td>{{ line_item.final_line_price | money }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="order-total">
+        <p><strong>Order total:</strong> {{ order.total_price | money }}</p>
+      </div>
+
+      <div class="back-link">
+        <ul class="linklist-hover-underline">
+          <li>
+            <a href="{{ routes.account_url }}">
+              <span class="icon">{%- render 'theme-icon', icon: 'logout' -%}</span>
+              <span class="text">Back to account</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
   </div>
-</section>
+</div>
+
+{% stylesheet %}
+.main-order {
+  padding: 6rem 0 3rem;
+}
+
+.main-order .container-wrapper {
+  margin-left: 0;
+}
+
+.main-order .order-wrapper h2 {
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+/* Table style (matches account order list) */
+.main-order table {
+  width: 100%;
+  border-collapse: collapse;
+  max-width: 60rem;
+}
+
+.main-order tr {
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+.main-order th,
+.main-order td {
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+}
+
+.main-order th {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* Product cell enhancement */
+.order-product {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.order-product-image {
+  width: 60px;
+  height: auto;
+  border: 1px solid rgb(var(--color-border));
+}
+
+
+.order-product-variant,
+.order-product-sku {
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+.order-total p{
+  margin: 1rem 0;
+  text-align: right;
+  max-width: 60rem;
+  padding-right: 1rem;
+}
+/* Back link (unchanged visually) */
+.back-link {
+  margin-top: 3rem;
+}
+
+.main-order .back-link ul {
+  list-style: none;
+  padding: 0;
+}
+
+.main-order .back-link svg {
+  width: 1.5rem;
+  margin-bottom: -7px;
+}
+
+.main-order .back-link li a {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+}
+
+{% endstylesheet %}
+
 
 {% schema %}
 {
