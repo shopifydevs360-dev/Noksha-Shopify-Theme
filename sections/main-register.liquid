@@ -13,7 +13,7 @@
 
       {% if form.errors %}
         <div class="form-errors">
-          {{ form.errors | default_errors }}
+          This email is already in use. If it is your account, <a href="/account/login#recover">reset your password</a>.
         </div>
       {% endif %}
 
