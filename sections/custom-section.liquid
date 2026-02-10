@@ -135,8 +135,6 @@
 <div class="{{ main_classes }}">
   <div class="custom-section__inner" data-height="{{ height_type }}">
     {% if has_bg_image %}
-
-
          {% render 'image',
           class: 'custom-section__background',
           image: section.settings.background_image,
@@ -145,8 +143,6 @@
           mobile_image: section.settings.background_image_mobile,
           img_alt: image.alt
         %} 
-
-
     {% endif %}
 
     {% if section.settings.overlay_enable %}
