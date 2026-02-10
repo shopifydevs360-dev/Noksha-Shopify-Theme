@@ -1,7 +1,15 @@
-<section class="customer customer-activate">
-  <div class="page-width">
+{% liquid
+  assign first_class = 'main-account-active ' | append: 'm-color-' | append: settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: settings.color_control
+  assign first_class = first_class | append: ' ' | append: settings.custom_class
 
-    <h1>Activate account</h1>
+  assign container_width = settings.container_width
+%}
+<div class="{{ first_class }}">
+  <div class="{{ container_width }} container-wrapper">
+    <div class="main-account-wrapper sidebar-space">
+      <h2 class="h3">Activate account</h2>
+      <p>Welcome, {{ customer.first_name }}</p>
 
     {% form 'activate_customer_password' %}
       {{ form.errors | default_errors }}
@@ -12,11 +20,56 @@
       <label>Confirm password</label>
       <input type="password" name="customer[password_confirmation]" required>
 
-      <button type="submit">Activate account</button>
+      <button class="button" type="submit">Activate account</button>
     {% endform %}
-
+    </div>
   </div>
-</section>
+</div>
+
+{% stylesheet %}
+.main-account-active {
+    padding: 6rem 0 3rem 0;
+}
+.main-account-active .container-wrapper{
+    margin-left: 0;
+}
+.main-account-active .main-account-wrapper h2 {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.main-account-active label {
+    font-size: .9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin: 2rem 0 .5rem;
+    padding-bottom: 2px;
+    border-bottom: 2px solid rgb(var(--color-border));
+    width: fit-content;
+}
+.main-account-active input {
+    padding: .8rem 0;
+    border-bottom: 2px solid rgb(var(--color-border));
+    border-radius: 0;
+    margin-bottom: 1.4rem;
+}
+.main-account-active .button {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    border: 2px solid rgb(var(--color-heading));
+    padding: 0.8rem 2rem;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 1rem;
+}
+.main-account-active .button:hover {
+    background: transparent;
+    color: rgb(var(--color-heading));
+}
+
+{% endstylesheet %}
 
 {% schema %}
 {
