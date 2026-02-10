@@ -18,6 +18,7 @@
     assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
   endif
 %}
+
 {% style %}
   /* Section wrapper */
   .section-{{ section.id }}-id .custom-section__inner{
@@ -26,7 +27,6 @@
     display: flex;
     flex-direction: column;
     justify-content: {{ justify_content }};
-
     border-top-left-radius: {{ section.settings.border_radius_top }}px;
     border-top-right-radius: {{ section.settings.border_radius_top }}px;
     border-bottom-left-radius: {{ section.settings.border_radius_bottom }}px;
