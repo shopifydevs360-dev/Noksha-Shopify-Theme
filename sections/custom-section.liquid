@@ -1,4 +1,8 @@
 {% liquid
+  assign main_classes = 'custom-section ' | append: 'section--id' | append: section.id 
+  assign main_classes = ' ' | append: section.settings.container_width
+  assign main_classes = ' ' | append: section.settings.color_control
+  assign main_classes = ' ' | append: section.settings.custom_class
 
   assign has_bg_image = false
   if section.settings.background_image != blank or section.settings.background_image_mobile != blank
@@ -6,7 +10,7 @@
   endif
 
   assign bg_color = section.settings.background_color
-  assign container_width = section.settings.container_width
+  assign container_width = 
   assign height_type = section.settings.height_type
   assign justify_content = section.settings.justify_content
   
@@ -136,7 +140,7 @@
   {% endif %}
 {% endstyle %}
 
-<div class="custom-section section-{{ section.id }}-id {{ container_width }} {{ section.settings.color_control }} {{ section.settings.custom_class }}">
+<div class="{{ main_classes }}">
   <div class="custom-section__inner" data-height="{{ height_type }}">
     {% if has_bg_image %}
       <div class="custom-section__background">
