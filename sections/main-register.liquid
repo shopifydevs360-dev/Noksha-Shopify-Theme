@@ -11,11 +11,18 @@
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
 
-      {% if form.errors %}
-        <div class="form-errors">
-          {{ form.errors | default_errors }}
-        </div>
+{% if form.errors %}
+  <div class="form-errors">
+    {% for error in form.errors %}
+      {% if error == 'email_already_exists' %}
+        <p>This email address is already associated with an account. If this account is yours, you can {{ 'account/login#recover' | customer_login_link: 'reset your password' }}.</p>
+      {% else %}
+        <p>{{ error | capitalize }}</p>
       {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
 
 
       <div class="field">
