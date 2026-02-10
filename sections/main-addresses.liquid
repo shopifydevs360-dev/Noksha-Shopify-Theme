@@ -15,27 +15,32 @@
   <div class="{{ container_width }} container-wrapper">
     <div class="addresses-wrapper sidebar-space">
       <h2 class="h3">My addresses</h2>
-      
+
       {% if has_addresses %}
         <button type="button" class="js-toggle-new-address">
           Add new address
         </button>
       {% endif %}
-          {% form 'customer_address', customer.new_address %}
-      <h3 class="title">Add new address</h3>
 
-      {{ form.errors | default_errors }}
+      {% form 'customer_address', customer.new_address %}
+        <div class="new-address-form" {% if has_addresses %}hidden{% endif %}>
+          <h3 class="title">Add new address</h3>
 
-      <input name="address[first_name]" placeholder="First name">
-      <input name="address[last_name]" placeholder="Last name">
-      <input name="address[address1]" placeholder="Address">
-      <input name="address[city]" placeholder="City">
-      <input name="address[zip]" placeholder="ZIP">
-      <input name="address[country]" placeholder="Country">
-      <input name="address[phone]" placeholder="Phone">
+          {{ form.errors | default_errors }}
 
-      <button  class="button" type="submit">Add address</button>
-    {% endform %}
+          <input name="address[first_name]" placeholder="First name">
+          <input name="address[last_name]" placeholder="Last name">
+          <input name="address[address1]" placeholder="Address">
+          <input name="address[city]" placeholder="City">
+          <input name="address[zip]" placeholder="ZIP">
+          <input name="address[country]" placeholder="Country">
+          <input name="address[phone]" placeholder="Phone">
+
+          <button class="button" type="submit">
+            Save address
+          </button>
+        </div>
+      {% endform %}
 
 
         <h3 class="title">Saved addresses</h3>
