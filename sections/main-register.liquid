@@ -12,12 +12,15 @@
     {% form 'create_customer' %}
 
 {% if form.errors %}
-  <div class="form-errors">
-    {% for error in form.errors %}
-
-        <p>This email address is already associated <a href="{{ shop.url }}/account/login#recover">reset your password</a>.</p>
-
-
+  <div class="errors">
+    {% for field in form.errors %}
+      {% if field == 'email' and form.errors.messages[field] contains 'already been taken' %}
+        <p>This email address is already associated with an account. 
+          If this account is yours, you can 
+          <a href="/account/login#recover">reset your password</a>.</p>
+      {% else %}
+        <p>{{ form.errors.messages[field] }}</p>
+      {% endif %}
     {% endfor %}
   </div>
 {% endif %}
