@@ -18,19 +18,26 @@
     assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
   endif
 %}
-
 {% style %}
   /* Section wrapper */
   .section-{{ section.id }}-id .custom-section__inner{
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
     justify-content: {{ justify_content }};
+    {% unless has_bg_image %}
+      background-color: {{ bg_color }};
+    {% endunless %}
     border-top-left-radius: {{ section.settings.border_radius_top }}px;
     border-top-right-radius: {{ section.settings.border_radius_top }}px;
     border-bottom-left-radius: {{ section.settings.border_radius_bottom }}px;
     border-bottom-right-radius: {{ section.settings.border_radius_bottom }}px;
+  }
+{% endstyle %}
+{% style %}
+  /* Section wrapper */
+.custom-section__inner{
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Inner wrapper with padding */
