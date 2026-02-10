@@ -3,15 +3,59 @@
   {% if customer %}
 
     <!-- LOGGED IN -->
-    <div class="customer-logged-in">
-      <h4 class="sub-title">Welcome, {{ customer.first_name }}</h4>
-      <ul>
-        <li><a href="{{ routes.account_url }}">Account</a></li>
-        <li><a href="{{ routes.account_orders_url }}">Orders</a></li>
-        <li><a href="{{ routes.account_addresses_url }}">Addresses</a></li>
-        <li><a href="{{ routes.account_logout_url }}">Logout</a></li>
-      </ul>
-    </div>
+  <div class="customer-logged-in">
+    <h4 class="sub-title">Welcome, {{ customer.first_name }}</h4>
+
+    <ul class="account-links linklist-hover-underline">
+      <li>
+        <a href="{{ routes.account_url }}">
+          <span class="icon">{%- render 'theme-icon', icon: 'account' -%}</span>
+          <span class="text">Account</span>
+        </a>
+      </li>
+
+      {% if customer.orders.size > 0 %}
+        <li>
+          <a href="{{ customer.orders.first.customer_url }}">
+            <span class="icon">{%- render 'theme-icon', icon: 'percel' -%}</span>
+            <span class="text">Latest order</span>
+          </a>
+        </li>
+      {% else %}
+        <li>
+          <a href="{{ routes.account_url }}">
+            <span class="icon">{%- render 'theme-icon', icon: 'percel' -%}</span>
+            <span class="text">Orders</span>
+          </a>
+        </li>
+      {% endif %}
+
+      <li><a href="{{ routes.account_addresses_url }}">
+          <span class="icon">{%- render 'theme-icon', icon: 'map' -%}</span>
+          <span class="text">Addresses</span>
+      </a>
+      </li>
+      <li>
+        <a href="{{ routes.account_login_url }}#recover">
+          <span class="icon">{%- render 'theme-icon', icon: 'reset-password' -%}</span>
+          <span class="text">Reset password</span>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/contact">
+          <span class="icon">{%- render 'theme-icon', icon: 'support' -%}</span>
+          <span class="text">Account Support</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ routes.account_logout_url }}">
+          <span class="icon">{%- render 'theme-icon', icon: 'logout' -%}</span>
+          <span class="text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
 
   {% else %}
 
