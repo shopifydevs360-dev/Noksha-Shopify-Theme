@@ -10,18 +10,26 @@
     <div class="register-wrapper sidebar-space">
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
-
 {% if form.errors %}
   <div class="form-errors">
-    {% for error in form.errors %}
-      {% if error == 'email_already_exists' %}
-        <p>This email address is already associated with an account. If this account is yours, you can {{ 'account/login#recover' | customer_login_link: 'reset your password' }}.</p>
-      {% else %}
-        <p>{{ error | capitalize }}</p>
-      {% endif %}
+    {% for field in form.errors %}
+      {% for message in form.errors.messages[field] %}
+        {% if field == 'email' and message contains 'already' %}
+          <p>
+            This email address is already associated with an account.
+            If this account is yours, you can
+            <a href="{{ routes.account_login_url }}#recover">
+              reset your password
+            </a>.
+          </p>
+        {% else %}
+          <p>{{ message }}</p>
+        {% endif %}
+      {% endfor %}
     {% endfor %}
   </div>
 {% endif %}
+
 
 
 
