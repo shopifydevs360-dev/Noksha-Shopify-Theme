@@ -151,8 +151,10 @@
     {% endif %}
 
 
-    <div class="custom-section__content {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
-      {% content_for 'blocks' %}
+    <div class="custom-section__content">
+      <div class="inner-section-content {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
+        {% content_for 'blocks' %}
+      </div>
     </div>
 
   </div>
