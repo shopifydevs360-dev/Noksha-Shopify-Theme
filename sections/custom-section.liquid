@@ -266,18 +266,21 @@
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "Background image (desktop)"
+      "label": "Background image (desktop)",
+      "visible_if": "{{ section.settings.background_type ==  'image' }}"
     },
     {
       "type": "image_picker",
       "id": "background_image_mobile",
-      "label": "Background image (mobile)"
+      "label": "Background image (mobile)",
+      "visible_if": "{{ section.settings.background_type ==  'image' }}"
     },
-        {
+    {
       "type": "checkbox",
       "id": "overlay_enable",
       "label": "Enable overlay",
-      "default": false
+      "default": false,
+      "visible_if": "{{ section.settings.background_type ==  'image' }}"
     },
     {
       "type": "color",
