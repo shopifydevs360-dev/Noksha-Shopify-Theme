@@ -34,9 +34,6 @@
       "password": "Password",
       "submit": "Sign in",
       "title": "Login"
-    },
-    "register": {
-      "error_email_taken": "This email is already in use. If it is your account, <a href=\"/account/login#recover\">reset your password</a>."
     }
   },
   "collections": {
