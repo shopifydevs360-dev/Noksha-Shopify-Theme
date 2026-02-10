@@ -14,11 +14,10 @@
 {% if form.errors %}
   <div class="form-errors">
     {% for error in form.errors %}
-      {% if error contains 'already associated' %}
+
         <p>This email address is already associated <a href="{{ shop.url }}/account/login#recover">reset your password</a>.</p>
-      {% else %}
-        <p>{{ error }}</p>
-      {% endif %}
+
+
     {% endfor %}
   </div>
 {% endif %}
