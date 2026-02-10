@@ -21,6 +21,18 @@
     "custom_section_HJ8Yd4": {
       "type": "custom-section",
       "blocks": {
+        "button_mVYCPG": {
+          "type": "button",
+          "name": "Button",
+          "settings": {
+            "button_label": "Test Button",
+            "button_link": "",
+            "text_color_scheme": "",
+            "button_type": "btn--primary",
+            "animation_type": "hover-underline"
+          },
+          "blocks": {}
+        },
         "row_FLHCVb": {
           "type": "row",
           "name": "Row Layout",
@@ -115,23 +127,25 @@
         }
       },
       "block_order": [
+        "button_mVYCPG",
         "row_FLHCVb"
       ],
       "name": "Custom Section",
       "settings": {
-        "container_width": "container",
-        "height_type": "content",
+        "container_width": "full-width",
+        "height_type": "image",
         "height_desktop": 800,
         "height_tablet": 600,
         "height_mobile": 500,
         "background_color": "rgba(0,0,0,0)",
+        "background_image": "shopify://shop_images/404_background.jpg",
         "overlay_enable": false,
         "overlay_color": "#000000",
         "overlay_opacity": 40,
         "border_radius_top": 0,
         "border_radius_bottom": 0,
         "padding_y": 60,
-        "padding_x": 30,
+        "padding_x": 0,
         "justify_content": "center",
         "custom_class": "",
         "color_control": "section-light"
