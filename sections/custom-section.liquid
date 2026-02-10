@@ -118,15 +118,6 @@
     object-fit: cover;
     display: block;
   }
-
-  {% if section.settings.background_image_mobile %}
-    .section-id-{{ section.id }} .custom-section__background .mobile-bg { display: none; }
-    @media (max-width: 768px) {
-      .section-id-{{ section.id }} .custom-section__background .desktop-bg { display: none; }
-      .section-id-{{ section.id }} .custom-section__background .mobile-bg { display: block; }
-    }
-  {% endif %}
-
   /* Overlay */
   {% if section.settings.overlay_enable %}
     .section-id-{{ section.id }} .custom-section__overlay {
