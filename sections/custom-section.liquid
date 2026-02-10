@@ -308,7 +308,8 @@
         { "value": "solid", "label": "Solid color" },
         { "value": "gradient", "label": "Gradient" }
       ],
-      "default": "solid"
+      "default": "solid",
+      "visible_if": "{{ section.settings.background_type ==  'color' }}"
     },
     {
       "type": "color",
