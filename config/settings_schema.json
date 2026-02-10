@@ -586,6 +586,50 @@
     ]
   },
   {
+    "name": "Customer Page",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Customer Page"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme"
+      },
+      {
+        "type": "select",
+        "id": "container_width",
+        "label": "Container width",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-narrow", "label": "Container narrow" },
+          { "value": "container-extra-narrow", "label": "Container extra narrow" },
+          { "value": "extended", "label": "Extended" }
+        ],
+        "default": "extended"
+      },
+      {
+        "type": "text",
+        "id": "custom_class",
+        "label": "custom class"
+
+      },
+      {
+        "type": "select",
+        "id": "color_control",
+        "label": "Color Control",
+        "info": "These settings control the color of the sidebar text. If you select Dark, it will be a light shade of the sidebar text/icon color, and if you select Light, it will be a dark shade of the sidebar text/icon color.",
+        "options": [
+          { "value": "section-dark", "label": "Dark" },
+          { "value": "section-light", "label": "Light" }
+        ],
+        "default": "section-light"
+      },
+    ]
+  },
+  {
     "name": "Additional pages",
     "settings": [
       { "type": "url", "id": "wishlist_page_url", "label": "Wish List" },
