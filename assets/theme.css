@@ -437,6 +437,7 @@ a:hover .hover-fill-bg{
 /* Link List Hover animation */
 
 .linklist-hover-underline li a {
+  display: block;
     position: relative;
     overflow: hidden;
     width: fit-content;
