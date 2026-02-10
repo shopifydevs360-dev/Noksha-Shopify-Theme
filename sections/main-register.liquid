@@ -10,24 +10,12 @@
     <div class="register-wrapper sidebar-space">
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
-{% if form.errors %}
-  <div class="form-errors">
-    {% for field in form.errors %}
-      {% for message in form.errors.messages[field] %}
-        {% if field == 'email' and message contains 'already' %}
-          <p>
-            This email address is already associated with an account.
-            If this account is yours, you can
-          </p>
-        {% else %}
-          <p>{{ message }}</p>
-        {% endif %}
-      {% endfor %}
-    {% endfor %}
-  </div>
-{% endif %}
 
-
+      {% if form.errors %}
+        <div class="form-errors">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
 
 
       <div class="field">
