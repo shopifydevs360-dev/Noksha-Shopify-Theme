@@ -1,5 +1,5 @@
 {% liquid
-  assign main_classes = 'custom-section ' | append: 'section--id' | append: section.id 
+  assign main_classes = 'custom-section ' | append: 'section-id-' | append: section.id 
   assign main_classes = main_classes | append: ' ' | append: section.settings.container_width
   assign main_classes = main_classes | append: ' ' | append: section.settings.color_control
   assign main_classes = main_classes | append: ' ' | append: section.settings.custom_class
