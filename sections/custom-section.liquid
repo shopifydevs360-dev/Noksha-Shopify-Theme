@@ -1,4 +1,5 @@
 {% liquid
+  assign bg_color = section.settings.background_color
   assign has_bg_image = false
   if section.settings.background_image != blank or section.settings.background_image_mobile != blank
     assign has_bg_image = true
