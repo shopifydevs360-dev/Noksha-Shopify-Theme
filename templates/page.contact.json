@@ -21,6 +21,27 @@
     "custom_section_HJ8Yd4": {
       "type": "custom-section",
       "blocks": {
+        "row_76RKcF": {
+          "type": "row",
+          "name": "Row Layout",
+          "settings": {
+            "align_items": "center",
+            "justify_content": "space-between",
+            "gap": 20,
+            "padding": 0
+          },
+          "blocks": {}
+        },
+        "grid_ziCGk7": {
+          "type": "grid",
+          "name": "Grid Layout",
+          "settings": {
+            "columns": 3,
+            "gap": 20,
+            "padding": 0
+          },
+          "blocks": {}
+        },
         "button_mVYCPG": {
           "type": "button",
           "name": "Button",
@@ -127,6 +148,8 @@
         }
       },
       "block_order": [
+        "row_76RKcF",
+        "grid_ziCGk7",
         "button_mVYCPG",
         "row_FLHCVb"
       ],
