@@ -235,7 +235,7 @@ endif
       "step": 20,
       "unit": "px",
       "default": 800,
-      "visible_if": "{{ section.settings.height_type ==  'custom' }}"
+      "visible_if": "{{ section.settings.height_type_non_image ==  'custom' or section.settings.height_type_image ==  'custom' }}"
     },
     {
       "type": "range",
@@ -246,7 +246,7 @@ endif
       "step": 20,
       "unit": "px",
       "default": 600,
-      "visible_if": "{{ section.settings.height_type ==  'custom' }}"
+      "visible_if": "{{ section.settings.height_type_non_image ==  'custom' or section.settings.height_type_image ==  'custom' }}"
     },
     {
       "type": "range",
@@ -257,7 +257,7 @@ endif
       "step": 20,
       "unit": "px",
       "default": 500,
-      "visible_if": "{{ section.settings.height_type ==  'custom' }}"
+      "visible_if": "{{ section.settings.height_type_non_image ==  'custom' or section.settings.height_type_image ==  'custom' }}"
     },
     {
       "type": "header",
