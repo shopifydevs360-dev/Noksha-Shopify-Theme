@@ -54,7 +54,8 @@
     padding-top: calc(100% / {{ aspect_ratio }});
   }
   .section-id-{{ section.id }} .custom-section__inner[data-height="image"] > .custom-section__background,
-  .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__overlay {
+  .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__overlay,
+   .section-{{ section.id }}-id .custom-section__inner[data-height="image"] .custom-section__content {
     position: absolute;
     top: 0;
     left: 0;
