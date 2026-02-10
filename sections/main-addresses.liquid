@@ -1,10 +1,18 @@
-<section class="customer customer-addresses">
-  <div class="page-width">
+{% liquid
+  assign first_class = 'main-customer-addresses ' | append: 'm-color-' | append: settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: settings.color_control
+  assign first_class = first_class | append: ' ' | append: settings.custom_class
 
-    <h1>My addresses</h1>
+  assign container_width = settings.container_width
+%}
 
-    {% form 'customer_address', customer.new_address %}
-      <h2>Add new address</h2>
+<div class="{{ first_class }}">
+  <div class="{{ container_width }} container-wrapper">
+    <div class="addresses-wrapper sidebar-space">
+      <h2 class="h3">My addresses</h2>
+
+          {% form 'customer_address', customer.new_address %}
+      <h3 class="title">Add new address</h3>
 
       {{ form.errors | default_errors }}
 
@@ -16,31 +24,113 @@
       <input name="address[country]" placeholder="Country">
       <input name="address[phone]" placeholder="Phone">
 
-      <button type="submit">Add address</button>
+      <button  class="button" type="submit">Add address</button>
     {% endform %}
 
-    <h2>Saved addresses</h2>
 
-    {% for address in customer.addresses %}
-      <div class="address-card">
-        {{ address | format_address }}
+        <h3 class="title">Saved addresses</h3>
 
-        <a href="{{ address.url }}">Edit</a>
+{% for address in customer.addresses %}
+  <div class="address-card">
+    {{ address | format_address }}
 
-        <form method="post" action="{{ address.url }}">
-          <input type="hidden" name="_method" value="delete">
-          <button type="submit">Delete</button>
-        </form>
+    <button
+      type="button"
+      class="js-edit-address"
+      data-address-id="{{ address.id }}"
+    >
+      Edit
+    </button>
+
+    {% form 'customer_address', address %}
+      <div class="address-edit-form" id="edit-address-{{ address.id }}" hidden>
+        {{ form.errors | default_errors }}
+
+        <input name="address[first_name]" value="{{ form.first_name }}">
+        <input name="address[last_name]" value="{{ form.last_name }}">
+        <input name="address[address1]" value="{{ form.address1 }}">
+        <input name="address[city]" value="{{ form.city }}">
+        <input name="address[zip]" value="{{ form.zip }}">
+        <input name="address[country]" value="{{ form.country }}">
+        <input name="address[phone]" value="{{ form.phone }}">
+
+        <button class="button" type="submit">Update address</button>
       </div>
-    {% endfor %}
+    {% endform %}
+
+    <form method="post" action="{{ address.url }}">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit">Delete</button>
+    </form>
+  </div>
+{% endfor %}
+
 
     <p>
       <a href="{{ routes.account_url }}">← Back to account</a>
     </p>
 
+    </div>
   </div>
-</section>
+</div>
 
+
+{% stylesheet %}
+.main-customer-addresses {
+    padding: 6rem 0 3rem 0;
+}
+.main-customer-addresses .container-wrapper{
+    margin-left: 0;
+}
+.main-customer-addresses .addresses-wrapper h2 {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+.main-customer-addresses form {
+  width: 100%;
+  max-width: 32rem;
+}
+.main-customer-addresses .title {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+.main-customer-addresses input {
+    padding: .8rem 0;
+    border-bottom: 2px solid rgb(var(--color-border));
+    border-radius: 0;
+    margin-bottom: 1.4rem;
+    width: 100%;
+}
+.main-customer-addresses .button {
+  display: block;
+  background: rgb(var(--color-heading));
+  color: rgb(var(--color-background));
+  border: 2px solid rgb(var(--color-heading));
+  padding: 0.8rem 2rem;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 1rem;
+}
+.main-customer-addresses .button:hover {
+  background: transparent;
+  color: rgb(var(--color-heading));
+}
+{% endstylesheet %}
+<script>
+  document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.js-edit-address');
+  if (!btn) return;
+
+  const id = btn.dataset.addressId;
+  const form = document.getElementById(`edit-address-${id}`);
+
+  if (form) form.toggleAttribute('hidden');
+});
+
+</script>
 {% schema %}
 {
   "name": "Customer addresses",
