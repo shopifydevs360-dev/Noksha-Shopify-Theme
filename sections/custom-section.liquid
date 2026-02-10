@@ -5,10 +5,12 @@
   assign main_classes = main_classes | append: ' ' | append: section.settings.color_control
   assign main_classes = main_classes | append: ' ' | append: section.settings.custom_class
 
+  if section.settings.background_image
   assign has_bg_image = false
   if section.settings.background_image != blank or section.settings.background_image_mobile != blank
     assign has_bg_image = true
   endif
+endif
 
   assign bg_color = section.settings.background_color
   assign container_width = 
