@@ -11,7 +11,12 @@
       <h2 class="h3">Create account</h2>
     {% form 'create_customer' %}
 
-      <p>{{ form.errors | default_errors }}</p>
+      {% if form.errors %}
+        <div class="form-errors">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
 
       <div class="field">
         <label for="RegisterFirstName">First name</label>
