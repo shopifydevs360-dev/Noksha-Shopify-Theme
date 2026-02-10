@@ -18,14 +18,14 @@
 
       {% if has_addresses %}
         <button type="button" class="js-toggle-new-address">
-          Add new address
+          <span class="text">Add new</span>
+          <span class="icon">{%- render 'theme-icon', icon: 'plus' -%}</span>
         </button>
       {% endif %}
 
       {% form 'customer_address', customer.new_address %}
         <div class="new-address-form" {% if has_addresses %}hidden{% endif %}>
           <h3 class="title">Add new address</h3>
-
           {{ form.errors | default_errors }}
 
           <input name="address[first_name]" placeholder="First name">
@@ -59,21 +59,16 @@
               </div>
 
               <div class="address-actions">
-                <button
-                  type="button"
-                  class="link-button js-edit-address"
-                  data-address-id="{{ address.id }}"
-                >
-                  Edit
+                <button type="button" class="link-button js-edit-address" data-address-id="{{ address.id }}">
+                  <span class="icon">{%- render 'theme-icon', icon: 'pen' -%}</span>
+                  <span class="text">Edit</span>
                 </button>
 
                 <form method="post" action="{{ address.url }}">
                   <input type="hidden" name="_method" value="delete">
-                  <button
-                    type="submit"
-                    class="link-button link-button--danger"
-                  >
-                    Delete
+                  <button type="submit" class="link-button link-button--danger">
+                    <span class="icon">{%- render 'theme-icon', icon: 'delete' -%}</span>
+                    <span class="text">Delete</span>
                   </button>
                 </form>
               </div>
@@ -104,10 +99,16 @@
         </div>
       {% endif %}
 
-      <p class="back-link">
-        <a href="{{ routes.account_url }}">← Back to account</a>
-      </p>
-
+      <div class="back-link">
+        <ul class="linklist-hover-underline">
+          <li>
+            <a href="{{ routes.account_url }}">
+              <span class="icon">{%- render 'theme-icon', icon: 'logout' -%}</span>
+              <span class="text">Back to account</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
@@ -133,6 +134,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
+    margin: 1rem 0;
 }
 .main-customer-addresses input {
     padding: .8rem 0;
@@ -140,6 +142,18 @@
     border-radius: 0;
     margin-bottom: 1.4rem;
     width: 100%;
+}
+.main-customer-addresses .js-toggle-new-address {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    border-bottom: 1px solid rgb(var(--color-border));
+    gap: 0.5rem;
+}
+.main-customer-addresses .js-toggle-new-address svg{
+  width: 1.5rem;
 }
 .main-customer-addresses .button {
   display: block;
@@ -185,15 +199,24 @@
   gap: 1.2rem;
   margin-top: 1rem;
 }
-
-.link-button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.main-customer-addresses .address-content{
+  line-height: 1.5;
+}
+.main-customer-addresses .link-button {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+}
+.main-customer-addresses .link-button svg{
+      width: 1.1rem;
+    margin-bottom: -3px;
 }
 
 .link-button--danger {
@@ -202,6 +225,21 @@
 
 .back-link {
   margin-top: 3rem;
+}
+.main-customer-addresses .back-link ul {
+    list-style: none;
+    padding: 0;
+}
+.main-customer-addresses .back-link svg {
+    width: 1.5rem;
+    margin-bottom: -7px;
+}
+.main-customer-addresses .back-link li a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+    text-transform: uppercase;
 }
 {% endstylesheet %}
 <script>
