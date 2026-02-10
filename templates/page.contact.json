@@ -11,6 +11,7 @@
   "sections": {
     "main": {
       "type": "page",
+      "disabled": true,
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "container_width": "container",
@@ -40,8 +41,8 @@
         "container_width": "full-width",
         "enable_sidebar_space": true,
         "height_type_image": "custom",
-        "height_type_non_image": "custom",
-        "height_desktop": 980,
+        "height_type_non_image": "content",
+        "height_desktop": 580,
         "height_tablet": 360,
         "height_mobile": 580,
         "background_type": "image",
@@ -53,9 +54,9 @@
         "background_color": "#c68b2f",
         "background_gradient": "linear-gradient(86deg, rgba(206, 99, 99, 1), rgba(0, 0, 0, 1) 100%)",
         "custom_section_color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "padding_y": 25,
+        "padding_y": 50,
         "padding_x": 30,
-        "justify_content": "center",
+        "justify_content": "flex-start",
         "custom_class": "",
         "color_control": "section-light"
       }
