@@ -51,7 +51,7 @@
         "background_style": "solid",
         "background_color": "#222222",
         "background_gradient": "linear-gradient(180deg, rgba(206, 99, 99, 1), rgba(0, 0, 0, 1) 100%)",
-        "custom_section_color_scheme": "",
+        "custom_section_color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "padding_y": 60,
         "padding_x": 30,
         "justify_content": "center",
