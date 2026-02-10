@@ -34,10 +34,6 @@
   }
   .section-id-{{ section.id }} .custom-section__inner{
     justify-content: {{ justify_content }};
-    border-top-left-radius: {{ section.settings.border_radius_top }}px;
-    border-top-right-radius: {{ section.settings.border_radius_top }}px;
-    border-bottom-left-radius: {{ section.settings.border_radius_bottom }}px;
-    border-bottom-right-radius: {{ section.settings.border_radius_bottom }}px;
     padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
   }
 
@@ -153,7 +149,7 @@
       <div class="custom-section__overlay" aria-hidden="true"></div>
     {% endif %}
 
-    
+
     <div class="custom-section__content {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
       {% content_for 'blocks' %}
     </div>
