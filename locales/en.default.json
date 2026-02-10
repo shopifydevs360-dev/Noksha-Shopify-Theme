@@ -57,9 +57,9 @@
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for '{{ terms }}'"
   },
-  "shopify": {
-    "errors": {
-      "reset_password_html": "An account with this email already exists. If it’s yours, <a href=\\\"/account/login#recover\\\">reset your password</a>."
-    }
-  }
+   "shopify": {
+     "errors": {
+       "reset_password_html": "This email is already in use. If it’s your account, you can <a href=\\\"/account/login#recover\\\">reset your password</a>."
+     }
+   }
 }
