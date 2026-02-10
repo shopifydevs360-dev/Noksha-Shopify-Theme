@@ -12,25 +12,17 @@
     {% form 'create_customer' %}
 
 {% if form.errors %}
-  <div class="form-errors" tabindex="-1" autofocus>
-    <strong>There was a problem creating your account.</strong>
-
-    <ul>
-      {% for field in form.errors %}
-        {% for message in form.errors.messages[field] %}
-          {% if error contains 'already associated' %}
-            <li>
-              This email address is already
-              <a href="/account/login#recover">reset your password</a>.
-            </li>
-          {% else %}
-            <li>{{ message }}</li>
-          {% endif %}
-        {% endfor %}
-      {% endfor %}
-    </ul>
+  <div class="form-errors">
+    {% for error in form.errors %}
+      {% if error contains 'already associated' %}
+        <p>This email address is already associated <a href="{{ shop.url }}/account/login#recover">reset your password</a>.</p>
+      {% else %}
+        <p>{{ error }}</p>
+      {% endif %}
+    {% endfor %}
   </div>
 {% endif %}
+
 
 
 
