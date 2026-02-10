@@ -14,7 +14,16 @@
   if section.settings.background_type ==  'color'
     assign bg_color = section.settings.background_color
   endif
-  assign height_type = section.settings.height_type
+
+
+
+  if section.settings.background_type == 'image'
+  assign height_type = section.settings.height_type_image
+
+  assign height_type = section.settings.height_type_non_image
+  endif
+
+  
   assign justify_content = section.settings.justify_content
   
   if section.settings.background_image != blank and height_type == "image"
@@ -24,6 +33,8 @@
   if section.settings.background_image_mobile != blank and height_type == "image"
     assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
   endif
+
+
 
 if section.settings.enable_sidebar_space
   assign inner_content_classes = 'inner-section-content'
