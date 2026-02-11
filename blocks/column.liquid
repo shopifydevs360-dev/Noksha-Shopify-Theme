@@ -42,7 +42,7 @@
 }
 
 /* Now this works because variable is on this element */
-.layout-columns > cols-block-item {
+.layout-columns > .cols-block-item {
   flex: var(--col-span, 1) 1 0;
   min-width: 0;
   box-sizing: border-box;
@@ -51,11 +51,11 @@
 /* Mobile */
 @media (max-width: 767px) {
 
-  .mobile-cols-1 > cols-block-item {
+  .mobile-cols-1 > .cols-block-item {
     flex: 0 0 100%;
   }
 
-  .mobile-cols-2 > cols-block-item {
+  .mobile-cols-2 > .cols-block-item {
     flex: 0 0 calc(50% - var(--gap, 20px) / 2);
   }
 
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.querySelectorAll('.layout-columns').forEach(function(container) {
 
-    container.querySelectorAll(':scope > cols-block-item').forEach(function(wrapper) {
+    container.querySelectorAll(':scope > .cols-block-item').forEach(function(wrapper) {
 
       // Get block id from wrapper
       const blockId = wrapper.id;
