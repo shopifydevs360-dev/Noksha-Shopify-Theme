@@ -1,12 +1,45 @@
 {% doc %}
-  A content wrapper that constrains width and applies consistent padding.
-  @example
-  {% content_for 'row', type: 'content-card', id: 'content-card' %}
+  Advanced Content Card Wrapper
 {% enddoc %}
 
-<div class="content-area" style="padding: {{ block.settings.padding }}px;" {{ block.shopify_attributes }}>
+{% assign bg_type = block.settings.background_type %}
+
+<div 
+  class="content-card"
+  style="
+    padding: {{ block.settings.padding }}px;
+
+    {% if bg_type == 'solid' %}
+      background: {{ block.settings.background_color }};
+    {% elsif bg_type == 'gradient' %}
+      background: linear-gradient(
+        {{ block.settings.gradient_direction }},
+        {{ block.settings.gradient_color_1 }},
+        {{ block.settings.gradient_color_2 }}
+      );
+    {% endif %}
+
+    {% if block.settings.enable_max_width %}
+      max-width: {{ block.settings.max_width_value }}{{ block.settings.max_width_unit }};
+      margin-left: auto;
+      margin-right: auto;
+    {% endif %}
+
+    border-radius: {{ block.settings.border_radius }}px;
+
+    {% if block.settings.border_width > 0 %}
+      border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    {% endif %}
+
+    {% if block.settings.enable_shadow %}
+      box-shadow: 0 {{ block.settings.shadow_y }}px {{ block.settings.shadow_blur }}px rgba(0,0,0,0.15);
+    {% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
   {% content_for 'blocks' %}
 </div>
+
 
 {% style %}
 .content-card-block{
