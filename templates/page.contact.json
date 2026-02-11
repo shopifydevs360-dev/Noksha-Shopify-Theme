@@ -57,6 +57,8 @@
                     "enable_shadow": true,
                     "shadow_y": 10,
                     "shadow_blur": 34,
+                    "shadow_color": "#d33636",
+                    "shadow_opacity": 100,
                     "custom_class": ""
                   },
                   "blocks": {
