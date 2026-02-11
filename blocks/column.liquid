@@ -7,7 +7,7 @@
 <div class="layout-column column-{{ block.settings.columns }} {% if block.settings.show_two_mobile %}column-mobile-2{% endif %}"
   style="
     padding: {{ block.settings.padding }}px;
-    --grid-gap: {{ block.settings.grid_gap }}px"{{ block.shopify_attributes }}>
+    --grid-gap: {{ block.settings.column_gap }}px"{{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
@@ -83,8 +83,8 @@
     },
     {
       "type": "range",
-      "id": "grid_gap",
-      "label": "t:labels.grid_gap",
+      "id": "column_gap",
+      "label": "t:labels.column_gap",
       "min": 0,
       "max": 50,
       "step": 5,
