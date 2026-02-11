@@ -26,7 +26,7 @@
           "type": "column",
           "name": "Column Layout",
           "settings": {
-            "columns": "2",
+            "columns": "4",
             "show_two_mobile": false,
             "grid_gap": 10,
             "align_items": "flex-start",
