@@ -70,7 +70,7 @@
                         "link": "",
                         "alt_text": "",
                         "aspect_ratio": "cropped-image--square",
-                        "hover_effect_action": "is-hover-zoom-in",
+                        "hover_effect_action": "is-hover-zoom-out",
                         "enable_custom_width": false,
                         "custom_width": 100,
                         "alignment": "center"
@@ -102,7 +102,7 @@
                     "link": "",
                     "alt_text": "",
                     "aspect_ratio": "adapt-to-image",
-                    "hover_effect_action": "is-hover-zoom-out",
+                    "hover_effect_action": "is-hover-zoom-up",
                     "enable_custom_width": false,
                     "custom_width": 100,
                     "alignment": "center"
