@@ -52,35 +52,20 @@
 }
 
 {% endstyle %}
-
 {% schema %}
 {
-  "name": "Content Area",
-    "blocks": [
+  "name": "Advanced Content Card",
+  "class": "content-card-block",
+  "blocks": [
     { "type": "text" },
     { "type": "richtext" },
     { "type": "image" },
     { "type": "button" },
     { "type": "promo" },
-    { "type": "newsletter" },
+    { "type": "newsletter" }
   ],
-  "class": "content-card-block",
   "settings": [
-    { 
-       "type": "select", 
-       "id": "block_width", 
-       "label": "Block width", 
-       "options": [
-           { "value": "10", "label": "10%" },
-           { "value": "15", "label": "15%" },
-           { "value": "20", "label": "20%" },
-           { "value": "25", "label": "25%" },
-           { "value": "33", "label": "33%" },
-           { "value": "40", "label": "40%" },
-           { "value": "45", "label": "45%" },
-           { "value": "50", "label": "50%" }
-           ], 
-       "default": "33" },
+
     {
       "type": "range",
       "id": "padding",
@@ -90,11 +75,144 @@
       "max": 200,
       "step": 2,
       "unit": "px"
+    },
+
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background type",
+      "default": "solid",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "solid", "label": "Solid color" },
+        { "value": "gradient", "label": "Gradient" }
+      ]
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.background_type == 'solid' }}"
+    },
+
+    {
+      "type": "color",
+      "id": "gradient_color_1",
+      "label": "Gradient start",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_2",
+      "label": "Gradient end",
+      "default": "#f5f5f5",
+      "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+    },
+    {
+      "type": "select",
+      "id": "gradient_direction",
+      "label": "Gradient direction",
+      "default": "to right",
+      "options": [
+        { "value": "to right", "label": "Left → Right" },
+        { "value": "to left", "label": "Right → Left" },
+        { "value": "to bottom", "label": "Top → Bottom" },
+        { "value": "to top", "label": "Bottom → Top" }
+      ],
+      "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "enable_max_width",
+      "label": "Limit max width",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "max_width_value",
+      "label": "Max width value",
+      "default": 800,
+      "visible_if": "{{ block.settings.enable_max_width }}"
+    },
+
+    {
+      "type": "select",
+      "id": "max_width_unit",
+      "label": "Max width unit",
+      "default": "px",
+      "options": [
+        { "value": "px", "label": "Pixels (px)" },
+        { "value": "%", "label": "Percentage (%)" }
+      ],
+      "visible_if": "{{ block.settings.enable_max_width }}"
+    },
+
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "default": 0,
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.border_width > 0 }}"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "enable_shadow",
+      "label": "Enable shadow",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "shadow_y",
+      "label": "Shadow vertical offset",
+      "default": 10,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "visible_if": "{{ block.settings.enable_shadow }}"
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "label": "Shadow blur",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "visible_if": "{{ block.settings.enable_shadow }}"
     }
+
   ],
   "presets": [
     {
-      "name": "Content Card",
+      "name": "Advanced Content Card",
       "category": "Layout"
     }
   ]
