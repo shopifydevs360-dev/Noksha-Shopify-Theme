@@ -1,15 +1,16 @@
 {% doc %}
-  Renders a horizontal row container for column blocks.
+  Renders a horizontal row of blocks.
+  @example
+  {% content_for 'block', type: 'row', id: 'row' %}
 {% enddoc %}
 
 <div
   class="layout-row"
   style="
-    --row-align: {{ block.settings.align_items }};
-    --row-justify: {{ block.settings.justify_content }};
-    --row-gap: {{ block.settings.gap }}px;
-    --row-padding: {{ block.settings.padding }}px;
-    --row-wrap: {{ block.settings.wrap }};
+    align-items: {{ block.settings.align_items }};
+    justify-content: {{ block.settings.justify_content }};
+    gap: {{ block.settings.gap }}px;
+    padding: {{ block.settings.padding }}px;
   "
   {{ block.shopify_attributes }}
 >
@@ -17,39 +18,24 @@
 </div>
 
 {% stylesheet %}
-.layout-row {
-  display: flex;
-  flex-direction: row;
-  align-items: var(--row-align);
-  justify-content: var(--row-justify);
-  gap: var(--row-gap);
-  padding: var(--row-padding);
-  flex-wrap: var(--row-wrap);
-  width: 100%;
-  box-sizing: border-box;
-}
+  .layout-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Row",
+  "name": "Row Layout",
   "blocks": [{ "type": "@theme" }],
   "settings": [
     {
       "type": "select",
-      "id": "wrap",
-      "label": "Wrap columns",
-      "default": "wrap",
-      "options": [
-        { "value": "nowrap", "label": "No wrap" },
-        { "value": "wrap", "label": "Wrap" }
-      ]
-    },
-    {
-      "type": "select",
       "id": "align_items",
-      "label": "Vertical alignment",
-      "default": "stretch",
+      "label": "Align items (cross-axis)",
+      "default": "center",
       "options": [
         { "value": "flex-start", "label": "Top" },
         { "value": "center", "label": "Center" },
@@ -60,41 +46,40 @@
     {
       "type": "select",
       "id": "justify_content",
-      "label": "Horizontal distribution",
-      "default": "flex-start",
+      "label": "Justify content (main-axis)",
+      "default": "space-between",
       "options": [
         { "value": "flex-start", "label": "Start" },
         { "value": "center", "label": "Center" },
         { "value": "flex-end", "label": "End" },
         { "value": "space-between", "label": "Space between" },
-        { "value": "space-around", "label": "Space around" },
-        { "value": "space-evenly", "label": "Space evenly" }
+        { "value": "space-around", "label": "Space around" }
       ]
     },
     {
       "type": "range",
       "id": "gap",
-      "label": "Column gap",
+      "label": "Gap between items",
+      "default": 20,
       "min": 0,
       "max": 100,
       "step": 2,
-      "unit": "px",
-      "default": 20
+      "unit": "px"
     },
     {
       "type": "range",
       "id": "padding",
       "label": "Padding",
+      "default": 0,
       "min": 0,
       "max": 200,
       "step": 2,
-      "unit": "px",
-      "default": 0
+      "unit": "px"
     }
   ],
   "presets": [
     {
-      "name": "Row",
+      "name": "Row Layout",
       "category": "Layout"
     }
   ]
