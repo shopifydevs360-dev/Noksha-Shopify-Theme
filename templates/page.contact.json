@@ -37,7 +37,7 @@
               "type": "column-item",
               "name": "Column Item",
               "settings": {
-                "column_span": 1
+                "column_span": 5
               },
               "blocks": {
                 "image_rLPWtP": {
