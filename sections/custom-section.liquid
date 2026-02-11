@@ -85,12 +85,9 @@ endif
 
 .section-id-{{ section.id }} .custom-section__content {
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: {{ align_items }};
-  justify-content: {{ justify_content }};
   padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
 }
+
 
 {% if aspect_ratio_mobile %}
 @media (max-width: 768px) {
