@@ -19,11 +19,12 @@
       );
     {% endif %}
 
-    {% if block.settings.enable_max_width %}
+    {% if block.settings.enable_max_width and block.settings.max_width_value != blank %}
       max-width: {{ block.settings.max_width_value }}{{ block.settings.max_width_unit }};
       margin-left: auto;
       margin-right: auto;
     {% endif %}
+
 
     border-radius: {{ block.settings.border_radius }}px;
 
