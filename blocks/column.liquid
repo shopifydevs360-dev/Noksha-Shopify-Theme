@@ -16,9 +16,16 @@
   "
   {{ block.shopify_attributes }}
 >
-  {% for block in block.blocks %}
-  {% render block %}
-  {% endfor %}
+{% for block in block.blocks %}
+  <div 
+    class="shopify-block"
+    style="--col-span: {{ block.settings.column_span }};"
+    {{ block.shopify_attributes }}
+  >
+    {% render block %}
+  </div>
+{% endfor %}
+
 </div>
 
 {% style %}
