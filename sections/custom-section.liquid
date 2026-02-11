@@ -16,9 +16,9 @@
   endif
 
 
-
+  if section.settings.background_type == "image"
   assign height_type = section.settings.height_type
-  assign justify_content = section.settings.justify_content
+  endif
   
   if section.settings.background_image != blank and height_type == "image"
     assign aspect_ratio = section.settings.background_image.aspect_ratio
@@ -28,7 +28,7 @@
     assign aspect_ratio_mobile = section.settings.background_image_mobile.aspect_ratio
   endif
 
-
+  assign justify_content = section.settings.justify_content
   
 if section.settings.enable_sidebar_space
   assign inner_content_classes = 'inner-section-content'
