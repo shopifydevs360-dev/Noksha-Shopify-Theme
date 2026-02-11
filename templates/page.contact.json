@@ -37,7 +37,7 @@
               "type": "column-item",
               "name": "Column item",
               "settings": {
-                "column_span": 1
+                "column_span": 2
               },
               "blocks": {
                 "image_UycyGV": {
@@ -83,7 +83,7 @@
               "type": "column-item",
               "name": "Column item",
               "settings": {
-                "column_span": 1
+                "column_span": 3
               },
               "blocks": {
                 "image_dQJkw9": {
