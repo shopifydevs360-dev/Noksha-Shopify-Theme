@@ -27,8 +27,8 @@
           "name": "Column Layout",
           "settings": {
             "columns": "3",
-            "show_two_mobile": true,
-            "grid_gap": 40,
+            "show_two_mobile": false,
+            "grid_gap": 0,
             "align_items": "flex-start",
             "justify_content": "flex-end",
             "gap": 20,

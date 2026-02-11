@@ -7,7 +7,7 @@
 <div class="layout-column cols-{{ block.settings.columns }} {% if block.settings.show_two_mobile %}cols-mobile-2{% endif %}"
   style="
     padding: {{ block.settings.padding }}px;
-    --grid-gap: {{ section.settings.grid_gap }}px"{{ block.shopify_attributes }}>
+    --grid-gap: {{ block.settings.grid_gap }}px"{{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
