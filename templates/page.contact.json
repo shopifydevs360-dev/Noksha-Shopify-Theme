@@ -69,6 +69,10 @@
                         "image": "shopify://shop_images/T656-04296.jpg",
                         "link": "",
                         "alt_text": "",
+                        "aspect_ratio": "cropped-image--square",
+                        "hover_effect_action": "no-effect",
+                        "enable_custom_width": false,
+                        "custom_width": 100,
                         "alignment": "center"
                       },
                       "blocks": {}
@@ -97,6 +101,10 @@
                     "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
+                    "aspect_ratio": "adapt-to-image",
+                    "hover_effect_action": "is-hover-zoom-in",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
                     "alignment": "center"
                   },
                   "blocks": {}
@@ -120,6 +128,10 @@
                     "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
+                    "aspect_ratio": "adapt-to-image",
+                    "hover_effect_action": "no-effect",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
                     "alignment": "center"
                   },
                   "blocks": {}
@@ -143,6 +155,10 @@
                     "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
+                    "aspect_ratio": "adapt-to-image",
+                    "hover_effect_action": "no-effect",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
                     "alignment": "center"
                   },
                   "blocks": {}
@@ -214,6 +230,10 @@
                     "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
+                    "aspect_ratio": "adapt-to-image",
+                    "hover_effect_action": "no-effect",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
                     "alignment": "center"
                   },
                   "blocks": {}
@@ -237,6 +257,10 @@
                     "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
+                    "aspect_ratio": "adapt-to-image",
+                    "hover_effect_action": "no-effect",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
                     "alignment": "center"
                   },
                   "blocks": {}
@@ -260,6 +284,10 @@
                     "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
+                    "aspect_ratio": "adapt-to-image",
+                    "hover_effect_action": "no-effect",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
                     "alignment": "center"
                   },
                   "blocks": {}
