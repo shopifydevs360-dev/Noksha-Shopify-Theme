@@ -16,7 +16,9 @@
   "
   {{ block.shopify_attributes }}
 >
-  {% content_for 'blocks' %}
+  {% for block in block.blocks %}
+  {% render block %}
+  {% endfor %}
 </div>
 
 {% style %}
