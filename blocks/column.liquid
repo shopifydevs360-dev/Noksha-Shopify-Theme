@@ -20,49 +20,40 @@
 </div>
 
 {% style %}
+
+/* ================================
+   Base Layout
+================================ */
 .layout-columns {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--gap, 20px);
   align-items: var(--align-items, stretch);
   justify-content: var(--justify-content, flex-start);
 }
 
-.layout-columns > * {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.layout-columns__item {
+/* IMPORTANT: Target Shopify wrapper */
+.layout-columns > .shopify-block {
   flex: var(--col-span, 1) 1 0;
   min-width: 0;
   box-sizing: border-box;
 }
 
-.layout-columns__item-title {
-  margin: 0 0 0.75rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.layout-columns__item-content {
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
+/* ================================
+   Mobile Behavior
+================================ */
 @media (max-width: 767px) {
-  .layout-columns {
-    flex-wrap: wrap;
-  }
 
-  .mobile-cols-1 > * {
+  .mobile-cols-1 > .shopify-block {
     flex: 0 0 100%;
   }
 
-  .mobile-cols-2 > * {
+  .mobile-cols-2 > .shopify-block {
     flex: 0 0 calc(50% - var(--gap, 20px) / 2);
   }
+
 }
+
 {% endstyle %}
 
 {% schema %}
@@ -80,14 +71,8 @@
       "label": "Columns on mobile",
       "default": "1",
       "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ]
     },
     {
@@ -106,22 +91,10 @@
       "label": "Vertical alignment",
       "default": "stretch",
       "options": [
-        {
-          "value": "flex-start",
-          "label": "Top"
-        },
-        {
-          "value": "center",
-          "label": "Middle"
-        },
-        {
-          "value": "flex-end",
-          "label": "Bottom"
-        },
-        {
-          "value": "stretch",
-          "label": "Stretch equal height"
-        }
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" },
+        { "value": "stretch", "label": "Stretch equal height" }
       ]
     },
     {
@@ -130,30 +103,12 @@
       "label": "Horizontal alignment",
       "default": "flex-start",
       "options": [
-        {
-          "value": "flex-start",
-          "label": "Align left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "flex-end",
-          "label": "Align right"
-        },
-        {
-          "value": "space-between",
-          "label": "Space between"
-        },
-        {
-          "value": "space-around",
-          "label": "Space around"
-        },
-        {
-          "value": "space-evenly",
-          "label": "Space evenly"
-        }
+        { "value": "flex-start", "label": "Align left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Align right" },
+        { "value": "space-between", "label": "Space between" },
+        { "value": "space-around", "label": "Space around" },
+        { "value": "space-evenly", "label": "Space evenly" }
       ]
     },
     {
