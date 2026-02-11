@@ -10,7 +10,6 @@
     max-width: {{ block.settings.max_width }}px;
     margin: 0 auto;
     padding: {{ block.settings.padding }}px;
-    text-align: {{ block.settings.text_align }};
   "
   {{ block.shopify_attributes }}
 >
@@ -47,17 +46,6 @@
       "max": 200,
       "step": 2,
       "unit": "px"
-    },
-    {
-      "type": "select",
-      "id": "text_align",
-      "label": "Text alignment",
-      "default": "left",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
     }
   ],
   "presets": [
