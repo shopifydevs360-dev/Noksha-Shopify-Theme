@@ -1,6 +1,9 @@
 {% doc %}
   Renders flexible columns in a row.
   Mobile supports 1 or 2 columns.
+
+  Use with `column-item` blocks inside to control how much space each
+  column takes relative to the others using a span value.
 {% enddoc %}
 
 <div 
@@ -17,32 +20,40 @@
 </div>
 
 {% style %}
-
-/* ----------------------------------
-   Base Layout (Row Columns)
------------------------------------ */
 .layout-columns {
   display: flex;
   flex-direction: row;
   gap: var(--gap, 20px);
-
   align-items: var(--align-items, stretch);
   justify-content: var(--justify-content, flex-start);
 }
 
-/* ----------------------------------
-   Desktop Behavior
-   (Auto columns based on content)
------------------------------------ */
 .layout-columns > * {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-/* ----------------------------------
-   Mobile Controls
------------------------------------ */
+.layout-columns__item {
+  flex: var(--col-span, 1) 1 0;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.layout-columns__item-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.layout-columns__item-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 767px) {
+  .layout-columns {
+    flex-wrap: wrap;
+  }
 
   .mobile-cols-1 > * {
     flex: 0 0 100%;
@@ -51,15 +62,17 @@
   .mobile-cols-2 > * {
     flex: 0 0 calc(50% - var(--gap, 20px) / 2);
   }
-
 }
-
 {% endstyle %}
 
 {% schema %}
 {
-  "name": "Columns (Flexible)",
-  "blocks": [{ "type": "content-card" }],
+  "name": "Layout columns (row)",
+  "blocks": [
+    {
+      "type": "column-item"
+    }
+  ],
   "settings": [
     {
       "type": "select",
@@ -67,8 +80,14 @@
       "label": "Columns on mobile",
       "default": "1",
       "options": [
-        { "value": "1", "label": "1 Column" },
-        { "value": "2", "label": "2 Columns" }
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
       ]
     },
     {
@@ -87,10 +106,22 @@
       "label": "Vertical alignment",
       "default": "stretch",
       "options": [
-        { "value": "flex-start", "label": "Top" },
-        { "value": "center", "label": "Middle" },
-        { "value": "flex-end", "label": "Bottom" },
-        { "value": "stretch", "label": "Stretch equal height" }
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        },
+        {
+          "value": "stretch",
+          "label": "Stretch equal height"
+        }
       ]
     },
     {
@@ -99,12 +130,30 @@
       "label": "Horizontal alignment",
       "default": "flex-start",
       "options": [
-        { "value": "flex-start", "label": "Align Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Align Right" },
-        { "value": "space-between", "label": "Space Between" },
-        { "value": "space-around", "label": "Space Around" },
-        { "value": "space-evenly", "label": "Space Evenly" }
+        {
+          "value": "flex-start",
+          "label": "Align left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Align right"
+        },
+        {
+          "value": "space-between",
+          "label": "Space between"
+        },
+        {
+          "value": "space-around",
+          "label": "Space around"
+        },
+        {
+          "value": "space-evenly",
+          "label": "Space evenly"
+        }
       ]
     },
     {
@@ -120,8 +169,7 @@
   ],
   "presets": [
     {
-      "name": "Columns",
-      "category": "Layout"
+      "name": "Layout columns (row)"
     }
   ]
 }
