@@ -4,7 +4,7 @@
   {% content_for 'block', type: 'column', id: 'column' %}
 {% enddoc %}
 
-<div class="layout-column {{ block.settings.columns }} {{ block.settings.show_two_mobile }}"
+<div class="layout-column cols-{{ block.settings.columns }} cols-{{ block.settings.show_two_mobile }}"
   style="
     padding: {{ block.settings.padding }}px;
     --grid-gap: {{ section.settings.grid_gap }}px"{{ block.shopify_attributes }}>
