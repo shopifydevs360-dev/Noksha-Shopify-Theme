@@ -4,25 +4,16 @@
   {% content_for 'block', type: 'column', id: 'column' %}
 {% enddoc %}
 
-<div
-  class="layout-column"
+<div class="layout-column col-2"
   style="
     align-items: {{ block.settings.align_items }};
     justify-content: {{ block.settings.justify_content }};
-    gap: {{ block.settings.gap }}px;
-    padding: {{ block.settings.padding }}px;
-  "
-  {{ block.shopify_attributes }}
->
+    padding: {{ block.settings.padding }}px;"{{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
 {% stylesheet %}
-  .layout-column {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
+
 {% endstylesheet %}
 
 {% schema %}
