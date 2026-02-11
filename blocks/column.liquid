@@ -41,12 +41,12 @@
   justify-content: var(--justify-content, flex-start);
 }
 
-/* Now this works because variable is on this element */
+/* Each column wrapper */
 .layout-columns > .cols-block-item {
-  flex: var(--col-span, 1) 1 0;
+  flex: 1 1 0;
   min-width: 0;
-  box-sizing: border-box;
 }
+
 
 /* Mobile */
 @media (max-width: 767px) {
