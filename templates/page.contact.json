@@ -40,20 +40,46 @@
                 "column_span": 2
               },
               "blocks": {
-                "image_UycyGV": {
-                  "type": "image",
-                  "name": "Image",
+                "content_card_VEpcrV": {
+                  "type": "content-card",
+                  "name": "Advanced Content Card",
                   "settings": {
-                    "image": "shopify://shop_images/T656-04294.jpg",
-                    "link": "",
-                    "alt_text": "",
-                    "alignment": "center"
+                    "padding": 26,
+                    "background_type": "none",
+                    "background_color": "#ffffff",
+                    "gradient_color_1": "#ffffff",
+                    "gradient_color_2": "#f5f5f5",
+                    "gradient_direction": "to right",
+                    "enable_max_width": true,
+                    "max_width_value": 100,
+                    "max_width_unit": "%",
+                    "border_radius": 25,
+                    "border_width": 0,
+                    "border_color": "#000000",
+                    "enable_shadow": true,
+                    "shadow_y": 10,
+                    "shadow_blur": 34
                   },
-                  "blocks": {}
+                  "blocks": {
+                    "image_a8QHL3": {
+                      "type": "image",
+                      "name": "Image",
+                      "settings": {
+                        "image": "shopify://shop_images/T656-04296.jpg",
+                        "link": "",
+                        "alt_text": "",
+                        "alignment": "center"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "image_a8QHL3"
+                  ]
                 }
               },
               "block_order": [
-                "image_UycyGV"
+                "content_card_VEpcrV"
               ]
             },
             "column_item_XaabMX": {
