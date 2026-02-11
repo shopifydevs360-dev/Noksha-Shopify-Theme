@@ -22,10 +22,14 @@
 ------------------------------- */
 [class*="column-"] {
   display: grid;
-  --column: 1; /* default */
+  --column: 1;
   grid-template-columns: repeat(var(--column), 1fr);
   gap: var(--column-gap, 2rem);
+
+  align-items: var(--align-items, stretch);
+  justify-content: var(--justify-content, start);
 }
+
 
 .no-gap {
   gap: 0;
