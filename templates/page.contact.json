@@ -25,6 +25,7 @@
         "column_wHEgxr": {
           "type": "column",
           "name": "Column Layout",
+          "disabled": true,
           "settings": {
             "align_items": "flex-start",
             "justify_content": "flex-end",
@@ -89,7 +90,6 @@
         "row_7RWpN3": {
           "type": "row",
           "name": "Row Layout",
-          "disabled": true,
           "settings": {
             "align_items": "stretch",
             "justify_content": "flex-start",
