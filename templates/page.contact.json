@@ -19,6 +19,59 @@
         "color_control": "section-light"
       }
     },
+    "custom_section_En8344": {
+      "type": "custom-section",
+      "blocks": {
+        "column_rbymEE": {
+          "type": "column",
+          "name": "Layout Columns",
+          "settings": {
+            "mobile_columns": "1",
+            "column_gap": 20,
+            "align_items": "stretch",
+            "justify_content": "flex-start",
+            "padding": 0
+          },
+          "blocks": {
+            "column_item_B4pr3D": {
+              "type": "column-item",
+              "name": "Column Item",
+              "settings": {
+                "column_span": 1
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "column_item_B4pr3D"
+          ]
+        }
+      },
+      "block_order": [
+        "column_rbymEE"
+      ],
+      "name": "Custom Section",
+      "settings": {
+        "container_width": "container",
+        "enable_sidebar_space": true,
+        "height_type": "content",
+        "height_desktop": 800,
+        "height_tablet": 600,
+        "height_mobile": 500,
+        "background_type": "none",
+        "overlay_enable": false,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #ffffff, #000000)",
+        "custom_section_color_scheme": "",
+        "padding_y": 60,
+        "padding_x": 30,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "custom_section_T36QG9": {
       "type": "custom-section",
       "blocks": {
@@ -138,6 +191,7 @@
   },
   "order": [
     "main",
+    "custom_section_En8344",
     "custom_section_T36QG9"
   ]
 }
