@@ -1,158 +1,115 @@
 {% doc %}
-  Renders a vertical stack of blocks (column layout).
-  @example
-  {% content_for 'block', type: 'column', id: 'column' %}
+  Renders a vertical stack of blocks.
+  Mobile can be 1 or 2 columns.
+  Desktop always shows 1 column.
 {% enddoc %}
 
-<div class="layout-column column-{{ block.settings.columns }} {% if block.settings.show_two_mobile %}column-mobile-2{% endif %}"
+<div 
+  class="layout-column mobile-cols-{{ block.settings.mobile_columns }}"
   style="
     padding: {{ block.settings.padding }}px;
     --column-gap: {{ block.settings.column_gap }}px;
     --align-items: {{ block.settings.align_items }};
     --justify-content: {{ block.settings.justify_content }};
   "
-  {{ block.shopify_attributes }}>
+  {{ block.shopify_attributes }}
+>
   {% content_for 'blocks' %}
 </div>
 
-
 {% style %}
-/* ------------------------------
-   Grid Item
-------------------------------- */
-[class*="column-"] {
+
+/* ----------------------------------
+   Base Layout (Desktop Default = 1 Column)
+----------------------------------- */
+.layout-column {
   display: grid;
-  --column: 1;
-  grid-template-columns: repeat(var(--column), 1fr);
-  gap: var(--column-gap, 2rem);
+  grid-template-columns: 1fr;
+  gap: var(--column-gap, 20px);
 
   align-items: var(--align-items, stretch);
   justify-content: var(--justify-content, start);
 }
 
+/* ----------------------------------
+   Mobile Column Control
+----------------------------------- */
+@media (max-width: 767px) {
 
-.no-gap {
-  gap: 0;
-}
-
-/* Define desktop column values */
-.column-2 { --column-desktop: 2; }
-.column-3 { --column-desktop: 3; }
-.column-4 { --column-desktop: 4; }
-.column-5 { --column-desktop: 5; }
-.column-6 { --column-desktop: 6; }
-.column-7 { --column-desktop: 7; }
-.column-8 { --column-desktop: 8; }
-.column-9 { --column-desktop: 9; }
-
-/* Mobile override */
-.column-mobile-2 { --column-mobile: 2; }
-
-[class*="column-mobile-"] {
-  --column: var(--column-mobile);
-}
-
-/* Responsive scaling */
-@media (min-width: 441px) {
-  [class*="column-"] {
-    --column: min(2, var(--column-desktop));
+  .mobile-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
   }
-}
 
-@media (min-width: 769px) {
-  [class*="column-"] {
-    --column: var(--column-desktop);
+  .mobile-cols-1 {
+    grid-template-columns: 1fr;
   }
+
 }
 
 {% endstyle %}
 
 {% schema %}
 {
-  "name": "Column Layout",
+  "name": "Vertical Stack",
   "blocks": [{ "type": "content-card" }],
   "settings": [
     {
       "type": "select",
-      "id": "columns",
-      "label": "Columns",
+      "id": "mobile_columns",
+      "label": "Columns on mobile",
+      "default": "1",
       "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" }
-      ],
-      "default": "4"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_two_mobile",
-      "label": "Show 2 col mobile",
-      "info": "You can show 2 column in a mobile",
-      "default": false
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ]
     },
     {
       "type": "range",
       "id": "column_gap",
-      "label": "t:labels.column_gap",
+      "label": "Space between items",
       "min": 0,
       "max": 50,
       "step": 5,
       "unit": "px",
-      "default": 10
+      "default": 15
     },
-{
-  "type": "select",
-  "id": "align_items",
-  "label": "Align items",
-  "default": "stretch",
-  "options": [
-    { "value": "start", "label": "Start" },
-    { "value": "center", "label": "Center" },
-    { "value": "end", "label": "End" },
-    { "value": "stretch", "label": "Stretch" }
-  ]
-},
-{
-  "type": "select",
-  "id": "justify_content",
-  "label": "Justify content",
-  "default": "start",
-  "options": [
-    { "value": "start", "label": "Start" },
-    { "value": "center", "label": "Center" },
-    { "value": "end", "label": "End" },
-    { "value": "space-between", "label": "Space between" },
-    { "value": "space-around", "label": "Space around" },
-    { "value": "space-evenly", "label": "Space evenly" }
-  ]
-},
-
     {
-      "type": "range",
-      "id": "gap",
-      "label": "Gap between items",
-      "default": 20,
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px"
+      "type": "select",
+      "id": "align_items",
+      "label": "Vertical alignment",
+      "default": "stretch",
+      "options": [
+        { "value": "start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "end", "label": "Bottom" },
+        { "value": "stretch", "label": "Stretch" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "justify_content",
+      "label": "Horizontal alignment",
+      "default": "start",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ]
     },
     {
       "type": "range",
       "id": "padding",
-      "label": "Padding",
+      "label": "Section padding",
       "default": 0,
       "min": 0,
       "max": 200,
-      "step": 2,
+      "step": 5,
       "unit": "px"
     }
   ],
   "presets": [
     {
-      "name": "Column Layout",
+      "name": "Vertical Stack",
       "category": "Layout"
     }
   ]
