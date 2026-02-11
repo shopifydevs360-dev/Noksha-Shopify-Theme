@@ -150,7 +150,7 @@
               "settings": {
                 "max_width": 600,
                 "padding": 0,
-                "text_align": "left"
+                "text_align": "right"
               },
               "blocks": {
                 "image_czN7Y4": {
@@ -168,34 +168,10 @@
               "block_order": [
                 "image_czN7Y4"
               ]
-            },
-            "button_MrT8gJ": {
-              "type": "button",
-              "name": "Button",
-              "settings": {
-                "button_label": "Test Button",
-                "button_link": "",
-                "text_color_scheme": "",
-                "button_type": "btn--primary"
-              },
-              "blocks": {}
-            },
-            "button_fJGWtd": {
-              "type": "button",
-              "name": "Button",
-              "settings": {
-                "button_label": "Test Button",
-                "button_link": "",
-                "text_color_scheme": "",
-                "button_type": "btn--primary"
-              },
-              "blocks": {}
             }
           },
           "block_order": [
-            "content_card_YET8bw",
-            "button_MrT8gJ",
-            "button_fJGWtd"
+            "content_card_YET8bw"
           ]
         }
       },
