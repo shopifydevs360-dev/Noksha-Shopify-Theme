@@ -170,7 +170,12 @@ endif
 {% schema %}
 {
   "name": "Custom section",
-  "blocks": [{ "type": "@theme" }],
+    "blocks": [
+    { "type": "content-card" },
+    { "type": "column" },
+    { "type": "row" },
+    { "type": "grid" },
+  ],
   "settings": [
     {
       "type": "select",
