@@ -1,8 +1,3 @@
-{% doc %}
-  Advanced Image Block
-  Uses shared 'image' snippet
-{% enddoc %}
-
 {% liquid
   assign image = block.settings.image
 
@@ -24,13 +19,11 @@
 %}
 
 {% if image != blank %}
-
   <div
     class="block-image"
     style="{{ custom_width_style }} text-align: {{ block.settings.alignment }};"
     {{ block.shopify_attributes }}
   >
-
     {% render 'image',
       image: image,
       mobile_image: block.settings.image_mobile,
@@ -38,10 +31,9 @@
       class: image_wapper_classes,
       img_alt: block.settings.alt_text
     %}
-
   </div>
-
 {% endif %}
+
 
 
 {% stylesheet %}
