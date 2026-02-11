@@ -36,6 +36,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
+                "image": "shopify://shop_images/T656-04294.jpg",
                 "link": "",
                 "alt_text": "",
                 "alignment": "center"
@@ -46,6 +47,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
+                "image": "shopify://shop_images/T656-04269.jpg",
                 "link": "",
                 "alt_text": "",
                 "alignment": "center"
