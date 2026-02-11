@@ -70,7 +70,7 @@
                         "link": "",
                         "alt_text": "",
                         "aspect_ratio": "cropped-image--square",
-                        "hover_effect_action": "no-effect",
+                        "hover_effect_action": "is-hover-zoom-in",
                         "enable_custom_width": false,
                         "custom_width": 100,
                         "alignment": "center"
