@@ -26,9 +26,9 @@
           "type": "column",
           "name": "Column Layout",
           "settings": {
-            "columns": "4",
-            "show_two_mobile": false,
-            "grid_gap": 10,
+            "columns": "3",
+            "show_two_mobile": true,
+            "grid_gap": 40,
             "align_items": "flex-start",
             "justify_content": "flex-end",
             "gap": 20,
@@ -40,7 +40,7 @@
               "name": "Content Card",
               "settings": {
                 "block_width": "50",
-                "padding": 40
+                "padding": 0
               },
               "blocks": {
                 "image_66PPLa": {
@@ -64,7 +64,7 @@
               "name": "Content Card",
               "settings": {
                 "block_width": "50",
-                "padding": 40
+                "padding": 0
               },
               "blocks": {
                 "image_M8yWBk": {
@@ -101,7 +101,7 @@
         "height_desktop": 600,
         "height_tablet": 600,
         "height_mobile": 500,
-        "background_type": "image",
+        "background_type": "none",
         "background_image": "shopify://shop_images/404_background.jpg",
         "background_image_mobile": "shopify://shop_images/T656-04296.jpg",
         "overlay_enable": false,
