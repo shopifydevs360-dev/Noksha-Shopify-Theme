@@ -68,28 +68,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.querySelectorAll('.layout-columns').forEach(function(container) {
 
-    container.querySelectorAll(':scope > .cols-block-item').forEach(function(wrapper) {
+    container.querySelectorAll(':scope > .cols-block-item').forEach(function(col) {
 
-      // Get block id from wrapper
-      const blockId = wrapper.id;
+      const spanElement = col.querySelector('[data-span]');
+      if (!spanElement) return;
 
-      if (!blockId) return;
+      const span = parseInt(spanElement.dataset.span);
+      if (!span || span < 1) return;
 
-      // Extract actual block id
-      const cleanId = blockId.replace('shopify-block-', '');
-
-      // Find matching inner column-item block
-      const columnItem = wrapper.querySelector('[data-block-id="' + cleanId + '"]');
-
-      if (!columnItem) return;
-
-      // Read span from dataset (we must add this)
-      const span = columnItem.dataset.span;
-
-      if (!span) return;
-
-      wrapper.style.flex = span + ' 1 0';
-      wrapper.style.minWidth = '0';
+      col.style.flex = span + ' 1 0';
+      col.style.minWidth = '0';
 
     });
 
@@ -97,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 </script>
+
 
 {% schema %}
 {
