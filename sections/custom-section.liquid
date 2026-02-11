@@ -16,7 +16,7 @@
   endif
 
 
- 
+
   assign height_type = section.settings.height_type
 
   
@@ -52,7 +52,7 @@ endif
 .section-id-{{ section.id }} .custom-section__inner[data-height="content"] { height: auto; }
 .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] { height: {{ section.settings.height_desktop }}px; }
 
-{% if height_type == "image" and aspect_ratio %}
+{% if height_type == "image" and aspect_ratio and has_bg_image == true %}
   .section-id-{{ section.id }} .custom-section__inner[data-height="image"] { 
     height: auto;
     position: relative;
