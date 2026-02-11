@@ -1,6 +1,10 @@
 {% doc %}
   Renders flexible columns in a row.
-  Mobile supports 1 or 2 columns.
+
+  Mobile supports 1 or 2 columns via a setting.
+
+  Use with "Column Item" blocks inside to control how much
+  space each column takes relative to the others using a span value.
 {% enddoc %}
 
 <div 
@@ -18,30 +22,34 @@
 
 {% style %}
 
-/* ----------------------------------
-   Base Layout (Row Columns)
------------------------------------ */
+/* ================================
+   Base layout (row columns)
+================================ */
 .layout-columns {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--gap, 20px);
 
   align-items: var(--align-items, stretch);
   justify-content: var(--justify-content, flex-start);
 }
 
-/* ----------------------------------
-   Desktop Behavior
-   (Auto columns based on content)
------------------------------------ */
+/* Default: equal width columns */
 .layout-columns > * {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   min-width: 0;
 }
 
-/* ----------------------------------
-   Mobile Controls
------------------------------------ */
+/* Column item span control */
+.layout-columns__item {
+  flex: var(--col-span, 1) 1 0;
+  min-width: 0;
+}
+
+/* ================================
+   Mobile controls
+================================ */
 @media (max-width: 767px) {
 
   .mobile-cols-1 > * {
@@ -58,8 +66,12 @@
 
 {% schema %}
 {
-  "name": "Columns (Flexible)",
-  "blocks": [{ "type": "content-card" }],
+  "name": "Layout Columns",
+  "blocks": [
+    {
+      "type": "column-item"
+    }
+  ],
   "settings": [
     {
       "type": "select",
@@ -120,7 +132,7 @@
   ],
   "presets": [
     {
-      "name": "Columns",
+      "name": "Layout Columns",
       "category": "Layout"
     }
   ]
