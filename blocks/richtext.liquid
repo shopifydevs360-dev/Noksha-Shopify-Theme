@@ -63,50 +63,50 @@
 
 {% schema %}
 {
-  "name": "t:blocks.richtext.name",
+  "name": "Rich text",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "t:blocks.richtext.settings.heading.label"
+      "label": "Heading"
     },
     {
       "type": "select",
       "id": "heading_tag",
-      "label": "t:blocks.richtext.settings.heading_tag.label",
+      "label": "Heading level",
       "options": [
-        { "value": "h2", "label": "t:blocks.richtext.settings.heading_tag.options.h2" },
-        { "value": "h3", "label": "t:blocks.richtext.settings.heading_tag.options.h3" },
-        { "value": "h4", "label": "t:blocks.richtext.settings.heading_tag.options.h4" }
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "h4", "label": "Heading 4" }
       ],
       "default": "h2"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "t:blocks.richtext.settings.text.label"
+      "label": "Text"
     },
     {
       "type": "select",
       "id": "text_style",
-      "label": "t:blocks.richtext.settings.text_style.label",
+      "label": "Heading size",
       "options": [
-        { "value": "richtext-block--large-heading", "label": "t:blocks.richtext.settings.text_style.options.large" },
-        { "value": "richtext-block--medium-heading", "label": "t:blocks.richtext.settings.text_style.options.medium" },
-        { "value": "richtext-block--small-heading", "label": "t:blocks.richtext.settings.text_style.options.small" }
+        { "value": "richtext-block--large-heading", "label": "Large" },
+        { "value": "richtext-block--medium-heading", "label": "Medium" },
+        { "value": "richtext-block--small-heading", "label": "Small" }
       ],
       "default": "richtext-block--medium-heading"
     },
     {
       "type": "text_alignment",
       "id": "text_alignment",
-      "label": "t:blocks.richtext.settings.text_alignment.label",
+      "label": "Text alignment",
       "default": "left"
     },
     {
       "type": "range",
       "id": "max_width",
-      "label": "t:blocks.richtext.settings.max_width.label",
+      "label": "Max content width",
       "min": 20,
       "max": 80,
       "step": 2,
@@ -116,18 +116,18 @@
     {
       "type": "select",
       "id": "wrapper_tag",
-      "label": "t:blocks.richtext.settings.wrapper_tag.label",
+      "label": "Wrapper HTML tag",
       "options": [
-        { "value": "section", "label": "t:blocks.richtext.settings.wrapper_tag.options.section" },
-        { "value": "div", "label": "t:blocks.richtext.settings.wrapper_tag.options.div" },
-        { "value": "article", "label": "t:blocks.richtext.settings.wrapper_tag.options.article" }
+        { "value": "section", "label": "Section" },
+        { "value": "div", "label": "Div" },
+        { "value": "article", "label": "Article" }
       ],
       "default": "div"
     }
   ],
   "presets": [
     {
-      "name": "t:blocks.richtext.presets.default.name"
+      "name": "Rich text"
     }
   ]
 }
