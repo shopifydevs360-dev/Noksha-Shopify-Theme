@@ -6,13 +6,16 @@
 {% liquid
   assign image = block.settings.image
 
-  assign image_wapper_classes = ''
+  assign image_wapper_classes = 'image'
 
   unless block.settings.aspect_ratio == 'adapt-to-image'
-    assign image_wapper_classes = 'cropped-image-wrapper ' | append: block.settings.aspect_ratio
+    assign image_wapper_classes = image_wapper_classes | append: ' cropped-image-wrapper'
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.aspect_ratio
   endunless
 
-  assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
+  if block.settings.hover_effect_action != 'no-effect'
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
+  endif
 
   assign custom_width_style = ''
   if block.settings.enable_custom_width and block.settings.custom_width != blank
@@ -24,10 +27,7 @@
 
   <div
     class="block-image"
-    style="
-      {{ custom_width_style }}
-      text-align: {{ block.settings.alignment }};
-    "
+    style="{{ custom_width_style }} text-align: {{ block.settings.alignment }};"
     {{ block.shopify_attributes }}
   >
 
@@ -42,6 +42,7 @@
   </div>
 
 {% endif %}
+
 
 {% stylesheet %}
 
