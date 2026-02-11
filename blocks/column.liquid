@@ -102,30 +102,33 @@
       "unit": "px",
       "default": 10
     },
-    {
-      "type": "select",
-      "id": "align_items",
-      "label": "Align items",
-      "default": "flex-start",
-      "options": [
-        { "value": "flex-start", "label": "Start" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "End" },
-        { "value": "stretch", "label": "Stretch" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "justify_content",
-      "label": "Justify content",
-      "default": "flex-start",
-      "options": [
-        { "value": "flex-start", "label": "Start" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "End" },
-        { "value": "space-between", "label": "Space between" }
-      ]
-    },
+{
+  "type": "select",
+  "id": "align_items",
+  "label": "Align items",
+  "default": "stretch",
+  "options": [
+    { "value": "start", "label": "Start" },
+    { "value": "center", "label": "Center" },
+    { "value": "end", "label": "End" },
+    { "value": "stretch", "label": "Stretch" }
+  ]
+},
+{
+  "type": "select",
+  "id": "justify_content",
+  "label": "Justify content",
+  "default": "start",
+  "options": [
+    { "value": "start", "label": "Start" },
+    { "value": "center", "label": "Center" },
+    { "value": "end", "label": "End" },
+    { "value": "space-between", "label": "Space between" },
+    { "value": "space-around", "label": "Space around" },
+    { "value": "space-evenly", "label": "Space evenly" }
+  ]
+},
+
     {
       "type": "range",
       "id": "gap",
