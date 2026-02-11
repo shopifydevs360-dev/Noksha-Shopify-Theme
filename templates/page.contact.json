@@ -22,30 +22,29 @@
     "custom_section_Cn9bVU": {
       "type": "custom-section",
       "blocks": {
-        "column_wHEgxr": {
+        "column_DyRWFN": {
           "type": "column",
-          "name": "Column Layout",
+          "name": "Layout Columns",
           "settings": {
             "mobile_columns": "1",
-            "column_gap": 10,
-            "align_items": "center",
-            "justify_content": "space-between",
+            "column_gap": 20,
+            "align_items": "stretch",
+            "justify_content": "flex-start",
             "padding": 0
           },
           "blocks": {
-            "content_card_p9NaBM": {
-              "type": "content-card",
-              "name": "Content Card",
+            "column_item_hLTrjG": {
+              "type": "column-item",
+              "name": "Column Item",
               "settings": {
-                "block_width": "10",
-                "padding": 0
+                "column_span": 1
               },
               "blocks": {
-                "image_66PPLa": {
+                "image_rLPWtP": {
                   "type": "image",
                   "name": "Image",
                   "settings": {
-                    "image": "shopify://shop_images/T656-04278.jpg",
+                    "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
                     "alignment": "center"
@@ -54,22 +53,21 @@
                 }
               },
               "block_order": [
-                "image_66PPLa"
+                "image_rLPWtP"
               ]
             },
-            "content_card_KhYGXx": {
-              "type": "content-card",
-              "name": "Content Card",
+            "column_item_4AtmHN": {
+              "type": "column-item",
+              "name": "Column Item",
               "settings": {
-                "block_width": "50",
-                "padding": 0
+                "column_span": 2
               },
               "blocks": {
-                "image_adhfDe": {
+                "image_UEWWRE": {
                   "type": "image",
                   "name": "Image",
                   "settings": {
-                    "image": "shopify://shop_images/T656-04278.jpg",
+                    "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
                     "alignment": "center"
@@ -78,22 +76,21 @@
                 }
               },
               "block_order": [
-                "image_adhfDe"
+                "image_UEWWRE"
               ]
             },
-            "content_card_f83DFV": {
-              "type": "content-card",
-              "name": "Content Card",
+            "column_item_wtNYfT": {
+              "type": "column-item",
+              "name": "Column Item",
               "settings": {
-                "block_width": "50",
-                "padding": 0
+                "column_span": 1
               },
               "blocks": {
-                "image_M8yWBk": {
+                "image_RQ4LK8": {
                   "type": "image",
                   "name": "Image",
                   "settings": {
-                    "image": "shopify://shop_images/T656-04278.jpg",
+                    "image": "shopify://shop_images/T656-04294.jpg",
                     "link": "",
                     "alt_text": "",
                     "alignment": "center"
@@ -102,19 +99,19 @@
                 }
               },
               "block_order": [
-                "image_M8yWBk"
+                "image_RQ4LK8"
               ]
             }
           },
           "block_order": [
-            "content_card_p9NaBM",
-            "content_card_KhYGXx",
-            "content_card_f83DFV"
+            "column_item_hLTrjG",
+            "column_item_4AtmHN",
+            "column_item_wtNYfT"
           ]
         }
       },
       "block_order": [
-        "column_wHEgxr"
+        "column_DyRWFN"
       ],
       "name": "Custom Section",
       "settings": {
