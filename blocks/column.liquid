@@ -22,13 +22,12 @@
    Base Layout (Row Columns)
 ----------------------------------- */
 .layout-columns {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 1), 1fr);
   gap: var(--gap, 20px);
 
   align-items: var(--align-items, stretch);
-  justify-content: var(--justify-content, flex-start);
+  justify-content: var(--justify-content, start);
 }
 
 /* ----------------------------------
