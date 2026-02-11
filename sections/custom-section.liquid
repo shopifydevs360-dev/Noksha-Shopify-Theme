@@ -41,99 +41,102 @@ if section.settings.enable_sidebar_space
 endif
 %}
 {% style %}
-  .custom-section__inner {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    z-index: 1;
+.section-id-{{ section.id }} .custom-section__inner {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: {{ justify_content }};
+  padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
+}
+
+{% unless has_bg_image %}
+.section-id-{{ section.id }} .custom-section__inner {
+  background: {{ bg_color }};
+}
+{% endunless %}
+
+/* Height modes */
+.section-id-{{ section.id }} .custom-section__inner[data-height="content"] {
+  height: auto;
+}
+
+.section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
+  height: {{ section.settings.height_desktop }}px;
+}
+
+/* Image aspect-ratio height */
+{% if height_type == 'image' and aspect_ratio and has_bg_image %}
+.section-id-{{ section.id }} .custom-section__inner[data-height="image"] {
+  height: auto;
+}
+
+.section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
+  content: "";
+  display: block;
+  width: 100%;
+  padding-top: calc(100% / {{ aspect_ratio }});
+}
+
+.section-id-{{ section.id }} .custom-section__inner[data-height="image"] > * {
+  position: absolute;
+  inset: 0;
+}
+
+.section-id-{{ section.id }} .custom-section__content {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: {{ justify_content }};
+  padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
+}
+
+{% if aspect_ratio_mobile %}
+@media (max-width: 768px) {
+  .section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
+    padding-top: calc(100% / {{ aspect_ratio_mobile }});
   }
+}
+{% endif %}
+{% endif %}
 
-  .section-id-{{ section.id }} .custom-section__inner {
-    {% if bg_color and has_bg_image == false %}
-      background: {{ bg_color }};
-    {% endif %}
-    justify-content: {{ justify_content }};
-    padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
+/* Responsive custom heights */
+@media (max-width: 1024px) {
+  .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
+    height: {{ section.settings.height_tablet }}px;
   }
+}
 
-  .section-id-{{ section.id }} .custom-section__inner[data-height="content"] { height: auto; }
-  .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] { height: {{ section.settings.height_desktop }}px; }
-
-  @media (max-width: 1024px) {
-    .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
-      height: {{ section.settings.height_tablet }}px;
-    }
+@media (max-width: 768px) {
+  .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
+    height: {{ section.settings.height_mobile }}px;
   }
+}
 
-  @media (max-width: 768px) {
-    .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
-      height: {{ section.settings.height_mobile }}px;
-    }
-  }
+/* Background image */
+.section-id-{{ section.id }} .custom-section__background {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
 
-  {% if height_type == "image" and aspect_ratio and has_bg_image %}
-    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] {
-      height: auto;
-      position: relative;
-    }
-    .section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
-      content: "";
-      display: block;
-      width: 100%;
-      padding-top: calc(100% / {{ aspect_ratio }});
-    }
-    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] > .custom-section__background,
-    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__overlay,
-    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__content {
-      position: absolute;
-      inset: 0;
-    }
-    .section-id-{{ section.id }} .custom-section__inner[data-height="image"] .custom-section__content {
-      display: flex;
-      flex-direction: column;
-      justify-content: {{ justify_content }};
-      z-index: 1;
-      padding: {{ section.settings.padding_y }}px {{ section.settings.padding_x }}px;
-    }
+.section-id-{{ section.id }} .custom-section__background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    {% if aspect_ratio_mobile %}
-      @media (max-width: 768px) {
-        .section-id-{{ section.id }} .custom-section__inner[data-height="image"]::before {
-          padding-top: calc(100% / {{ aspect_ratio_mobile }});
-        }
-      }
-    {% endif %}
-  {% endif %}
-
-  .section-id-{{ section.id }} .custom-section__background {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    border-radius: inherit;
-    overflow: hidden;
-  }
-
-  .section-id-{{ section.id }} .custom-section__background img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  {% if section.settings.overlay_enable %}
-    .section-id-{{ section.id }} .custom-section__overlay {
-      position: absolute;
-      inset: 0;
-      background-color: {{ section.settings.overlay_color }};
-      opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
-      z-index: -1;
-      pointer-events: none;
-      border-radius: inherit;
-    }
-  {% endif %}
+/* Overlay */
+{% if section.settings.overlay_enable %}
+.section-id-{{ section.id }} .custom-section__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: {{ section.settings.overlay_color }};
+  opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  z-index: -1;
+  pointer-events: none;
+}
+{% endif %}
 {% endstyle %}
 
 <div class="{{ main_classes }}">
