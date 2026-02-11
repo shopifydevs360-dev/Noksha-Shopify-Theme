@@ -44,7 +44,7 @@
                   "type": "content-card",
                   "name": "Advanced Content Card",
                   "settings": {
-                    "padding": 26,
+                    "padding": 0,
                     "background_type": "none",
                     "background_color": "#5b4444",
                     "background_gradient": "linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(0, 0, 0, 1) 100%)",
@@ -58,7 +58,7 @@
                     "shadow_y": 10,
                     "shadow_blur": 34,
                     "shadow_color": "#d33636",
-                    "shadow_opacity": 100,
+                    "shadow_opacity": 60,
                     "custom_class": ""
                   },
                   "blocks": {
