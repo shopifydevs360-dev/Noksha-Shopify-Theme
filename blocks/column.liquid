@@ -42,12 +42,12 @@
 }
 @media (min-width: 441px) {
   [class*="column-"] {
-    --column: var(--column);
+    --column: min(2, var(--column));
   }
 }
 @media (min-width: 769px) {
   [class*="column-"] {
-    --column: min(2, var(--column));
+    --column: var(--column);
   }
 }
 
