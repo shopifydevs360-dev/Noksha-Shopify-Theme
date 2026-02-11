@@ -36,7 +36,7 @@
               "type": "content-card",
               "name": "Content Card",
               "settings": {
-                "block_width": "50",
+                "block_width": "15",
                 "padding": 40
               },
               "blocks": {
