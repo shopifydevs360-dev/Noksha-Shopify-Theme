@@ -19,10 +19,10 @@
         "color_control": "section-light"
       }
     },
-    "custom_section_Cn9bVU": {
+    "custom_section_T36QG9": {
       "type": "custom-section",
       "blocks": {
-        "column_DyRWFN": {
+        "column_akCVzW": {
           "type": "column",
           "name": "Layout Columns",
           "settings": {
@@ -33,14 +33,14 @@
             "padding": 0
           },
           "blocks": {
-            "column_item_hLTrjG": {
+            "column_item_rYQA3i": {
               "type": "column-item",
               "name": "Column Item",
               "settings": {
-                "column_span": 5
+                "column_span": 3
               },
               "blocks": {
-                "image_rLPWtP": {
+                "image_UCPKLF": {
                   "type": "image",
                   "name": "Image",
                   "settings": {
@@ -53,40 +53,17 @@
                 }
               },
               "block_order": [
-                "image_rLPWtP"
+                "image_UCPKLF"
               ]
             },
-            "column_item_4AtmHN": {
-              "type": "column-item",
-              "name": "Column Item",
-              "settings": {
-                "column_span": 2
-              },
-              "blocks": {
-                "image_UEWWRE": {
-                  "type": "image",
-                  "name": "Image",
-                  "settings": {
-                    "image": "shopify://shop_images/T656-04294.jpg",
-                    "link": "",
-                    "alt_text": "",
-                    "alignment": "center"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "image_UEWWRE"
-              ]
-            },
-            "column_item_wtNYfT": {
+            "column_item_GAycTi": {
               "type": "column-item",
               "name": "Column Item",
               "settings": {
                 "column_span": 1
               },
               "blocks": {
-                "image_RQ4LK8": {
+                "image_aKBRGM": {
                   "type": "image",
                   "name": "Image",
                   "settings": {
@@ -99,31 +76,52 @@
                 }
               },
               "block_order": [
-                "image_RQ4LK8"
+                "image_aKBRGM"
+              ]
+            },
+            "column_item_gGF4ra": {
+              "type": "column-item",
+              "name": "Column Item",
+              "settings": {
+                "column_span": 1
+              },
+              "blocks": {
+                "image_7CARp7": {
+                  "type": "image",
+                  "name": "Image",
+                  "settings": {
+                    "image": "shopify://shop_images/T656-04294.jpg",
+                    "link": "",
+                    "alt_text": "",
+                    "alignment": "center"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_7CARp7"
               ]
             }
           },
           "block_order": [
-            "column_item_hLTrjG",
-            "column_item_4AtmHN",
-            "column_item_wtNYfT"
+            "column_item_rYQA3i",
+            "column_item_GAycTi",
+            "column_item_gGF4ra"
           ]
         }
       },
       "block_order": [
-        "column_DyRWFN"
+        "column_akCVzW"
       ],
       "name": "Custom Section",
       "settings": {
-        "container_width": "full-width",
+        "container_width": "container",
         "enable_sidebar_space": true,
         "height_type": "content",
-        "height_desktop": 600,
+        "height_desktop": 800,
         "height_tablet": 600,
         "height_mobile": 500,
         "background_type": "none",
-        "background_image": "shopify://shop_images/404_background.jpg",
-        "background_image_mobile": "shopify://shop_images/T656-04296.jpg",
         "overlay_enable": false,
         "overlay_color": "#000000",
         "overlay_opacity": 40,
@@ -131,8 +129,8 @@
         "background_color": "#ffffff",
         "background_gradient": "linear-gradient(180deg, #ffffff, #000000)",
         "custom_section_color_scheme": "",
-        "padding_y": 20,
-        "padding_x": 0,
+        "padding_y": 60,
+        "padding_x": 30,
         "custom_class": "",
         "color_control": "section-light"
       }
@@ -140,6 +138,6 @@
   },
   "order": [
     "main",
-    "custom_section_Cn9bVU"
+    "custom_section_T36QG9"
   ]
 }
