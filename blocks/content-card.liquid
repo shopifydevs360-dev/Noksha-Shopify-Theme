@@ -57,10 +57,9 @@
   transition: all 0.3s ease;
 }
 {% endstyle %}
-
 {% schema %}
 {
-  "name": "Advanced Content Card",
+  "name": "Content Card",
   "class": "content-card-block",
   "blocks": [
     { "type": "text" },
@@ -73,6 +72,10 @@
   "settings": [
 
     {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
       "type": "range",
       "id": "padding",
       "label": "Padding",
@@ -84,17 +87,20 @@
     },
 
     {
+      "type": "header",
+      "content": "Background"
+    },
+    {
       "type": "select",
       "id": "background_type",
       "label": "Background type",
-      "default": "solid",
+      "default": "none",
       "options": [
         { "value": "none", "label": "None" },
         { "value": "solid", "label": "Solid color" },
         { "value": "gradient", "label": "Gradient" }
       ]
     },
-
     {
       "type": "color",
       "id": "background_color",
@@ -102,39 +108,22 @@
       "default": "#ffffff",
       "visible_if": "{{ block.settings.background_type == 'solid' }}"
     },
-
     {
-      "type": "color",
-      "id": "gradient_color_1",
-      "label": "Gradient start",
-      "default": "#ffffff",
-      "visible_if": "{{ block.settings.background_type == 'gradient' }}"
-    },
-    {
-      "type": "color",
-      "id": "gradient_color_2",
-      "label": "Gradient end",
-      "default": "#f5f5f5",
-      "visible_if": "{{ block.settings.background_type == 'gradient' }}"
-    },
-    {
-      "type": "select",
-      "id": "gradient_direction",
-      "label": "Gradient direction",
-      "default": "to right",
-      "options": [
-        { "value": "to right", "label": "Left → Right" },
-        { "value": "to left", "label": "Right → Left" },
-        { "value": "to bottom", "label": "Top → Bottom" },
-        { "value": "to top", "label": "Bottom → Top" }
-      ],
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient",
+      "default": "linear-gradient(180deg,#ffffff,#000000)",
       "visible_if": "{{ block.settings.background_type == 'gradient' }}"
     },
 
+    {
+      "type": "header",
+      "content": "Width Control"
+    },
     {
       "type": "checkbox",
       "id": "enable_max_width",
-      "label": "Limit max width",
+      "label": "Enable max width",
       "default": false
     },
     {
@@ -144,19 +133,22 @@
       "default": 800,
       "visible_if": "{{ block.settings.enable_max_width }}"
     },
-
     {
       "type": "select",
       "id": "max_width_unit",
-      "label": "Max width unit",
+      "label": "Width unit",
       "default": "px",
       "options": [
-        { "value": "px", "label": "Pixels (px)" },
-        { "value": "%", "label": "Percentage (%)" }
+        { "value": "px", "label": "px" },
+        { "value": "%", "label": "%" }
       ],
       "visible_if": "{{ block.settings.enable_max_width }}"
     },
 
+    {
+      "type": "header",
+      "content": "Border"
+    },
     {
       "type": "range",
       "id": "border_radius",
@@ -167,7 +159,6 @@
       "step": 1,
       "unit": "px"
     },
-
     {
       "type": "range",
       "id": "border_width",
@@ -186,6 +177,10 @@
       "visible_if": "{{ block.settings.border_width > 0 }}"
     },
 
+    {
+      "type": "header",
+      "content": "Shadow"
+    },
     {
       "type": "checkbox",
       "id": "enable_shadow",
@@ -213,14 +208,25 @@
       "step": 2,
       "unit": "px",
       "visible_if": "{{ block.settings.enable_shadow }}"
+    },
+
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class"
     }
 
   ],
   "presets": [
     {
-      "name": "Advanced Content Card",
+      "name": "Content Card",
       "category": "Layout"
     }
   ]
 }
 {% endschema %}
+
