@@ -25,7 +25,6 @@
         "column_wHEgxr": {
           "type": "column",
           "name": "Column Layout",
-          "disabled": true,
           "settings": {
             "align_items": "flex-start",
             "justify_content": "flex-end",
@@ -37,7 +36,7 @@
               "type": "content-card",
               "name": "Content Card",
               "settings": {
-                "block_width": "15",
+                "block_width": "50",
                 "padding": 40
               },
               "blocks": {
@@ -86,73 +85,10 @@
             "content_card_p9NaBM",
             "content_card_f83DFV"
           ]
-        },
-        "row_7RWpN3": {
-          "type": "row",
-          "name": "Row Layout",
-          "settings": {
-            "align_items": "flex-start",
-            "justify_content": "center",
-            "gap": 0,
-            "padding": 0
-          },
-          "blocks": {
-            "content_card_YET8bw": {
-              "type": "content-card",
-              "name": "Content Card",
-              "settings": {
-                "block_width": "50",
-                "padding": 0
-              },
-              "blocks": {
-                "text_qW3VFc": {
-                  "type": "text",
-                  "name": "t:general.text",
-                  "settings": {
-                    "text": "Text",
-                    "text_style": "p",
-                    "alignment": "left"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_qW3VFc"
-              ]
-            },
-            "content_card_MrbKLT": {
-              "type": "content-card",
-              "name": "Content Card",
-              "settings": {
-                "block_width": "50",
-                "padding": 0
-              },
-              "blocks": {
-                "text_bmAYbR": {
-                  "type": "text",
-                  "name": "t:general.text",
-                  "settings": {
-                    "text": "Text",
-                    "text_style": "p",
-                    "alignment": "left"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_bmAYbR"
-              ]
-            }
-          },
-          "block_order": [
-            "content_card_YET8bw",
-            "content_card_MrbKLT"
-          ]
         }
       },
       "block_order": [
-        "column_wHEgxr",
-        "row_7RWpN3"
+        "column_wHEgxr"
       ],
       "name": "Custom Section",
       "settings": {
