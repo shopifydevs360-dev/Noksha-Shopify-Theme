@@ -4,7 +4,7 @@
   {% content_for 'block', type: 'column', id: 'column' %}
 {% enddoc %}
 
-<div class="layout-column cols-{{ block.settings.columns }} {% if block.settings.show_two_mobile %}cols-mobile-2{% endif %}"
+<div class="layout-column column-{{ block.settings.columns }} {% if block.settings.show_two_mobile %}column-mobile-2{% endif %}"
   style="
     padding: {{ block.settings.padding }}px;
     --grid-gap: {{ block.settings.grid_gap }}px"{{ block.shopify_attributes }}>
@@ -12,6 +12,46 @@
 </div>
 
 {% style %}
+/* ------------------------------
+   Grid Item
+------------------------------- */
+[class*="column-"] {
+  display: grid;
+  grid-template-columns: repeat(var(--column, 1), 1fr);
+  gap: var(--column-gap, 2rem);
+}
+
+.no-gap {
+  gap: 0;
+}
+.column-mobile-2 { --column-mobile: 2; }
+.column-2 { --column: 2; }
+.column-3 { --column: 3; }
+.column-4 { --column: 4; }
+.column-5 { --column: 5; }
+.column-6 { --column: 6; }
+.column-7 { --column: 7; }
+.column-8 { --column: 8; }
+.column-9 { --column: 9; }
+
+[class*="column-"] {
+  --column: 1;
+}
+[class*="column-mobile-"] {
+  --column: min(2, var(--column-mobile));
+}
+@media (min-width: 441px) {
+  [class*="column-"] {
+    --column: min(2, var(--column));
+  }
+}
+@media (min-width: 769px) {
+  [class*="column-"] {
+    --column: min(2, var(--column));
+  }
+}
+
+
 
 
 {% endstyle %}
