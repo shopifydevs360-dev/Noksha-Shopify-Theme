@@ -75,7 +75,6 @@
       "id": "alt_text",
       "label": "Alt text"
     },
-
     {
       "type": "header",
       "content": "Aspect Ratio"
@@ -94,7 +93,6 @@
         { "value": "cropped-image--wide", "label": "Wide (16:9)" }
       ]
     },
-
     {
       "type": "header",
       "content": "Hover Effect"
@@ -115,7 +113,6 @@
         { "value": "is-hover-overlay", "label": "Overlay" }
       ]
     },
-
     {
       "type": "header",
       "content": "Width Control"
@@ -130,10 +127,10 @@
       "type": "range",
       "id": "custom_width",
       "label": "Width (%)",
-      "default": 100,
       "min": 10,
       "max": 100,
       "step": 5,
+      "default": 100,
       "unit": "%",
       "visible_if": "{{ block.settings.enable_custom_width }}"
     },
