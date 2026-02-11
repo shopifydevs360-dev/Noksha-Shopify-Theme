@@ -220,7 +220,24 @@
       "unit": "px",
       "visible_if": "{{ block.settings.enable_shadow }}"
     },
-
+    {
+      "type": "color",
+      "id": "shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.enable_shadow }}"
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "label": "Shadow opacity",
+      "default": 15,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "visible_if": "{{ block.settings.enable_shadow }}"
+    },
     {
       "type": "header",
       "content": "Advanced"
