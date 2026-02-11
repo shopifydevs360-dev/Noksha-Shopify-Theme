@@ -3,12 +3,7 @@
   Controls proportional width using flex grow ratio.
 {% enddoc %}
 
-<div
-  style="--col-span: {{ block.settings.column_span }};"
-  {{ block.shopify_attributes }}
->
-  {% content_for 'blocks' %}
-</div>
+{% content_for 'blocks' %}
 
 {% schema %}
 {
@@ -22,7 +17,7 @@
     {
       "type": "range",
       "id": "column_span",
-      "label": "Column span (relative width)",
+      "label": "Column span",
       "min": 1,
       "max": 6,
       "step": 1,
