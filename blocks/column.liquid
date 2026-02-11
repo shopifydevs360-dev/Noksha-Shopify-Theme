@@ -20,22 +20,31 @@
 /* ------------------------------
    Grid Item
 ------------------------------- */
+/* ------------------------------
+   Base Flex Layout
+------------------------------- */
 [class*="column-"] {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   --column: 1;
-  grid-template-columns: repeat(var(--column), 1fr);
-  gap: var(--column-gap, 2rem);
+
+  gap: var(--column-gap, 20px);
 
   align-items: var(--align-items, stretch);
-  justify-content: var(--justify-content, start);
+  justify-content: var(--justify-content, flex-start);
 }
 
-
-.no-gap {
-  gap: 0;
+/* Children width calculation */
+[class*="column-"] > * {
+  flex: 0 0 calc(
+    (100% - (var(--column) - 1) * var(--column-gap, 20px))
+    / var(--column)
+  );
 }
 
-/* Define desktop column values */
+/* ------------------------------
+   Desktop column values
+------------------------------- */
 .column-2 { --column-desktop: 2; }
 .column-3 { --column-desktop: 3; }
 .column-4 { --column-desktop: 4; }
@@ -45,14 +54,18 @@
 .column-8 { --column-desktop: 8; }
 .column-9 { --column-desktop: 9; }
 
-/* Mobile override */
+/* ------------------------------
+   Mobile override
+------------------------------- */
 .column-mobile-2 { --column-mobile: 2; }
 
 [class*="column-mobile-"] {
   --column: var(--column-mobile);
 }
 
-/* Responsive scaling */
+/* ------------------------------
+   Responsive scaling
+------------------------------- */
 @media (min-width: 441px) {
   [class*="column-"] {
     --column: min(2, var(--column-desktop));
@@ -64,6 +77,7 @@
     --column: var(--column-desktop);
   }
 }
+
 
 {% endstyle %}
 
