@@ -29,13 +29,14 @@
 
   assign shadow_style = ''
 
-
   if block.settings.enable_shadow
 
     assign rgb = block.settings.shadow_color | color_to_rgb
     assign shadow_opacity = block.settings.shadow_opacity | divided_by: 100.0
 
-    assign shadow_style = 'box-shadow:0 ' | append: block.settings.shadow_y | append: 'px ' | append: block.settings.shadow_blur | append: 'px ' | append: rgb | append: ';'
+    assign rgb_clean = rgb | remove: 'rgb(' | remove: ')'
+
+    assign shadow_style = 'box-shadow:0 ' | append: block.settings.shadow_y | append: 'px ' | append: block.settings.shadow_blur | append: 'px rgba(' | append: rgb_clean | append: ',' | append: shadow_opacity | append: ');'
 
   endif
 %}
@@ -47,6 +48,7 @@
     {{ background_style }}
     {{ max_width_style }}
     border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
     {{ border_style }}
     {{ shadow_style }}
   "
