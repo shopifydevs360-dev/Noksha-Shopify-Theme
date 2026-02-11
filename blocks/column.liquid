@@ -32,16 +32,14 @@
   justify-content: var(--justify-content, flex-start);
 }
 
-/* IMPORTANT: Target Shopify wrapper */
+/* Now this works because variable is on this element */
 .layout-columns > .shopify-block {
   flex: var(--col-span, 1) 1 0;
   min-width: 0;
   box-sizing: border-box;
 }
 
-/* ================================
-   Mobile Behavior
-================================ */
+/* Mobile */
 @media (max-width: 767px) {
 
   .mobile-cols-1 > .shopify-block {
@@ -53,6 +51,7 @@
   }
 
 }
+
 
 {% endstyle %}
 
