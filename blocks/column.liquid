@@ -1,58 +1,60 @@
 {% doc %}
-  Renders a vertical stack of blocks (column layout).
-  @example
-  {% content_for 'block', type: 'column', id: 'column' %}
+  Renders a responsive column grid layout.
 {% enddoc %}
 
-<div class="layout-column column-{{ block.settings.columns }} {% if block.settings.show_two_mobile %}column-mobile-2{% endif %}"
+<div 
+  class="layout-column column-{{ block.settings.columns }} {% if block.settings.show_two_mobile %}column-mobile-2{% endif %}"
   style="
     padding: {{ block.settings.padding }}px;
-    --grid-gap: {{ block.settings.column_gap }}px"{{ block.shopify_attributes }}>
+    --column-gap: {{ block.settings.column_gap }}px;
+    --align-items: {{ block.settings.align_items }};
+    --justify-content: {{ block.settings.justify_content }};
+  "
+  {{ block.shopify_attributes }}
+>
   {% content_for 'blocks' %}
 </div>
 
 {% style %}
+
 /* ------------------------------
-   Grid Item
+   Base Grid
 ------------------------------- */
-[class*="column-"] {
+.layout-column {
   display: grid;
   grid-template-columns: repeat(var(--column, 1), 1fr);
-  gap: var(--column-gap, 2rem);
+  gap: var(--column-gap, 20px);
+  align-items: var(--align-items, stretch);
+  justify-content: var(--justify-content, flex-start);
 }
 
-.no-gap {
-  gap: 0;
-}
-.column-mobile-2 { --column-mobile: 2; }
+/* ------------------------------
+   Column Numbers
+------------------------------- */
 .column-2 { --column: 2; }
 .column-3 { --column: 3; }
 .column-4 { --column: 4; }
 .column-5 { --column: 5; }
 .column-6 { --column: 6; }
-.column-7 { --column: 7; }
-.column-8 { --column: 8; }
-.column-9 { --column: 9; }
 
-[class*="column-"] {
-  --column: 1;
+/* Default */
+.layout-column { --column: 1; }
+
+/* ------------------------------
+   Mobile Override
+------------------------------- */
+.column-mobile-2 {
+  --column: 2;
 }
-[class*="column-mobile-"] {
-  --column: min(2, var(--column-mobile));
-}
-@media (min-width: 441px) {
-  [class*="column-"] {
-    --column: min(2, var(--column));
+
+/* ------------------------------
+   Responsive Breakpoints
+------------------------------- */
+@media (min-width: 768px) {
+  .layout-column {
+    grid-template-columns: repeat(var(--column), 1fr);
   }
 }
-@media (min-width: 769px) {
-  [class*="column-"] {
-    --column: min(2, var(--column));
-  }
-}
-
-
-
 
 {% endstyle %}
 
@@ -77,14 +79,13 @@
     {
       "type": "checkbox",
       "id": "show_two_mobile",
-      "label": "Show 2 col mobile",
-      "info": "You can show 2 column in a mobile",
+      "label": "Show 2 columns on mobile",
       "default": false
     },
     {
       "type": "range",
       "id": "column_gap",
-      "label": "t:labels.column_gap",
+      "label": "Column Gap",
       "min": 0,
       "max": 50,
       "step": 5,
@@ -95,7 +96,7 @@
       "type": "select",
       "id": "align_items",
       "label": "Align items",
-      "default": "flex-start",
+      "default": "stretch",
       "options": [
         { "value": "flex-start", "label": "Start" },
         { "value": "center", "label": "Center" },
@@ -114,16 +115,6 @@
         { "value": "flex-end", "label": "End" },
         { "value": "space-between", "label": "Space between" }
       ]
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "Gap between items",
-      "default": 20,
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px"
     },
     {
       "type": "range",
