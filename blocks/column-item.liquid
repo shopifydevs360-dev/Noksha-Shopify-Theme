@@ -3,7 +3,14 @@
   Controls proportional width using flex grow ratio.
 {% enddoc %}
 
-{% content_for 'blocks' %}
+<div 
+  data-span="{{ block.settings.column_span }}"
+  data-block-id="{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
 
 {% schema %}
 {
