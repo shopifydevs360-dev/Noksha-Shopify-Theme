@@ -29,32 +29,6 @@
 </div>
 
 {% style %}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-  document.querySelectorAll('.layout-columns').forEach(function(container) {
-
-    container.querySelectorAll(':scope > .shopify-block').forEach(function(wrapper) {
-
-      // Find inner element that contains span variable
-      const inner = wrapper.querySelector('[style*="--col-span"]');
-
-      if (!inner) return;
-
-      const span = inner.style.getPropertyValue('--col-span');
-
-      if (!span) return;
-
-      // Apply proportional flex to Shopify wrapper
-      wrapper.style.flex = span + ' 1 0';
-      wrapper.style.minWidth = '0';
-
-    });
-
-  });
-
-});
-</script>
 
 /* ================================
    Base Layout
@@ -89,6 +63,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 {% endstyle %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.querySelectorAll('.layout-columns').forEach(function(container) {
+
+    container.querySelectorAll(':scope > .shopify-block').forEach(function(wrapper) {
+
+      // Find inner element that contains span variable
+      const inner = wrapper.querySelector('[style*="--col-span"]');
+
+      if (!inner) return;
+
+      const span = inner.style.getPropertyValue('--col-span');
+
+      if (!span) return;
+
+      // Apply proportional flex to Shopify wrapper
+      wrapper.style.flex = span + ' 1 0';
+      wrapper.style.minWidth = '0';
+
+    });
+
+  });
+
+});
+</script>
 
 {% schema %}
 {
