@@ -1,98 +1,36 @@
 {% doc %}
-  Renders a configurable image block with optional link and alt text override.
+  Renders an image block using the shared image snippet
+  for optimal performance and responsive behavior.
 
   @example
   {% content_for 'block', type: 'image', id: 'image' %}
 {% enddoc %}
 
-{% liquid
-  assign image = block.settings.image
-  assign link = block.settings.link
-  assign alt_override = block.settings.alt_text
-  assign width = block.settings.max_width
-  assign rounding = block.settings.border_radius
-  assign object_fit = block.settings.object_fit
-
-  if image
-    assign effective_alt = alt_override | default: image.alt | default: shop.name
-    assign base_class = 'image-block__image '
-    assign fit_class = base_class | append: 'image-block__image--' | append: object_fit
-  endif
-%}
-
 <div
-  class="image-block image-block--alignment-{{ block.settings.alignment }}"
-  style="--image-block-max-width: {{ width }}px; --image-block-radius: {{ rounding }}px;"
+  class="block-image"
+  style="--image-align: {{ block.settings.alignment }}"
   {{ block.shopify_attributes }}
 >
-  {% if image %}
-    {% if link %}
-      <a href="{{ link }}" class="image-block__link">
-        {{ image | image_url: width: width | image_tag: alt: effective_alt, class: fit_class }}
-      </a>
-    {% else %}
-      {{ image | image_url: width: width | image_tag: alt: effective_alt, class: fit_class }}
-    {% endif %}
-  {% else %}
-    <div class="image-block__placeholder">
-      {{ 'image' | placeholder_svg_tag: 'image-block__placeholder-svg' }}
-    </div>
-  {% endif %}
+  {% render 'image',
+    class: 'block-image__media',
+    image: block.settings.image,
+    mobile_image: block.settings.image_mobile,
+    url: block.settings.link,
+    width: block.settings.image.width,
+    height: block.settings.image.height,
+    img_alt: block.settings.alt_text
+  %}
 </div>
 
 {% stylesheet %}
-  .image-block {
-    max-width: var(--image-block-max-width);
-    border-radius: var(--image-block-radius);
-    overflow: hidden;
-  }
+.block-image {
+  display: flex;
+  justify-content: var(--image-align);
+}
 
-  .image-block--alignment-left {
-    margin-inline-start: 0;
-    margin-inline-end: auto;
-  }
-
-  .image-block--alignment-center {
-    margin-inline-start: auto;
-    margin-inline-end: auto;
-  }
-
-  .image-block--alignment-right {
-    margin-inline-start: auto;
-    margin-inline-end: 0;
-  }
-
-  .image-block__link {
-    display: block;
-  }
-
-  .image-block__image {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .image-block__image--cover {
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .image-block__image--contain {
-    object-fit: contain;
-  }
-
-  .image-block__placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 160px;
-    background: #f3f4f6;
-  }
-
-  .image-block__placeholder-svg {
-    width: 48px;
-    height: 48px;
-  }
+.block-image__media {
+  max-width: 100%;
+}
 {% endstylesheet %}
 
 {% schema %}
@@ -102,65 +40,37 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "t:blocks.image.settings.image.label"
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image"
     },
     {
       "type": "url",
       "id": "link",
-      "label": "t:blocks.image.settings.link.label"
+      "label": "Link"
     },
     {
       "type": "text",
       "id": "alt_text",
-      "label": "t:blocks.image.settings.alt_text.label",
-      "info": "t:blocks.image.settings.alt_text.info"
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "t:blocks.image.settings.max_width.label",
-      "min": 80,
-      "max": 1200,
-      "step": 20,
-      "default": 600,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "border_radius",
-      "label": "t:blocks.image.settings.border_radius.label",
-      "min": 0,
-      "max": 64,
-      "step": 2,
-      "default": 12,
-      "unit": "px"
+      "label": "Alt text"
     },
     {
       "type": "select",
       "id": "alignment",
-      "label": "t:blocks.image.settings.alignment.label",
+      "label": "Alignment",
+      "default": "center",
       "options": [
-        { "value": "left", "label": "t:blocks.image.settings.alignment.options.left" },
-        { "value": "center", "label": "t:blocks.image.settings.alignment.options.center" },
-        { "value": "right", "label": "t:blocks.image.settings.alignment.options.right" }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "object_fit",
-      "label": "t:blocks.image.settings.object_fit.label",
-      "options": [
-        { "value": "contain", "label": "t:blocks.image.settings.object_fit.options.contain" },
-        { "value": "cover", "label": "t:blocks.image.settings.object_fit.options.cover" }
-      ],
-      "default": "contain"
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ]
     }
   ],
   "presets": [
-    {
-      "name": "t:blocks.image.presets.default.name"
-    }
+    { "name": "Image" }
   ]
 }
 {% endschema %}
