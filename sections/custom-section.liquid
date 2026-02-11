@@ -40,9 +40,13 @@ endif
 {% style %}
   /* Section wrapper */
   .section-id-{{ section.id }} .custom-section__inner{
+   {% if section.settings.background_type ==  'color' %}
     {% unless has_bg_image %}
       background-color: {{ bg_color }};
     {% endunless %}
+    {% elsif section.settings.background_type ==  'gradient' %}
+      background-color: {{ bg_gradient_color }};
+   {% endif %}
   }
   .section-id-{{ section.id }} .custom-section__inner{
     justify-content: {{ justify_content }};
