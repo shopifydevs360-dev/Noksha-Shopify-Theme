@@ -1,75 +1,47 @@
 {% doc %}
   Advanced Image Block
+  Uses shared 'image' snippet
 {% enddoc %}
 
 {% liquid
   assign image = block.settings.image
-  assign ratio_class = block.settings.aspect_ratio
-  assign hover_class = block.settings.hover_effect_action
 
-  assign wrapper_classes = 'block-image'
+  assign image_wapper_classes = ''
 
-  if hover_class != 'no-effect'
-    assign wrapper_classes = wrapper_classes | append: ' ' | append: hover_class
-  endif
-
-  assign image_wrapper_classes = ''
-
-  unless ratio_class == 'adapt-to-image'
-    assign image_wrapper_classes = 'cropped-image-wrapper ' | append: ratio_class
+  unless block.settings.aspect_ratio == 'adapt-to-image'
+    assign image_wapper_classes = 'cropped-image-wrapper ' | append: block.settings.aspect_ratio
   endunless
 
-  assign width_style = ''
+  assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
+
+  assign custom_width_style = ''
   if block.settings.enable_custom_width and block.settings.custom_width != blank
-    assign width_style = 'max-width:' | append: block.settings.custom_width | append: '%;'
+    assign custom_width_style = 'max-width:' | append: block.settings.custom_width | append: '%;margin-left:auto;margin-right:auto;'
   endif
 %}
 
 {% if image != blank %}
 
   <div
-    class="{{ wrapper_classes }}"
+    class="block-image"
     style="
-      {{ width_style }}
+      {{ custom_width_style }}
       text-align: {{ block.settings.alignment }};
     "
     {{ block.shopify_attributes }}
   >
 
-    {% if ratio_class == 'adapt-to-image' %}
-
-      {% render 'image',
-        class: 'block-image__media',
-        image: image,
-        mobile_image: block.settings.image_mobile,
-        url: block.settings.link,
-        width: image.width,
-        height: image.height,
-        img_alt: block.settings.alt_text
-      %}
-
-    {% else %}
-
-      <div class="{{ image_wrapper_classes }}">
-
-        {% render 'image',
-          class: 'block-image__media',
-          image: image,
-          mobile_image: block.settings.image_mobile,
-          url: block.settings.link,
-          width: image.width,
-          height: image.height,
-          img_alt: block.settings.alt_text
-        %}
-
-      </div>
-
-    {% endif %}
+    {% render 'image',
+      image: image,
+      mobile_image: block.settings.image_mobile,
+      url: block.settings.link,
+      class: image_wapper_classes,
+      img_alt: block.settings.alt_text
+    %}
 
   </div>
 
 {% endif %}
-
 
 {% stylesheet %}
 
