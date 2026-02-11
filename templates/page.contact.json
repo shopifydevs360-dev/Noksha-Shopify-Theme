@@ -59,6 +59,30 @@
                 "image_66PPLa"
               ]
             },
+            "content_card_KhYGXx": {
+              "type": "content-card",
+              "name": "Content Card",
+              "settings": {
+                "block_width": "50",
+                "padding": 0
+              },
+              "blocks": {
+                "image_adhfDe": {
+                  "type": "image",
+                  "name": "Image",
+                  "settings": {
+                    "image": "shopify://shop_images/T656-04278.jpg",
+                    "link": "",
+                    "alt_text": "",
+                    "alignment": "center"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_adhfDe"
+              ]
+            },
             "content_card_f83DFV": {
               "type": "content-card",
               "name": "Content Card",
@@ -86,6 +110,7 @@
           },
           "block_order": [
             "content_card_p9NaBM",
+            "content_card_KhYGXx",
             "content_card_f83DFV"
           ]
         }
