@@ -40,8 +40,7 @@
       "settings": {
         "container_width": "full-width",
         "enable_sidebar_space": true,
-        "height_type_image": "custom",
-        "height_type_non_image": "content",
+        "height_type": "image",
         "height_desktop": 580,
         "height_tablet": 360,
         "height_mobile": 580,
@@ -83,8 +82,7 @@
       "settings": {
         "container_width": "full-width",
         "enable_sidebar_space": true,
-        "height_type_image": "image",
-        "height_type_non_image": "content",
+        "height_type": "content",
         "height_desktop": 800,
         "height_tablet": 600,
         "height_mobile": 500,
