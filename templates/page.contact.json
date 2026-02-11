@@ -93,7 +93,7 @@
           "settings": {
             "align_items": "flex-start",
             "justify_content": "center",
-            "gap": 20,
+            "gap": 0,
             "padding": 0
           },
           "blocks": {
@@ -124,7 +124,7 @@
               "type": "content-card",
               "name": "Content Card",
               "settings": {
-                "block_width": "25",
+                "block_width": "50",
                 "padding": 0
               },
               "blocks": {
