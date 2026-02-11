@@ -4,13 +4,12 @@
   {% content_for 'row', type: 'content-card', id: 'content-card' %}
 {% enddoc %}
 
-<div class="content-area block-id-{{ block.id }}" style="padding: {{ block.settings.padding }}px; max-width: {{ block.settings.block_width }}%" {{ block.shopify_attributes }}>
+<div class="content-area" style="padding: {{ block.settings.padding }}px; max-width: {{ block.settings.block_width }}%;" {{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
 {% style %}
-  .content-area .block-id-{{ block.id }}{
-    ;
+  .content-area{
     width: 100%;
   }
 {% endstyle %}
