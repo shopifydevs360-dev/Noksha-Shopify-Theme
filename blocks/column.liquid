@@ -1,14 +1,14 @@
 {% doc %}
   Renders a vertical stack of blocks.
   Mobile can be 1 or 2 columns.
-  Desktop always shows 1 column.
+  Desktop always stacks items.
 {% enddoc %}
 
 <div 
-  class="layout-column mobile-cols-{{ block.settings.mobile_columns }}"
+  class="layout-stack mobile-cols-{{ block.settings.mobile_columns }}"
   style="
     padding: {{ block.settings.padding }}px;
-    --column-gap: {{ block.settings.column_gap }}px;
+    --gap: {{ block.settings.column_gap }}px;
     --align-items: {{ block.settings.align_items }};
     --justify-content: {{ block.settings.justify_content }};
   "
@@ -20,28 +20,33 @@
 {% style %}
 
 /* ----------------------------------
-   Base Layout (Desktop Default = 1 Column)
+   Base Layout (Desktop = Vertical Stack)
 ----------------------------------- */
-.layout-column {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--column-gap, 20px);
+.layout-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap, 20px);
 
   align-items: var(--align-items, stretch);
-  justify-content: var(--justify-content, start);
+  justify-content: var(--justify-content, flex-start);
 }
 
 /* ----------------------------------
-   Mobile Column Control
+   Mobile Columns
 ----------------------------------- */
 @media (max-width: 767px) {
 
   .mobile-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .mobile-cols-2 > * {
+    flex: 0 0 calc(50% - var(--gap, 20px) / 2);
   }
 
   .mobile-cols-1 {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
 }
@@ -76,24 +81,25 @@
     {
       "type": "select",
       "id": "align_items",
-      "label": "Vertical alignment",
+      "label": "Horizontal alignment",
       "default": "stretch",
       "options": [
-        { "value": "start", "label": "Top" },
-        { "value": "center", "label": "Middle" },
-        { "value": "end", "label": "Bottom" },
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" },
         { "value": "stretch", "label": "Stretch" }
       ]
     },
     {
       "type": "select",
       "id": "justify_content",
-      "label": "Horizontal alignment",
-      "default": "start",
+      "label": "Vertical alignment",
+      "default": "flex-start",
       "options": [
-        { "value": "start", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "end", "label": "Right" }
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" },
+        { "value": "space-between", "label": "Space Between" }
       ]
     },
     {
