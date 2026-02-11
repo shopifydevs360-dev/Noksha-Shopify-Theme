@@ -1,10 +1,9 @@
 {% doc %}
   Renders flexible columns in a row.
+  Mobile supports 1 or 2 columns.
 
-  Mobile supports 1 or 2 columns via a setting.
-
-  Use with "Column Item" blocks inside to control how much
-  space each column takes relative to the others using a span value.
+  Use with `column-item` blocks inside to control how much space each
+  column takes relative to the others using a span value.
 {% enddoc %}
 
 <div 
@@ -21,37 +20,25 @@
 </div>
 
 {% style %}
-
-/* ================================
-   Base layout (row columns)
-================================ */
 .layout-columns {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   gap: var(--gap, 20px);
-
   align-items: var(--align-items, stretch);
   justify-content: var(--justify-content, flex-start);
 }
 
-/* Default: equal width columns */
 .layout-columns > * {
-  flex: 1 1 0;
+  flex: 1 1 auto;
   min-width: 0;
 }
 
-/* Column item span control */
 .layout-columns__item {
   flex: var(--col-span, 1) 1 0;
   min-width: 0;
 }
 
-/* ================================
-   Mobile controls
-================================ */
 @media (max-width: 767px) {
-
   .mobile-cols-1 > * {
     flex: 0 0 100%;
   }
@@ -59,17 +46,15 @@
   .mobile-cols-2 > * {
     flex: 0 0 calc(50% - var(--gap, 20px) / 2);
   }
-
 }
-
 {% endstyle %}
 
 {% schema %}
 {
-  "name": "Layout Columns",
+  "name": "Columns (Flexible)",
   "blocks": [
     {
-      "type": "column-item"
+      "type": "column-item",
     }
   ],
   "settings": [
@@ -79,8 +64,14 @@
       "label": "Columns on mobile",
       "default": "1",
       "options": [
-        { "value": "1", "label": "1 Column" },
-        { "value": "2", "label": "2 Columns" }
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
       ]
     },
     {
@@ -99,10 +90,22 @@
       "label": "Vertical alignment",
       "default": "stretch",
       "options": [
-        { "value": "flex-start", "label": "Top" },
-        { "value": "center", "label": "Middle" },
-        { "value": "flex-end", "label": "Bottom" },
-        { "value": "stretch", "label": "Stretch equal height" }
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        },
+        {
+          "value": "stretch",
+          "label": "Stretch equal height"
+        }
       ]
     },
     {
@@ -111,12 +114,30 @@
       "label": "Horizontal alignment",
       "default": "flex-start",
       "options": [
-        { "value": "flex-start", "label": "Align Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Align Right" },
-        { "value": "space-between", "label": "Space Between" },
-        { "value": "space-around", "label": "Space Around" },
-        { "value": "space-evenly", "label": "Space Evenly" }
+        {
+          "value": "flex-start",
+          "label": "Align left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Align right"
+        },
+        {
+          "value": "space-between",
+          "label": "Space between"
+        },
+        {
+          "value": "space-around",
+          "label": "Space around"
+        },
+        {
+          "value": "space-evenly",
+          "label": "Space evenly"
+        }
       ]
     },
     {
@@ -132,7 +153,7 @@
   ],
   "presets": [
     {
-      "name": "Layout Columns",
+      "name": "Columns",
       "category": "Layout"
     }
   ]
