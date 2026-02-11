@@ -5,12 +5,11 @@
   column-item blocks in the same row.
 
   Example:
-  - Column 1 span: 2
-  - Column 2 span: 1
-  Total span: 3
+  Column 1 span: 2
+  Column 2 span: 1
   Result: column 1 is 2/3 width, column 2 is 1/3 width.
 
-  This block can contain nested blocks for dynamic content design.
+  This block can contain nested blocks.
 {% enddoc %}
 
 <div
@@ -33,7 +32,7 @@
     {
       "type": "range",
       "id": "column_span",
-      "label": "Column span",
+      "label": "Column span (relative width)",
       "min": 1,
       "max": 6,
       "step": 1,
