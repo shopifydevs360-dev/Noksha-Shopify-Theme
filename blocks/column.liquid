@@ -1,16 +1,15 @@
 {% doc %}
-  Renders a vertical stack of blocks (column layout).
-  @example
-  {% content_for 'block', type: 'column', id: 'column' %}
+  Renders a vertical column container for nested blocks.
 {% enddoc %}
 
 <div
   class="layout-column"
   style="
-    align-items: {{ block.settings.align_items }};
-    justify-content: {{ block.settings.justify_content }};
-    gap: {{ block.settings.gap }}px;
-    padding: {{ block.settings.padding }}px;
+    --column-align: {{ block.settings.align_items }};
+    --column-justify: {{ block.settings.justify_content }};
+    --column-gap: {{ block.settings.gap }}px;
+    --column-padding: {{ block.settings.padding }}px;
+    --column-width: {{ block.settings.width }};
   "
   {{ block.shopify_attributes }}
 >
@@ -18,22 +17,41 @@
 </div>
 
 {% stylesheet %}
-  .layout-column {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
+.layout-column {
+  display: flex;
+  flex-direction: column;
+  width: var(--column-width);
+  align-items: var(--column-align);
+  justify-content: var(--column-justify);
+  gap: var(--column-gap);
+  padding: var(--column-padding);
+  box-sizing: border-box;
+  min-width: 0;
+}
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Column Layout",
+  "name": "Column",
   "blocks": [{ "type": "@theme" }],
   "settings": [
     {
       "type": "select",
+      "id": "width",
+      "label": "Column width",
+      "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "100%", "label": "100%" },
+        { "value": "50%", "label": "50%" },
+        { "value": "33.333%", "label": "33%" },
+        { "value": "25%", "label": "25%" }
+      ]
+    },
+    {
+      "type": "select",
       "id": "align_items",
-      "label": "Align items",
+      "label": "Horizontal alignment",
       "default": "flex-start",
       "options": [
         { "value": "flex-start", "label": "Start" },
@@ -45,7 +63,7 @@
     {
       "type": "select",
       "id": "justify_content",
-      "label": "Justify content",
+      "label": "Vertical alignment",
       "default": "flex-start",
       "options": [
         { "value": "flex-start", "label": "Start" },
@@ -57,27 +75,27 @@
     {
       "type": "range",
       "id": "gap",
-      "label": "Gap between items",
-      "default": 20,
+      "label": "Item gap",
       "min": 0,
       "max": 100,
       "step": 2,
-      "unit": "px"
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "range",
       "id": "padding",
       "label": "Padding",
-      "default": 0,
       "min": 0,
       "max": 200,
       "step": 2,
-      "unit": "px"
+      "unit": "px",
+      "default": 0
     }
   ],
   "presets": [
     {
-      "name": "Column Layout",
+      "name": "Column",
       "category": "Layout"
     }
   ]
