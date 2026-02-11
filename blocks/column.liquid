@@ -1,11 +1,10 @@
 {% doc %}
-  Renders a vertical stack of blocks.
-  Mobile can be 1 or 2 columns.
-  Desktop always stacks items.
+  Renders flexible columns in a row.
+  Mobile supports 1 or 2 columns.
 {% enddoc %}
 
 <div 
-  class="layout-stack mobile-cols-{{ block.settings.mobile_columns }}"
+  class="layout-columns mobile-cols-{{ block.settings.mobile_columns }}"
   style="
     padding: {{ block.settings.padding }}px;
     --gap: {{ block.settings.column_gap }}px;
@@ -20,11 +19,12 @@
 {% style %}
 
 /* ----------------------------------
-   Base Layout (Desktop = Vertical Stack)
+   Base Layout (Row Columns)
 ----------------------------------- */
-.layout-stack {
+.layout-columns {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--gap, 20px);
 
   align-items: var(--align-items, stretch);
@@ -32,21 +32,25 @@
 }
 
 /* ----------------------------------
-   Mobile Columns
+   Desktop Behavior
+   (Auto columns based on content)
+----------------------------------- */
+.layout-columns > * {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ----------------------------------
+   Mobile Controls
 ----------------------------------- */
 @media (max-width: 767px) {
 
-  .mobile-cols-2 {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .mobile-cols-1 > * {
+    flex: 0 0 100%;
   }
 
   .mobile-cols-2 > * {
     flex: 0 0 calc(50% - var(--gap, 20px) / 2);
-  }
-
-  .mobile-cols-1 {
-    flex-direction: column;
   }
 
 }
@@ -55,7 +59,7 @@
 
 {% schema %}
 {
-  "name": "Vertical Stack",
+  "name": "Columns (Flexible)",
   "blocks": [{ "type": "content-card" }],
   "settings": [
     {
@@ -71,35 +75,37 @@
     {
       "type": "range",
       "id": "column_gap",
-      "label": "Space between items",
+      "label": "Space between columns",
       "min": 0,
       "max": 50,
       "step": 5,
       "unit": "px",
-      "default": 15
+      "default": 20
     },
     {
       "type": "select",
       "id": "align_items",
-      "label": "Horizontal alignment",
+      "label": "Vertical alignment",
       "default": "stretch",
       "options": [
-        { "value": "flex-start", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Right" },
-        { "value": "stretch", "label": "Stretch" }
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" },
+        { "value": "stretch", "label": "Stretch equal height" }
       ]
     },
     {
       "type": "select",
       "id": "justify_content",
-      "label": "Vertical alignment",
+      "label": "Horizontal alignment",
       "default": "flex-start",
       "options": [
-        { "value": "flex-start", "label": "Top" },
-        { "value": "center", "label": "Middle" },
-        { "value": "flex-end", "label": "Bottom" },
-        { "value": "space-between", "label": "Space Between" }
+        { "value": "flex-start", "label": "Align Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Align Right" },
+        { "value": "space-between", "label": "Space Between" },
+        { "value": "space-around", "label": "Space Around" },
+        { "value": "space-evenly", "label": "Space Evenly" }
       ]
     },
     {
@@ -115,7 +121,7 @@
   ],
   "presets": [
     {
-      "name": "Vertical Stack",
+      "name": "Columns",
       "category": "Layout"
     }
   ]
