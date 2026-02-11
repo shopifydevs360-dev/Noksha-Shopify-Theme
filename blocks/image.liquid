@@ -1,26 +1,25 @@
 {% doc %}
   Renders an image block using the shared image snippet
   for optimal performance and responsive behavior.
-
-  @example
-  {% content_for 'block', type: 'image', id: 'image' %}
 {% enddoc %}
 
-<div
-  class="block-image"
-  style="--image-align: {{ block.settings.alignment }}"
-  {{ block.shopify_attributes }}
->
-  {% render 'image',
-    class: 'block-image__media',
-    image: block.settings.image,
-    mobile_image: block.settings.image_mobile,
-    url: block.settings.link,
-    width: block.settings.image.width,
-    height: block.settings.image.height,
-    img_alt: block.settings.alt_text
-  %}
-</div>
+{% if block.settings.image != blank %}
+  <div
+    class="block-image"
+    style="--image-align: {{ block.settings.alignment }}"
+    {{ block.shopify_attributes }}
+  >
+    {% render 'image',
+      class: 'block-image__media',
+      image: block.settings.image,
+      mobile_image: block.settings.image_mobile,
+      url: block.settings.link,
+      width: block.settings.image.width,
+      height: block.settings.image.height,
+      img_alt: block.settings.alt_text
+    %}
+  </div>
+{% endif %}
 
 {% stylesheet %}
 .block-image {
