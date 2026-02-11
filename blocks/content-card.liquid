@@ -26,9 +26,20 @@
     assign border_style = 'border:' | append: block.settings.border_width | append: 'px solid ' | append: block.settings.border_color | append: ';'
   endif
 
+
   assign shadow_style = ''
+
   if block.settings.enable_shadow
-    assign shadow_style = 'box-shadow:0 ' | append: block.settings.shadow_y | append: 'px ' | append: block.settings.shadow_blur | append: 'px rgba(0,0,0,0.15);'
+
+    assign shadow_color = block.settings.shadow_color
+    assign shadow_opacity = block.settings.shadow_opacity | divided_by: 100.0
+
+    assign r = shadow_color | slice: 1, 2 | prepend: '0x' | plus: 0
+    assign g = shadow_color | slice: 3, 2 | prepend: '0x' | plus: 0
+    assign b = shadow_color | slice: 5, 2 | prepend: '0x' | plus: 0
+
+    assign shadow_style = 'box-shadow:0 ' | append: block.settings.shadow_y | append: 'px ' | append: block.settings.shadow_blur | append: 'px rgba(' | append: r | append: ',' | append: g | append: ',' | append: b | append: ',' | append: shadow_opacity | append: ');'
+
   endif
 %}
 
