@@ -101,12 +101,36 @@
               "block_order": [
                 "image_dQJkw9"
               ]
+            },
+            "column_item_CyaUNj": {
+              "type": "column-item",
+              "name": "Column item",
+              "settings": {
+                "column_span": 1
+              },
+              "blocks": {
+                "image_k3MUfD": {
+                  "type": "image",
+                  "name": "Image",
+                  "settings": {
+                    "image": "shopify://shop_images/T656-04294.jpg",
+                    "link": "",
+                    "alt_text": "",
+                    "alignment": "center"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_k3MUfD"
+              ]
             }
           },
           "block_order": [
             "column_item_Em8bPM",
             "column_item_XaabMX",
-            "column_item_kAqMax"
+            "column_item_kAqMax",
+            "column_item_CyaUNj"
           ]
         }
       },
