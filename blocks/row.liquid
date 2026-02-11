@@ -1,16 +1,15 @@
 {% doc %}
-  Renders a horizontal row of blocks.
-  @example
-  {% content_for 'block', type: 'row', id: 'row' %}
+  Renders a horizontal row container for column blocks.
 {% enddoc %}
 
 <div
   class="layout-row"
   style="
-    align-items: {{ block.settings.align_items }};
-    justify-content: {{ block.settings.justify_content }};
-    gap: {{ block.settings.gap }}px;
-    padding: {{ block.settings.padding }}px;
+    --row-align: {{ block.settings.align_items }};
+    --row-justify: {{ block.settings.justify_content }};
+    --row-gap: {{ block.settings.gap }}px;
+    --row-padding: {{ block.settings.padding }}px;
+    --row-wrap: {{ block.settings.wrap }};
   "
   {{ block.shopify_attributes }}
 >
@@ -18,24 +17,39 @@
 </div>
 
 {% stylesheet %}
-  .layout-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-  }
+.layout-row {
+  display: flex;
+  flex-direction: row;
+  align-items: var(--row-align);
+  justify-content: var(--row-justify);
+  gap: var(--row-gap);
+  padding: var(--row-padding);
+  flex-wrap: var(--row-wrap);
+  width: 100%;
+  box-sizing: border-box;
+}
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Row Layout",
+  "name": "Row",
   "blocks": [{ "type": "@theme" }],
   "settings": [
     {
       "type": "select",
+      "id": "wrap",
+      "label": "Wrap columns",
+      "default": "wrap",
+      "options": [
+        { "value": "nowrap", "label": "No wrap" },
+        { "value": "wrap", "label": "Wrap" }
+      ]
+    },
+    {
+      "type": "select",
       "id": "align_items",
-      "label": "Align items (cross-axis)",
-      "default": "center",
+      "label": "Vertical alignment",
+      "default": "stretch",
       "options": [
         { "value": "flex-start", "label": "Top" },
         { "value": "center", "label": "Center" },
@@ -46,40 +60,41 @@
     {
       "type": "select",
       "id": "justify_content",
-      "label": "Justify content (main-axis)",
-      "default": "space-between",
+      "label": "Horizontal distribution",
+      "default": "flex-start",
       "options": [
         { "value": "flex-start", "label": "Start" },
         { "value": "center", "label": "Center" },
         { "value": "flex-end", "label": "End" },
         { "value": "space-between", "label": "Space between" },
-        { "value": "space-around", "label": "Space around" }
+        { "value": "space-around", "label": "Space around" },
+        { "value": "space-evenly", "label": "Space evenly" }
       ]
     },
     {
       "type": "range",
       "id": "gap",
-      "label": "Gap between items",
-      "default": 20,
+      "label": "Column gap",
       "min": 0,
       "max": 100,
       "step": 2,
-      "unit": "px"
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "range",
       "id": "padding",
       "label": "Padding",
-      "default": 0,
       "min": 0,
       "max": 200,
       "step": 2,
-      "unit": "px"
+      "unit": "px",
+      "default": 0
     }
   ],
   "presets": [
     {
-      "name": "Row Layout",
+      "name": "Row",
       "category": "Layout"
     }
   ]
