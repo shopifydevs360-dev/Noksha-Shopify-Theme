@@ -12,7 +12,10 @@
     endif
   endif
   if section.settings.background_type ==  'color'
-    assign bg_color = section.settings.background_color
+   if section.settings.background_style == 'solid'
+     assign bg_color = section.settings.background_color
+   endif
+    
   endif
 
 
