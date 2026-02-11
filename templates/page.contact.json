@@ -149,8 +149,7 @@
               "name": "Content Card",
               "settings": {
                 "max_width": 600,
-                "padding": 0,
-                "text_align": "right"
+                "padding": 0
               },
               "blocks": {
                 "image_czN7Y4": {
@@ -163,10 +162,21 @@
                     "alignment": "center"
                   },
                   "blocks": {}
+                },
+                "text_qW3VFc": {
+                  "type": "text",
+                  "name": "t:general.text",
+                  "settings": {
+                    "text": "Text",
+                    "text_style": "p",
+                    "alignment": "left"
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
-                "image_czN7Y4"
+                "image_czN7Y4",
+                "text_qW3VFc"
               ]
             }
           },
