@@ -26,12 +26,11 @@
           "type": "column",
           "name": "Column Layout",
           "settings": {
-            "columns": "3",
+            "columns": "4",
             "show_two_mobile": false,
             "column_gap": 10,
             "align_items": "center",
             "justify_content": "space-between",
-            "gap": 20,
             "padding": 0
           },
           "blocks": {
