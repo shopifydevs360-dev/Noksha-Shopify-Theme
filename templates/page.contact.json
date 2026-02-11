@@ -26,7 +26,8 @@
           "type": "richtext",
           "name": "t:blocks.richtext.presets.default.name",
           "settings": {
-            "text": "<p>Hello</p>"
+            "text": "<p>Hello</p>",
+            "alignment": "left"
           },
           "blocks": {}
         },
@@ -53,7 +54,7 @@
         "height_desktop": 420,
         "height_tablet": 420,
         "height_mobile": 680,
-        "background_type": "image",
+        "background_type": "none",
         "background_image": "shopify://shop_images/404_background.jpg",
         "overlay_enable": false,
         "overlay_color": "#000000",
