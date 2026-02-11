@@ -60,7 +60,7 @@ endif
 }
 
 .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
-  height: {{ section.settings.height_desktop }}px;
+  min-height: {{ section.settings.height_desktop }}px;
 }
 
 /* Image aspect-ratio height */
@@ -99,13 +99,13 @@ endif
 /* Responsive custom heights */
 @media (max-width: 1024px) {
   .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
-    height: {{ section.settings.height_tablet }}px;
+    min-height: {{ section.settings.height_tablet }}px;
   }
 }
 
 @media (max-width: 768px) {
   .section-id-{{ section.id }} .custom-section__inner[data-height="custom"] {
-    height: {{ section.settings.height_mobile }}px;
+    min-height: {{ section.settings.height_mobile }}px;
   }
 }
 
