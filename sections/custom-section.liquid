@@ -11,9 +11,9 @@
       assign has_bg_image = true
     endif
   endif
-  if section.settings.background_type ==  'color'
+  if section.settings.background_style ==  'color'
     assign bg_color = section.settings.background_color
-  elsif section.settings.background_type ==  'gradient'
+  elsif section.settings.background_style ==  'gradient'
     assign bg_gradient_color = section.settings.background_color
   endif
 
@@ -40,12 +40,11 @@ endif
 {% style %}
   /* Section wrapper */
   .section-id-{{ section.id }} .custom-section__inner{
-   {% if section.settings.background_type ==  'color' %}
+   {% if section.settings.background_style ==  'color' %}
     {% unless has_bg_image %}
       background-color: {{ bg_color }};
     {% endunless %}
-    {% endif %}
-    {% if section.settings.background_type ==  'gradient' %}
+    {% elsif section.settings.background_style ==  'gradient' %}
       background-color: {{ bg_gradient_color }};
    {% endif %}
   }
