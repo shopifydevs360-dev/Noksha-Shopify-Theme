@@ -37,7 +37,7 @@
               "type": "column-item",
               "name": "Column Item",
               "settings": {
-                "column_span": 2
+                "column_span": 1
               },
               "blocks": {
                 "image_8Xix3K": {
