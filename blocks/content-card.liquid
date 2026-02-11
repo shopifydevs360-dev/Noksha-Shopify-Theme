@@ -1,46 +1,51 @@
 {% doc %}
-  Advanced Content Card Wrapper
+  Advanced Content Card
 {% enddoc %}
 
-{% assign bg_type = block.settings.background_type %}
+{% liquid
+  assign card_classes = 'content-card'
 
-<div 
-  class="content-card"
+  if block.settings.custom_class != blank
+    assign card_classes = card_classes | append: ' ' | append: block.settings.custom_class
+  endif
+
+  assign background_style = ''
+  if block.settings.background_type == 'solid'
+    assign background_style = 'background:' | append: block.settings.background_color | append: ';'
+  elsif block.settings.background_type == 'gradient'
+    assign background_style = 'background:' | append: block.settings.background_gradient | append: ';'
+  endif
+
+  assign max_width_style = ''
+  if block.settings.enable_max_width and block.settings.max_width_value != blank
+    assign max_width_style = 'max-width:' | append: block.settings.max_width_value | append: block.settings.max_width_unit | append: ';margin-left:auto;margin-right:auto;'
+  endif
+
+  assign border_style = ''
+  if block.settings.border_width > 0
+    assign border_style = 'border:' | append: block.settings.border_width | append: 'px solid ' | append: block.settings.border_color | append: ';'
+  endif
+
+  assign shadow_style = ''
+  if block.settings.enable_shadow
+    assign shadow_style = 'box-shadow:0 ' | append: block.settings.shadow_y | append: 'px ' | append: block.settings.shadow_blur | append: 'px rgba(0,0,0,0.15);'
+  endif
+%}
+
+<div
+  class="{{ card_classes }}"
   style="
     padding: {{ block.settings.padding }}px;
-
-    {% if bg_type == 'solid' %}
-      background: {{ block.settings.background_color }};
-    {% elsif bg_type == 'gradient' %}
-      background: linear-gradient(
-        {{ block.settings.gradient_direction }},
-        {{ block.settings.gradient_color_1 }},
-        {{ block.settings.gradient_color_2 }}
-      );
-    {% endif %}
-
-    {% if block.settings.enable_max_width and block.settings.max_width_value != blank %}
-      max-width: {{ block.settings.max_width_value }}{{ block.settings.max_width_unit }};
-      margin-left: auto;
-      margin-right: auto;
-    {% endif %}
-
-
+    {{ background_style }}
+    {{ max_width_style }}
     border-radius: {{ block.settings.border_radius }}px;
-
-    {% if block.settings.border_width > 0 %}
-      border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
-    {% endif %}
-
-    {% if block.settings.enable_shadow %}
-      box-shadow: 0 {{ block.settings.shadow_y }}px {{ block.settings.shadow_blur }}px rgba(0,0,0,0.15);
-    {% endif %}
+    {{ border_style }}
+    {{ shadow_style }}
   "
   {{ block.shopify_attributes }}
 >
   {% content_for 'blocks' %}
 </div>
-
 
 {% style %}
 .content-card-block {
@@ -51,8 +56,8 @@
   width: 100%;
   transition: all 0.3s ease;
 }
-
 {% endstyle %}
+
 {% schema %}
 {
   "name": "Advanced Content Card",
