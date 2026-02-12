@@ -60,7 +60,7 @@
       "settings": {
         "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "container_width": "extended",
+        "container_width": "container-fluid",
         "padding_top": 40,
         "padding_bottom": 52,
         "custom_class": "",
