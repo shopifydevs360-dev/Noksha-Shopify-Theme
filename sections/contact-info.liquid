@@ -17,46 +17,16 @@
             {%- case block.type -%}
              {%- when '@app' -%}
                 <div class="info-card" {{ block.shopify_attributes }}>
-                <h3>{{ block.settings.title }}</h3>
-                {% if block.settings.link != blank %}
-                    <p>
-                    <a href="{{ block.settings.link }}">
-                        {{ block.settings.text }}
-                    </a>
-                    </p>
-                {% else %}
-                    <p>{{ block.settings.text }}</p>
-                {% endif %}
+                    <h3 class="block-title">{{ block.settings.title }}</h3>
+                    <p class="block-content">{{ block.settings.text }}</p>
                 </div>
-              {%- when 'sub_heading' -%}
+              {%- when 'socials-link' -%}
                 <div class="info-card" {{ block.shopify_attributes }}>
                     {% render 'socials-link' %}
                 </div>
 
             {% endcase -%}
           {% endfor %}
-
-        <!-- SOCIAL ICONS -->
-        <div class="social-icons">
-          <ul class="social-icons-list">
-            {% if settings.social_facebook_link != blank %}
-              <li><a href="{{ settings.social_facebook_link }}" aria-label="Facebook">{%- render 'theme-icon', icon: 'facebook' -%}</a></li>
-            {% endif %}
-            {% if settings.social_instagram_link != blank %}
-              <li><a href="{{ settings.social_instagram_link }}" aria-label="Instagram">{%- render 'theme-icon', icon: 'instagram' -%}</a></li>
-            {% endif %}
-            {% if settings.social_tiktok_link != blank %}
-              <li><a href="{{ settings.social_tiktok_link }}" aria-label="TikTok">{%- render 'theme-icon', icon: 'tiktok' -%}</a></li>
-            {% endif %}
-            {% if settings.social_whatsapp_link != blank %}
-              <li><a href="{{ settings.social_whatsapp_link }}" aria-label="WhatsApp">{%- render 'theme-icon', icon: 'whatsapp' -%}</a></li>
-            {% endif %}
-            {% if settings.social_youtube_link != blank %}
-              <li><a href="{{ settings.social_youtube_link }}" aria-label="YouTube">{%- render 'theme-icon', icon: 'youtube' -%}</a></li>
-            {% endif %}
-          </ul>
-        </div>
-
       </div>
 
 
@@ -311,7 +281,7 @@
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Get in touch"
+          "default": "Follow Us"
         }
       ]
     }
