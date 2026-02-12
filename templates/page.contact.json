@@ -49,7 +49,7 @@
                     "custom_height": 460,
                     "autoplay": true,
                     "loop": false,
-                    "muted": true,
+                    "muted": false,
                     "controls": true,
                     "hover_effect_action": "no-effect",
                     "enable_custom_width": false,
