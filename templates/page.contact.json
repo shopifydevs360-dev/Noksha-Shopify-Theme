@@ -71,53 +71,6 @@
         "color_control": "section-light"
       }
     },
-    "store_location_tabs_kxayaM": {
-      "type": "store-location-tabs",
-      "blocks": {
-        "location_B7Py8r": {
-          "type": "location",
-          "settings": {
-            "tab_title": "Al Aziziyah",
-            "store_name": "Al Aziziyah Mall",
-            "location": "Al Aziziyah, Doha",
-            "hours": "10:00 AM - 10:00 PM",
-            "contact": "+974 4444 0000",
-            "description": "<p>Al Aziziyah Mall is a popular shopping destination in Doha offering a mix of international and local brands, dining options, and entertainment facilities.</p>",
-            "coordinates": "25.2651, 51.4758"
-          }
-        },
-        "location_GKa7eR": {
-          "type": "location",
-          "settings": {
-            "tab_title": "Festival Mall",
-            "store_name": "Festival Mall",
-            "location": "Al Waab Street, Doha",
-            "hours": "10:00 AM - 11:00 PM",
-            "contact": "+974 4444 1111",
-            "description": "<p>Festival Mall offers a premium shopping experience with luxury brands, fine dining restaurants, and a state-of-the-art cinema complex.</p>",
-            "coordinates": "25.2854, 51.5310"
-          }
-        }
-      },
-      "block_order": [
-        "location_B7Py8r",
-        "location_GKa7eR"
-      ],
-      "name": "Store Location Tabs",
-      "settings": {
-        "enable_sidebar_space": true,
-        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "container_width": "container-fluid",
-        "hero_title": "Qatar Shopping Malls Directory",
-        "title_font_size": "h3",
-        "hero_description": "<p>Explore premier shopping destinations across Qatar<br/><br/></p>",
-        "text_align": "center",
-        "padding_top": 40,
-        "padding_bottom": 52,
-        "custom_class": "",
-        "color_control": "section-light"
-      }
-    },
     "store_location_tabs_hyc7nq": {
       "type": "store-location-tabs",
       "blocks": {
@@ -144,11 +97,63 @@
             "description": "<p>Festival Mall offers a premium shopping experience with luxury brands, fine dining restaurants, and a state-of-the-art cinema complex.</p>",
             "coordinates": "25.2854, 51.5310"
           }
+        },
+        "location_MLLchN": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Qatar Mall",
+            "store_name": "Qatar Mall",
+            "location": "Doha, Qatar",
+            "hours": "9:00 AM - 10:00 PM",
+            "contact": "+974 4444 2222",
+            "description": "<p>Qatar Mall is one of the largest shopping centers in the country, featuring hundreds of stores, a large food court, and family entertainment options.</p>",
+            "coordinates": "25.2532, 51.5257"
+          }
+        },
+        "location_KEqPad": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Mirqab Mall",
+            "store_name": "Mirqab Mall",
+            "location": "Al Mirqab, Doha",
+            "hours": "10:00 AM - 10:00 PM",
+            "contact": "+974 4444 3333",
+            "description": "<p>Mirqab Mall combines traditional Qatari architecture with modern shopping facilities, offering a unique retail experience in the heart of Doha.</p>",
+            "coordinates": "25.2854, 51.5348"
+          }
+        },
+        "location_R87QyC": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Dar Alsalam",
+            "store_name": "Dar Alsalam Mall",
+            "location": "Al Rayyan, Qatar",
+            "hours": "9:00 AM - 11:00 PM",
+            "contact": "+974 4444 4444",
+            "description": "<p>Dar Alsalam Mall serves the Al Rayyan community with a wide selection of retail stores, dining options, and family-friendly entertainment.</p>",
+            "coordinates": "25.3110, 51.4446"
+          }
+        },
+        "location_6xWPNg": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Tawar Mall",
+            "store_name": "Tawar Mall",
+            "location": "Doha, Qatar",
+            "hours": "10:00 AM - 10:00 PM",
+            "contact": "+974 4444 5555",
+            "description": "<p>Tawar Mall is a modern shopping destination offering a diverse mix of international brands, entertainment facilities, and culinary experiences.</p>",
+            "coordinates": "25.2935, 51.5088"
+          }
         }
       },
       "block_order": [
         "location_hp4MYh",
-        "location_br4cbT"
+        "location_br4cbT",
+        "location_MLLchN",
+        "location_KEqPad",
+        "location_R87QyC",
+        "location_6xWPNg"
       ],
       "name": "Store Location Tabs",
       "settings": {
@@ -169,7 +174,6 @@
   "order": [
     "main",
     "contact_info_9nBaBC",
-    "store_location_tabs_kxayaM",
     "store_location_tabs_hyc7nq"
   ]
 }
