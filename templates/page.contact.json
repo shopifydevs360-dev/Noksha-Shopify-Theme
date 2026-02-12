@@ -117,11 +117,59 @@
         "custom_class": "",
         "color_control": "section-light"
       }
+    },
+    "store_location_tabs_hyc7nq": {
+      "type": "store-location-tabs",
+      "blocks": {
+        "location_hp4MYh": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Al Aziziyah",
+            "store_name": "Al Aziziyah Mall",
+            "location": "Al Aziziyah, Doha",
+            "hours": "10:00 AM - 10:00 PM",
+            "contact": "+974 4444 0000",
+            "description": "<p>Al Aziziyah Mall is a popular shopping destination in Doha offering a mix of international and local brands, dining options, and entertainment facilities.</p>",
+            "coordinates": "25.2651, 51.4758"
+          }
+        },
+        "location_br4cbT": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Festival Mall",
+            "store_name": "Festival Mall",
+            "location": "Al Waab Street, Doha",
+            "hours": "10:00 AM - 11:00 PM",
+            "contact": "+974 4444 1111",
+            "description": "<p>Festival Mall offers a premium shopping experience with luxury brands, fine dining restaurants, and a state-of-the-art cinema complex.</p>",
+            "coordinates": "25.2854, 51.5310"
+          }
+        }
+      },
+      "block_order": [
+        "location_hp4MYh",
+        "location_br4cbT"
+      ],
+      "name": "Store Location Tabs",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "extended",
+        "hero_title": "Qatar Shopping Malls Directory",
+        "title_font_size": "h3",
+        "hero_description": "<p>Explore premier shopping destinations across Qatar<br/><br/></p>",
+        "text_align": "center",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
     "main",
     "contact_info_9nBaBC",
-    "store_location_tabs_kxayaM"
+    "store_location_tabs_kxayaM",
+    "store_location_tabs_hyc7nq"
   ]
 }
