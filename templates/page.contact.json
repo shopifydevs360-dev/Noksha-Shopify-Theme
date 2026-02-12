@@ -21,6 +21,18 @@
     },
     "contact_info_9nBaBC": {
       "type": "contact-info",
+      "blocks": {
+        "text_block_HMwjCw": {
+          "type": "text-block",
+          "settings": {
+            "title": "Call us",
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_block_HMwjCw"
+      ],
       "name": "Contact Info",
       "settings": {
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
