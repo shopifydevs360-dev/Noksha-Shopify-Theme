@@ -58,7 +58,17 @@
                 {%- when 'email' -%}
                     <div class="info-card" {{ block.shopify_attributes }}>
                         <div class="icon">
-                            {%- render 'theme-icon', icon: 'phone' -%}
+                            {%- render 'theme-icon', icon: 'email' -%}
+                        </div>
+                        <div class="info">
+                            <h3 class="block-title">{{ block.settings.title }}</h3>
+                            <p class="block-content">{{ block.settings.text }}</p>
+                        </div>
+                    </div>
+                {%- when 'whatsapp' -%}
+                    <div class="info-card" {{ block.shopify_attributes }}>
+                        <div class="icon">
+                            {%- render 'theme-icon', icon: 'whatsapp' -%}
                         </div>
                         <div class="info">
                             <h3 class="block-title">{{ block.settings.title }}</h3>
