@@ -51,7 +51,7 @@
 /* ================================
    Mobile
 ================================ */
-@media (max-width: 767px) {
+@media (max-width: 769px) {
 
   .layout-columns.mobile-cols-1 > .cols-block-item {
     flex: 0 0 100% !important;
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const span = parseInt(spanElement.dataset.span);
       if (!span || span < 1) return;
 
-      if (window.innerWidth > 767) {
+      if (window.innerWidth > 769) {
         col.style.flex = span + ' 1 0';
         col.style.minWidth = '0';
       }
