@@ -1,0 +1,64 @@
+{% render 'section-base-style' %}
+
+{% liquid
+  assign first_class = 'store-location-section ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign container_width = section.settings.container_width
+%}
+
+<div class="{{ first_class }}" id="store-location-{{ section.id }}">
+  <div class="{{ container_width }}">
+    <div class="inner-section">
+
+      {% if section.settings.heading != blank %}
+        <div class="section-header text-{{ section.settings.text_align }}">
+          <h2 class="{{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+          <div class="description">{{ section.settings.description }}</div>
+        </div>
+      {% endif %}
+
+      {% if section.blocks.size > 0 %}
+        <div class="tabs">
+          {% for block in section.blocks %}
+            <button
+              class="tab-button {% if forloop.first %}active{% endif %}"
+              data-tab="tab-{{ section.id }}-{{ forloop.index }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.tab_title }}
+            </button>
+          {% endfor %}
+        </div>
+
+        {% for block in section.blocks %}
+          <div
+            id="tab-{{ section.id }}-{{ forloop.index }}"
+            class="tab-content {% if forloop.first %}active{% endif %}"
+          >
+            <div class="location-info">
+              <h3>{{ block.settings.store_name }}</h3>
+
+              <div class="details">
+                <p><strong>Location:</strong> {{ block.settings.location }}</p>
+                <p><strong>Opening Hours:</strong> {{ block.settings.hours }}</p>
+                <p><strong>Contact:</strong> {{ block.settings.contact }}</p>
+                <p>{{ block.settings.description }}</p>
+              </div>
+            </div>
+
+            <div
+              class="map-container"
+              id="map-{{ section.id }}-{{ forloop.index }}"
+              data-lat="{{ block.settings.latitude }}"
+              data-lng="{{ block.settings.longitude }}"
+              data-title="{{ block.settings.store_name }}"
+            ></div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+    </div>
+  </div>
+</div>
