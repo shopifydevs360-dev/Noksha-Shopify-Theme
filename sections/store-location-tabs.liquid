@@ -37,10 +37,13 @@
               <h3>{{ block.settings.store_name }}</h3>
 
               <div class="details">
-                <p><strong>Location:</strong> {{ block.settings.location }}</p>
-                <p><strong>Opening Hours:</strong> {{ block.settings.hours }}</p>
-                <p><strong>Contact:</strong> {{ block.settings.contact }}</p>
-                <p>{{ block.settings.description }}</p>
+                <ul>
+                    <li><span class="label">Location:</span><span class="detail">{{ block.settings.location }}</span></li>
+                    <li><span class="label">Opening Hours:</span><span class="detail">{{ block.settings.hours }}</span></li>
+                    <li><span class="label">Contact:</span><span class="detail">{{ block.settings.contact }}</span></li>
+                    <li class="store-detail">{{ block.settings.description }}</li>
+                    <li><a href="" class="get-direction"><span class="icon"></span><span class="text">Get Directions</span></a></li>
+                </ul>
               </div>
             </div>
 
