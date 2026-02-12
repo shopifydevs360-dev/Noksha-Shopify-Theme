@@ -18,9 +18,34 @@
         "custom_class": "",
         "color_control": "section-light"
       }
+    },
+    "custom_section_wRjnmj": {
+      "type": "custom-section",
+      "name": "Custom Section",
+      "settings": {
+        "container_width": "container",
+        "enable_sidebar_space": true,
+        "height_type": "content",
+        "height_desktop": 800,
+        "height_tablet": 600,
+        "height_mobile": 500,
+        "background_type": "none",
+        "overlay_enable": false,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #ffffff, #000000)",
+        "custom_section_color_scheme": "",
+        "padding_y": 60,
+        "padding_x": 30,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_section_wRjnmj"
   ]
 }
