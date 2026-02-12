@@ -42,12 +42,16 @@
     assign wrapper = 'div'
   endif
 
+  assign wrapper_style = style | default: ''
 %}
 
 <{{ wrapper }}
   class="image {{ class }}"
   {% if url %}
     href="{{ url }}"
+  {% endif %}
+  {% if wrapper_style != blank %}
+    style="{{ wrapper_style }}"
   {% endif %}
 >
   {% if mobile_image %}
