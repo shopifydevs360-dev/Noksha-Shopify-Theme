@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 {% render 'section-base-style' %}
 {% liquid
-  assign first_class = 'contact-section store-location-section ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = 'store-location-section ' | append: 'm-color-' | append: section.settings.color_scheme 
   assign first_class = first_class | append: ' ' | append: section.settings.color_control
   assign first_class = first_class | append: ' ' | append: section.settings.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
