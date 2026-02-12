@@ -73,6 +73,24 @@
     },
     "store_location_tabs_kxayaM": {
       "type": "store-location-tabs",
+      "blocks": {
+        "location_B7Py8r": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Al Aziziyah",
+            "store_name": "Al Aziziyah Mall",
+            "location": "Al Aziziyah, Doha",
+            "hours": "10:00 AM - 10:00 PM",
+            "contact": "+974 4444 0000",
+            "description": "<p>Al Aziziyah Mall is a popular shopping destination in Doha offering a mix of international and local brands, dining options, and entertainment facilities.</p>",
+            "latitude": "25.2651",
+            "longitude": "51.4758"
+          }
+        }
+      },
+      "block_order": [
+        "location_B7Py8r"
+      ],
       "name": "Store Location Tabs",
       "settings": {
         "enable_sidebar_space": true,
