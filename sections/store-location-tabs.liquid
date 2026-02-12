@@ -1,14 +1,14 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 {% render 'section-base-style' %}
 {% liquid
-  assign first_class = 'contact-section ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = 'contact-section store-location-section ' | append: 'm-color-' | append: section.settings.color_scheme 
   assign first_class = first_class | append: ' ' | append: section.settings.color_control
   assign first_class = first_class | append: ' ' | append: section.settings.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
   assign container_width = section.settings.container_width
 %}
 
-<div class="{{ first_class }}">
+<div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
     <div class="inner-section {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
         <div class="hero-info text-{{ section.settings.text_align }}">
@@ -57,7 +57,6 @@
     </div>
   </div>
 </div>
-
 
 {% stylesheet %}
 .store-location-section .tabs {
@@ -126,7 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const activeTab = section.querySelector("#" + tabId);
     activeTab.classList.add("active");
 
-    initializeMap(activeTab);
+    // Use setTimeout to ensure the tab is visible before initializing the map
+    setTimeout(() => initializeMap(activeTab), 100);
   }
 
   function initializeMap(tab) {
@@ -141,6 +141,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const lat = parseFloat(mapContainer.dataset.lat);
     const lng = parseFloat(mapContainer.dataset.lng);
     const title = mapContainer.dataset.title;
+
+    // Check if lat and lng are valid numbers
+    if (isNaN(lat) || isNaN(lng)) {
+      console.error("Invalid coordinates for map:", mapId);
+      return;
+    }
 
     const map = L.map(mapId).setView([lat, lng], 15);
 
@@ -161,7 +167,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Init first tab
   const firstTab = section.querySelector(".tab-content.active");
-  if (firstTab) initializeMap(firstTab);
+  if (firstTab) {
+    // Use setTimeout to ensure the tab is visible before initializing the map
+    setTimeout(() => initializeMap(firstTab), 100);
+  }
 
 });
 </script>
