@@ -13,7 +13,7 @@
   endif
 
   if section.settings.hover_effect_action != 'no-effect'
-    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: section.settings.hover_effect_action
   endif
 
 %}
