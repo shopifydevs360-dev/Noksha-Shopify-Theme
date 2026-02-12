@@ -199,14 +199,14 @@
     margin-top: 1.2rem;
 }
 
-.contact-section ul {
+.contact-section .social-links ul {
     list-style: none;
     padding: 0;
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
 }
-.contact-section ul li {
+.contact-section .social-links ul li {
     border-radius: 100%;
     height: 3rem;
     width: 3rem;
@@ -216,11 +216,14 @@
     padding-top: 5px;
     border: 2px solid rgb(var(--color-border));
 }
-.contact-section ul li:hover {
+.contact-section .social-links ul li:hover {
     background: rgb(var(--color-link-hover));
 }
 .contact-section .social-links svg{
  fill: rgb(var(--color-link-hover));
+}
+.contact-section .social-links ul li:hover svg{
+ fill: rgb(var(--color-background));
 }
 .contact-section .form-errors {
   margin-bottom: 1.5rem;
