@@ -545,10 +545,14 @@ button:disabled,
    Adapt to Image (Natural Height)
    ========================================= */
 
+/* =========================================
+   Adapt to Image (Natural Height)
+   ========================================= */
+
 .cropped-image-wrapper.adapt-image-height {
   height: auto;
   padding-bottom: 0;
-  overflow: visible;
+  overflow: hidden; /* IMPORTANT FIX */
 }
 
 .cropped-image-wrapper.adapt-image-height img {
@@ -561,7 +565,10 @@ button:disabled,
   min-width: 0;
   min-height: 0;
   object-fit: unset;
+  transition: transform 0.8s cubic-bezier(0,0,0.002,1), opacity 0.4s ease;
+  transform-origin: center center;
 }
+
 
 /* =========================================
    Base Cropped Image Behavior
