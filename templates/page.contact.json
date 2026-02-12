@@ -22,6 +22,31 @@
     "custom_section_wRjnmj": {
       "type": "custom-section",
       "blocks": {
+        "contact_form_fYPbYp": {
+          "type": "contact-form",
+          "name": "Contact form",
+          "settings": {
+            "success_message": "Thank you for contacting us.",
+            "show_name": true,
+            "name_required": true,
+            "name_label": "Your name",
+            "show_email": true,
+            "email_required": true,
+            "email_label": "Your email",
+            "show_phone": false,
+            "phone_label": "Phone number",
+            "show_subject": false,
+            "subject_label": "Subject",
+            "show_message": true,
+            "message_required": true,
+            "message_label": "Write your message",
+            "enable_terms_checkbox": false,
+            "terms_label": "I agree to the terms",
+            "button_text": "Send message",
+            "button_style": "btn--primary"
+          },
+          "blocks": {}
+        },
         "column_item_Jy7rUY": {
           "type": "column-item",
           "name": "Column item",
@@ -32,6 +57,7 @@
         }
       },
       "block_order": [
+        "contact_form_fYPbYp",
         "column_item_Jy7rUY"
       ],
       "name": "Custom Section",

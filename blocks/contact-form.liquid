@@ -2,9 +2,9 @@
   Contact Form Block
 {% enddoc %}
 
-<div class="contact-form-block" {{ block.shopify_attributes }}>
+<div id="ContactForm-{{ block.id }}" class="contact-form-block" {{ block.shopify_attributes }}>
 
-  {% form 'contact', id: 'ContactForm-' | append: block.id %}
+  {% form 'contact' %}
 
     {% if form.posted_successfully? %}
       <div class="form-success">
@@ -12,7 +12,11 @@
       </div>
     {% endif %}
 
-    {{ form.errors | default_errors }}
+    {% if form.errors %}
+      <div class="form-errors">
+        {{ form.errors | default_errors }}
+      </div>
+    {% endif %}
 
     <div class="contact-form__fields">
 
@@ -119,6 +123,11 @@
 .contact-form-block .form-success {
   margin-bottom: 16px;
   color: green;
+}
+
+.contact-form-block .form-errors {
+  margin-bottom: 16px;
+  color: red;
 }
 {% endstyle %}
 
