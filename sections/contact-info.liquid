@@ -308,10 +308,33 @@
       "name": "Text block",
       "settings": [
         {
+            "type": "image_picker",
+            "id": "image_icon",
+            "label": "Image icon"
+        },
+        {
           "type": "text",
           "id": "title",
           "label": "Title",
           "default": "Call us"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "store-address",
+      "name": "Store Address",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Store Location"
         },
         {
           "type": "richtext",
