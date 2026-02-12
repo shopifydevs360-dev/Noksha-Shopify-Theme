@@ -102,7 +102,7 @@
                     "link": "",
                     "alt_text": "",
                     "aspect_ratio": "adapt-to-image",
-                    "hover_effect_action": "no-effect",
+                    "hover_effect_action": "is-hover-zoom-out",
                     "enable_custom_width": false,
                     "custom_width": 100,
                     "alignment": "center"
