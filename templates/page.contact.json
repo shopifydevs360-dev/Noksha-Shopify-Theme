@@ -83,13 +83,25 @@
             "hours": "10:00 AM - 10:00 PM",
             "contact": "+974 4444 0000",
             "description": "<p>Al Aziziyah Mall is a popular shopping destination in Doha offering a mix of international and local brands, dining options, and entertainment facilities.</p>",
-            "latitude": "25.2651",
-            "longitude": "51.4758"
+            "coordinates": "25.2651, 51.4758"
+          }
+        },
+        "location_GKa7eR": {
+          "type": "location",
+          "settings": {
+            "tab_title": "Festival Mall",
+            "store_name": "Festival Mall",
+            "location": "Al Waab Street, Doha",
+            "hours": "10:00 AM - 11:00 PM",
+            "contact": "+974 4444 1111",
+            "description": "<p>Festival Mall offers a premium shopping experience with luxury brands, fine dining restaurants, and a state-of-the-art cinema complex.</p>",
+            "coordinates": "25.2854, 51.5310"
           }
         }
       },
       "block_order": [
-        "location_B7Py8r"
+        "location_B7Py8r",
+        "location_GKa7eR"
       ],
       "name": "Store Location Tabs",
       "settings": {
