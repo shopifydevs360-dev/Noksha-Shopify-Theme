@@ -12,7 +12,10 @@
     assign image_wapper_classes = image_wapper_classes | append: ' ' | append: section.settings.aspect_ratio
   endif
 
-  assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.hover_effect_action
+  if section.settings.hover_effect_action != 'no-effect'
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
+  endif
+
 %}
 <div class="{{ first_class }}">
   <div class="{{ container_width }}">
