@@ -905,6 +905,12 @@ button:disabled,
   }
 }
 
+@media (max-width: 990px) {
+  .template-page {
+      margin-top: 4.2rem;
+  }
+}
+
 
 /* ============================
    Text align
