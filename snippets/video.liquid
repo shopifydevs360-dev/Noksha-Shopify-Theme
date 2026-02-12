@@ -3,9 +3,9 @@
 
   @param {video} [video] - Shopify hosted video object
   @param {string} [external_video_url] - YouTube or Vimeo URL
-  @param {string} [url] - Optional wrapper link
   @param {string} [class] - Custom wrapper class
   @param {string} [style] - Inline wrapper style
+  @param {string} [custom_thumbnail] - Thumbnail Image
   @param {boolean} [autoplay]
   @param {boolean} [loop]
   @param {boolean} [muted]
@@ -17,60 +17,70 @@
 {% enddoc %}
 
 {% liquid
-  if url
-    assign wrapper = 'a'
-  else
-    assign wrapper = 'div'
-  endif
-
   assign wrapper_style = style | default: ''
+  assign is_autoplay = autoplay | default: false
+
+  if is_autoplay
+    assign muted = true
+  endif
 %}
 
-<{{ wrapper }}
+<div
   class="video {{ class }}"
-  {% if url %}
-    href="{{ url }}"
-  {% endif %}
   {% if wrapper_style != blank %}
     style="{{ wrapper_style }}"
   {% endif %}
 >
 
   {% if video %}
-    {{ video
-      | video_tag:
-        autoplay: autoplay,
-        loop: loop,
-        muted: muted,
-        controls: controls,
-        playsinline: true
-    }}
+
+    {% liquid
+      assign preview = custom_thumbnail | default: video.preview_image
+    %}
+
+    <div class="video-inner">
+
+      {{ video
+        | video_tag:
+          image_size: '1200x',
+          autoplay: is_autoplay,
+          loop: loop,
+          muted: muted,
+          controls: controls,
+          playsinline: true
+      }}
+
+      {% if preview and is_autoplay == false %}
+        <div class="video-thumbnail">
+          {{ preview | image_url: width: 1600 | image_tag }}
+        </div>
+      {% endif %}
+
+    </div>
 
   {% elsif external_video_url != blank %}
 
-    {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
-      {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
-      <div class="video-embed">
+    <div class="video-embed">
+      {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
+        {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
         <iframe
-          src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1"
+          src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1{% if is_autoplay %}&autoplay=1&mute=1{% endif %}"
           frameborder="0"
           allow="autoplay; encrypted-media"
           allowfullscreen
         ></iframe>
-      </div>
 
-    {% elsif external_video_url contains 'vimeo.com' %}
-      {% assign video_id = external_video_url | split: '/' | last %}
-      <div class="video-embed">
+      {% elsif external_video_url contains 'vimeo.com' %}
+        {% assign video_id = external_video_url | split: '/' | last %}
         <iframe
-          src="https://player.vimeo.com/video/{{ video_id }}"
+          src="https://player.vimeo.com/video/{{ video_id }}{% if is_autoplay %}?autoplay=1&muted=1{% endif %}"
           frameborder="0"
           allow="autoplay; fullscreen"
           allowfullscreen
         ></iframe>
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
 
   {% endif %}
 
-</{{ wrapper }}>
+</div>

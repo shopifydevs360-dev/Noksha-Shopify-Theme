@@ -48,7 +48,7 @@
                     "external_video_url": "",
                     "aspect_ratio": "cropped-image--square",
                     "custom_height": 460,
-                    "autoplay": true,
+                    "autoplay": false,
                     "loop": false,
                     "muted": false,
                     "controls": true
