@@ -48,19 +48,22 @@
 }
 
 
-/* Mobile */
+/* ================================
+   Mobile
+================================ */
 @media (max-width: 767px) {
 
-  .mobile-cols-1 > .cols-block-item {
-    flex: 0 0 100%;
+  .layout-columns.mobile-cols-1 > .cols-block-item {
+    flex: 0 0 100% !important;
+    max-width: 100%;
   }
 
-  .mobile-cols-2 > .cols-block-item {
-    flex: 0 0 calc(50% - var(--gap, 20px) / 2);
+  .layout-columns.mobile-cols-2 > .cols-block-item {
+    flex: 0 0 calc(50% - (var(--gap, 20px) / 2)) !important;
+    max-width: calc(50% - (var(--gap, 20px) / 2));
   }
 
 }
-
 
 {% endstyle %}
 <script>
