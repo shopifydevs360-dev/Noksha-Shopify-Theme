@@ -320,8 +320,8 @@
         },
         {
           "type": "richtext",
-          "id": "text",
-          "label": "Text"
+          "id": "content",
+          "label": "Content"
         }
       ]
     },
@@ -338,8 +338,75 @@
         },
         {
           "type": "richtext",
-          "id": "text",
-          "label": "Text"
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "phone",
+      "name": "Phone",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Phone"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "email",
+      "name": "Email",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Email"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "whatsapp",
+      "name": "Whatsapp",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Whatsapp"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "socials-link",
+      "name": "Socials link",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Get in touch"
         }
       ]
     }
@@ -348,9 +415,11 @@
     {
       "name": "Contact Info",
       "blocks": [
-        { "type": "text-block" },
-        { "type": "text-block" },
-        { "type": "text-block" },
+        { "type": "store-address" },
+        { "type": "phone" },
+        { "type": "email" },
+        { "type": "whatsapp" },
+        { "type": "socials-link" },
       ]
     }
   ]
