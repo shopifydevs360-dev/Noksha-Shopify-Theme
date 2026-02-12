@@ -1,0 +1,275 @@
+{% liquid
+  assign first_class = 'contact-section ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+
+  assign container_width = section.settings.container_width
+%}
+
+<div class="{{ first_class }}">
+  <div class="{{ container_width }} container-wrapper">
+    <div class="contact-wrapper cols-2">
+
+      <!-- LEFT SIDE : CONTACT CARDS -->
+      <div class="contact-info">
+
+        <div class="info-card">
+          <h3>Call us Mon-Fri 10am-4:30pm</h3>
+          <p><a href="tel:+97455903190">+974 5590 3190</a></p>
+        </div>
+
+        <div class="info-card">
+          <h3>Talk to us on Whatsapp</h3>
+          <p><a href="tel:+97455903190">+974 5590 3190</a></p>
+        </div>
+
+        <div class="info-card">
+          <h3>Email us</h3>
+          <p><a href="mailto:contact@halla.qa">contact@halla.qa</a></p>
+        </div>
+
+        <!-- SOCIAL ICONS -->
+        <div class="social-icons">
+          <ul class="social-icons-list">
+            {% if settings.social_facebook_link != blank %}
+            <li><a href="{{ settings.social_facebook_link }}" class="color-control" aria-label="Facebook">{%- render 'theme-icon', icon: 'facebook' -%}</a></li>
+            {% endif %}
+            {% if settings.social_twitter_link != blank %}
+            <li><a href="{{ settings.social_twitter_link }}" class="color-control" aria-label="Twitter">{%- render 'theme-icon', icon: 'twitter' -%}</a></li>
+            {% endif %}
+            {% if settings.social_instagram_link != blank %}
+            <li><a href="{{ settings.social_instagram_link }}" class="color-control" aria-label="Instagram">{%- render 'theme-icon', icon: 'instagram' -%}</a></li>
+            {% endif %}
+            {% if settings.social_linkedin_link != blank %}
+            <li><a href="{{ settings.social_linkedin_link }}" class="color-control" aria-label="LinkedIn">{%- render 'theme-icon', icon: 'linkedin' -%}</a></li>
+            {% endif %}
+            {% if settings.social_youtube_link != blank %}
+            <li><a href="{{ settings.social_youtube_link }}" class="color-control" aria-label="YouTube">{%- render 'theme-icon', icon: 'youtube' -%}</a></li>
+            {% endif %}
+            {% if settings.social_tiktok_link != blank %}
+            <li><a href="{{ settings.social_tiktok_link }}" class="color-control" aria-label="TikTok">{%- render 'theme-icon', icon: 'tiktok' -%}</a></li>
+            {% endif %}
+            {% if settings.social_whatsapp_link != blank %}
+            <li><a href="{{ settings.social_whatsapp_link }}" class="color-control" aria-label="WhatsApp">{%- render 'theme-icon', icon: 'whatsapp' -%}</a></li>
+            {% endif %}
+            {% if settings.social_pinterest_link != blank %}
+            <li><a href="{{ settings.social_pinterest_link }}" class="color-control" aria-label="Pinterest">{%- render 'theme-icon', icon: 'pinterest' -%}</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+      </div>
+
+
+      <!-- RIGHT SIDE : CONTACT FORM -->
+      <div class="contact-form">
+
+        {% form 'contact' %}
+
+          {% if form.posted_successfully? %}
+            <div class="form-success">
+              Your message has been sent successfully.
+            </div>
+          {% endif %}
+
+          {% if form.errors %}
+            <div class="form-errors">
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+
+          <div class="field">
+            <label for="ContactName">Full name</label>
+            <input
+              type="text"
+              id="ContactName"
+              name="contact[name]"
+              value="{{ form.name }}"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="ContactEmail">Email</label>
+            <input
+              type="email"
+              id="ContactEmail"
+              name="contact[email]"
+              value="{{ form.email }}"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="ContactSubject">Subject</label>
+            <input
+              type="text"
+              id="ContactSubject"
+              name="contact[subject]"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="ContactMessage">Message</label>
+            <textarea
+              id="ContactMessage"
+              name="contact[body]"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="button">
+            Send message
+          </button>
+
+        {% endform %}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% stylesheet %}
+.contact-section {
+  padding: 6rem 0;
+}
+
+.contact-section .contact-wrapper {
+  gap: 4rem;
+}
+
+.contact-section .info-card {
+  margin-bottom: 2rem;
+}
+
+.contact-section .info-card h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.contact-section .info-card p {
+  font-size: 1rem;
+}
+
+.contact-section .info-card a {
+  text-decoration: none;
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.contact-section .social-icons {
+  margin-top: 2rem;
+}
+
+.contact-section form {
+  max-width: 32rem;
+}
+
+.contact-section .field {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-section label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.4rem;
+}
+
+.contact-section input,
+.contact-section textarea {
+  padding: .8rem 0;
+  border-bottom: 2px solid rgb(var(--color-border));
+  border-radius: 0;
+  margin-bottom: 1.4rem;
+  background: transparent;
+}
+
+.contact-section .button {
+  background: rgb(var(--color-heading));
+  color: rgb(var(--color-background));
+  border: 2px solid rgb(var(--color-heading));
+  padding: 0.8rem 2rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.contact-section .button:hover {
+  background: transparent;
+  color: rgb(var(--color-heading));
+}
+
+.contact-section .form-errors {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #b3261e;
+  color: #b3261e;
+  font-size: 0.9rem;
+}
+
+.contact-section .form-success {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid green;
+  color: green;
+  font-size: 0.9rem;
+}
+{% endstylesheet %}
+
+
+{% schema %}
+{
+  "name": "Contact Info",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "extended"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Info"
+    }
+  ]
+}
+{% endschema %}
