@@ -19,15 +19,16 @@
                 <div class="info-card" {{ block.shopify_attributes }}>
                     <div class="icon">
                         {% render 'image',
-                            class: 'icon-image',
+                            class: 'icon_image',
                             image: block.settings.image_icon,
                             crop: 'center',
                             img_alt: collection.title
                         %}
                     </div>
-                    <div class="info"></div>
-                    <h3 class="block-title">{{ block.settings.title }}</h3>
-                    <p class="block-content">{{ block.settings.text }}</p>
+                    <div class="info">
+                        <h3 class="block-title">{{ block.settings.title }}</h3>
+                        <p class="block-content">{{ block.settings.text }}</p>
+                    </div>
                 </div>
               {%- when 'socials-link' -%}
                 <div class="info-card" {{ block.shopify_attributes }}>
