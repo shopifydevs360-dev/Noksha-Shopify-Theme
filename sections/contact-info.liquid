@@ -22,6 +22,7 @@
                 {%- case block.type -%}
                 {%- when 'text-block' -%}
                     <div class="info-card" {{ block.shopify_attributes }}>
+                        {% if block.settings.image_icon != blank %}
                         <div class="icon">
                             {% render 'image',
                             class: 'icon_image',
@@ -30,6 +31,7 @@
                             img_alt: block.settings.title
                             %}
                         </div>
+                        {% endif %}
                         <div class="info">
                             <h3 class="block-title">{{ block.settings.title }}</h3>
                             <p class="block-content">{{ block.settings.text }}</p>
