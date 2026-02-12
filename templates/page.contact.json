@@ -19,65 +19,12 @@
         "color_control": "section-light"
       }
     },
-    "custom_section_wRjnmj": {
-      "type": "custom-section",
-      "blocks": {
-        "contact_form_fYPbYp": {
-          "type": "contact-form",
-          "name": "Contact form",
-          "settings": {
-            "success_message": "Thank you for contacting us.",
-            "show_name": true,
-            "name_required": true,
-            "name_label": "Your name",
-            "show_email": true,
-            "email_required": true,
-            "email_label": "Your email",
-            "show_phone": false,
-            "phone_label": "Phone number",
-            "show_subject": false,
-            "subject_label": "Subject",
-            "show_message": true,
-            "message_required": true,
-            "message_label": "Write your message",
-            "enable_terms_checkbox": false,
-            "terms_label": "I agree to the terms",
-            "button_text": "Send message",
-            "button_style": "btn--primary"
-          },
-          "blocks": {}
-        },
-        "column_item_Jy7rUY": {
-          "type": "column-item",
-          "name": "Column item",
-          "settings": {
-            "column_span": 1
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "contact_form_fYPbYp",
-        "column_item_Jy7rUY"
-      ],
-      "name": "Custom Section",
+    "contact_info_FhAxKf": {
+      "type": "contact-info",
+      "name": "Contact Info",
       "settings": {
-        "container_width": "container",
-        "enable_sidebar_space": true,
-        "height_type": "content",
-        "height_desktop": 800,
-        "height_tablet": 600,
-        "height_mobile": 500,
-        "background_type": "none",
-        "overlay_enable": false,
-        "overlay_color": "#000000",
-        "overlay_opacity": 40,
-        "background_style": "solid",
-        "background_color": "#ffffff",
-        "background_gradient": "linear-gradient(180deg, #ffffff, #000000)",
-        "custom_section_color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "padding_y": 60,
-        "padding_x": 30,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "extended",
         "custom_class": "",
         "color_control": "section-light"
       }
@@ -85,6 +32,6 @@
   },
   "order": [
     "main",
-    "custom_section_wRjnmj"
+    "contact_info_FhAxKf"
   ]
 }
