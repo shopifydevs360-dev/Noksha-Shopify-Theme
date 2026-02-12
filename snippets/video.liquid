@@ -15,14 +15,18 @@
   {% render 'video', video: section.settings.video %}
   {% render 'video', external_video_url: block.settings.video_url %}
 {% enddoc %}
-
-
 {% liquid
   assign wrapper_style = style | default: ''
   assign is_autoplay = autoplay | default: false
 
   if is_autoplay
     assign muted = true
+  endif
+
+  if custom_thumbnail != blank
+    assign poster_image = custom_thumbnail | image_url: width: 2000
+  else
+    assign poster_image = video.preview_image | image_url: width: 2000
   endif
 %}
 
@@ -35,15 +39,18 @@
 
   {% if video %}
 
-    {{ video
-      | video_tag:
-        autoplay: is_autoplay,
-        loop: loop,
-        muted: muted,
-        controls: controls,
-        playsinline: true,
-        image: custom_thumbnail
-    }}
+    <video
+      {% if poster_image %}poster="{{ poster_image }}"{% endif %}
+      {% if is_autoplay %}autoplay{% endif %}
+      {% if loop %}loop{% endif %}
+      {% if muted %}muted{% endif %}
+      {% if controls %}controls{% endif %}
+      playsinline
+    >
+      {% for source in video.sources %}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {% endfor %}
+    </video>
 
   {% elsif external_video_url != blank %}
 
@@ -69,3 +76,4 @@
   {% endif %}
 
 </div>
+
