@@ -128,35 +128,39 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => initializeMap(activeTab), 100);
   }
 
-  function initializeMap(tab) {
+    function initializeMap(tab) {
     const mapContainer = tab.querySelector(".map-container");
     const mapId = mapContainer.id;
 
     if (maps[mapId]) {
-      setTimeout(() => maps[mapId].invalidateSize(), 100);
-      return;
+        setTimeout(() => maps[mapId].invalidateSize(), 100);
+        return;
     }
 
-    const lat = parseFloat(mapContainer.dataset.lat);
-    const lng = parseFloat(mapContainer.dataset.lng);
+    const coordString = mapContainer.dataset.coordinates;
     const title = mapContainer.dataset.title;
 
-    // Check if lat and lng are valid numbers
-    if (isNaN(lat) || isNaN(lng)) {
-      console.error("Invalid coordinates for map:", mapId);
-      return;
-    }
+    if (!coordString) return;
+
+    const parts = coordString.split(",");
+    if (parts.length !== 2) return;
+
+    const lat = parseFloat(parts[0].trim());
+    const lng = parseFloat(parts[1].trim());
+
+    if (isNaN(lat) || isNaN(lng)) return;
 
     const map = L.map(mapId).setView([lat, lng], 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+        attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
     L.marker([lat, lng]).addTo(map).bindPopup(title).openPopup();
 
     maps[mapId] = map;
-  }
+    }
+
 
   buttons.forEach(button => {
     button.addEventListener("click", function () {
