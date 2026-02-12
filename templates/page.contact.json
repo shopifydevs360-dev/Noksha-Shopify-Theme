@@ -21,8 +21,40 @@
     },
     "contact_info_FhAxKf": {
       "type": "contact-info",
+      "blocks": {
+        "contact_item_mjKNaa": {
+          "type": "contact_item",
+          "settings": {
+            "title": "Call us",
+            "text": "+974 5590 3190",
+            "link": ""
+          }
+        },
+        "contact_item_MUY7gG": {
+          "type": "contact_item",
+          "settings": {
+            "title": "Call us",
+            "text": "+974 5590 3190",
+            "link": ""
+          }
+        },
+        "contact_item_rj3Efh": {
+          "type": "contact_item",
+          "settings": {
+            "title": "Call us",
+            "text": "+974 5590 3190",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "contact_item_mjKNaa",
+        "contact_item_MUY7gG",
+        "contact_item_rj3Efh"
+      ],
       "name": "Contact Info",
       "settings": {
+        "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "container_width": "extended",
         "custom_class": "",
