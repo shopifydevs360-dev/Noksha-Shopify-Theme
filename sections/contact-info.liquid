@@ -17,6 +17,8 @@
             {%- case block.type -%}
              {%- when 'text-block' -%}
                 <div class="info-card" {{ block.shopify_attributes }}>
+                    <div class="icon"></div>
+                    <div class="info"></div>
                     <h3 class="block-title">{{ block.settings.title }}</h3>
                     <p class="block-content">{{ block.settings.text }}</p>
                 </div>
