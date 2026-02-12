@@ -8,46 +8,52 @@
 
 <div class="{{ first_class }}">
   <div class="{{ container_width }} container-wrapper">
+    <div class="contact-wrapper cols-2">
 
-    <div class="contact-wrapper cols-2 {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
-
-      <!-- LEFT SIDE -->
+      <!-- LEFT SIDE : CONTACT CARDS -->
       <div class="contact-info">
 
-        {% for block in section.blocks %}
-          {% if block.type == 'contact_item' %}
-            <div class="info-card" {{ block.shopify_attributes }}>
-              <h3>{{ block.settings.title }}</h3>
-              {% if block.settings.link != blank %}
-                <p>
-                  <a href="{{ block.settings.link }}">
-                    {{ block.settings.text }}
-                  </a>
-                </p>
-              {% else %}
-                <p>{{ block.settings.text }}</p>
-              {% endif %}
-            </div>
-          {% endif %}
-        {% endfor %}
+        <div class="info-card">
+          <h3>Call us Mon-Fri 10am-4:30pm</h3>
+          <p><a href="tel:+97455903190">+974 5590 3190</a></p>
+        </div>
+
+        <div class="info-card">
+          <h3>Talk to us on Whatsapp</h3>
+          <p><a href="tel:+97455903190">+974 5590 3190</a></p>
+        </div>
+
+        <div class="info-card">
+          <h3>Email us</h3>
+          <p><a href="mailto:contact@halla.qa">contact@halla.qa</a></p>
+        </div>
 
         <!-- SOCIAL ICONS -->
         <div class="social-icons">
           <ul class="social-icons-list">
             {% if settings.social_facebook_link != blank %}
-              <li><a href="{{ settings.social_facebook_link }}" aria-label="Facebook">{%- render 'theme-icon', icon: 'facebook' -%}</a></li>
+            <li><a href="{{ settings.social_facebook_link }}" class="color-control" aria-label="Facebook">{%- render 'theme-icon', icon: 'facebook' -%}</a></li>
+            {% endif %}
+            {% if settings.social_twitter_link != blank %}
+            <li><a href="{{ settings.social_twitter_link }}" class="color-control" aria-label="Twitter">{%- render 'theme-icon', icon: 'twitter' -%}</a></li>
             {% endif %}
             {% if settings.social_instagram_link != blank %}
-              <li><a href="{{ settings.social_instagram_link }}" aria-label="Instagram">{%- render 'theme-icon', icon: 'instagram' -%}</a></li>
+            <li><a href="{{ settings.social_instagram_link }}" class="color-control" aria-label="Instagram">{%- render 'theme-icon', icon: 'instagram' -%}</a></li>
             {% endif %}
-            {% if settings.social_tiktok_link != blank %}
-              <li><a href="{{ settings.social_tiktok_link }}" aria-label="TikTok">{%- render 'theme-icon', icon: 'tiktok' -%}</a></li>
-            {% endif %}
-            {% if settings.social_whatsapp_link != blank %}
-              <li><a href="{{ settings.social_whatsapp_link }}" aria-label="WhatsApp">{%- render 'theme-icon', icon: 'whatsapp' -%}</a></li>
+            {% if settings.social_linkedin_link != blank %}
+            <li><a href="{{ settings.social_linkedin_link }}" class="color-control" aria-label="LinkedIn">{%- render 'theme-icon', icon: 'linkedin' -%}</a></li>
             {% endif %}
             {% if settings.social_youtube_link != blank %}
-              <li><a href="{{ settings.social_youtube_link }}" aria-label="YouTube">{%- render 'theme-icon', icon: 'youtube' -%}</a></li>
+            <li><a href="{{ settings.social_youtube_link }}" class="color-control" aria-label="YouTube">{%- render 'theme-icon', icon: 'youtube' -%}</a></li>
+            {% endif %}
+            {% if settings.social_tiktok_link != blank %}
+            <li><a href="{{ settings.social_tiktok_link }}" class="color-control" aria-label="TikTok">{%- render 'theme-icon', icon: 'tiktok' -%}</a></li>
+            {% endif %}
+            {% if settings.social_whatsapp_link != blank %}
+            <li><a href="{{ settings.social_whatsapp_link }}" class="color-control" aria-label="WhatsApp">{%- render 'theme-icon', icon: 'whatsapp' -%}</a></li>
+            {% endif %}
+            {% if settings.social_pinterest_link != blank %}
+            <li><a href="{{ settings.social_pinterest_link }}" class="color-control" aria-label="Pinterest">{%- render 'theme-icon', icon: 'pinterest' -%}</a></li>
             {% endif %}
           </ul>
         </div>
@@ -55,14 +61,14 @@
       </div>
 
 
-      <!-- RIGHT SIDE -->
+      <!-- RIGHT SIDE : CONTACT FORM -->
       <div class="contact-form">
 
         {% form 'contact' %}
 
           {% if form.posted_successfully? %}
             <div class="form-success">
-              Message sent successfully.
+              Your message has been sent successfully.
             </div>
           {% endif %}
 
@@ -79,7 +85,6 @@
               id="ContactName"
               name="contact[name]"
               value="{{ form.name }}"
-              placeholder="Enter your full name"
               required
             >
           </div>
@@ -91,7 +96,6 @@
               id="ContactEmail"
               name="contact[email]"
               value="{{ form.email }}"
-              placeholder="Enter your email address"
               required
             >
           </div>
@@ -102,7 +106,6 @@
               type="text"
               id="ContactSubject"
               name="contact[subject]"
-              placeholder="Enter subject"
               required
             >
           </div>
@@ -112,8 +115,7 @@
             <textarea
               id="ContactMessage"
               name="contact[body]"
-              rows="6"
-              placeholder="Write your message here"
+              rows="5"
               required
             ></textarea>
           </div>
@@ -136,115 +138,88 @@
   padding: 6rem 0;
 }
 
-.contact-wrapper {
-  gap: 5rem;
+.contact-section .contact-wrapper {
+  gap: 4rem;
 }
 
-/* LEFT SIDE */
-.contact-info {
-  max-width: 280px;
-}
-
-.info-card {
+.contact-section .info-card {
   margin-bottom: 2rem;
 }
 
-.info-card h3 {
-  font-size: 0.85rem;
+.contact-section .info-card h3 {
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
-.info-card a {
-  text-decoration: none;
-  border-bottom: 1px solid rgb(var(--color-border));
+.contact-section .info-card p {
   font-size: 1rem;
 }
 
-/* SOCIAL ICONS VERTICAL */
-.social-icons {
+.contact-section .info-card a {
+  text-decoration: none;
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.contact-section .social-icons {
   margin-top: 2rem;
 }
 
-.social-icons-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.contact-section form {
+  max-width: 32rem;
 }
 
-.social-icons-list li {
-  margin-bottom: 1rem;
-}
-
-.social-icons-list a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: rgb(var(--color-heading));
-  transition: 0.3s ease;
-}
-
-.social-icons-list a:hover {
-  opacity: 0.7;
-}
-
-
-/* FORM */
-.contact-form form {
-  max-width: 520px;
-}
-
-.field {
+.contact-section .field {
   display: flex;
   flex-direction: column;
 }
 
-.contact-form label {
-  font-size: 0.8rem;
+.contact-section label {
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 0.4rem;
 }
 
-.contact-form input,
-.contact-form textarea {
+.contact-section input,
+.contact-section textarea {
   padding: .8rem 0;
-  border-bottom: 2px solid rgb(var(--color-heading));
-  background: transparent;
+  border-bottom: 2px solid rgb(var(--color-border));
   border-radius: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 1.4rem;
+  background: transparent;
 }
 
-.contact-form textarea {
-  resize: vertical;
-}
-
-.button {
+.contact-section .button {
   background: rgb(var(--color-heading));
   color: rgb(var(--color-background));
-  border: none;
-  padding: 1rem 2.5rem;
+  border: 2px solid rgb(var(--color-heading));
+  padding: 0.8rem 2rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
 
-.button:hover {
-  opacity: 0.85;
+.contact-section .button:hover {
+  background: transparent;
+  color: rgb(var(--color-heading));
 }
 
-.form-errors {
+.contact-section .form-errors {
   margin-bottom: 1.5rem;
   padding: 1rem;
   border: 1px solid #b3261e;
   color: #b3261e;
+  font-size: 0.9rem;
 }
 
-.form-success {
+.contact-section .form-success {
   margin-bottom: 1.5rem;
   padding: 1rem;
   border: 1px solid green;
   color: green;
+  font-size: 0.9rem;
 }
 {% endstylesheet %}
 
@@ -255,13 +230,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sidebar_space",
-      "label": "Enable sidebar space",
-      "default": true
+      "content": "Section Settings"
     },
     {
       "type": "color_scheme",
@@ -297,39 +266,9 @@
       "default": "section-light"
     }
   ],
-  "blocks": [
-    {
-      "type": "contact_item",
-      "name": "Contact item",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Call us"
-        },
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "+974 5590 3190"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "Contact Info",
-      "blocks": [
-        { "type": "contact_item" },
-        { "type": "contact_item" },
-        { "type": "contact_item" }
-      ]
+      "name": "Contact Info"
     }
   ]
 }
