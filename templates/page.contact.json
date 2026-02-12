@@ -65,7 +65,7 @@
               "type": "column-item",
               "name": "Column item",
               "settings": {
-                "column_span": 1
+                "column_span": 2
               },
               "blocks": {
                 "video_P9UQfR": {
