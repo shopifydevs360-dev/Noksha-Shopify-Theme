@@ -19,7 +19,7 @@
         "show_two_mobile": true,
         "grid_gap": 20,
         "aspect_ratio": "adapt-to-image",
-        "hover_effect_action": "is-hover-zoom-out",
+        "hover_effect_action": "is-hover-zoom-in",
         "custom_class": "",
         "color_control": "section-light"
       }
