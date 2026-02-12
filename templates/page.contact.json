@@ -44,10 +44,9 @@
                   "type": "video",
                   "name": "Video",
                   "settings": {
-                    "source_type": "external",
+                    "source_type": "hosted",
                     "video": "shopify://files/videos/Sequence 01.MP4",
                     "external_video_url": "https://www.youtube.com/watch?v=5s0Mujwa-r8&list=RD-4P56WbW5W8&index=8",
-                    "custom_thumbnail": "shopify://shop_images/T656-04296.jpg",
                     "aspect_ratio": "cropped-image--square",
                     "custom_height": 460,
                     "autoplay": false,
