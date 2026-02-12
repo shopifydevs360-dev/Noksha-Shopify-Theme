@@ -226,25 +226,3 @@
   color: rgb(var(--color-link-hover));
 }
 
-/* =====================
-   SIDEBAR SPACING
-===================== */
-/* @media (min-width: 991px) {
-  .full-width .footer-sidebar-space {
-    padding-left: 5rem;
-  }
-}
-
-@media (min-width: 991px) and (max-width: 1499px) {
-  .container-fluid .footer-sidebar-space,
-  .container .footer-sidebar-space {
-    padding-left: 7rem;
-  }
-}
-
-@media (min-width: 1500px) {
-  .container-fluid .footer-sidebar-space,
-  .container .footer-sidebar-space {
-    padding-left: 5rem;
-  }
-} */
