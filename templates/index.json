@@ -237,6 +237,38 @@
         "heading_text": "<p>Meet the base you'll build every outfit on.</p>",
         "image": "shopify://shop_images/Gemini_Generated_Image_sskctbsskctbsskc.png"
       }
+    },
+    "store_location_tabs_qyGPTy": {
+      "type": "store-location-tabs",
+      "blocks": {
+        "location_4UeCGn": {
+          "type": "location",
+          "settings": {
+            "tab_title": "",
+            "store_name": "",
+            "location": "",
+            "hours": "",
+            "contact": "",
+            "description": "",
+            "latitude": "25.2651",
+            "longitude": "51.4758"
+          }
+        }
+      },
+      "block_order": [
+        "location_4UeCGn"
+      ],
+      "name": "Store Location Tabs",
+      "settings": {
+        "heading": "Our Store Locations",
+        "description": "",
+        "heading_size": "h2",
+        "text_align": "center",
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "extended",
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
@@ -245,6 +277,7 @@
     "collection_tab_HFCJgQ",
     "image_overlay_grid_Gz6VEw",
     "article_wrapper_tkFWde",
-    "home_intro_LaEWrV"
+    "home_intro_LaEWrV",
+    "store_location_tabs_qyGPTy"
   ]
 }
