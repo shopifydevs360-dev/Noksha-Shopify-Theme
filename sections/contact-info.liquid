@@ -38,12 +38,7 @@
                 {%- when 'store-address' -%}
                     <div class="info-card" {{ block.shopify_attributes }}>
                         <div class="icon">
-                            {% render 'image',
-                                class: 'icon_image',
-                                image: block.settings.image_icon,
-                                crop: 'center',
-                                img_alt: collection.title
-                            %}
+                            {%- render 'theme-icon', icon: 'loca' -%}
                         </div>
                         <div class="info">
                             <h3 class="block-title">{{ block.settings.title }}</h3>
