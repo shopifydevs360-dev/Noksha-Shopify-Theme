@@ -96,7 +96,8 @@ select {
   background-color: var(--color-body-background);
   color: currentcolor;
 }
-input:focus {
+input:focus,
+textarea {
   outline: none;
   border: none;
 }
