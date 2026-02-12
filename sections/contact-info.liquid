@@ -13,23 +13,28 @@
 
       <!-- LEFT SIDE -->
       <div class="contact-info">
+         {% for block in section.blocks %}
+            {%- case block.type -%}
+             {%- when '@app' -%}
+                <div class="info-card" {{ block.shopify_attributes }}>
+                <h3>{{ block.settings.title }}</h3>
+                {% if block.settings.link != blank %}
+                    <p>
+                    <a href="{{ block.settings.link }}">
+                        {{ block.settings.text }}
+                    </a>
+                    </p>
+                {% else %}
+                    <p>{{ block.settings.text }}</p>
+                {% endif %}
+                </div>
+              {%- when 'sub_heading' -%}
+                <div class="info-card" {{ block.shopify_attributes }}>
+                    {% render 'socials-link' %}
+                </div>
 
-        {% for block in section.blocks %}
-          {% if block.type == 'contact_item' %}
-            <div class="info-card" {{ block.shopify_attributes }}>
-              <h3>{{ block.settings.title }}</h3>
-              {% if block.settings.link != blank %}
-                <p>
-                  <a href="{{ block.settings.link }}">
-                    {{ block.settings.text }}
-                  </a>
-                </p>
-              {% else %}
-                <p>{{ block.settings.text }}</p>
-              {% endif %}
-            </div>
-          {% endif %}
-        {% endfor %}
+            {% endcase -%}
+          {% endfor %}
 
         <!-- SOCIAL ICONS -->
         <div class="social-icons">
