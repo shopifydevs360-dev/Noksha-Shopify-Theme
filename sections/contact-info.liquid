@@ -8,109 +8,115 @@
 
 <div class="{{ first_class }}">
   <div class="{{ container_width }} container-wrapper">
+    <div class="inner-section {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
+        <div class="hero-info">
+            <h1 class="hero-title"></h1>
+            
+        </div>
 
-    <div class="contact-wrapper cols-2 {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
+        <div class="contact-wrapper cols-2">
 
-      <!-- LEFT SIDE -->
-      <div class="contact-info">
-         {% for block in section.blocks %}
-            {%- case block.type -%}
-             {%- when 'text-block' -%}
-                <div class="info-card" {{ block.shopify_attributes }}>
-                    <div class="icon">
-                        {% render 'image',
-                            class: 'icon_image',
-                            image: block.settings.image_icon,
-                            crop: 'center',
-                            img_alt: collection.title
-                        %}
+        <!-- LEFT SIDE -->
+        <div class="contact-info">
+            {% for block in section.blocks %}
+                {%- case block.type -%}
+                {%- when 'text-block' -%}
+                    <div class="info-card" {{ block.shopify_attributes }}>
+                        <div class="icon">
+                            {% render 'image',
+                                class: 'icon_image',
+                                image: block.settings.image_icon,
+                                crop: 'center',
+                                img_alt: collection.title
+                            %}
+                        </div>
+                        <div class="info">
+                            <h3 class="block-title">{{ block.settings.title }}</h3>
+                            <p class="block-content">{{ block.settings.text }}</p>
+                        </div>
                     </div>
-                    <div class="info">
-                        <h3 class="block-title">{{ block.settings.title }}</h3>
-                        <p class="block-content">{{ block.settings.text }}</p>
+                {%- when 'socials-link' -%}
+                    <div class="info-card" {{ block.shopify_attributes }}>
+                        {% render 'socials-link' %}
                     </div>
+
+                {% endcase -%}
+            {% endfor %}
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="contact-form">
+
+            {% form 'contact' %}
+
+            {% if form.posted_successfully? %}
+                <div class="form-success">
+                Message sent successfully.
                 </div>
-              {%- when 'socials-link' -%}
-                <div class="info-card" {{ block.shopify_attributes }}>
-                    {% render 'socials-link' %}
+            {% endif %}
+
+            {% if form.errors %}
+                <div class="form-errors">
+                {{ form.errors | default_errors }}
                 </div>
+            {% endif %}
 
-            {% endcase -%}
-          {% endfor %}
-      </div>
-
-
-      <!-- RIGHT SIDE -->
-      <div class="contact-form">
-
-        {% form 'contact' %}
-
-          {% if form.posted_successfully? %}
-            <div class="form-success">
-              Message sent successfully.
+            <div class="field">
+                <label for="ContactName">Full name</label>
+                <input
+                type="text"
+                id="ContactName"
+                name="contact[name]"
+                value="{{ form.name }}"
+                placeholder="Enter your full name"
+                required
+                >
             </div>
-          {% endif %}
 
-          {% if form.errors %}
-            <div class="form-errors">
-              {{ form.errors | default_errors }}
+            <div class="field">
+                <label for="ContactEmail">Email</label>
+                <input
+                type="email"
+                id="ContactEmail"
+                name="contact[email]"
+                value="{{ form.email }}"
+                placeholder="Enter your email address"
+                required
+                >
             </div>
-          {% endif %}
 
-          <div class="field">
-            <label for="ContactName">Full name</label>
-            <input
-              type="text"
-              id="ContactName"
-              name="contact[name]"
-              value="{{ form.name }}"
-              placeholder="Enter your full name"
-              required
-            >
-          </div>
+            <div class="field">
+                <label for="ContactSubject">Subject</label>
+                <input
+                type="text"
+                id="ContactSubject"
+                name="contact[subject]"
+                placeholder="Enter subject"
+                required
+                >
+            </div>
 
-          <div class="field">
-            <label for="ContactEmail">Email</label>
-            <input
-              type="email"
-              id="ContactEmail"
-              name="contact[email]"
-              value="{{ form.email }}"
-              placeholder="Enter your email address"
-              required
-            >
-          </div>
+            <div class="field">
+                <label for="ContactMessage">Message</label>
+                <textarea
+                id="ContactMessage"
+                name="contact[body]"
+                rows="6"
+                placeholder="Write your message here"
+                required
+                ></textarea>
+            </div>
 
-          <div class="field">
-            <label for="ContactSubject">Subject</label>
-            <input
-              type="text"
-              id="ContactSubject"
-              name="contact[subject]"
-              placeholder="Enter subject"
-              required
-            >
-          </div>
+            <button type="submit" class="button">
+                Send message
+            </button>
 
-          <div class="field">
-            <label for="ContactMessage">Message</label>
-            <textarea
-              id="ContactMessage"
-              name="contact[body]"
-              rows="6"
-              placeholder="Write your message here"
-              required
-            ></textarea>
-          </div>
+            {% endform %}
 
-          <button type="submit" class="button">
-            Send message
-          </button>
+        </div>
 
-        {% endform %}
-
-      </div>
-
+        </div>
     </div>
   </div>
 </div>
