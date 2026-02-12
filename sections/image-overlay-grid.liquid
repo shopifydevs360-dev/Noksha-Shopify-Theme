@@ -13,12 +13,17 @@
         {% liquid
           assign button_class = 'btn ' | append: block.settings.button_type
 
-          assign image_wapper_classes = ''
-          unless block.settings.aspect_ratio == 'adapt-to-image'
-            assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
-            assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.aspect_ratio
-          endunless
-          assign image_wapper_classes = image_wapper_classes | append :' ' | append : block.settings.hover_effect_action
+        assign image_wapper_classes = 'image cropped-image-wrapper'
+
+        if block.settings.aspect_ratio == 'adapt-to-image'
+          assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+        else
+          assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.aspect_ratio
+        endif
+
+        if block.settings.hover_effect_action != 'no-effect'
+          assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
+        endif
         %}
 
         <div class="grid-item" {{ block.shopify_attributes }}>
