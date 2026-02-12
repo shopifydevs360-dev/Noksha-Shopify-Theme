@@ -47,9 +47,10 @@
       {% if controls %}controls{% endif %}
       playsinline
     >
-      {% for source in video.sources %}
-        <source src="{{ source.url }}" type="{{ source.mime_type }}">
-      {% endfor %}
+    {% for source in video.sources %}
+    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+    {% endfor %}
+
     </video>
 
   {% elsif external_video_url != blank %}
