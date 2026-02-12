@@ -75,9 +75,10 @@
                     "source_type": "hosted",
                     "video": "shopify://files/videos/Sequence 01.MP4",
                     "external_video_url": "",
+                    "custom_thumbnail": "shopify://shop_images/404_background.jpg",
                     "aspect_ratio": "cropped-image--square",
                     "custom_height": 460,
-                    "autoplay": true,
+                    "autoplay": false,
                     "loop": false,
                     "muted": false,
                     "controls": true
