@@ -16,15 +16,17 @@
   else
     assign video_wrapper_classes = video_wrapper_classes | append: ' ' | append: block.settings.aspect_ratio
   endif
-%}
 
-{% if block.settings.source_type == 'hosted' and block.settings.video %}
-  {% assign show_video = true %}
-{% elsif block.settings.source_type == 'external' and block.settings.external_video_url != blank %}
-  {% assign show_video = true %}
-{% else %}
-  {% assign show_video = false %}
-{% endif %}
+  assign show_video = false
+
+  if block.settings.source_type == 'hosted' and block.settings.video != blank
+    assign show_video = true
+  endif
+
+  if block.settings.source_type == 'external' and block.settings.external_video_url != blank
+    assign show_video = true
+  endif
+%}
 
 {% if show_video %}
 
@@ -43,6 +45,7 @@
     %}
 
   </div>
+
 {% endif %}
 
 {% schema %}
