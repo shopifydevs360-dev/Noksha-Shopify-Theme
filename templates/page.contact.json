@@ -63,10 +63,42 @@
               "block_order": [
                 "video_eh4wbp"
               ]
+            },
+            "column_item_yhjA94": {
+              "type": "column-item",
+              "name": "Column item",
+              "settings": {
+                "column_span": 1
+              },
+              "blocks": {
+                "video_P9UQfR": {
+                  "type": "video",
+                  "name": "Video",
+                  "settings": {
+                    "video": "shopify://files/videos/Sequence 01.MP4",
+                    "external_video_url": "",
+                    "aspect_ratio": "custom-height",
+                    "custom_height": 460,
+                    "autoplay": true,
+                    "loop": false,
+                    "muted": false,
+                    "controls": true,
+                    "hover_effect_action": "no-effect",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
+                    "alignment": "center"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "video_P9UQfR"
+              ]
             }
           },
           "block_order": [
-            "column_item_EQMBL8"
+            "column_item_EQMBL8",
+            "column_item_yhjA94"
           ]
         },
         "contact_form_fYPbYp": {
