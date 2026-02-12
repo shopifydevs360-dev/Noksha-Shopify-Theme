@@ -10,12 +10,11 @@
   <div class="{{ container_width }} container-wrapper">
     <div class="inner-section {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
         <div class="hero-info">
-            <h1 class="hero-title"></h1>
-            
+            <h1 class="hero-title">{{ section.settings.hero_title }}</h1>
+            {{ section.settings.hero_description }}
         </div>
 
         <div class="contact-wrapper cols-2">
-
         <!-- LEFT SIDE -->
         <div class="contact-info">
             {% for block in section.blocks %}
