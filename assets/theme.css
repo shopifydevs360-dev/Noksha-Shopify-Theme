@@ -694,35 +694,76 @@ button:disabled,
 }
 
 
-/* ------------------------------
-  Video
-------------------------------- */
-.video {
+/* =========================================
+   Video Wrapper Base
+========================================= */
+
+.cropped-video-wrapper {
   position: relative;
   width: 100%;
-}
-
-.video video,
-.video iframe {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.video-embed {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* 16:9 default */
   height: 0;
   overflow: hidden;
 }
+.cropped-video-wrapper.cropped-image--square {
+  padding-bottom: 100%;
+}
 
-.video-embed iframe {
+.cropped-video-wrapper.cropped-image--portrait {
+  padding-bottom: 135%;
+}
+
+.cropped-video-wrapper.cropped-image--portrait-tall {
+  padding-bottom: 150%;
+}
+
+.cropped-video-wrapper.cropped-image--landscape {
+  padding-bottom: 75%;
+}
+
+.cropped-video-wrapper.cropped-image--wide {
+  padding-bottom: 56.25%;
+}
+.cropped-video-wrapper video,
+.cropped-video-wrapper iframe {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
   width: 100%;
   height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
 }
+.cropped-video-wrapper.adapt-video-height {
+  height: auto;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.cropped-video-wrapper.adapt-video-height video,
+.cropped-video-wrapper.adapt-video-height iframe {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  height: auto;
+}
+.cropped-video-wrapper.custom-height-video {
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.cropped-video-wrapper.custom-height-video video,
+.cropped-video-wrapper.custom-height-video iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
 
 /* ------------------------------
    Grid Item
