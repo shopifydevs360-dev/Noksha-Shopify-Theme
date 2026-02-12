@@ -22,21 +22,55 @@
     "contact_info_9nBaBC": {
       "type": "contact-info",
       "blocks": {
+        "store_address_6pgctH": {
+          "type": "store-address",
+          "settings": {
+            "title": "Store Location",
+            "content": ""
+          }
+        },
         "text_block_HMwjCw": {
           "type": "text-block",
           "settings": {
             "title": "Call us",
             "content": ""
           }
+        },
+        "email_8Rjyhm": {
+          "type": "email",
+          "settings": {
+            "title": "Email",
+            "content": ""
+          }
+        },
+        "whatsapp_DpVxbi": {
+          "type": "whatsapp",
+          "settings": {
+            "title": "Whatsapp",
+            "content": "<p>0152365410</p>"
+          }
+        },
+        "socials_link_8YHiB7": {
+          "type": "socials-link",
+          "settings": {
+            "title": "Follow Us"
+          }
         }
       },
       "block_order": [
-        "text_block_HMwjCw"
+        "store_address_6pgctH",
+        "text_block_HMwjCw",
+        "email_8Rjyhm",
+        "whatsapp_DpVxbi",
+        "socials_link_8YHiB7"
       ],
       "name": "Contact Info",
       "settings": {
+        "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "container_width": "extended",
+        "padding_top": 40,
+        "padding_bottom": 52,
         "custom_class": "",
         "color_control": "section-light"
       }
