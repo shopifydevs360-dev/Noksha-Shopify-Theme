@@ -1,74 +1,76 @@
 {% doc %}
-  Renders a responsive Shopify-hosted video that might be wrapped in a link,
-  similar to the `image` snippet you provided.
+  Responsive Video Snippet
 
-  This snippet expects a Shopify media object (for example, a `video` picked
-  from a block/section setting or `product.media[0]`). It uses `media_tag`
-  to output the video element.
-
-  @param {object} media - A Shopify media object of type `video`.
-  @param {string} [link_url] - An optional destination URL for the wrapper link.
-  @param {string} [wrapper_class] - Optional class to be added to the video wrapper.
-  @param {number} [max_width] - The maximum width of the video to be rendered.
-  @param {number} [max_height] - The maximum height of the video to be rendered (used for layout only).
-  @param {string} [wrapper_style] - Custom inline style for the wrapper.
+  @param {video} [video] - Shopify hosted video object
+  @param {string} [external_video_url] - YouTube or Vimeo URL
+  @param {string} [url] - Optional wrapper link
+  @param {string} [class] - Custom wrapper class
+  @param {string} [style] - Inline wrapper style
+  @param {boolean} [autoplay]
+  @param {boolean} [loop]
+  @param {boolean} [muted]
+  @param {boolean} [controls]
 
   @example
-  {% render 'video', media: product.media[0] %}
-  {% render 'video', media: product.media[0], link_url: product.url %}
-  {% render 'video',
-    wrapper_class: 'product__video {{ section.settings.video_wrapper_class }}',
-    media: product.media[0],
-    link_url: product.url,
-    max_width: 1200,
-    max_height: 800
-  %}
+  {% render 'video', video: section.settings.video %}
+  {% render 'video', external_video_url: block.settings.video_url %}
 {% enddoc %}
 
 {% liquid
-  unless max_height
-    assign max_width = max_width | default: media.width
-  endunless
-
-  if link_url
-    assign wrapper_tag = 'a'
+  if url
+    assign wrapper = 'a'
   else
-    assign wrapper_tag = 'div'
+    assign wrapper = 'div'
   endif
 
-  assign wrapper_style_value = wrapper_style | default: ''
+  assign wrapper_style = style | default: ''
 %}
 
-<{{ wrapper_tag }}
-  class="video-wrapper {{ wrapper_class }}"
-  {% if link_url %}
-    href="{{ link_url }}"
+<{{ wrapper }}
+  class="video {{ class }}"
+  {% if url %}
+    href="{{ url }}"
   {% endif %}
-  {% if wrapper_style_value != blank %}
-    style="{{ wrapper_style_value }}"
+  {% if wrapper_style != blank %}
+    style="{{ wrapper_style }}"
   {% endif %}
 >
-  {{ media
-    | media_tag:
-      image_size: max_width,
-      controls: true,
-      playsinline: true
-  }}
-</{{ wrapper_tag }}>
 
-{% stylesheet %}
-  .video-wrapper {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-  }
+  {% if video %}
+    {{ video
+      | video_tag:
+        autoplay: autoplay,
+        loop: loop,
+        muted: muted,
+        controls: controls,
+        playsinline: true
+    }}
 
-  .video-wrapper video,
-  .video-wrapper iframe {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-{% endstylesheet %}
+  {% elsif external_video_url != blank %}
+
+    {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
+      {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
+      <div class="video-embed">
+        <iframe
+          src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+    {% elsif external_video_url contains 'vimeo.com' %}
+      {% assign video_id = external_video_url | split: '/' | last %}
+      <div class="video-embed">
+        <iframe
+          src="https://player.vimeo.com/video/{{ video_id }}"
+          frameborder="0"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+        ></iframe>
+      </div>
+    {% endif %}
+
+  {% endif %}
+
+</{{ wrapper }}>
