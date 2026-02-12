@@ -15,7 +15,7 @@
       <div class="contact-info">
          {% for block in section.blocks %}
             {%- case block.type -%}
-             {%- when '@app' -%}
+             {%- when 'text-block' -%}
                 <div class="info-card" {{ block.shopify_attributes }}>
                     <h3 class="block-title">{{ block.settings.title }}</h3>
                     <p class="block-content">{{ block.settings.text }}</p>
