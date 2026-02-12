@@ -21,6 +21,19 @@
     },
     "custom_section_wRjnmj": {
       "type": "custom-section",
+      "blocks": {
+        "column_item_Jy7rUY": {
+          "type": "column-item",
+          "name": "Column item",
+          "settings": {
+            "column_span": 1
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "column_item_Jy7rUY"
+      ],
       "name": "Custom Section",
       "settings": {
         "container_width": "container",
