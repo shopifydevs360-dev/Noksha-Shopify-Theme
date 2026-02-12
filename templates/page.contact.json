@@ -75,7 +75,7 @@
         "background_style": "solid",
         "background_color": "#ffffff",
         "background_gradient": "linear-gradient(180deg, #ffffff, #000000)",
-        "custom_section_color_scheme": "",
+        "custom_section_color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "padding_y": 60,
         "padding_x": 30,
         "custom_class": "",
