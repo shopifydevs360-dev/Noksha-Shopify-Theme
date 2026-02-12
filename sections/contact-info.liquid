@@ -24,10 +24,10 @@
                     <div class="info-card" {{ block.shopify_attributes }}>
                         <div class="icon">
                             {% render 'image',
-                                class: 'icon_image',
-                                image: block.settings.image_icon,
-                                crop: 'center',
-                                img_alt: collection.title
+                            class: 'icon_image',
+                            image: block.settings.image_icon,
+                            crop: 'center',
+                            img_alt: block.settings.title
                             %}
                         </div>
                         <div class="info">
