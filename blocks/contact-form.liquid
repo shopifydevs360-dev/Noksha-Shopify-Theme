@@ -1,0 +1,249 @@
+{% doc %}
+  Contact Form Block
+{% enddoc %}
+
+<div class="contact-form-block" {{ block.shopify_attributes }}>
+
+  {% form 'contact', class: 'contact-form' %}
+
+    {% if form.posted_successfully? %}
+      <div class="form-success">
+        {{ block.settings.success_message }}
+      </div>
+    {% endif %}
+
+    {% if form.errors %}
+      <div class="form-errors">
+        {{ form.errors | default_errors }}
+      </div>
+    {% endif %}
+
+    <div class="form-fields">
+
+      {% if block.settings.show_name %}
+        <div class="form-field">
+          <input
+            type="text"
+            name="contact[name]"
+            placeholder="{{ block.settings.name_label }}"
+            required
+          >
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_email %}
+        <div class="form-field">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="{{ block.settings.email_label }}"
+            required
+          >
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_phone %}
+        <div class="form-field">
+          <input
+            type="tel"
+            name="contact[phone]"
+            placeholder="{{ block.settings.phone_label }}"
+          >
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_subject %}
+        <div class="form-field">
+          <input
+            type="text"
+            name="contact[subject]"
+            placeholder="{{ block.settings.subject_label }}"
+          >
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_message %}
+        <div class="form-field">
+          <textarea
+            name="contact[body]"
+            placeholder="{{ block.settings.message_label }}"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_checkbox %}
+        <div class="form-field checkbox-field">
+          <label>
+            <input type="checkbox" required>
+            {{ block.settings.checkbox_label }}
+          </label>
+        </div>
+      {% endif %}
+
+      <div class="form-field">
+        <button type="submit" class="btn {{ block.settings.button_style }}">
+          {{ block.settings.button_label }}
+        </button>
+      </div>
+
+    </div>
+
+  {% endform %}
+
+</div>
+
+{% stylesheet %}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: #000;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-success {
+  color: green;
+  margin-bottom: 15px;
+}
+
+.form-errors {
+  color: red;
+  margin-bottom: 15px;
+}
+
+{% endstylesheet %}
+{% schema %}
+{
+  "name": "Contact Form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Fields"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_name",
+      "label": "Show name field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Show email field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone field",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subject",
+      "label": "Show subject field",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_message",
+      "label": "Show message field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_checkbox",
+      "label": "Show agreement checkbox",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "checkbox_label",
+      "label": "Checkbox label",
+      "default": "I agree to the terms"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name placeholder",
+      "default": "Your name"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email placeholder",
+      "default": "Your email"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone placeholder",
+      "default": "Phone number"
+    },
+    {
+      "type": "text",
+      "id": "subject_label",
+      "label": "Subject placeholder",
+      "default": "Subject"
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message placeholder",
+      "default": "Your message"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button text",
+      "default": "Send message"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "btn--primary", "label": "Primary" },
+        { "value": "btn--secondary", "label": "Secondary" },
+        { "value": "btn--underline", "label": "Underline" }
+      ],
+      "default": "btn--primary"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thank you. We will contact you soon."
+    }
+  ]
+}
+
+{% endschema %}
