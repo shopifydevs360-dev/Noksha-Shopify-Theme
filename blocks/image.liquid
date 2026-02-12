@@ -34,13 +34,15 @@
     {{ block.shopify_attributes }}
   >
 
-    {% render 'image',
-      image: image,
-      mobile_image: block.settings.image_mobile,
-      url: block.settings.link,
-      class: image_wapper_classes,
-      img_alt: block.settings.alt_text
-    %}
+  {% render 'image',
+    image: image,
+    mobile_image: block.settings.image_mobile,
+    url: block.settings.link,
+    class: image_wapper_classes,
+    img_alt: block.settings.alt_text,
+    style: wrapper_style
+  %}
+
 
   </div>
 
@@ -91,8 +93,20 @@
         { "value": "cropped-image--portrait", "label": "Portrait" },
         { "value": "cropped-image--portrait-tall", "label": "Portrait tall" },
         { "value": "cropped-image--landscape", "label": "Landscape" },
-        { "value": "cropped-image--wide", "label": "Wide (16:9)" }
+        { "value": "cropped-image--wide", "label": "Wide (16:9)" },
+        { "value": "custom-height", "label": "Custom height" }
       ]
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "Custom height (px)",
+      "min": 100,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 400,
+      "visible_if": "{{ block.settings.aspect_ratio == 'custom-height' }}"
     },
     {
       "type": "header",
