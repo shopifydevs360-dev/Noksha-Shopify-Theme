@@ -3,9 +3,6 @@
 {% enddoc %}
 
 {% liquid
-  assign video = block.settings.video
-  assign external_video_url = block.settings.external_video_url
-
   assign video_wrapper_classes = 'cropped-video-wrapper'
   assign wrapper_style = ''
 
@@ -21,41 +18,67 @@
   endif
 %}
 
-{% if video or external_video_url != blank %}
+{% if block.settings.source_type == 'hosted' and block.settings.video %}
+  {% assign show_video = true %}
+{% elsif block.settings.source_type == 'external' and block.settings.external_video_url != blank %}
+  {% assign show_video = true %}
+{% else %}
+  {% assign show_video = false %}
+{% endif %}
 
-  <div
-    class="block-video"
-    {{ block.shopify_attributes }}
-  >
+{% if show_video %}
+
+  <div class="block-video" {{ block.shopify_attributes }}>
 
     {% render 'video',
-      video: video,
-      external_video_url: external_video_url,
+      video: block.settings.video,
+      external_video_url: block.settings.external_video_url,
       class: video_wrapper_classes,
       style: wrapper_style,
       autoplay: block.settings.autoplay,
       loop: block.settings.loop,
       muted: block.settings.muted,
-      controls: block.settings.controls
+      controls: block.settings.controls,
+      custom_thumbnail: block.settings.custom_thumbnail
     %}
 
   </div>
-
 {% endif %}
 
 {% schema %}
 {
   "name": "Video",
   "settings": [
+
+    {
+      "type": "select",
+      "id": "source_type",
+      "label": "Video source",
+      "default": "hosted",
+      "options": [
+        { "value": "hosted", "label": "Shopify hosted video" },
+        { "value": "external", "label": "External video URL" }
+      ]
+    },
+
     {
       "type": "video",
       "id": "video",
-      "label": "Shopify hosted video"
+      "label": "Shopify hosted video",
+      "visible_if": "{{ block.settings.source_type == 'hosted' }}"
     },
+
     {
       "type": "text",
       "id": "external_video_url",
-      "label": "External video URL (YouTube/Vimeo)"
+      "label": "External video URL (YouTube/Vimeo)",
+      "visible_if": "{{ block.settings.source_type == 'external' }}"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "custom_thumbnail",
+      "label": "Custom thumbnail image"
     },
 
     {
@@ -94,8 +117,15 @@
     },
     { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false },
     { "type": "checkbox", "id": "loop", "label": "Loop", "default": false },
-    { "type": "checkbox", "id": "muted", "label": "Muted", "default": true },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Muted",
+      "default": true,
+      "visible_if": "{{ block.settings.autoplay == false }}"
+    },
     { "type": "checkbox", "id": "controls", "label": "Show controls", "default": true }
+
   ],
   "presets": [
     { "name": "Video" }
