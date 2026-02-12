@@ -44,8 +44,10 @@
                   "type": "video",
                   "name": "Video",
                   "settings": {
+                    "source_type": "hosted",
                     "video": "shopify://files/videos/Sequence 01.MP4",
                     "external_video_url": "",
+                    "custom_thumbnail": "shopify://shop_images/T656-04296.jpg",
                     "aspect_ratio": "cropped-image--square",
                     "custom_height": 460,
                     "autoplay": false,
@@ -71,6 +73,7 @@
                   "type": "video",
                   "name": "Video",
                   "settings": {
+                    "source_type": "hosted",
                     "video": "shopify://files/videos/Sequence 01.MP4",
                     "external_video_url": "",
                     "aspect_ratio": "cropped-image--square",
