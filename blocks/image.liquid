@@ -1,12 +1,17 @@
+{% doc %}
+  Advanced Image Block
+{% enddoc %}
+
 {% liquid
   assign image = block.settings.image
 
-  assign image_wapper_classes = 'image'
+  assign image_wapper_classes = 'image cropped-image-wrapper'
 
-  unless block.settings.aspect_ratio == 'adapt-to-image'
-    assign image_wapper_classes = image_wapper_classes | append: ' cropped-image-wrapper'
+  if block.settings.aspect_ratio == 'adapt-to-image'
+    assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+  else
     assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.aspect_ratio
-  endunless
+  endif
 
   if block.settings.hover_effect_action != 'no-effect'
     assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
@@ -19,11 +24,13 @@
 %}
 
 {% if image != blank %}
+
   <div
     class="block-image"
     style="{{ custom_width_style }} text-align: {{ block.settings.alignment }};"
     {{ block.shopify_attributes }}
   >
+
     {% render 'image',
       image: image,
       mobile_image: block.settings.image_mobile,
@@ -31,14 +38,12 @@
       class: image_wapper_classes,
       img_alt: block.settings.alt_text
     %}
+
   </div>
+
 {% endif %}
 
-
-
 {% stylesheet %}
-
-
 .block-image__media {
   max-width: 100%;
 }
@@ -124,8 +129,7 @@
       "max": 100,
       "step": 5,
       "default": 100,
-      "unit": "%",
-      "visible_if": "{{ block.settings.enable_custom_width }}"
+      "unit": "%"
     },
     {
       "type": "select",
@@ -136,13 +140,11 @@
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
-      ],
-      "visible_if": "{{ block.settings.enable_custom_width }}"
+      ]
     }
   ],
   "presets": [
     { "name": "Image" }
   ]
 }
-
 {% endschema %}
