@@ -5,11 +5,13 @@
 
   assign container_width = section.settings.container_width
 
-  assign image_wapper_classes = ''
-  unless section.settings.aspect_ratio == 'adapt-to-image'
-    assign image_wapper_classes = image_wapper_classes | append: 'cropped-image-wrapper'
-    assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.aspect_ratio
-  endunless
+  assign image_wapper_classes = 'image cropped-image-wrapper'
+  if section.settings.aspect_ratio == 'adapt-to-image'
+    assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+  else
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: section.settings.aspect_ratio
+  endif
+
   assign image_wapper_classes = image_wapper_classes | append :' ' | append : section.settings.hover_effect_action
 %}
 <div class="{{ first_class }}">
