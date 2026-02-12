@@ -17,24 +17,23 @@
     assign video_wrapper_classes = video_wrapper_classes | append: ' ' | append: block.settings.aspect_ratio
   endif
 
-  assign show_video = false
+  assign render_video = blank
+  assign render_external = blank
 
-  if block.settings.source_type == 'hosted' and block.settings.video != blank
-    assign show_video = true
-  endif
-
-  if block.settings.source_type == 'external' and block.settings.external_video_url != blank
-    assign show_video = true
+  if block.settings.source_type == 'hosted'
+    assign render_video = block.settings.video
+  elsif block.settings.source_type == 'external'
+    assign render_external = block.settings.external_video_url
   endif
 %}
 
-{% if show_video %}
+{% if render_video != blank or render_external != blank %}
 
   <div class="block-video" {{ block.shopify_attributes }}>
 
     {% render 'video',
-      video: block.settings.video,
-      external_video_url: block.settings.external_video_url,
+      video: render_video,
+      external_video_url: render_external,
       class: video_wrapper_classes,
       style: wrapper_style,
       autoplay: block.settings.autoplay,
@@ -47,6 +46,7 @@
   </div>
 
 {% endif %}
+
 
 {% schema %}
 {
