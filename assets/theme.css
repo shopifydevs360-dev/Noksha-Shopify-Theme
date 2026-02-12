@@ -704,6 +704,8 @@ button:disabled,
   height: 0;
   overflow: hidden;
 }
+
+/* Ratio Modifiers */
 .cropped-video-wrapper.cropped-image--square {
   padding-bottom: 100%;
 }
@@ -723,46 +725,58 @@ button:disabled,
 .cropped-video-wrapper.cropped-image--wide {
   padding-bottom: 56.25%;
 }
+
+/* Make video fill container */
 .cropped-video-wrapper video,
 .cropped-video-wrapper iframe {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 0;
   width: 100%;
   height: 100%;
-  transform: translate(-50%, -50%);
   object-fit: cover;
 }
+
+/* =========================================
+   Adapt Mode (Natural Height)
+========================================= */
+
 .cropped-video-wrapper.adapt-video-height {
   height: auto;
   padding-bottom: 0;
-  overflow: hidden;
 }
 
-.cropped-video-wrapper.adapt-video-height video,
+.cropped-video-wrapper.adapt-video-height video {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .cropped-video-wrapper.adapt-video-height iframe {
   position: relative;
-  top: auto;
-  left: auto;
-  transform: none;
+  inset: auto;
   width: 100%;
   height: auto;
 }
+
+/* =========================================
+   Custom Height Mode
+========================================= */
+
 .cropped-video-wrapper.custom-height-video {
   padding-bottom: 0;
-  overflow: hidden;
 }
 
 .cropped-video-wrapper.custom-height-video video,
 .cropped-video-wrapper.custom-height-video iframe {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 0;
   width: 100%;
   height: 100%;
-  transform: translate(-50%, -50%);
   object-fit: cover;
 }
+
 
 
 /* ------------------------------
