@@ -541,8 +541,33 @@ button:disabled,
   overflow: hidden;
 }
 
-/* Base image behavior */
-.cropped-image-wrapper img {
+/* =========================================
+   Adapt to Image (Natural Height)
+   ========================================= */
+
+.cropped-image-wrapper.adapt-image-height {
+  height: auto;
+  padding-bottom: 0;
+  overflow: visible;
+}
+
+.cropped-image-wrapper.adapt-image-height img {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  object-fit: unset;
+}
+
+/* =========================================
+   Base Cropped Image Behavior
+   ========================================= */
+
+.cropped-image-wrapper:not(.adapt-image-height) img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -554,42 +579,40 @@ button:disabled,
   height: 100%;
   transition: transform 0.8s cubic-bezier(0,0,0.002,1), opacity 0.4s ease;
 }
+
 /* =========================================
    Image Aspect Ratio Modifiers
    ========================================= */
 
-/* Square (1:1) */
 .cropped-image--square {
   padding-bottom: 100%;
 }
 
-/* Portrait (4:5) */
 .cropped-image--portrait {
   padding-bottom: 135%;
 }
 
-/* Tall Portrait (e.g. fashion) */
 .cropped-image--portrait-tall {
   padding-bottom: 150%;
 }
 
-/* Landscape (4:3) */
 .cropped-image--landscape {
   padding-bottom: 75%;
 }
 
-/* Wide (16:9) */
 .cropped-image--wide {
   padding-bottom: 56.25%;
 }
 
 /* =========================================
-   Image Hover Effect
+   Image Hover Effects
    ========================================= */
-   /* Zoom (soft) */
+
+/* Zoom in */
 .image.is-hover-zoom-in:hover img {
   transform: translate(-50%, -50%) scale(1.08);
 }
+
 /* Zoom Out */
 .image.is-hover-zoom-out img {
   transform: translate(-50%, -50%) scale(1.08);
@@ -597,32 +620,34 @@ button:disabled,
 .image.is-hover-zoom-out:hover img {
   transform: translate(-50%, -50%) scale(1);
 }
+
 /* Zoom + slide up */
 .image.is-hover-zoom-up:hover img {
   transform: translate(-50%, -55%) scale(1.08);
 }
-/* Fade in (good for secondary images) */
+
+/* Fade */
 .image.is-hover-fade img {
   opacity: 0.85;
 }
-
 .image.is-hover-fade:hover img {
   opacity: 1;
 }
-/* Slow cinematic zoom (luxury feel) */
+
+/* Cinematic */
 .image.is-hover-cinematic img {
   transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .image.is-hover-cinematic:hover img {
   transform: translate(-50%, -50%) scale(1.12);
 }
-/* Parallax-style drift */
+
+/* Drift */
 .image.is-hover-drift:hover img {
   transform: translate(-48%, -52%) scale(1.1);
 }
-/* =========================== */
-/* Dark overlay on hover */
+
+/* Overlay */
 .image.is-hover-overlay::after {
   content: '';
   position: absolute;
@@ -632,10 +657,10 @@ button:disabled,
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
-
 .image.is-hover-overlay:hover::after {
   opacity: 1;
 }
+
 /* ------------------------------
    Grid Item
 ------------------------------- */
