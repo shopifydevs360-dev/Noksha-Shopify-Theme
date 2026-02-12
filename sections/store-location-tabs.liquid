@@ -62,3 +62,172 @@
     </div>
   </div>
 </div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const section = document.getElementById("store-location-{{ section.id }}");
+  if (!section) return;
+
+  const buttons = section.querySelectorAll(".tab-button");
+  const contents = section.querySelectorAll(".tab-content");
+  let maps = {};
+
+  function openTab(button) {
+    const tabId = button.dataset.tab;
+
+    contents.forEach(c => c.classList.remove("active"));
+    buttons.forEach(b => b.classList.remove("active"));
+
+    button.classList.add("active");
+    const activeTab = section.querySelector("#" + tabId);
+    activeTab.classList.add("active");
+
+    initializeMap(activeTab);
+  }
+
+  function initializeMap(tab) {
+    const mapContainer = tab.querySelector(".map-container");
+    const mapId = mapContainer.id;
+
+    if (maps[mapId]) {
+      setTimeout(() => maps[mapId].invalidateSize(), 100);
+      return;
+    }
+
+    const lat = parseFloat(mapContainer.dataset.lat);
+    const lng = parseFloat(mapContainer.dataset.lng);
+    const title = mapContainer.dataset.title;
+
+    const map = L.map(mapId).setView([lat, lng], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([lat, lng]).addTo(map).bindPopup(title).openPopup();
+
+    maps[mapId] = map;
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener("click", function () {
+      openTab(this);
+    });
+  });
+
+  // Init first tab
+  const firstTab = section.querySelector(".tab-content.active");
+  if (firstTab) initializeMap(firstTab);
+
+});
+</script>
+{% stylesheet %}
+.store-location-section .tabs {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.store-location-section .tab-button {
+  flex: 1;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.store-location-section .tab-button.active {
+  border-bottom: 3px solid rgb(var(--color-heading));
+  font-weight: 600;
+}
+
+.store-location-section .tab-content {
+  display: none;
+  gap: 3rem;
+  padding: 2rem 0;
+}
+
+.store-location-section .tab-content.active {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.store-location-section .location-info {
+  flex: 1;
+  min-width: 280px;
+}
+
+.store-location-section .map-container {
+  flex: 1;
+  min-width: 300px;
+  height: 400px;
+}
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Store Location Tabs",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Store Locations" },
+    { "type": "richtext", "id": "description", "label": "Description" },
+    { "type": "select", "id": "heading_size", "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" }
+      ],
+      "default": "h2"
+    },
+    { "type": "select", "id": "text_align", "label": "Text align",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" },
+    { "type": "select", "id": "container_width", "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "extended"
+    },
+    { "type": "text", "id": "custom_class", "label": "Custom class" },
+    { "type": "select", "id": "color_control", "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "location",
+      "name": "Store Location",
+      "settings": [
+        { "type": "text", "id": "tab_title", "label": "Tab Title" },
+        { "type": "text", "id": "store_name", "label": "Store Name" },
+        { "type": "text", "id": "location", "label": "Location" },
+        { "type": "text", "id": "hours", "label": "Opening Hours" },
+        { "type": "text", "id": "contact", "label": "Contact" },
+        { "type": "richtext", "id": "description", "label": "Description" },
+        { "type": "text", "id": "latitude", "label": "Latitude" },
+        { "type": "text", "id": "longitude", "label": "Longitude" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Store Location Tabs" }
+  ]
+}
+
+{% endschema %}
