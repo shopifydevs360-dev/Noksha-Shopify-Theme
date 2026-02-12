@@ -177,9 +177,16 @@
     margin-bottom: 4rem;
 }
 .contact-section .contact-wrapper {
-    gap: 5rem;
+    gap: 3rem;
     display: flex;
     width: 100%;
+    flex-direction: column;
+}
+@media (min-width: 991px) {
+    .contact-section .contact-wrapper {
+        gap: 5rem;
+        flex-direction: row;
+    }
 }
 .contact-section .contact-form,
 .contact-section .contact-info{
