@@ -51,11 +51,7 @@
                     "autoplay": true,
                     "loop": false,
                     "muted": false,
-                    "controls": true,
-                    "hover_effect_action": "no-effect",
-                    "enable_custom_width": false,
-                    "custom_width": 100,
-                    "alignment": "center"
+                    "controls": true
                   },
                   "blocks": {}
                 }
@@ -77,16 +73,12 @@
                   "settings": {
                     "video": "shopify://files/videos/Sequence 01.MP4",
                     "external_video_url": "",
-                    "aspect_ratio": "custom-height",
+                    "aspect_ratio": "cropped-image--square",
                     "custom_height": 460,
                     "autoplay": true,
                     "loop": false,
                     "muted": false,
-                    "controls": true,
-                    "hover_effect_action": "no-effect",
-                    "enable_custom_width": false,
-                    "custom_width": 100,
-                    "alignment": "center"
+                    "controls": true
                   },
                   "blocks": {}
                 }
