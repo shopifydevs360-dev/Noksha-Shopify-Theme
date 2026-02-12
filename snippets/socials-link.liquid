@@ -1,0 +1,28 @@
+<div class="social-icons">
+    <ul class="social-icons-list">
+    {% if settings.social_facebook_link != blank %}
+    <li><a href="{{ settings.social_facebook_link }}" class="color-control" aria-label="Facebook">{%- render 'theme-icon', icon: 'facebook' -%}</a></li>
+    {% endif %}
+    {% if settings.social_twitter_link != blank %}
+    <li><a href="{{ settings.social_twitter_link }}" class="color-control" aria-label="Twitter">{%- render 'theme-icon', icon: 'twitter' -%}</a></li>
+    {% endif %}
+    {% if settings.social_instagram_link != blank %}
+    <li><a href="{{ settings.social_instagram_link }}" class="color-control" aria-label="Instagram">{%- render 'theme-icon', icon: 'instagram' -%}</a></li>
+    {% endif %}
+    {% if settings.social_linkedin_link != blank %}
+    <li><a href="{{ settings.social_linkedin_link }}" class="color-control" aria-label="LinkedIn">{%- render 'theme-icon', icon: 'linkedin' -%}</a></li>
+    {% endif %}
+    {% if settings.social_youtube_link != blank %}
+    <li><a href="{{ settings.social_youtube_link }}" class="color-control" aria-label="YouTube">{%- render 'theme-icon', icon: 'youtube' -%}</a></li>
+    {% endif %}
+    {% if settings.social_tiktok_link != blank %}
+    <li><a href="{{ settings.social_tiktok_link }}" class="color-control" aria-label="TikTok">{%- render 'theme-icon', icon: 'tiktok' -%}</a></li>
+    {% endif %}
+    {% if settings.social_whatsapp_link != blank %}
+    <li><a href="{{ settings.social_whatsapp_link }}" class="color-control" aria-label="WhatsApp">{%- render 'theme-icon', icon: 'whatsapp' -%}</a></li>
+    {% endif %}
+    {% if settings.social_pinterest_link != blank %}
+    <li><a href="{{ settings.social_pinterest_link }}" class="color-control" aria-label="Pinterest">{%- render 'theme-icon', icon: 'pinterest' -%}</a></li>
+    {% endif %}
+    </ul>
+</div>
