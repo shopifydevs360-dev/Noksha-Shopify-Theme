@@ -18,7 +18,12 @@
              {%- when 'text-block' -%}
                 <div class="info-card" {{ block.shopify_attributes }}>
                     <div class="icon">
-                        
+                        {% render 'image',
+                            class: 'icon-image',
+                            image: block.settings.image_icon,
+                            crop: 'center',
+                            img_alt: collection.title
+                        %}
                     </div>
                     <div class="info"></div>
                     <h3 class="block-title">{{ block.settings.title }}</h3>
