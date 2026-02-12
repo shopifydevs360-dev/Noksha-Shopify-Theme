@@ -85,17 +85,25 @@
 }
 
 .store-location-section .tab-button {
-  flex: 1;
-  padding: 1rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: 500;
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+    font-weight: 500;
+    max-width: 16rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-left: 2px solid;
+    border-color: rgb(var(--color-border));
+    background: rgba(var(--color-border), 0.1);
 }
 
 .store-location-section .tab-button.active {
   font-weight: 600;
+  background: rgba(var(--color-border));
+  color: rgb(var(--color-background));
 }
 .store-location-section .store-name {
     margin-bottom: .7rem;
