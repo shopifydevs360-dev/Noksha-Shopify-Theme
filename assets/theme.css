@@ -98,6 +98,7 @@ select {
 }
 input:focus {
   outline: none;
+  border: none;
 }
 /* Hide native clear (×) button in search inputs */
 input[type="search"]::-webkit-search-cancel-button {
