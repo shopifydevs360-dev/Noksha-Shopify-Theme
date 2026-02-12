@@ -18,7 +18,7 @@
         "grid_columns": "4",
         "show_two_mobile": true,
         "grid_gap": 20,
-        "aspect_ratio": "cropped-image--portrait",
+        "aspect_ratio": "adapt-to-image",
         "hover_effect_action": "is-hover-zoom-out",
         "custom_class": "",
         "color_control": "section-light"
