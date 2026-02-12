@@ -22,21 +22,51 @@
     "custom_section_wRjnmj": {
       "type": "custom-section",
       "blocks": {
-        "image_qkapYG": {
-          "type": "image",
-          "name": "Image",
+        "column_wqE8nX": {
+          "type": "column",
+          "name": "Layout columns (row)",
           "settings": {
-            "image": "shopify://shop_images/T656-04294.jpg",
-            "link": "",
-            "alt_text": "",
-            "aspect_ratio": "custom-height",
-            "custom_height": 1200,
-            "hover_effect_action": "no-effect",
-            "enable_custom_width": false,
-            "custom_width": 100,
-            "alignment": "center"
+            "mobile_columns": "1",
+            "column_gap": 20,
+            "align_items": "stretch",
+            "justify_content": "flex-start",
+            "padding": 0
           },
-          "blocks": {}
+          "blocks": {
+            "column_item_EQMBL8": {
+              "type": "column-item",
+              "name": "Column item",
+              "settings": {
+                "column_span": 1
+              },
+              "blocks": {
+                "video_eh4wbp": {
+                  "type": "video",
+                  "name": "Video",
+                  "settings": {
+                    "external_video_url": "https://www.youtube.com/watch?v=K03SZoDZN6c&list=RD-4P56WbW5W8&index=4",
+                    "aspect_ratio": "adapt-to-video",
+                    "custom_height": 400,
+                    "autoplay": false,
+                    "loop": false,
+                    "muted": true,
+                    "controls": true,
+                    "hover_effect_action": "no-effect",
+                    "enable_custom_width": false,
+                    "custom_width": 100,
+                    "alignment": "center"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "video_eh4wbp"
+              ]
+            }
+          },
+          "block_order": [
+            "column_item_EQMBL8"
+          ]
         },
         "contact_form_fYPbYp": {
           "type": "contact-form",
@@ -73,7 +103,7 @@
         }
       },
       "block_order": [
-        "image_qkapYG",
+        "column_wqE8nX",
         "contact_form_fYPbYp",
         "column_item_Jy7rUY"
       ],
