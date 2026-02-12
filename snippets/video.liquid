@@ -22,12 +22,6 @@
   if is_autoplay
     assign muted = true
   endif
-
-  if custom_thumbnail != blank
-    assign poster_image = custom_thumbnail | image_url: width: 2000
-  else
-    assign poster_image = video.preview_image | image_url: width: 2000
-  endif
 %}
 
 <div
@@ -37,7 +31,15 @@
   {% endif %}
 >
 
-  {% if video %}
+  {% if video != blank %}
+
+    {% liquid
+      if custom_thumbnail != blank
+        assign poster_image = custom_thumbnail | image_url: width: 2000
+      else
+        assign poster_image = video.preview_image | image_url: width: 2000
+      endif
+    %}
 
     <video
       {% if poster_image %}poster="{{ poster_image }}"{% endif %}
@@ -47,10 +49,9 @@
       {% if controls %}controls{% endif %}
       playsinline
     >
-    {% for source in video.sources %}
-    <source src="{{ source.url }}" type="{{ source.mime_type }}">
-    {% endfor %}
-
+      {% for source in video.sources %}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {% endfor %}
     </video>
 
   {% elsif external_video_url != blank %}
