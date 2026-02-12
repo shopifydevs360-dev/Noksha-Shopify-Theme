@@ -45,9 +45,9 @@
                   "name": "Video",
                   "settings": {
                     "external_video_url": "https://www.youtube.com/watch?v=K03SZoDZN6c&list=RD-4P56WbW5W8&index=4",
-                    "aspect_ratio": "adapt-to-video",
-                    "custom_height": 400,
-                    "autoplay": false,
+                    "aspect_ratio": "custom-height",
+                    "custom_height": 460,
+                    "autoplay": true,
                     "loop": false,
                     "muted": true,
                     "controls": true,
