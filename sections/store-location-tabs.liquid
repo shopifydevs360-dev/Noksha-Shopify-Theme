@@ -1,24 +1,19 @@
 {% render 'section-base-style' %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 {% liquid
-  assign first_class = 'store-location-section ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = 'contact-section ' | append: 'm-color-' | append: section.settings.color_scheme 
   assign first_class = first_class | append: ' ' | append: section.settings.color_control
   assign first_class = first_class | append: ' ' | append: section.settings.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
   assign container_width = section.settings.container_width
 %}
 
-<div class="{{ first_class }}" id="store-location-{{ section.id }}">
+<div class="{{ first_class }}">
   <div class="{{ container_width }}">
-    <div class="inner-section">
-
-      {% if section.settings.heading != blank %}
-        <div class="section-header text-{{ section.settings.text_align }}">
-          <h2 class="{{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
-          <div class="description">{{ section.settings.description }}</div>
+    <div class="inner-section {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
+        <div class="hero-info text-{{ section.settings.text_align }}">
+            <h1 class="hero-title {{ section.settings.title_font_size }}">{{ section.settings.hero_title }}</h1>
+            <div class="hero-description">{{ section.settings.hero_description }}</div>
         </div>
-      {% endif %}
-
       {% if section.blocks.size > 0 %}
         <div class="tabs">
           {% for block in section.blocks %}
@@ -58,10 +53,56 @@
           </div>
         {% endfor %}
       {% endif %}
-
     </div>
   </div>
 </div>
+
+
+{% stylesheet %}
+.store-location-section .tabs {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.store-location-section .tab-button {
+  flex: 1;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.store-location-section .tab-button.active {
+  border-bottom: 3px solid rgb(var(--color-heading));
+  font-weight: 600;
+}
+
+.store-location-section .tab-content {
+  display: none;
+  gap: 3rem;
+  padding: 2rem 0;
+}
+
+.store-location-section .tab-content.active {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.store-location-section .location-info {
+  flex: 1;
+  min-width: 280px;
+}
+
+.store-location-section .map-container {
+  flex: 1;
+  min-width: 300px;
+  height: 400px;
+}
+
+{% endstylesheet %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
@@ -123,85 +164,107 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
-{% stylesheet %}
-.store-location-section .tabs {
-  display: flex;
-  flex-wrap: wrap;
-  border-bottom: 1px solid rgb(var(--color-border));
-}
-
-.store-location-section .tab-button {
-  flex: 1;
-  padding: 1rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: 500;
-}
-
-.store-location-section .tab-button.active {
-  border-bottom: 3px solid rgb(var(--color-heading));
-  font-weight: 600;
-}
-
-.store-location-section .tab-content {
-  display: none;
-  gap: 3rem;
-  padding: 2rem 0;
-}
-
-.store-location-section .tab-content.active {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.store-location-section .location-info {
-  flex: 1;
-  min-width: 280px;
-}
-
-.store-location-section .map-container {
-  flex: 1;
-  min-width: 300px;
-  height: 400px;
-}
-
-{% endstylesheet %}
 
 {% schema %}
 {
   "name": "Store Location Tabs",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Store Locations" },
-    { "type": "richtext", "id": "description", "label": "Description" },
-    { "type": "select", "id": "heading_size", "label": "Heading size",
-      "options": [
-        { "value": "h1", "label": "h1" },
-        { "value": "h2", "label": "h2" },
-        { "value": "h3", "label": "h3" }
-      ],
-      "default": "h2"
+    {
+      "type": "header",
+      "content": "Layout"
     },
-    { "type": "select", "id": "text_align", "label": "Text align",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "center"
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable sidebar space",
+      "default": true
     },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" },
-    { "type": "select", "id": "container_width", "label": "Container width",
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
       "options": [
         { "value": "container", "label": "Container" },
         { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
         { "value": "extended", "label": "Extended" }
       ],
       "default": "extended"
     },
-    { "type": "text", "id": "custom_class", "label": "Custom class" },
-    { "type": "select", "id": "color_control", "label": "Color Control",
+    {
+        "type": "text",
+        "id": "hero_title",
+        "label": "Hero Title",
+        "default": "Get In Touch"
+    },
+    {
+      "type": "select",
+      "id": "title_font_size",
+      "label": "Font size",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" },
+      ],
+      "default": "h3"
+    },
+    {
+        "type": "richtext",
+        "id": "hero_description",
+        "label": "Hero description",
+        "default": "<p>Feel free to contact us using the information below or send us a message</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text align",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 52
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
       "options": [
         { "value": "section-dark", "label": "Dark" },
         { "value": "section-light", "label": "Light" }
@@ -226,8 +289,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   ],
   "presets": [
-    { "name": "Store Location Tabs" }
+    {
+      "name": "Store Location Tabs"
+    }
   ]
 }
-
 {% endschema %}

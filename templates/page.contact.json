@@ -70,10 +70,22 @@
         "custom_class": "",
         "color_control": "section-light"
       }
+    },
+    "store_location_tabs_kxayaM": {
+      "type": "store-location-tabs",
+      "name": "Store Location Tabs",
+      "settings": {
+        "color_scheme": "",
+        "container_width": "extended",
+        "text_align": "center",
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
     "main",
-    "contact_info_9nBaBC"
+    "contact_info_9nBaBC",
+    "store_location_tabs_kxayaM"
   ]
 }
