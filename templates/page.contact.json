@@ -22,6 +22,22 @@
     "custom_section_wRjnmj": {
       "type": "custom-section",
       "blocks": {
+        "image_qkapYG": {
+          "type": "image",
+          "name": "Image",
+          "settings": {
+            "image": "shopify://shop_images/T656-04294.jpg",
+            "link": "",
+            "alt_text": "",
+            "aspect_ratio": "custom-height",
+            "custom_height": 1200,
+            "hover_effect_action": "no-effect",
+            "enable_custom_width": false,
+            "custom_width": 100,
+            "alignment": "center"
+          },
+          "blocks": {}
+        },
         "contact_form_fYPbYp": {
           "type": "contact-form",
           "name": "Contact form",
@@ -57,6 +73,7 @@
         }
       },
       "block_order": [
+        "image_qkapYG",
         "contact_form_fYPbYp",
         "column_item_Jy7rUY"
       ],
