@@ -75,12 +75,12 @@
                     "source_type": "external",
                     "video": "shopify://files/videos/Sequence 01.MP4",
                     "external_video_url": "https://www.youtube.com/watch?v=-XOHmqgCYwg&list=RD-4P56WbW5W8&index=11",
-                    "aspect_ratio": "cropped-image--square",
-                    "custom_height": 460,
+                    "aspect_ratio": "cropped-image--portrait",
+                    "custom_height": 100,
                     "autoplay": false,
                     "loop": false,
                     "muted": false,
-                    "controls": true
+                    "controls": false
                   },
                   "blocks": {}
                 }
