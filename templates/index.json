@@ -244,10 +244,10 @@
         "location_4UeCGn": {
           "type": "location",
           "settings": {
-            "tab_title": "",
-            "store_name": "",
-            "location": "",
-            "hours": "",
+            "tab_title": "Al Aziziyah",
+            "store_name": "Al Aziziyah Mall",
+            "location": "Al Aziziyah, Doha",
+            "hours": "10:00 AM - 10:00 PM",
             "contact": "",
             "description": "",
             "latitude": "25.2651",
