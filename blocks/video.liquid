@@ -1,0 +1,157 @@
+{% doc %}
+  Advanced Video Block
+{% enddoc %}
+
+{% liquid
+  assign video = block.settings.video
+  assign external_video_url = block.settings.external_video_url
+
+  assign video_wrapper_classes = 'cropped-image-wrapper'
+  assign wrapper_style = ''
+
+  if block.settings.aspect_ratio == 'adapt-to-video'
+    assign video_wrapper_classes = video_wrapper_classes | append: ' adapt-image-height'
+
+  elsif block.settings.aspect_ratio == 'custom-height'
+    assign video_wrapper_classes = video_wrapper_classes | append: ' custom-height-image'
+    assign wrapper_style = 'height:' | append: block.settings.custom_height | append: 'px;'
+
+  else
+    assign video_wrapper_classes = video_wrapper_classes | append: ' ' | append: block.settings.aspect_ratio
+  endif
+
+  if block.settings.hover_effect_action != 'no-effect'
+    assign video_wrapper_classes = video_wrapper_classes | append: ' ' | append: block.settings.hover_effect_action
+  endif
+
+  assign custom_width_style = ''
+  if block.settings.enable_custom_width and block.settings.custom_width != blank
+    assign custom_width_style = 'max-width:' | append: block.settings.custom_width | append: '%;margin-left:auto;margin-right:auto;'
+  endif
+%}
+
+{% if video or external_video_url != blank %}
+
+  <div
+    class="block-video"
+    style="{{ custom_width_style }} text-align: {{ block.settings.alignment }};"
+    {{ block.shopify_attributes }}
+  >
+
+    {% render 'video',
+      video: video,
+      external_video_url: external_video_url,
+      class: video_wrapper_classes,
+      style: wrapper_style,
+      autoplay: block.settings.autoplay,
+      loop: block.settings.loop,
+      muted: block.settings.muted,
+      controls: block.settings.controls
+    %}
+
+  </div>
+
+{% endif %}
+{% schema %}
+{
+  "name": "Video",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Shopify hosted video"
+    },
+    {
+      "type": "text",
+      "id": "external_video_url",
+      "label": "External video URL (YouTube/Vimeo)"
+    },
+
+    {
+      "type": "header",
+      "content": "Aspect Ratio"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "default": "adapt-to-video",
+      "options": [
+        { "value": "adapt-to-video", "label": "Adapt to video" },
+        { "value": "cropped-image--square", "label": "Square" },
+        { "value": "cropped-image--portrait", "label": "Portrait" },
+        { "value": "cropped-image--landscape", "label": "Landscape" },
+        { "value": "cropped-image--wide", "label": "Wide (16:9)" },
+        { "value": "custom-height", "label": "Custom height" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "Custom height (px)",
+      "min": 100,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 400,
+      "visible_if": "{{ block.settings.aspect_ratio == 'custom-height' }}"
+    },
+
+    {
+      "type": "header",
+      "content": "Playback"
+    },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false },
+    { "type": "checkbox", "id": "loop", "label": "Loop", "default": false },
+    { "type": "checkbox", "id": "muted", "label": "Muted", "default": true },
+    { "type": "checkbox", "id": "controls", "label": "Show controls", "default": true },
+
+    {
+      "type": "header",
+      "content": "Hover Effect"
+    },
+    {
+      "type": "select",
+      "id": "hover_effect_action",
+      "label": "Hover effect",
+      "default": "no-effect",
+      "options": [
+        { "value": "no-effect", "label": "No effect" },
+        { "value": "is-hover-zoom-in", "label": "Zoom in" },
+        { "value": "is-hover-overlay", "label": "Overlay" }
+      ]
+    },
+
+    {
+      "type": "header",
+      "content": "Width Control"
+    },
+    { "type": "checkbox", "id": "enable_custom_width", "label": "Enable custom width", "default": false },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Width (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Video" }
+  ]
+}
+
+{% endschema %}
