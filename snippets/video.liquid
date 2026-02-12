@@ -1,107 +1,60 @@
 {% doc %}
-  Renders a responsive video that might be wrapped in a link, similar to the `image` snippet.
+  Renders a responsive Shopify-hosted video that might be wrapped in a link,
+  similar to the `image` snippet you provided.
 
-  When `width` and `height` are provided, the video will be rendered
-  with a fixed aspect ratio.
+  This snippet expects a Shopify media object (for example, a `video` picked
+  from a block/section setting or `product.media[0]`). It uses `media_tag`
+  to output the video element.
 
-  Works with both Shopify-hosted media (product or file videos) and
-  direct video URLs.
-
-  @param {video,string} video - The video to be rendered. Can be a media object (for product/file videos) or a direct URL string.
-  @param {string} [url] - An optional destination URL for the wrapper link
-  @param {string} [class] - Optional class to be added to the video wrapper
-  @param {number} [width] - The maximum width of the video to be rendered
-  @param {number} [height] - The maximum height of the video to be rendered
-  @param {string,image} [poster] - Optional image object or URL string used as the video poster (URL mode only)
-  @param {boolean} [autoplay=false] - Whether the video should autoplay (will be muted for accessibility)
-  @param {boolean} [loop=false] - Whether the video should loop
-  @param {boolean} [muted=true] - Whether the video should be muted
-  @param {boolean} [controls=true] - Whether the default browser controls should be shown
-  @param {boolean} [playsinline=true] - Whether the video should play inline on mobile
-  @param {string} [mobile_video] - Optional alternate video source URL for mobile viewports (URL mode only)
-  @param {string} [style] - Custom inline style for the wrapper
+  @param {object} media - A Shopify media object of type `video`.
+  @param {string} [link_url] - An optional destination URL for the wrapper link.
+  @param {string} [wrapper_class] - Optional class to be added to the video wrapper.
+  @param {number} [max_width] - The maximum width of the video to be rendered.
+  @param {number} [max_height] - The maximum height of the video to be rendered (used for layout only).
+  @param {string} [wrapper_style] - Custom inline style for the wrapper.
 
   @example
-  {% render 'video', video: product.media[0] %}
-  {% render 'video', video: product.media[0], url: product.url %}
+  {% render 'video', media: product.media[0] %}
+  {% render 'video', media: product.media[0], link_url: product.url %}
   {% render 'video',
-    class: 'product__video {{ section.settings.video_wrapper_class }}',
-    video: 'https://cdn.shopify.com/s/files/1/0000/0001/files/video.mp4',
-    url: product.url,
-    width: 1200,
-    height: 800,
-    autoplay: true,
-    loop: true,
-    muted: true,
-    controls: true,
-    mobile_video: 'https://cdn.shopify.com/s/files/1/0000/0001/files/video-mobile.mp4',
-    style: 'border-radius: 16px; overflow: hidden;'
+    wrapper_class: 'product__video {{ section.settings.video_wrapper_class }}',
+    media: product.media[0],
+    link_url: product.url,
+    max_width: 1200,
+    max_height: 800
   %}
 {% enddoc %}
 
 {% liquid
-  unless height
-    assign width = width | default: video.width
+  unless max_height
+    assign max_width = max_width | default: media.width
   endunless
 
-  if url
-    assign wrapper = 'a'
+  if link_url
+    assign wrapper_tag = 'a'
   else
-    assign wrapper = 'div'
+    assign wrapper_tag = 'div'
   endif
 
-  assign wrapper_style = style | default: ''
-
-  assign autoplay_enabled = autoplay | default: false
-  assign loop_enabled = loop | default: false
-  assign muted_enabled = muted | default: true
-  assign controls_enabled = controls | default: true
+  assign wrapper_style_value = wrapper_style | default: ''
 %}
 
-<{{ wrapper }}
-  class="video-wrapper {{ class }}"
-  {% if url %}
-    href="{{ url }}"
+<{{ wrapper_tag }}
+  class="video-wrapper {{ wrapper_class }}"
+  {% if link_url %}
+    href="{{ link_url }}"
   {% endif %}
-  {% if wrapper_style != blank %}
-    style="{{ wrapper_style }}"
+  {% if wrapper_style_value != blank %}
+    style="{{ wrapper_style_value }}"
   {% endif %}
 >
-  {% if video.media_type %}
-    {{ video
-      | media_tag:
-        image_size: width,
-        autoplay: autoplay_enabled,
-        loop: loop_enabled,
-        muted: muted_enabled,
-        controls: controls_enabled,
-        playsinline: true
-    }}
-  {% else %}
-    <video
-      class="video-wrapper__video"
-      width="{{ width }}"
-      {% if height %}height="{{ height }}"{% endif %}
-      {% if autoplay_enabled %}autoplay{% endif %}
-      {% if loop_enabled %}loop{% endif %}
-      {% if muted_enabled %}muted{% endif %}
-      {% if controls_enabled %}controls{% endif %}
-      playsinline
-      {% if poster %}
-        {% if poster.src %}
-          poster="{{ poster | image_url: width: width }}"
-        {% else %}
-          poster="{{ poster }}"
-        {% endif %}
-      {% endif %}
-    >
-      {% if mobile_video %}
-        <source src="{{ mobile_video }}" media="(max-width: 768px)">
-      {% endif %}
-      <source src="{{ video }}">
-    </video>
-  {% endif %}
-</{{ wrapper }}>
+  {{ media
+    | media_tag:
+      image_size: max_width,
+      controls: true,
+      playsinline: true
+  }}
+</{{ wrapper_tag }}>
 
 {% stylesheet %}
   .video-wrapper {
@@ -112,7 +65,8 @@
     overflow: hidden;
   }
 
-  .video-wrapper__video {
+  .video-wrapper video,
+  .video-wrapper iframe {
     width: 100%;
     height: auto;
     display: block;
