@@ -38,11 +38,28 @@
 
               <div class="details">
                 <ul>
-                    <li><span class="icon"></span><span class="label">Location:</span><span class="detail">{{ block.settings.location }}</span></li>
-                    <li><span class="label">Opening Hours:</span><span class="detail">{{ block.settings.hours }}</span></li>
-                    <li><span class="label">Contact:</span><span class="detail">{{ block.settings.contact }}</span></li>
+                    <li>
+                        <span class="icon">{%- render 'theme-icon', icon: 'location' -%}</span>
+                        <span class="label">Location:</span>
+                        <span class="detail">{{ block.settings.location }}</span>
+                    </li>
+                    <li>
+                        <span class="icon">{%- render 'theme-icon', icon: 'location' -%}</span>
+                        <span class="label">Opening Hours:</span>
+                        <span class="detail">{{ block.settings.hours }}</span>
+                    </li>
+                    <li>
+                        <span class="icon">{%- render 'theme-icon', icon: 'location' -%}</span>
+                        <span class="label">Contact:</span>
+                        <span class="detail">{{ block.settings.contact }}</span>
+                    </li>
                     <li class="store-detail">{{ block.settings.description }}</li>
-                    <li><a href="" class="get-direction"><span class="icon"></span><span class="text">Get Directions</span></a></li>
+                    <li>
+                        <a href="" class="get-direction">
+                            <span class="icon">{%- render 'theme-icon', icon: 'location' -%}</span>
+                            <span class="text">Get Directions</span>
+                        </a>
+                    </li>
                 </ul>
               </div>
             </div>
