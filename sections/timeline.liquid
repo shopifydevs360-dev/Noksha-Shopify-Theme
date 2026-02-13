@@ -41,11 +41,17 @@
 
               <div class="icon-wrapper">
 
-                {% if block.settings.icon != blank %}
-                  <div class="timeline-icon">
-                    {% render 'theme-icon', icon: block.settings.icon %}
-                  </div>
+                {% if block.settings.icon_type == 'theme' and block.settings.theme_icon != blank %}
+                <div class="timeline-icon">
+                    {% render 'theme-icon', icon: block.settings.theme_icon %}
+                </div>
+
+                {% elsif block.settings.icon_type == 'custom' and block.settings.custom_svg != blank %}
+                <div class="timeline-icon custom-svg">
+                    {{ block.settings.custom_svg }}
+                </div>
                 {% endif %}
+
 
                 {% if block.settings.title != blank %}
                   <div class="timeline-title">
@@ -335,10 +341,28 @@
           "default": "Milestone Title"
         },
         {
-          "type": "text",
-          "id": "icon",
-          "label": "Theme Icon Name",
-          "info": "Use icon name from your theme-icon snippet (example: store, award, globe, heart)"
+        "type": "select",
+        "id": "icon_type",
+        "label": "Use Icon From",
+        "options": [
+            { "value": "theme", "label": "Theme Icon" },
+            { "value": "custom", "label": "Custom SVG" }
+        ],
+        "default": "theme"
+        },
+        {
+        "type": "text",
+        "id": "theme_icon",
+        "label": "Theme Icon Name",
+        "info": "Example: store, award, globe, heart",
+        "visible_if": "{{ block.settings.icon_type == 'theme' }}"
+        },
+        {
+        "type": "textarea",
+        "id": "custom_svg",
+        "label": "Custom SVG Code",
+        "info": "Paste full <svg>...</svg> code here",
+        "visible_if": "{{ block.settings.icon_type == 'custom' }}"
         },
         {
           "type": "richtext",
