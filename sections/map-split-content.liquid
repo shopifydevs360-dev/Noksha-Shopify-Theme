@@ -58,18 +58,20 @@
                 image: ss.image,
                 width: {{ image.width }},
                 height: {{ image.height }},
-                img_alt: ss.title
+                img_alt: ss.heading
               %}
             </div>
           {% endif %}
 
           {% if ss.image_2 != blank %}
             <div class="grid-item">
-              <img 
-                src="{{ ss.image_2 | image_url: width: 600 }}"
-                alt=""
-                loading="lazy"
-              >
+              {% render 'image',
+                class: '{{ ss.image_2 }}',
+                image: ss.image,
+                width: {{ image.width }},
+                height: {{ image.height }},
+                img_alt: ss.heading
+              %}
             </div>
           {% endif %}
         </div>
