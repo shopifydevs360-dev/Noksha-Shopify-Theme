@@ -26,7 +26,7 @@
           "type": "timeline_item",
           "settings": {
             "position": "left",
-            "date": "January 2020",
+            "date": "January 2011",
             "title": "Store Founded",
             "icon": "",
             "description": "<p>Halla Hijab Store opened its first location with a mission to provide beautiful, high-quality hijabs and modest fashion for the modern woman.</p>"
@@ -36,10 +36,10 @@
           "type": "timeline_item",
           "settings": {
             "position": "right",
-            "date": "January 2020",
-            "title": "Milestone Title",
+            "date": "June 2011",
+            "title": "First Exclusive Collection",
             "icon": "",
-            "description": "<p>Add milestone description here.</p>"
+            "description": "<p>Launched our first exclusive collection featuring hand-picked fabrics and unique designs that quickly became customer favorites.</p>"
           }
         },
         "timeline_item_4GQRym": {
