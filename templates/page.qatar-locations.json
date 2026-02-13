@@ -23,7 +23,7 @@
       "type": "map-split-content",
       "name": "Map Split Content",
       "settings": {
-        "enable_sidebar_space": false,
+        "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "container_width": "full-width",
         "heading": "Visit Our Store",
