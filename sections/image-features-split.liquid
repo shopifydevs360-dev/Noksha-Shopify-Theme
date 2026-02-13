@@ -1,0 +1,310 @@
+{% render 'section-base-style' %}
+
+{% liquid
+  assign first_class = 'image-features-section ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign container_width = section.settings.container_width
+%}
+
+<div class="{{ first_class }}" id="image-features-{{ section.id }}">
+  <div class="{{ container_width }}">
+    
+    <div class="split-wrapper {% if section.settings.reverse_layout %}reverse{% endif %}">
+
+      <!-- IMAGE SIDE -->
+      <div class="split-image">
+        {% if section.settings.image != blank %}
+          <img 
+            src="{{ section.settings.image | image_url: width: 1200 }}" 
+            alt="{{ section.settings.heading | escape }}"
+            loading="lazy"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+          >
+        {% endif %}
+      </div>
+
+      <!-- CONTENT SIDE -->
+      <div class="split-content text-{{ section.settings.text_align }}">
+
+        {% if section.settings.heading != blank %}
+          <h2 class="{{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.subheading != blank %}
+          <div class="section-description">
+            {{ section.settings.subheading }}
+          </div>
+        {% endif %}
+
+        {% if section.blocks.size > 0 %}
+          <div class="feature-list">
+            {% for block in section.blocks %}
+              <div class="feature-item" {{ block.shopify_attributes }}>
+                
+                <!-- ICON -->
+                <div class="feature-icon">
+                  {% if block.settings.icon_type == 'theme' and block.settings.theme_icon != blank %}
+                    {% render 'theme-icon', icon: block.settings.theme_icon %}
+                  {% elsif block.settings.icon_type == 'custom' and block.settings.custom_svg != blank %}
+                    {{ block.settings.custom_svg }}
+                  {% endif %}
+                </div>
+
+                <!-- TEXT -->
+                <div class="feature-text">
+                  {% if block.settings.title != blank %}
+                    <h4>{{ block.settings.title }}</h4>
+                  {% endif %}
+
+                  {% if block.settings.description != blank %}
+                    <div class="feature-description">
+                      {{ block.settings.description }}
+                    </div>
+                  {% endif %}
+                </div>
+
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+
+.image-features-section .split-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.image-features-section .split-wrapper.reverse {
+  flex-direction: row-reverse;
+}
+
+.image-features-section .split-image {
+  flex: 1;
+}
+
+.image-features-section .split-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-features-section .split-content {
+  flex: 1;
+}
+
+.image-features-section .split-content h2 {
+  margin-bottom: 25px;
+}
+
+.image-features-section .feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.image-features-section .feature-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.image-features-section .feature-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.image-features-section .feature-text h4 {
+  margin-bottom: 6px;
+  font-size: 18px;
+}
+
+.image-features-section .feature-description {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .image-features-section .split-wrapper {
+    flex-direction: column;
+  }
+
+  .image-features-section .split-wrapper.reverse {
+    flex-direction: column;
+  }
+}
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Image Features Split",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Left Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "We are proudly Australian."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "Reverse Layout (Image Right)",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-light", "label": "Light" },
+        { "value": "section-dark", "label": "Dark" }
+      ],
+      "default": "section-light"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Use Icon From",
+          "options": [
+            { "value": "theme", "label": "Theme Icon" },
+            { "value": "custom", "label": "Custom SVG" }
+          ],
+          "default": "theme"
+        },
+        {
+          "type": "text",
+          "id": "theme_icon",
+          "label": "Theme Icon Name"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_svg",
+          "label": "Custom SVG Code"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Soft Fabric"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Feature description goes here.</p>"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Image Features Split",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}
