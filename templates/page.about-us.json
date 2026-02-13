@@ -62,7 +62,7 @@
       "settings": {
         "heading": "Our Journey",
         "subheading": "<p>The story of your brand through the years</p>",
-        "title_size": "h2",
+        "title_size": "h3",
         "text_align": "center",
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "container_width": "container",
