@@ -11,15 +11,70 @@
   "sections": {
     "main": {
       "type": "page",
+      "disabled": true,
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "container_width": "container",
         "custom_class": "",
         "color_control": "section-light"
       }
+    },
+    "timeline_yAPL6B": {
+      "type": "timeline",
+      "blocks": {
+        "timeline_item_dFjz6W": {
+          "type": "timeline_item",
+          "settings": {
+            "position": "left",
+            "date": "January 2020",
+            "title": "Milestone Title",
+            "icon": "",
+            "description": "<p>Add milestone description here.</p>"
+          }
+        },
+        "timeline_item_YdBgc8": {
+          "type": "timeline_item",
+          "settings": {
+            "position": "right",
+            "date": "January 2020",
+            "title": "Milestone Title",
+            "icon": "",
+            "description": "<p>Add milestone description here.</p>"
+          }
+        },
+        "timeline_item_4GQRym": {
+          "type": "timeline_item",
+          "settings": {
+            "position": "left",
+            "date": "January 2020",
+            "title": "Milestone Title",
+            "icon": "",
+            "description": "<p>Add milestone description here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "timeline_item_dFjz6W",
+        "timeline_item_YdBgc8",
+        "timeline_item_4GQRym"
+      ],
+      "name": "Timeline",
+      "settings": {
+        "heading": "Our Journey",
+        "subheading": "<p>The story of your brand through the years</p>",
+        "title_size": "h2",
+        "text_align": "center",
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "color_control": "section-light",
+        "custom_class": "",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "timeline_yAPL6B"
   ]
 }
