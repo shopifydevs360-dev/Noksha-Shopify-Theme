@@ -184,6 +184,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   L.marker([lat, lng]).addTo(map).bindPopup(title).openPopup();
 
+    const directionBtn = tab.querySelector(".get-direction");
+    if (directionBtn) {
+        directionBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    }
+
 });
 </script>
 
