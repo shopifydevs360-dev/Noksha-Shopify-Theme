@@ -31,6 +31,7 @@
         "description": "",
         "button_label": "Get Directions",
         "button_link": "",
+        "image_1": "shopify://shop_images/404_background.jpg",
         "image_2": "shopify://shop_images/T656-04269.jpg",
         "coordinates": "25.2854, 51.5310",
         "map_title": "Our Store Location",
