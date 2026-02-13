@@ -1,0 +1,233 @@
+{% render 'section-base-style' %}
+
+{% liquid
+  assign first_class = 'feature-bar-section ' | append: 'm-color-' | append: section.settings.color_scheme 
+  assign first_class = first_class | append: ' ' | append: section.settings.color_control
+  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign container_width = section.settings.container_width
+%}
+
+<div class="{{ first_class }}" id="feature-bar-{{ section.id }}">
+  <div class="{{ container_width }}">
+
+    {% if section.blocks.size > 0 %}
+      <div class="feature-bar-wrapper">
+
+        {% for block in section.blocks %}
+          <div class="feature-bar-item" {{ block.shopify_attributes }}>
+            
+            <div class="feature-bar-icon">
+              {% if block.settings.icon_type == 'theme' and block.settings.theme_icon != blank %}
+                {% render 'theme-icon', icon: block.settings.theme_icon %}
+              {% elsif block.settings.icon_type == 'custom' and block.settings.custom_svg != blank %}
+                {{ block.settings.custom_svg }}
+              {% endif %}
+            </div>
+
+            <div class="feature-bar-content">
+              {% if block.settings.title != blank %}
+                <h4>{{ block.settings.title }}</h4>
+              {% endif %}
+
+              {% if block.settings.description != blank %}
+                <div class="feature-bar-description">
+                  {{ block.settings.description }}
+                </div>
+              {% endif %}
+            </div>
+
+          </div>
+        {% endfor %}
+
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+
+{% stylesheet %}
+
+.feature-bar-section {
+  border-top: 1px solid rgba(var(--color-border), 0.2);
+  border-bottom: 1px solid rgba(var(--color-border), 0.2);
+}
+
+.feature-bar-section .feature-bar-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.feature-bar-section .feature-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.feature-bar-section .feature-bar-icon {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(var(--color-border), 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-bar-section .feature-bar-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.feature-bar-section .feature-bar-content h4 {
+  font-size: 15px;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.feature-bar-section .feature-bar-description {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+  .feature-bar-section .feature-bar-wrapper {
+    justify-content: center;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .feature-bar-section .feature-bar-wrapper {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .feature-bar-section .feature-bar-item {
+    justify-content: flex-start;
+  }
+}
+
+{% endstylesheet %}
+
+
+{% schema %}
+{
+  "name": "Feature Bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-light", "label": "Light" },
+        { "value": "section-dark", "label": "Dark" }
+      ],
+      "default": "section-light"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 20
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Use Icon From",
+          "options": [
+            { "value": "theme", "label": "Theme Icon" },
+            { "value": "custom", "label": "Custom SVG" }
+          ],
+          "default": "theme"
+        },
+        {
+          "type": "text",
+          "id": "theme_icon",
+          "label": "Theme Icon Name"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_svg",
+          "label": "Custom SVG Code"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Free Shipping for orders over $100"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Feature Bar",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}
