@@ -19,6 +19,61 @@
         "color_control": "section-light"
       }
     },
+    "image_features_split_WNBMaA": {
+      "type": "image-features-split",
+      "blocks": {
+        "feature_RHU8JN": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "title": "Soft Fabric",
+            "description": "<p>Feature description goes here.</p>"
+          }
+        },
+        "feature_c9rr7m": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "title": "Soft Fabric",
+            "description": "<p>Feature description goes here.</p>"
+          }
+        },
+        "feature_bhyb3b": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "title": "Soft Fabric",
+            "description": "<p>Feature description goes here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "feature_RHU8JN",
+        "feature_c9rr7m",
+        "feature_bhyb3b"
+      ],
+      "name": "Image Features Split",
+      "settings": {
+        "image": "shopify://shop_images/T656-04296.jpg",
+        "heading": "We are proudly Australian.",
+        "subheading": "",
+        "heading_size": "h2",
+        "reverse_layout": false,
+        "text_align": "left",
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "color_control": "section-light",
+        "custom_class": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "timeline_yAPL6B": {
       "type": "timeline",
       "blocks": {
@@ -81,6 +136,7 @@
   },
   "order": [
     "main",
+    "image_features_split_WNBMaA",
     "timeline_yAPL6B"
   ]
 }
