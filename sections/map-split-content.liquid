@@ -42,11 +42,9 @@
         {% endif %}
 
         {% if ss.button_label != blank %}
-          <a 
-            href="{{ ss.button_link }}" 
-            class="btn-primary"
-          >
-            {{ ss.button_label }}
+          <a href="" class="get-direction" data-coordinates="{{ ss.coordinates }}" target="_blank" rel="noopener">
+              <span class="text">{{ ss.button_label }}</span>
+              <span class="icon">{%- render 'theme-icon', icon: 'arrow-direction' -%}</span>
           </a>
         {% endif %}
 
