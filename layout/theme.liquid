@@ -36,6 +36,7 @@
 
 
     {% render 'css-variables' %}
+    {% render 'cdn' %}
 
 
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}

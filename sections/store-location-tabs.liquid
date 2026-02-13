@@ -1,20 +1,22 @@
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
 {% render 'section-base-style' %}
 {% liquid
-  assign first_class = 'store-location-section ' | append: 'm-color-' | append: section.settings.color_scheme 
-  assign first_class = first_class | append: ' ' | append: section.settings.color_control
-  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+  assign ss = section.settings
+
+  assign first_class = 'store-location-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
-  assign container_width = section.settings.container_width
+  assign container_width = ss.container_width
 %}
 
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
-    <div class="inner-section {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
-        <div class="hero-info text-{{ section.settings.text_align }}">
-            <h1 class="hero-title {{ section.settings.title_font_size }}">{{ section.settings.hero_title }}</h1>
-            <div class="hero-description">{{ section.settings.hero_description }}</div>
+    <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+        <div class="hero-info text-{{ ss.text_align }}">
+            <h1 class="hero-title {{ ss.title_font_size }}">{{ ss.hero_title }}</h1>
+            <div class="hero-description">{{ ss.hero_description }}</div>
         </div>
       {% if section.blocks.size > 0 %}
         <div class="tabs">
