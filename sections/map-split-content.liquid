@@ -179,6 +179,34 @@ document.addEventListener("DOMContentLoaded", function () {
   "name": "Map Split Content",
   "settings": [
     {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable sidebar space",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "extended"
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Title",
@@ -233,26 +261,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "id": "map_title",
       "label": "Map Popup Title",
       "default": "Our Store Location"
-    },
-
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme"
-    },
-    {
-      "type": "select",
-      "id": "container_width",
-      "label": "Container width",
-      "options": [
-        { "value": "container", "label": "Container" },
-        { "value": "extended", "label": "Extended" }
-      ],
-      "default": "container"
     },
     {
       "type": "header",
