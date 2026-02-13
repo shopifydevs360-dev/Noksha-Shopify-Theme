@@ -163,10 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const mapContainer = section.querySelector(".leaflet-map");
   if (!mapContainer) return;
 
-  const directionBtn = section.querySelector(".map-direction-btn");
+  const directionBtn = section.querySelector(".get-direction");
 
   const coordString = mapContainer.dataset.coordinates;
-  const title = mapContainer.dataset.title;
+  const title = mapContainer.dataset.title || '';
 
   if (!coordString) return;
 
@@ -178,22 +178,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (isNaN(lat) || isNaN(lng)) return;
 
+  /* Prevent double map initialization (Shopify editor safe) */
+  if (mapContainer._leaflet_id) return;
+
+  /* Make sure Leaflet is available */
+  if (typeof L === "undefined") return;
+
   /* Initialize Map */
-  const map = L.map(mapContainer.id).setView([lat, lng], 14);
+  const map = L.map(mapContainer.id, {
+    scrollWheelZoom: false
+  }).setView([lat, lng], 14);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+    attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  L.marker([lat, lng]).addTo(map).bindPopup(title).openPopup();
+  L.marker([lat, lng])
+    .addTo(map)
+    .bindPopup(title)
+    .openPopup();
 
-  /* 🔥 Dynamic Button Link */
+  /* Dynamic Direction Button */
   if (directionBtn) {
     directionBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
   }
 
 });
 </script>
+
 
 
 
