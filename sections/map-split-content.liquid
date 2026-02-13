@@ -53,11 +53,13 @@
         <div class="image-grid">
           {% if ss.image_1 != blank %}
             <div class="grid-item">
-              <img 
-                src="{{ ss.image_1 | image_url: width: 600 }}"
-                alt=""
-                loading="lazy"
-              >
+              {% render 'image',
+                class: '{{ ss.image_1 }}',
+                image: ss.image,
+                width: {{ image.width }},
+                height: {{ image.height }},
+                img_alt: ss.title
+              %}
             </div>
           {% endif %}
 
