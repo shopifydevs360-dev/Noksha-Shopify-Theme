@@ -25,7 +25,7 @@
       "settings": {
         "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "container_width": "full-width",
+        "container_width": "container",
         "heading": "Visit Our Store",
         "heading_size": "h3",
         "description": "",
