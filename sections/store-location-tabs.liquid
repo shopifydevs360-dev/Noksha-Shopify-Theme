@@ -234,9 +234,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const map = L.map(mapId).setView([lat, lng], 15);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+  subdomains:['mt0','mt1','mt2','mt3']
+}).addTo(map);
+
 
     L.marker([lat, lng]).addTo(map).bindPopup(title).openPopup();
 
