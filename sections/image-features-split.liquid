@@ -33,13 +33,13 @@
 
         {% if ss.heading != blank %}
           <h2 class="{{ ss.font_size }}">
-            {{ section.settings.heading }}
+            {{ ss.heading }}
           </h2>
         {% endif %}
 
-        {% if section.settings.subheading != blank %}
+        {% if ss.subheading != blank %}
           <div class="section-description">
-            {{ section.settings.subheading }}
+            {{ ss.subheading }}
           </div>
         {% endif %}
 
