@@ -171,4 +171,19 @@
     padding-left: 0;
   }
 }
+@media (min-width: {{ settings.container_fluid_width }}px) {
+  .container-fluid .sidebar-space {
+    padding-left: 0;
+  }
+}
+@media (min-width: {{ settings.container_narrow_width }}px) {
+  .container-narrow .sidebar-space {
+    padding-left: 0;
+  }
+}
+@media (min-width: {{ settings.container_extra_narrow_width }}px) {
+  .container-extra-narrow .sidebar-space {
+    padding-left: 0;
+  }
+}
 {% endstyle %}
