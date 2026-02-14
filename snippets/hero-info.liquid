@@ -1,11 +1,14 @@
 {% liquid
+  assign base_class = 'hero-info ' | append: 'text-' | append: text_align | default: 'left'
+  
+  assign base_class = 'hero-info ' | append: 'mx-space'
+
   assign heading_tag = heading_tag | default: 'h2'
   assign heading_size = heading_size | default: ''
-  assign text_align = text_align | default: 'left'
 %}
 
 {% if heading != blank or description != blank %}
-  <div class="hero-info text-{{ text_align }}">
+  <div class="{{ base_class }}">
 
     {% if heading != blank %}
       <{{ heading_tag }} class="hero-title {{ heading_size }}">
