@@ -49,7 +49,7 @@
       <div class="sitemap-column flex-grow">
         <h3>Products</h3>
         <ul>
-          {% paginate collections.all.products by 1000 %}
+          {% paginate collections.all.products %}
             {% for product in collections.all.products %}
               <li><a href="{{ product.url }}">{{ product.title }}</a></li>
             {% endfor %}
