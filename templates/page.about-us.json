@@ -67,7 +67,7 @@
         "subheading": "<p>wefw</p>",
         "font_size": "h3",
         "image": "shopify://shop_images/T656-04296.jpg",
-        "aspect_ratio": "cropped-image--portrait-tall",
+        "aspect_ratio": "cropped-image--portrait",
         "custom_height": 400,
         "reverse_layout": false,
         "text_align": "left",
