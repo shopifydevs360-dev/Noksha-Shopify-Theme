@@ -160,13 +160,13 @@
       },
       "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35": {
         "settings": {
-          "background": "#222222",
+          "background": "#fff2e7",
           "background_secondary": "#fff2e7",
           "background_gradient": "",
           "text": "#222222",
           "subtext": "#222222",
           "heading_text": "#252525",
-          "link_color": "#ffffff",
+          "link_color": "#252525",
           "link_hover_color": "#c68b2f",
           "price_sale": "#af6b3e",
           "price_regular": "#222222",
