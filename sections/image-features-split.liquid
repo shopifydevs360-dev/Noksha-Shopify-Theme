@@ -27,6 +27,8 @@
   assign wrapper_class = 'split-wrapper d-flex flex-column'
   if ss.reverse_layout == 'right'
   assign wrapper_class = wrapper_class  | append: ' '| append: 'flex-row-reverse-md'
+  elsif ss.reverse_layout == 'right'
+  assign wrapper_class = wrapper_class  | append: ' '| append: 'flex-row-md'
   endif
 
 %}
