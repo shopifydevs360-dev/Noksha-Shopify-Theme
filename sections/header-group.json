@@ -17,22 +17,22 @@
         "announcement_EcXpME": {
           "type": "announcement",
           "settings": {
-            "text": "Free shipping on orders over $50",
-            "link": "https://face.come"
+            "text": "Sale 50%",
+            "link": ""
           }
         },
         "announcement_zjie7X": {
           "type": "announcement",
           "settings": {
-            "text": "Free shipping on orders over $50",
-            "link": "https://face.com"
+            "text": "Buy 1 get 1 free",
+            "link": ""
           }
         },
         "announcement_7w4jW9": {
           "type": "announcement",
           "settings": {
-            "text": "Free shipping on orders over $50",
-            "link": "https://biik.com"
+            "text": "Special Offers",
+            "link": ""
           }
         }
       },

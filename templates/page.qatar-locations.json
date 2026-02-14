@@ -45,6 +45,28 @@
         "container_width": "container",
         "heading": "VILLAGGIO MALL",
         "heading_size": "h3",
+        "description": "<p>Ground Floor – Gate 2</p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/Place_Vendome_mall_location_1.jpg",
+        "image_2": "shopify://shop_images/Place_Vendome_mall_2.jpg",
+        "coordinates": "25.403130582151586, 51.519357886504636",
+        "map_position": "map-left",
+        "map_title": "Our Store",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "map_split_content_R9YRyt": {
+      "type": "map-split-content",
+      "name": "CITY CENTER MALL",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "heading": "CITY CENTER MALL",
+        "heading_size": "h3",
         "description": "<p>Mirqab mall,Place Vendom, TAWAR MALL, Doha Festival City,Villagio mall, Dar ELSalam, Doha, Qatar</p>",
         "button_label": "Get Directions",
         "image_1": "shopify://shop_images/Place_Vendome_mall_location_1.jpg",
@@ -58,31 +80,9 @@
         "color_control": "section-light"
       }
     },
-    "map_split_content_rkcUVE": {
-      "type": "map-split-content",
-      "name": "Map Split Content",
-      "settings": {
-        "enable_sidebar_space": true,
-        "color_scheme": "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35",
-        "container_width": "container",
-        "heading": "Al Mirqab Mall Kiosk",
-        "heading_size": "h3",
-        "description": "<p>Ground Floor</p>",
-        "button_label": "Get Directions",
-        "image_1": "shopify://shop_images/Place_Vendome_mall_location_1.jpg",
-        "image_2": "shopify://shop_images/Place_Vendome_mall_2.jpg",
-        "coordinates": "25.274084939588594, 51.49929135229282",
-        "map_position": "map-right",
-        "map_title": "Our Store Location",
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "custom_class": "",
-        "color_control": "section-light"
-      }
-    },
     "map_split_content_j6HnbR": {
       "type": "map-split-content",
-      "name": "Map Split Content",
+      "name": "Tawar Mall",
       "settings": {
         "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
@@ -102,9 +102,31 @@
         "color_control": "section-light"
       }
     },
+    "map_split_content_jFcnaH": {
+      "type": "map-split-content",
+      "name": "Doha Festival City",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35",
+        "container_width": "container",
+        "heading": "Doha Festival City Kiosk",
+        "heading_size": "h3",
+        "description": "<p>Ground Floor</p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/404_background.jpg",
+        "image_2": "shopify://shop_images/Place_Vendome_mall_2.jpg",
+        "coordinates": "25.386486517325434, 51.44309858650465",
+        "map_position": "map-right",
+        "map_title": "Our Store Location",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "map_split_content_AEN9HR": {
       "type": "map-split-content",
-      "name": "Map Split Content",
+      "name": "Mall of Qatar",
       "settings": {
         "enable_sidebar_space": true,
         "color_scheme": "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35",
@@ -124,9 +146,31 @@
         "color_control": "section-light"
       }
     },
+    "map_split_content_rkcUVE": {
+      "type": "map-split-content",
+      "name": "Mirqab Mall",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35",
+        "container_width": "container",
+        "heading": "Al Mirqab Mall Kiosk",
+        "heading_size": "h3",
+        "description": "<p>Ground Floor</p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/Place_Vendome_mall_location_1.jpg",
+        "image_2": "shopify://shop_images/Place_Vendome_mall_2.jpg",
+        "coordinates": "25.274084939588594, 51.49929135229282",
+        "map_position": "map-right",
+        "map_title": "Our Store Location",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "map_split_content_mWTExK": {
       "type": "map-split-content",
-      "name": "Map Split Content",
+      "name": "DAR AL SALAM MALL",
       "settings": {
         "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
@@ -145,38 +189,17 @@
         "custom_class": "",
         "color_control": "section-light"
       }
-    },
-    "map_split_content_jFcnaH": {
-      "type": "map-split-content",
-      "name": "Map Split Content",
-      "settings": {
-        "enable_sidebar_space": true,
-        "color_scheme": "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35",
-        "container_width": "container",
-        "heading": "Doha Festival City Kiosk",
-        "heading_size": "h3",
-        "description": "<p>Ground Floor</p>",
-        "button_label": "Get Directions",
-        "image_1": "shopify://shop_images/404_background.jpg",
-        "image_2": "shopify://shop_images/Place_Vendome_mall_2.jpg",
-        "coordinates": "25.386486517325434, 51.44309858650465",
-        "map_position": "map-right",
-        "map_title": "Our Store Location",
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "custom_class": "",
-        "color_control": "section-light"
-      }
     }
   },
   "order": [
     "main",
     "richtext_VTcQc3",
     "map_split_content_HCQ4gc",
-    "map_split_content_rkcUVE",
+    "map_split_content_R9YRyt",
     "map_split_content_j6HnbR",
+    "map_split_content_jFcnaH",
     "map_split_content_AEN9HR",
-    "map_split_content_mWTExK",
-    "map_split_content_jFcnaH"
+    "map_split_content_rkcUVE",
+    "map_split_content_mWTExK"
   ]
 }
