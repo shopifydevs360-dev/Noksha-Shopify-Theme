@@ -1,114 +1,27 @@
-
-
-{% render 'section-base-style' %}
-{% liquid
-  assign ss = section.settings
-
-  assign first_class = 'map-split-section ' | append: 'm-color-' | append: ss.color_scheme 
-  assign first_class = first_class | append: ' ' | append: ss.color_control
-  assign first_class = first_class | append: ' ' | append: ss.custom_class
-  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
-  assign container_width = ss.container_width
-%}
-
-<div class="{{ first_class }}" id="map-split-{{ section.id }}">
-  <div class="{{ container_width }}">
-
-    <div class="map-split-wrapper {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-
-      <!-- LEFT MAP -->
-      <div class="map-area">
-        <div 
-          id="map-{{ section.id }}" 
-          class="leaflet-map"
-          data-coordinates="{{ ss.coordinates }}"
-          data-title="{{ ss.map_title }}"
-        ></div>
-      </div>
-
-      <!-- RIGHT CONTENT -->
-      <div class="content-area">
-
-        {% if ss.heading != blank %}
-          <h2 class="{{ ss.heading_size }}">
-            {{ ss.heading }}
-          </h2>
-        {% endif %}
-
-        {% if ss.description != blank %}
-          <div class="section-description">
-            {{ ss.description }}
-          </div>
-        {% endif %}
-
-        {% if ss.button_label != blank %}
-          <a href="" class="get-direction" data-coordinates="{{ ss.coordinates }}" target="_blank" rel="noopener">
-              <span class="text">{{ ss.button_label }}</span>
-              <span class="icon">{%- render 'theme-icon', icon: 'arrow-direction' -%}</span>
-          </a>
-        {% endif %}
-
-        <div class="image-grid">
-          {% if ss.image_1 != blank %}
-            <div class="grid-item">
-              {% render 'image',
-                class: '{{ ss.image_1 }}',
-                image: ss.image_1,
-                width: {{ image.width }},
-                height: {{ image.height }},
-                img_alt: ss.heading
-              %}
-            </div>
-          {% endif %}
-
-          {% if ss.image_2 != blank %}
-            <div class="grid-item">
-              {% render 'image',
-                class: '{{ ss.image_2 }}',
-                image: ss.image_2,
-                width: {{ image.width }},
-                height: {{ image.height }},
-                img_alt: ss.heading
-              %}
-            </div>
-          {% endif %}
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-
 {% stylesheet %}
 
+/* Layout */
 .map-split-section .map-split-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 2rem;
   align-items: stretch;
 }
 
-/* LEFT MAP */
-.map-split-section .map-area {
-  height: 500px; /* Control total section height */
+/* Equal height for desktop */
+@media (min-width: 992px) {
+  .map-split-section .map-area,
+  .map-split-section .content-area {
+    height: 500px;
+  }
 }
 
+/* Map */
 .map-split-section .leaflet-map {
   width: 100%;
   height: 100%;
-  z-index: 1;
+  min-height: 400px;
 }
 
-/* RIGHT CONTENT */
-.map-split-section .content-area {
-  display: flex;
-  flex-direction: column;
-  height: 500px; /* Must match map */
-}
-
+/* Content */
 .map-split-section .content-area h2 {
   margin-bottom: 20px;
 }
@@ -117,44 +30,60 @@
   margin-bottom: 20px;
 }
 
-/* IMAGE GRID */
+/* Button */
+.map-split-section .get-direction {
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 2px solid rgb(var(--color-border));
+  padding-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.map-split-section .get-direction svg {
+  width: 1.2rem;
+}
+
+/* Image Grid */
 .map-split-section .image-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 0;
-  margin-top: auto; /* Push images to bottom */
+  margin-top: auto;
   height: 100%;
 }
 
-/* Each grid item takes full height */
-.map-split-section .image-grid .grid-item {
-  height: 100%;
+.map-split-section .grid-item {
   overflow: hidden;
-}
-.map-split-section .image{
   height: 100%;
 }
-/* Image fills full space */
-.map-split-section .image-grid img {
+
+.map-split-section .grid-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.map-split-section .get-direction {
-    display: flex;
-    align-items: center;
-    border-bottom: 2px solid rgb(var(--color-border));
-    padding-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    gap: 0.4rem;
-    margin-bottom: 1.5rem;
-    width: fit-content;
+
+/* Mobile */
+@media (max-width: 991px) {
+
+  .map-split-section .map-area,
+  .map-split-section .content-area {
+    height: auto;
+  }
+
+  .map-split-section .image-grid {
+    height: auto;
+  }
+
+  .map-split-section .grid-item img {
+    height: auto;
+  }
+
 }
-.map-split-section .get-direction svg{
-    width: 1.2rem;
-}
+
 {% endstylesheet %}
 
 
