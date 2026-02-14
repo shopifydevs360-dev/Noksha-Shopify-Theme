@@ -192,6 +192,29 @@
       "default": "extended"
     },
     {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "We are proudly Australian."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "Font size",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" },
+      ],
+      "default": "h3"
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Left Image"
@@ -225,29 +248,6 @@
       "unit": "px",
       "default": 400,
       "visible_if": "{{ section.settings.aspect_ratio == 'custom-height' }}"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "We are proudly Australian."
-    },
-    {
-      "type": "richtext",
-      "id": "subheading",
-      "label": "Subheading"
-    },
-    {
-      "type": "select",
-      "id": "font_size",
-      "label": "Font size",
-      "options": [
-        { "value": "h1", "label": "h1" },
-        { "value": "h2", "label": "h2" },
-        { "value": "h3", "label": "h3" },
-        { "value": "h4", "label": "h4" },
-      ],
-      "default": "h3"
     },
     {
       "type": "checkbox",
