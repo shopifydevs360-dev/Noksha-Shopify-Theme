@@ -40,10 +40,33 @@
         "custom_class": "",
         "color_control": "section-light"
       }
+    },
+    "map_split_content_3VbpEd": {
+      "type": "map-split-content",
+      "name": "Map Split Content",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "extended",
+        "heading": "Arabian Center Kıosk",
+        "heading_size": "h2",
+        "description": "<p>Ground Floor<br/></p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/Arabian_Center_Kiosk_location_1.jpg",
+        "image_2": "shopify://shop_images/Arabian_Center_Kiosk_location_2.jpg",
+        "coordinates": "25.234745337376413, 55.43641191164117",
+        "map_position": "map-right",
+        "map_title": "Our Store Location",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
     "main",
-    "map_split_content_Jt4cck"
+    "map_split_content_Jt4cck",
+    "map_split_content_3VbpEd"
   ]
 }
