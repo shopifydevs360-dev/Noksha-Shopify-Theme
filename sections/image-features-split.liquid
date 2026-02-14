@@ -18,6 +18,17 @@
       <!-- IMAGE SIDE -->
       <div class="split-image">
         {% if ss.image != blank %}
+            {% render 'image',
+              class: '{{ ss.image_wapper_class }}',
+              image: ss.image,
+              url: product.url,
+              width: {{ image.width }},
+              height: {{ image.height }},
+              crop: 'center',
+              mobile_image: ss.image_mobile,
+              img_alt: ss.title,
+              style: wrapper_style
+            %}
           <img 
             src="{{ ss.image | image_url: width: 1200 }}" 
             alt="{{ ss.heading | escape }}"
