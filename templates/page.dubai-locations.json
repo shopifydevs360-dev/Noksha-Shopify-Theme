@@ -18,9 +18,32 @@
         "custom_class": "",
         "color_control": "section-light"
       }
+    },
+    "map_split_content_Jt4cck": {
+      "type": "map-split-content",
+      "name": "Map Split Content",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "extended",
+        "heading": "Visit Our Store",
+        "heading_size": "h2",
+        "description": "",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/T675-04413.jpg",
+        "image_2": "shopify://shop_images/T656-04269.jpg",
+        "coordinates": "25.2854, 51.5310",
+        "map_position": "map-left",
+        "map_title": "Our Store Location",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "map_split_content_Jt4cck"
   ]
 }
