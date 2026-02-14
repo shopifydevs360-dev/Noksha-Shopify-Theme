@@ -10,9 +10,7 @@
   assign container_width = ss.container_width
 
   assign flex_warpper = 'map-split-wrapper d-flex flex-column flex-column-reverse flex-row-lg'
-  if ss.map_position == 'left'
-  assign flex_warpper = flex_warpper | append: ' ' | append: ''
-  else
+  if ss.map_position == 'right'
   assign flex_warpper = flex_warpper | append: ' ' | append: 'flex-row-reverse-lg'
   endif
 
