@@ -1,19 +1,25 @@
 {% render 'section-base-style' %}
 {% liquid
-  assign first_class = 'contact-section ' | append: 'm-color-' | append: section.settings.color_scheme 
-  assign first_class = first_class | append: ' ' | append: section.settings.color_control
-  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+  assign ss = section.settings
+  assign first_class = 'contact-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
-  assign container_width = section.settings.container_width
+  assign container_width = ss.container_width
 %}
 
 <div class="{{ first_class }}">
   <div class="{{ container_width }}">
-    <div class="inner-section {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
-        <div class="hero-info text-{{ section.settings.text_align }}">
-            <h1 class="hero-title {{ section.settings.title_font_size }}">{{ section.settings.hero_title }}</h1>
-            <div class="hero-description">{{ section.settings.hero_description }}</div>
-            
+    <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+        <div class="hero-info text-{{ ss.text_align }}">
+            {% render 'hero-info',
+              heading: ss.hero_title,
+              description: ss.hero_description,
+              heading_tag: 'h1',
+              heading_size: ss.title_font_size,
+              text_align: ss.text_align,
+              container_width: ss.container_width
+            %} 
         </div>
 
         <div class="contact-wrapper">
@@ -169,9 +175,6 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-}
-.contact-section .hero-title {
-    margin-bottom: 0.7rem;
 }
 .contact-section .hero-description {
     margin-bottom: 4rem;
