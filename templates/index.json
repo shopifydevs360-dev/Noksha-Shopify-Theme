@@ -235,31 +235,31 @@
         "feature_tBmKjG": {
           "type": "feature",
           "settings": {
+            "title": "Easy returns",
+            "description": "Easy paperless returns & free exchanges",
             "icon_type": "theme",
             "theme_icon": "",
-            "custom_svg": "",
-            "title": "Easy returns",
-            "description": "Easy paperless returns & free exchanges"
+            "custom_svg": ""
           }
         },
         "feature_bWiRmf": {
           "type": "feature",
           "settings": {
+            "title": "Worldwide delivery",
+            "description": "We deliver quickly, no matter where you are in the world",
             "icon_type": "theme",
             "theme_icon": "",
-            "custom_svg": "Worldwide delivery",
-            "title": "Worldwide delivery",
-            "description": "We deliver quickly, no matter where you are in the world"
+            "custom_svg": "Worldwide delivery"
           }
         },
         "feature_yLMGmq": {
           "type": "feature",
           "settings": {
-            "icon_type": "theme",
-            "theme_icon": "",
-            "custom_svg": "<svg width=\"800px\" height=\"800px\" viewbox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M12.9998 8L6 14L12.9998 21\" stroke=\"#000000\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n<path d=\"M6 14H28.9938C35.8768 14 41.7221 19.6204 41.9904 26.5C42.2739 33.7696 36.2671 40 28.9938 40H11.9984\" stroke=\"#000000\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n</svg>",
             "title": "MADE WITH LOVE SINCE 2009",
-            "description": "Modesty at the heart of every design"
+            "description": "Modesty at the heart of every design",
+            "icon_type": "custom",
+            "theme_icon": "",
+            "custom_svg": "<svg viewbox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M12.9998 8L6 14L12.9998 21\" stroke=\"#000000\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n<path d=\"M6 14H28.9938C35.8768 14 41.7221 19.6204 41.9904 26.5C42.2739 33.7696 36.2671 40 28.9938 40H11.9984\" stroke=\"currentColor\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n</svg>"
           }
         }
       },
