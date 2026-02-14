@@ -24,13 +24,6 @@
               img_alt: ss.heading | escape,
               style: wrapper_style
             %}
-          <img 
-            src="{{ ss.image | image_url: width: 1200 }}" 
-            alt="{{ ss.heading | escape }}"
-            loading="lazy"
-            width="{{ ss.image.width }}"
-            height="{{ ss.image.height }}"
-          >
         {% endif %}
       </div>
 
