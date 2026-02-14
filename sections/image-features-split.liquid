@@ -30,6 +30,9 @@
   elsif ss.reverse_layout == 'left'
   assign wrapper_class = wrapper_class  | append: ' '| append: 'flex-row-md'
   endif
+  if ss.enable_sidebar_space
+  assign wrapper_class = wrapper_class  | append: ' '| append: 'sidebar-space'
+  endif
 
 %}
 
