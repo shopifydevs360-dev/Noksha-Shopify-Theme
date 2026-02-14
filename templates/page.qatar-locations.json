@@ -33,6 +33,7 @@
         "image_1": "shopify://shop_images/404_background.jpg",
         "image_2": "shopify://shop_images/T656-04269.jpg",
         "coordinates": "25.2854, 51.5310",
+        "map_position": "map-left",
         "map_title": "Our Store Location",
         "padding_top": 80,
         "padding_bottom": 80,
@@ -54,6 +55,95 @@
         "image_1": "shopify://shop_images/404_background.jpg",
         "image_2": "shopify://shop_images/T656-04269.jpg",
         "coordinates": "25.2854, 51.5310",
+        "map_position": "map-right",
+        "map_title": "Our Store Location",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "map_split_content_j6HnbR": {
+      "type": "map-split-content",
+      "name": "Map Split Content",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "heading": "Place Vendôme mallKiosk",
+        "heading_size": "h3",
+        "description": "<p>Ground Floor – Gate 2</p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/404_background.jpg",
+        "image_2": "shopify://shop_images/T656-04269.jpg",
+        "coordinates": "25.2854, 51.5310",
+        "map_position": "map-right",
+        "map_title": "Our Store Location",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "map_split_content_AEN9HR": {
+      "type": "map-split-content",
+      "name": "Map Split Content",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "heading": "Place Vendôme mallKiosk",
+        "heading_size": "h3",
+        "description": "<p>Ground Floor – Gate 2</p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/404_background.jpg",
+        "image_2": "shopify://shop_images/T656-04269.jpg",
+        "coordinates": "25.2854, 51.5310",
+        "map_position": "map-right",
+        "map_title": "Our Store Location",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "map_split_content_mWTExK": {
+      "type": "map-split-content",
+      "name": "Map Split Content",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "heading": "Place Vendôme mallKiosk",
+        "heading_size": "h3",
+        "description": "<p>Ground Floor – Gate 2</p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/404_background.jpg",
+        "image_2": "shopify://shop_images/T656-04269.jpg",
+        "coordinates": "25.2854, 51.5310",
+        "map_position": "map-right",
+        "map_title": "Our Store Location",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "map_split_content_jFcnaH": {
+      "type": "map-split-content",
+      "name": "Map Split Content",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "heading": "Place Vendôme mallKiosk",
+        "heading_size": "h3",
+        "description": "<p>Ground Floor – Gate 2</p>",
+        "button_label": "Get Directions",
+        "image_1": "shopify://shop_images/404_background.jpg",
+        "image_2": "shopify://shop_images/T656-04269.jpg",
+        "coordinates": "23.7305856,90.4364032",
+        "map_position": "map-right",
         "map_title": "Our Store Location",
         "padding_top": 80,
         "padding_bottom": 80,
@@ -65,6 +155,10 @@
   "order": [
     "main",
     "map_split_content_HCQ4gc",
-    "map_split_content_rkcUVE"
+    "map_split_content_rkcUVE",
+    "map_split_content_j6HnbR",
+    "map_split_content_AEN9HR",
+    "map_split_content_mWTExK",
+    "map_split_content_jFcnaH"
   ]
 }
