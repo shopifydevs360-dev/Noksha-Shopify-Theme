@@ -173,12 +173,25 @@
             "custom_svg": "",
             "description": "<p>Fashion for the modern, confident, fashionable and powerful woman. That’s our philosophy.</p>"
           }
+        },
+        "timeline_item_nhNayT": {
+          "type": "timeline_item",
+          "settings": {
+            "position": "right",
+            "date": "04 — A Thriving Community",
+            "title": "For Those Who Thrive",
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "description": "<p>Throughout this journey, we have learned that anything is possible. This is why we aim to be a fashion house and community that helps other women thrive.</p>"
+          }
         }
       },
       "block_order": [
         "timeline_item_dFjz6W",
         "timeline_item_YdBgc8",
-        "timeline_item_4GQRym"
+        "timeline_item_4GQRym",
+        "timeline_item_nhNayT"
       ],
       "name": "Timeline",
       "settings": {
