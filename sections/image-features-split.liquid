@@ -3,36 +3,36 @@
 {% liquid
   assign ss = section.settings
 
-  assign first_class = 'image-features-section ' | append: 'm-color-' | append: section.settings.color_scheme 
-  assign first_class = first_class | append: ' ' | append: section.settings.color_control
-  assign first_class = first_class | append: ' ' | append: section.settings.custom_class
+  assign first_class = 'image-features-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
-  assign container_width = section.settings.container_width
+  assign container_width = ss.container_width
 %}
 
 <div class="{{ first_class }}" id="image-features-{{ section.id }}">
   <div class="{{ container_width }}">
     
-    <div class="split-wrapper {% if section.settings.reverse_layout %}reverse{% endif %}">
+    <div class="split-wrapper {% if ss.reverse_layout %}reverse{% endif %}">
 
       <!-- IMAGE SIDE -->
       <div class="split-image">
-        {% if section.settings.image != blank %}
+        {% if ss.image != blank %}
           <img 
-            src="{{ section.settings.image | image_url: width: 1200 }}" 
-            alt="{{ section.settings.heading | escape }}"
+            src="{{ ss.image | image_url: width: 1200 }}" 
+            alt="{{ ss.heading | escape }}"
             loading="lazy"
-            width="{{ section.settings.image.width }}"
-            height="{{ section.settings.image.height }}"
+            width="{{ ss.image.width }}"
+            height="{{ ss.image.height }}"
           >
         {% endif %}
       </div>
 
       <!-- CONTENT SIDE -->
-      <div class="split-content text-{{ section.settings.text_align }}">
+      <div class="split-content text-{{ ss.text_align }}">
 
-        {% if section.settings.heading != blank %}
-          <h2 class="{{ section.settings.font_size }}">
+        {% if ss.heading != blank %}
+          <h2 class="{{ ss.font_size }}">
             {{ section.settings.heading }}
           </h2>
         {% endif %}
