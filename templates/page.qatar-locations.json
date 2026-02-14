@@ -67,7 +67,7 @@
         "container_width": "container",
         "heading": "CITY CENTER MALL",
         "heading_size": "h3",
-        "description": "",
+        "description": "<p>Second Floor</p>",
         "button_label": "Get Directions",
         "image_1": "shopify://shop_images/Place_Vendome_mall_location_1.jpg",
         "image_2": "shopify://shop_images/Place_Vendome_mall_2.jpg",
