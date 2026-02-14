@@ -165,7 +165,6 @@
 
 {% endstylesheet %}
 
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -190,13 +189,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (isNaN(lat) || isNaN(lng)) return;
 
-  /* Prevent double map initialization (Shopify editor safe) */
   if (mapContainer._leaflet_id) return;
-
-  /* Make sure Leaflet is available */
   if (typeof L === "undefined") return;
 
-  /* Initialize Map */
   const map = L.map(mapContainer.id, {
     scrollWheelZoom: false
   }).setView([lat, lng], 14);
@@ -210,13 +205,13 @@ document.addEventListener("DOMContentLoaded", function () {
     .bindPopup(title)
     .openPopup();
 
-  /* Dynamic Direction Button */
   if (directionBtn) {
     directionBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
   }
 
 });
 </script>
+
 
 
 
