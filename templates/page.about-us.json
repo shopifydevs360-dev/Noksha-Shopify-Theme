@@ -142,36 +142,36 @@
           "type": "timeline_item",
           "settings": {
             "position": "left",
-            "date": "January 2011",
-            "title": "Store Founded",
+            "date": "01 — The Beginning",
+            "title": "An Idea Born from Need",
             "icon_type": "theme",
             "theme_icon": "",
             "custom_svg": "",
-            "description": "<p>Halla Hijab Store opened its first location with a mission to provide beautiful, high-quality hijabs and modest fashion for the modern woman.</p>"
+            "description": "<p>The journey of HALLA HIJAB started with an idea that arose from a need for great quality hijabs</p>"
           }
         },
         "timeline_item_YdBgc8": {
           "type": "timeline_item",
           "settings": {
             "position": "right",
-            "date": "June 2011",
-            "title": "First Exclusive Collection",
+            "date": "02 — The Learning Journey",
+            "title": "Mastering the Craft",
             "icon_type": "custom",
             "theme_icon": "",
             "custom_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"400\" viewbox=\"0 0 124 124\" fill=\"none\">\n<rect width=\"124\" height=\"124\" rx=\"24\" fill=\"#F97316\"></rect>\n<path d=\"M19.375 36.7818V100.625C19.375 102.834 21.1659 104.625 23.375 104.625H87.2181C90.7818 104.625 92.5664 100.316 90.0466 97.7966L26.2034 33.9534C23.6836 31.4336 19.375 33.2182 19.375 36.7818Z\" fill=\"white\"></path>\n<circle cx=\"63.2109\" cy=\"37.5391\" r=\"18.1641\" fill=\"black\"></circle>\n<rect opacity=\"0.4\" x=\"81.1328\" y=\"80.7198\" width=\"17.5687\" height=\"17.3876\" rx=\"4\" transform=\"rotate(-45 81.1328 80.7198)\" fill=\"#FDBA74\"></rect>\n</svg>",
-            "description": "<p>Launched our first exclusive collection featuring hand-picked fabrics and unique designs that quickly became customer favorites.</p>"
+            "description": "<p>Determined to create a brand that will break stereotypes and show the world how empowering and versatile hijabis can be, the founder of HALLA HIJAB learned everything there is to know about creating hijabs, from what materials to use to how to design high-quality hijab and what exactly every woman needs to complete her look !<br/><br/></p>"
           }
         },
         "timeline_item_4GQRym": {
           "type": "timeline_item",
           "settings": {
             "position": "left",
-            "date": "January 2020",
-            "title": "Milestone Title",
+            "date": "03 — Our Philosophy",
+            "title": "Confidence in Every Detail",
             "icon_type": "theme",
             "theme_icon": "",
             "custom_svg": "",
-            "description": "<p>Add milestone description here.</p>"
+            "description": "<p>Fashion for the modern, confident, fashionable and powerful woman. That’s our philosophy.</p>"
           }
         }
       },
@@ -182,8 +182,8 @@
       ],
       "name": "Timeline",
       "settings": {
-        "heading": "Our Journey",
-        "subheading": "<p>The story of your brand through the years</p>",
+        "heading": "Our Story",
+        "subheading": "<p>From a simple idea to a movement empowering confident, modern women through quality and purpose.</p>",
         "title_size": "h3",
         "text_align": "center",
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
