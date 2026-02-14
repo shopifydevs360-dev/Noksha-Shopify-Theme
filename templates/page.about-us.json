@@ -142,8 +142,8 @@
           "type": "timeline_item",
           "settings": {
             "position": "left",
-            "date": "01 — The Beginning",
-            "title": "An Idea Born from Need",
+            "date": "",
+            "title": "01 — The Beginning",
             "icon_type": "theme",
             "theme_icon": "",
             "custom_svg": "",
@@ -154,8 +154,8 @@
           "type": "timeline_item",
           "settings": {
             "position": "right",
-            "date": "02 — The Learning Journey",
-            "title": "Mastering the Craft",
+            "date": "",
+            "title": "02 — Breaking Stereotypes",
             "icon_type": "theme",
             "theme_icon": "",
             "custom_svg": "",
@@ -166,8 +166,8 @@
           "type": "timeline_item",
           "settings": {
             "position": "left",
-            "date": "03 — Our Philosophy",
-            "title": "Confidence in Every Detail",
+            "date": "",
+            "title": "03 — Our Philosophy",
             "icon_type": "theme",
             "theme_icon": "",
             "custom_svg": "",
@@ -178,12 +178,24 @@
           "type": "timeline_item",
           "settings": {
             "position": "right",
-            "date": "04 — A Thriving Community",
-            "title": "For Those Who Thrive",
+            "date": "",
+            "title": "04 — Aiming Higher",
             "icon_type": "theme",
             "theme_icon": "",
             "custom_svg": "",
             "description": "<p>Throughout this journey, we have learned that anything is possible. This is why we aim to be a fashion house and community that helps other women thrive.</p>"
+          }
+        },
+        "timeline_item_nRWWCh": {
+          "type": "timeline_item",
+          "settings": {
+            "position": "left",
+            "date": "",
+            "title": "05 — For Those Who Thrive",
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "description": "<p>HALLA HIJAB COLLECTION IS DESIGNED AND CHOSEN TO MAKE YOU FEEL COMFORTABLE AND CONFIDENT: FOR THOSE WHO THRIVE</p>"
           }
         }
       },
@@ -191,12 +203,13 @@
         "timeline_item_dFjz6W",
         "timeline_item_YdBgc8",
         "timeline_item_4GQRym",
-        "timeline_item_nhNayT"
+        "timeline_item_nhNayT",
+        "timeline_item_nRWWCh"
       ],
       "name": "Timeline",
       "settings": {
         "heading": "Our Story",
-        "subheading": "<p>From an inspired idea to a fashion house empowering women to thrive.</p>",
+        "subheading": "<p>From idea to empowerment.</p>",
         "title_size": "h3",
         "text_align": "center",
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
