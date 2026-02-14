@@ -63,7 +63,7 @@
       "name": "CITY CENTER MALL",
       "settings": {
         "enable_sidebar_space": true,
-        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "color_scheme": "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35",
         "container_width": "container",
         "heading": "CITY CENTER MALL",
         "heading_size": "h3",
@@ -72,7 +72,7 @@
         "image_1": "shopify://shop_images/Place_Vendome_mall_location_1.jpg",
         "image_2": "shopify://shop_images/Place_Vendome_mall_2.jpg",
         "coordinates": "25.403130582151586, 51.519357886504636",
-        "map_position": "map-left",
+        "map_position": "map-right",
         "map_title": "Our Store",
         "padding_top": 80,
         "padding_bottom": 80,
@@ -129,7 +129,7 @@
       "name": "Mall of Qatar",
       "settings": {
         "enable_sidebar_space": true,
-        "color_scheme": "scheme-291231e9-5d34-4ee5-9e13-5d13c8824e35",
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "container_width": "container",
         "heading": "Mall of Qatar",
         "heading_size": "h3",
