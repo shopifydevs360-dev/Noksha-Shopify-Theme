@@ -34,7 +34,7 @@
       <div class="split-image">
         {% if ss.image != blank %}
             {% render 'image',
-              class: '{{ image_wapper_classes }}',
+              class: image_wapper_classes,
               image: ss.image,
               img_alt: ss.heading | escape,
               style: '{{ wrapper_style }}'
