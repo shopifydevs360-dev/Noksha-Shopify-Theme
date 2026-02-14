@@ -12,6 +12,7 @@
 <div class="{{ first_class }}">
   <div class="{{ ss.container_width }}">
 
+  <div class="{% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
     {% render 'hero-info',
       heading: ss.heading,
       description: ss.description,
@@ -70,6 +71,7 @@
       {% endif %}
 
     </div>
+  </div>
 
   </div>
 </div>
