@@ -11,7 +11,22 @@
   "sections": {
     "main": {
       "type": "sitemap-page",
-      "settings": {}
+      "settings": {
+        "heading": "Sitemap",
+        "description": "",
+        "heading_size": "h2",
+        "text_align": "left",
+        "show_pages": true,
+        "show_collections": true,
+        "show_products": true,
+        "show_blogs": true,
+        "container_width": "container",
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "color_control": "section-light",
+        "custom_class": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
