@@ -963,6 +963,9 @@ button:disabled,
   .template-page {
       margin-top: 4.2rem;
   }
+  .shopify-section-nav{
+    margin-top: -4.2rem;
+  }
 }
 
 
