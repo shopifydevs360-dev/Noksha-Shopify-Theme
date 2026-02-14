@@ -24,9 +24,7 @@
               url: product.url,
               width: {{ image.width }},
               height: {{ image.height }},
-              crop: 'center',
-              mobile_image: ss.image_mobile,
-              img_alt: ss.title,
+              img_alt: ss.heading | escape,
               style: wrapper_style
             %}
           <img 
