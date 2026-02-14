@@ -270,12 +270,13 @@
       ],
       "name": "Feature Bar",
       "settings": {
+        "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "container_width": "container",
-        "color_control": "section-light",
-        "custom_class": "",
+        "container_width": "container-fluid",
         "padding_top": 20,
-        "padding_bottom": 20
+        "padding_bottom": 20,
+        "custom_class": "",
+        "color_control": "section-light"
       }
     }
   },
