@@ -19,6 +19,23 @@
         "color_control": "section-light"
       }
     },
+    "richtext_rYgBUU": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "hero_title": "Halla Locations",
+        "title_font_size": "h3",
+        "hero_description": "<p>Halla Hijab has established its presence in various malls across <a href=\"/pages/dubai-locations\" title=\"Dubai Locations\">Dubai</a> and <a href=\"/pages/qatar-locations\" title=\"Qatar Locations\">Qatar</a>, providing shoppers with convenient access to their products.\"</p>",
+        "text_align": "center",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "map_split_content_Jt4cck": {
       "type": "map-split-content",
       "name": "Map Split Content",
@@ -66,6 +83,7 @@
   },
   "order": [
     "main",
+    "richtext_rYgBUU",
     "map_split_content_Jt4cck",
     "map_split_content_3VbpEd"
   ]
