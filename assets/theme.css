@@ -549,10 +549,6 @@ button:disabled,
    Adapt to Image (Natural Height)
    ========================================= */
 
-/* =========================================
-   Adapt to Image (Natural Height)
-   ========================================= */
-
 .cropped-image-wrapper.adapt-image-height {
   height: auto;
   padding-bottom: 0;
