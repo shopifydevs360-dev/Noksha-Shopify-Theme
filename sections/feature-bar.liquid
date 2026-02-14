@@ -199,7 +199,7 @@
           "id": "icon_type",
           "label": "Use Icon From",
           "options": [
-            { "value": "theme", "label": "Theme Icon" },
+            { "value": "theme", "label": "Theme" },
             { "value": "custom", "label": "Custom SVG" }
           ],
           "default": "theme"
@@ -207,12 +207,14 @@
         {
           "type": "text",
           "id": "theme_icon",
-          "label": "Theme Icon Name"
+          "label": "Theme Icon Name",
+          "visible_if": "{{ block.settings.icon_type == 'theme' }}"
         },
         {
           "type": "textarea",
           "id": "custom_svg",
-          "label": "Custom SVG Code"
+          "label": "Custom SVG Code",
+          "visible_if": "{{ block.settings.icon_type == 'custom' }}"
         }
       ]
     }
