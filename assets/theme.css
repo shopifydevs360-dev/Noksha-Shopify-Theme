@@ -1045,3 +1045,9 @@ button:disabled,
 .pagination-inner .current{
   color: rgb(var(--color-border));
 }
+
+
+/* Hero info style */
+.hero-title {
+    margin-bottom: 1rem;
+}
