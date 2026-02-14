@@ -13,7 +13,7 @@
 <div class="{{ first_class }}" id="map-split-{{ section.id }}">
   <div class="{{ container_width }}">
 
-    <div class="map-split-wrapper d-flex flex-column flex-row-lg {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+    <div class="map-split-wrapper d-flex flex-column flex-column-reverse flex-row-lg {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
 
       <!-- LEFT MAP -->
       <div class="map-area flex-grow">
@@ -301,6 +301,15 @@ document.addEventListener("DOMContentLoaded", function () {
       "id": "coordinates",
       "label": "Map Coordinates",
       "default": "25.2854, 51.5310"
+    },
+    {
+      "type": "select",
+      "id": "map_position",
+      "label": "Map",
+      "options": [
+        { "value": "map-left", "label": "Left" },
+        { "value": "map-right", "label": "Right" },
+      ]
     },
     {
       "type": "text",
