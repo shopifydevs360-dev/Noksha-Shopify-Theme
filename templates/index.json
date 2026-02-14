@@ -229,13 +229,64 @@
         "color_control": "section-light"
       }
     },
-    "home_intro_LaEWrV": {
-      "type": "home-intro",
-      "disabled": true,
-      "name": "Hero Intro",
+    "feature_bar_pXf6dU": {
+      "type": "feature-bar",
+      "blocks": {
+        "feature_tBmKjG": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "title": "Free Shipping",
+            "description": "Free Shipping for orders over $100"
+          }
+        },
+        "feature_bWiRmf": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "title": "Free Shipping",
+            "description": "Free Shipping for orders over $100"
+          }
+        },
+        "feature_yLMGmq": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "title": "Free Shipping",
+            "description": "Free Shipping for orders over $100"
+          }
+        },
+        "feature_DzLK4g": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "theme",
+            "theme_icon": "",
+            "custom_svg": "",
+            "title": "Free Shipping",
+            "description": "Free Shipping for orders over $100"
+          }
+        }
+      },
+      "block_order": [
+        "feature_tBmKjG",
+        "feature_bWiRmf",
+        "feature_yLMGmq",
+        "feature_DzLK4g"
+      ],
+      "name": "Feature Bar",
       "settings": {
-        "heading_text": "<p>Meet the base you'll build every outfit on.</p>",
-        "image": "shopify://shop_images/Gemini_Generated_Image_sskctbsskctbsskc.png"
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "container",
+        "color_control": "section-light",
+        "custom_class": "",
+        "padding_top": 20,
+        "padding_bottom": 20
       }
     }
   },
@@ -245,6 +296,6 @@
     "collection_tab_HFCJgQ",
     "image_overlay_grid_Gz6VEw",
     "article_wrapper_tkFWde",
-    "home_intro_LaEWrV"
+    "feature_bar_pXf6dU"
   ]
 }
