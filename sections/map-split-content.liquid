@@ -8,12 +8,17 @@
   assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
   assign container_width = ss.container_width
+
+  assign flex_warpper = 'd-flex flex-column flex-column-reverse flex-row-lg'
+  if ss.enable_sidebar_space
+   assign flex_warpper = flex_warpper | append: ' ' | append: 'sidebar-space'
+  endif
 %}
 
 <div class="{{ first_class }}" id="map-split-{{ section.id }}">
   <div class="{{ container_width }}">
 
-    <div class="map-split-wrapper d-flex flex-column flex-column-reverse flex-row-lg {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+    <div class="{{ flex_warpper }}">
 
       <!-- LEFT MAP -->
       <div class="map-area flex-grow">
