@@ -1,10 +1,13 @@
 {% liquid
-  assign base_class = 'hero-info ' | append: 'text-' | append: text_align | default: 'left'
-  if ss.container_width == 'extended' or ss.container_width == 'full-width'
-  assign base_class = 'hero-info ' | append: 'mx-space'
- endif
+  assign text_align = text_align | default: 'left'
   assign heading_tag = heading_tag | default: 'h2'
   assign heading_size = heading_size | default: ''
+
+  assign base_class = 'hero-info text-' | append: text_align
+
+  if container_width == 'extended' or container_width == 'full-width'
+    assign base_class = base_class | append: ' mx-space'
+  endif
 %}
 
 {% if heading != blank or description != blank %}
