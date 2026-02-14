@@ -1,4 +1,23 @@
-<div class="hero-info text-{{ ss.text_align }}">
-    <h1 class="hero-title {{ ss.title_font_size }}">{{ ss.hero_title }}</h1>
-    <div class="hero-description">{{ ss.hero_description }}</div>
-</div>
+{% liquid
+  assign heading_tag = heading_tag | default: 'h2'
+  assign heading_size = heading_size | default: ''
+  assign text_align = text_align | default: 'left'
+%}
+
+{% if heading != blank or description != blank %}
+  <div class="hero-info text-{{ text_align }}">
+
+    {% if heading != blank %}
+      <{{ heading_tag }} class="hero-title {{ heading_size }}">
+        {{ heading }}
+      </{{ heading_tag }}>
+    {% endif %}
+
+    {% if description != blank %}
+      <div class="hero-description">
+        {{ description }}
+      </div>
+    {% endif %}
+
+  </div>
+{% endif %}
