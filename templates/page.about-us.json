@@ -60,7 +60,7 @@
       ],
       "name": "Image Features Split",
       "settings": {
-        "enable_sidebar_space": true,
+        "enable_sidebar_space": false,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "container_width": "full-width",
         "heading": "We are proudly Australian.",
