@@ -155,6 +155,31 @@
   "name": "Image Features Split",
   "settings": [
     {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable sidebar space",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container"
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Left Image"
@@ -197,26 +222,6 @@
         { "value": "right", "label": "Right" }
       ],
       "default": "left"
-    },
-
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme"
-    },
-    {
-      "type": "select",
-      "id": "container_width",
-      "label": "Container width",
-      "options": [
-        { "value": "container", "label": "Container" },
-        { "value": "extended", "label": "Extended" }
-      ],
-      "default": "container"
     },
     {
       "type": "select",
