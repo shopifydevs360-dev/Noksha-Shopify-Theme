@@ -175,9 +175,13 @@
       "label": "Container width",
       "options": [
         { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "full-width", "label": "Full width" },
         { "value": "extended", "label": "Extended" }
       ],
-      "default": "container"
+      "default": "extended"
     },
     {
       "type": "image_picker",
@@ -197,14 +201,15 @@
     },
     {
       "type": "select",
-      "id": "heading_size",
-      "label": "Heading Size",
+      "id": "font_size",
+      "label": "Font size",
       "options": [
-        { "value": "h1", "label": "H1" },
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" },
       ],
-      "default": "h2"
+      "default": "h3"
     },
     {
       "type": "checkbox",
