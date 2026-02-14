@@ -34,12 +34,20 @@
             "text": "Special Offers",
             "link": ""
           }
+        },
+        "announcement_6AkkPP": {
+          "type": "announcement",
+          "settings": {
+            "text": "Buy 2 get 1 free",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "announcement_EcXpME",
         "announcement_zjie7X",
-        "announcement_7w4jW9"
+        "announcement_7w4jW9",
+        "announcement_6AkkPP"
       ],
       "name": "Announcement bar",
       "settings": {
