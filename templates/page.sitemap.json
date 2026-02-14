@@ -10,13 +10,8 @@
 {
   "sections": {
     "main": {
-      "type": "page",
-      "settings": {
-        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_width": "container",
-        "custom_class": "",
-        "color_control": "section-light"
-      }
+      "type": "sitemap-page",
+      "settings": {}
     }
   },
   "order": [
