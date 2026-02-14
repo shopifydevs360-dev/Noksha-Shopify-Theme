@@ -954,8 +954,8 @@ button:disabled,
     padding-right: 4rem;
   }
 }
-@media (min-width: var(--container-max-width)px) {
-  .container .sidebar-space{
+@media (min-width: {{ settings.container_max_width }}px) {
+  .container .sidebar-space {
     padding-left: 0;
   }
 }
