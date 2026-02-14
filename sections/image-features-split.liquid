@@ -258,10 +258,14 @@
       "visible_if": "{{ section.settings.aspect_ratio == 'custom-height' }}"
     },
     {
-      "type": "checkbox",
+      "type": "select",
       "id": "reverse_layout",
-      "label": "Reverse Layout (Image Right)",
-      "default": false
+      "label": "Image",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
     {
       "type": "select",
