@@ -105,6 +105,62 @@
   "name": "Sitemap Page",
   "settings": [
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable sidebar space",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-light", "label": "Light" },
+        { "value": "section-dark", "label": "Dark" }
+      ],
+      "default": "section-light"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 60
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
@@ -158,56 +214,6 @@
       "id": "show_blogs",
       "label": "Show Blogs",
       "default": true
-    },
-    {
-      "type": "select",
-      "id": "container_width",
-      "label": "Container Width",
-      "options": [
-        { "value": "container", "label": "Container" },
-        { "value": "extended", "label": "Extended" }
-      ],
-      "default": "container"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color Scheme"
-    },
-    {
-      "type": "select",
-      "id": "color_control",
-      "label": "Color Control",
-      "options": [
-        { "value": "section-light", "label": "Light" },
-        { "value": "section-dark", "label": "Dark" }
-      ],
-      "default": "section-light"
-    },
-    {
-      "type": "text",
-      "id": "custom_class",
-      "label": "Custom Class"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Top Padding",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom Padding",
-      "default": 60
     }
   ],
   "presets": [
