@@ -166,7 +166,7 @@
 
   }
 {% endfor %}
-@media (min-width: {{ settings.container_max_width }}px) {
+@media (min-width: {{ settings.container_max_width | minus: 200 }}px) {
   .container .sidebar-space {
     padding-left: 0;
   }
