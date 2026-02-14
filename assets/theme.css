@@ -885,9 +885,7 @@ Flex Item Control CSS
     flex-grow: var(--grow-lg, 1);
   }
 }
-.flex-basis {
-  flex-basis: var(--basis, auto);
-}
+
 
 
 /* ------------------------------
