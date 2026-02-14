@@ -1,3 +1,82 @@
+{% render 'section-base-style' %}
+
+{% liquid
+  assign ss = section.settings
+
+  assign first_class = 'map-split-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign container_width = ss.container_width
+%}
+
+<div class="{{ first_class }}" id="map-split-{{ section.id }}">
+  <div class="{{ container_width }}">
+
+    <div class="map-split-wrapper d-flex flex-column flex-row-lg {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+
+      <!-- LEFT MAP -->
+      <div class="map-area flex-grow">
+        <div 
+          id="map-{{ section.id }}" 
+          class="leaflet-map"
+          data-coordinates="{{ ss.coordinates }}"
+          data-title="{{ ss.map_title }}"
+        ></div>
+      </div>
+
+      <!-- RIGHT CONTENT -->
+      <div class="content-area d-flex flex-column flex-grow">
+
+        {% if ss.heading != blank %}
+          <h2 class="{{ ss.heading_size }}">
+            {{ ss.heading }}
+          </h2>
+        {% endif %}
+
+        {% if ss.description != blank %}
+          <div class="section-description">
+            {{ ss.description }}
+          </div>
+        {% endif %}
+
+        {% if ss.button_label != blank %}
+          <a href="" class="get-direction" data-coordinates="{{ ss.coordinates }}" target="_blank" rel="noopener">
+            <span class="text">{{ ss.button_label }}</span>
+            <span class="icon">{%- render 'theme-icon', icon: 'arrow-direction' -%}</span>
+          </a>
+        {% endif %}
+
+        <!-- IMAGE GRID -->
+        <div class="image-grid d-flex">
+          
+          {% if ss.image_1 != blank %}
+            <div class="grid-item flex-grow">
+              {% render 'image',
+                image: ss.image_1,
+                img_alt: ss.heading
+              %}
+            </div>
+          {% endif %}
+
+          {% if ss.image_2 != blank %}
+            <div class="grid-item flex-grow">
+              {% render 'image',
+                image: ss.image_2,
+                img_alt: ss.heading
+              %}
+            </div>
+          {% endif %}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
 {% stylesheet %}
 
 /* Layout */
