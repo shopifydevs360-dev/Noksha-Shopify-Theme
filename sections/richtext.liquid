@@ -13,7 +13,13 @@
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-        {% render 'hero-info' %}
+        {% render 'hero-info',
+        heading: ss.hero_title,
+        description: ss.hero_description,
+        heading_tag: 'h1',
+        heading_size: ss.title_font_size,
+        text_align: ss.text_align
+        %}
     </div>
   </div>
 </div>
