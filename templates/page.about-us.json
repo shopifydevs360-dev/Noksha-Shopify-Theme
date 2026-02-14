@@ -62,7 +62,7 @@
       "settings": {
         "image": "shopify://shop_images/T656-04296.jpg",
         "heading": "We are proudly Australian.",
-        "subheading": "",
+        "subheading": "<p>wefw</p>",
         "heading_size": "h2",
         "reverse_layout": false,
         "text_align": "left",
