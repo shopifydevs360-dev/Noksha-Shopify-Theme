@@ -954,11 +954,7 @@ button:disabled,
     padding-right: 4rem;
   }
 }
-@media (min-width: {{ settings.container_max_width }}px) {
-  .container .sidebar-space {
-    padding-left: 0;
-  }
-}
+
 @media (max-width: 990px) {
   .template-page {
       margin-top: 4.2rem;
