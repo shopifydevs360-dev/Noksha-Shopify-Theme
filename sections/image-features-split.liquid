@@ -25,14 +25,16 @@
   endif
 
   assign wrapper_class = 'split-wrapper d-flex flex-column  flex-row-lg'
+  if ss.reverse_layout == 'right'
   assign wrapper_class = wrapper_class | append: ' flex-column-reverse'
+  endif
 
 %}
 
 <div class="{{ first_class }}" id="image-features-{{ section.id }}">
   <div class="{{ container_width }}">
     
-    <div class="split-wrapper {% if ss.reverse_layout == 'right' %}reverse{% endif %}">
+    <div class="{{ wrapper_class }}">
 
       <!-- IMAGE SIDE -->
       <div class="split-image">
