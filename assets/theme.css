@@ -838,6 +838,59 @@ button:disabled,
 }
 
 /* ------------------------------
+Flex Item Control CSS
+------------------------------- */
+/* ------------------------------
+   Flex Utilities - Mobile First
+------------------------------- */
+
+.d-flex { display: flex; }
+
+.flex-row { flex-direction: row; }
+.flex-column { flex-direction: column; }
+
+.justify-center { justify-content: center; }
+
+.flex-grow {
+  flex-grow: var(--grow, 1);
+}
+
+.flex-basis {
+  flex-basis: var(--basis, auto);
+}
+
+@media (min-width: 769px) {
+  .d-flex-md { display: flex; }
+
+  .flex-row-md { flex-direction: row; }
+  .flex-column-md { flex-direction: column; }
+
+  .justify-center-md { justify-content: center; }
+  .justify-between-md { justify-content: space-between; }
+
+  .flex-grow-md {
+    flex-grow: var(--grow-md, 1);
+  }
+}
+@media (min-width: 992px) {
+  .d-flex-lg { display: flex; }
+
+  .flex-row-lg { flex-direction: row; }
+  .flex-column-lg { flex-direction: column; }
+
+  .justify-center-lg { justify-content: center; }
+  .justify-between-lg { justify-content: space-between; }
+
+  .flex-grow-lg {
+    flex-grow: var(--grow-lg, 1);
+  }
+}
+.flex-basis {
+  flex-basis: var(--basis, auto);
+}
+
+
+/* ------------------------------
   Hide elements by viewport width
 ------------------------------- */
 .hide {
