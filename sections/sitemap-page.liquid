@@ -21,10 +21,10 @@
       container_width: ss.container_width
     %}
 
-    <div class="sitemap-grid d-flex flex-column flex-row-lg">
+    <div class="sitemap-wrapper">
 
       {% if ss.show_pages %}
-      <div class="sitemap-column flex-grow">
+      <div class="sitemap-column">
         <h3>Pages</h3>
         <ul>
           {% for page in pages %}
@@ -35,7 +35,7 @@
       {% endif %}
 
       {% if ss.show_collections %}
-      <div class="sitemap-column flex-grow">
+      <div class="sitemap-column">
         <h3>Collections</h3>
         <ul>
           {% for collection in collections %}
@@ -46,7 +46,7 @@
       {% endif %}
 
       {% if ss.show_products %}
-      <div class="sitemap-column flex-grow">
+      <div class="sitemap-column">
         <h3>Products</h3>
         <ul>
           {% paginate collections.all.products %}
@@ -75,7 +75,7 @@
 </div>
 
 {% stylesheet %}
-.sitemap-section .sitemap-grid {
+.sitemap-section .sitemap-wrapper {
   gap: 40px;
   margin-top: 40px;
 }
