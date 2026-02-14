@@ -13,15 +13,15 @@
   assign image_wapper_classes = 'cropped-image-wrapper'
   assign wrapper_style = ''
 
-  if block.settings.aspect_ratio == 'adapt-to-image'
+  if ss.aspect_ratio == 'adapt-to-image'
     assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
 
-  elsif block.settings.aspect_ratio == 'custom-height'
+  elsif ss.aspect_ratio == 'custom-height'
     assign image_wapper_classes = image_wapper_classes | append: ' custom-height-image'
-    assign wrapper_style = 'height:' | append: block.settings.custom_height | append: 'px;'
+    assign wrapper_style = 'height:' | append: ss.custom_height | append: 'px;'
 
   else
-    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.aspect_ratio
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.aspect_ratio
   endif
 %}
 
@@ -34,10 +34,10 @@
       <div class="split-image">
         {% if ss.image != blank %}
             {% render 'image',
-              class: '{{ ss.image_wapper_class }}',
+              class: '{{ image_wapper_classes }}',
               image: ss.image,
               img_alt: ss.heading | escape,
-              style: wrapper_style
+              style: {{ wrapper_style}}
             %}
         {% endif %}
       </div>
