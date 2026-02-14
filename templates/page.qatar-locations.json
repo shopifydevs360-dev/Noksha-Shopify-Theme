@@ -19,6 +19,23 @@
         "color_control": "section-light"
       }
     },
+    "richtext_VTcQc3": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
+        "container_width": "extended",
+        "hero_title": "Qatar Shopping Malls Directory",
+        "title_font_size": "h3",
+        "hero_description": "<p>Explore premier shopping destinations across Qatar</p>",
+        "text_align": "center",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "map_split_content_HCQ4gc": {
       "type": "map-split-content",
       "name": "Map Split Content",
@@ -154,6 +171,7 @@
   },
   "order": [
     "main",
+    "richtext_VTcQc3",
     "map_split_content_HCQ4gc",
     "map_split_content_rkcUVE",
     "map_split_content_j6HnbR",
