@@ -64,6 +64,7 @@
           {% if ss.image_2 != blank %}
             <div class="grid-item flex-grow">
               {% render 'image',
+                class: 'cropped-image-wrapper cropped-image--square',
                 image: ss.image_2,
                 img_alt: ss.heading,
                 crop: 'center',
