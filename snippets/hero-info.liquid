@@ -1,3 +1,14 @@
+{% comment %} 
+ * Example: 
+    {% render 'hero-info',
+  heading: ss.hero_title,
+  description: ss.hero_description,
+  heading_tag: 'h1',
+  heading_size: ss.title_font_size,
+  text_align: ss.text_align,
+  container_width: ss.container_width
+  %} 
+{% endcomment %}
 {% liquid
   assign text_align = text_align | default: 'left'
   assign heading_tag = heading_tag | default: 'h2'
