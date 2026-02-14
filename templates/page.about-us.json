@@ -69,7 +69,7 @@
         "image": "shopify://shop_images/T656-04296.jpg",
         "aspect_ratio": "cropped-image--square",
         "custom_height": 500,
-        "reverse_layout": "left",
+        "reverse_layout": "right",
         "text_align": "left",
         "color_control": "section-light",
         "custom_class": "",
