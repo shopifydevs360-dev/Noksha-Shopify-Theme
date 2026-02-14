@@ -166,5 +166,9 @@
 
   }
 {% endfor %}
-
+@media (min-width: {{ settings.container_max_width }}px) {
+  .container .sidebar-space {
+    padding-left: 0;
+  }
+}
 {% endstyle %}
