@@ -46,7 +46,7 @@
             "show_compare": false,
             "show_wishlist": false,
             "show_ask_question": true,
-            "show_size_guide": true,
+            "show_size_guide": false,
             "show_social_share": true,
             "show_track_order": false
           }
