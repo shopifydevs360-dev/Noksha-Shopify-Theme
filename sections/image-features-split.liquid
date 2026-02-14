@@ -24,7 +24,7 @@
     assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.aspect_ratio
   endif
 
-  assign wrapper_class = 'split-wrapper d-flex flex-column  flex-row-lg'
+  assign wrapper_class = 'split-wrapper d-flex flex-row-lg'
   if ss.reverse_layout == 'right'
   assign wrapper_class = wrapper_class  | append: ' '| append: 'flex-column-reverse-md'
   endif
