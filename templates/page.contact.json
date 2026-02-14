@@ -60,7 +60,7 @@
       "settings": {
         "enable_sidebar_space": true,
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "container_width": "container-fluid",
+        "container_width": "container",
         "hero_title": "Get In Touch",
         "title_font_size": "h3",
         "hero_description": "<p>Feel free to contact us using the information below or send us a message</p>",
