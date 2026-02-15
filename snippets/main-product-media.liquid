@@ -148,15 +148,20 @@
 
         {% for media in product.media %}
           {% if media.media_type == 'image' %}
-             <div class="image-loader"></div>
-            <div class="swiper-slide">
-              {% render 'image',
-                image: media,
-                width: media.width,
-                height: media.height,
-                img_alt: media.alt
-              %}
-            </div>
+<div class="swiper-slide">
+  <div class="lightbox-image-wrapper">
+    <div class="image-loader"></div>
+
+    {% render 'image',
+      image: media,
+      width: media.width,
+      height: media.height,
+      img_alt: media.alt,
+      class: 'lightbox-img'
+    %}
+  </div>
+</div>
+
           {% endif %}
         {% endfor %}
 
