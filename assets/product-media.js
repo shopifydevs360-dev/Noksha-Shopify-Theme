@@ -115,7 +115,8 @@ function initProductMediaLightbox() {
   });
 
   initProductMediaLightboxOpen(lightbox, lightboxSwiper);
-  initProductMediaZoom(sliderEl);
+initProductMediaZoom(sliderEl, lightboxSwiper);
+
 
   function closeLightbox() {
     lightbox.classList.remove('is-open');
