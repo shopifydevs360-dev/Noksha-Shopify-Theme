@@ -75,12 +75,17 @@
       }}
     </picture>
   {% else %}
-    {{ image
-      | image_url: width: width, height: height, crop: crop
-      | image_tag:
-        alt: img_alt,
-        loading: 'lazy',
-        decoding: 'async',
-    }}
+{{
+  image
+  | image_url: width: width, height: height, crop: crop
+  | image_tag:
+      alt: img_alt,
+      class: class,
+      loading: 'lazy',
+      decoding: 'async',
+
+
+}}
+
   {% endif %}
 </{{ wrapper }}>
