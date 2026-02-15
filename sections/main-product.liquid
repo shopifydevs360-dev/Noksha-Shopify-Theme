@@ -16,113 +16,129 @@
     <div class="media-warpper">
       {% render 'main-product-media', product: product %}
     </div>
+
     <!-- =====================
          RIGHT: PRODUCT INFO
     ====================== -->
     <div class="product-info">
 
-      {% for block in section.blocks %}
-        {% case block.type %}
+      {% form 'product', product, class: 'product-form', data-product-form: '' %}
 
-          <!-- TITLE + PRICE -->
-          {% when 'title_price' %}
-            {% render 'product-title-price', product: product, block: block %}
+        <!-- REQUIRED VARIANT ID -->
+        <input
+          type="hidden"
+          name="id"
+          value="{{ product.selected_or_first_available_variant.id }}"
+          data-variant-id
+        >
 
+        {% for block in section.blocks %}
+          {% case block.type %}
 
-          <!-- REVIEW COUNT -->
-          {% when 'review-count' %}
-            {% if product.metafields.reviews.count > 0 %}
-              {% render 'review-count', product: product, block: block %}
-            {% endif %}
-
-          {% when 'variant_picker' %}
-            {% render 'product-variant-picker', product: product, block: block %}
-
-          {% when 'add_to_cart_form' %}
-            {% render 'main-add-to-cart-form', product: product, block: block %}
-
-
-
-          <!-- SHORT DESCRIPTION -->
-          {% when 'short_description' %}
-            {% if product.metafields.custom.short_description != blank %}
-              <div class="product-block short-description" {{ block.shopify_attributes }}>
-                <h3 class="label {{ block.settings.text_size }}">{{ block.settings.heading }}</h3>
-                {{ product.metafields.custom.short_description }}
-              </div>
-            {% endif %}
-
-
-          <!-- FULL DESCRIPTION -->
-          {% when 'description' %}
-            <div class="product-block main-description" {{ block.shopify_attributes }}>
-              <h3 class="label {{ block.settings.text_size }}">{{ block.settings.heading }}</h3>
-              {{ product.description }}
-            </div>
-
-          <!-- ACCORDION -->
-          {% when 'accordion' %}
-            {% render 'product-accordion', block: block %}
-          {% when 'product_meta' %}
-            {% render 'product-meta', block: block %}
-          <!-- breadcrumb -->  
-          {% when 'breadcrumb' %}
-            <nav class="product-breadcrumb" {{ block.shopify_attributes }}>
-              <a href="{{ routes.root_url }}">Home</a>
-              {% if product.collections.first %}
+            <!-- BREADCRUMB -->
+            {% when 'breadcrumb' %}
+              <nav class="product-breadcrumb" {{ block.shopify_attributes }}>
+                <a href="{{ routes.root_url }}">Home</a>
+                {% if product.collections.first %}
+                  <span>/</span>
+                  <a href="{{ product.collections.first.url }}">
+                    {{ product.collections.first.title }}
+                  </a>
+                {% endif %}
                 <span>/</span>
-                <a href="{{ product.collections.first.url }}">
-                  {{ product.collections.first.title }}
-                </a>
+                <span>{{ product.title }}</span>
+              </nav>
+
+            <!-- COLLECTION NAME -->
+            {% when 'product_collection' %}
+              {% if product.collections.first %}
+                <div class="product-collection" {{ block.shopify_attributes }}>
+                  <a href="{{ product.collections.first.url }}">
+                    {{ product.collections.first.title }}
+                  </a>
+                </div>
               {% endif %}
-              <span>/</span>
-              <span>{{ product.title }}</span>
-            </nav>
-          <!-- =====================
-               COLLECTION NAME ONLY
-          ====================== -->
-          {% when 'product_collection' %}
-            {% if product.collections.first %}
-              <div class="product-collection" {{ block.shopify_attributes }}>
-                <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+
+            <!-- TITLE + PRICE -->
+            {% when 'title_price' %}
+              {% render 'product-title-price', product: product, block: block %}
+
+            <!-- REVIEW COUNT -->
+            {% when 'review-count' %}
+              {% if product.metafields.reviews.count > 0 %}
+                {% render 'review-count', product: product, block: block %}
+              {% endif %}
+
+            <!-- VARIANT PICKER -->
+            {% when 'variant_picker' %}
+              {% render 'product-variant-picker', product: product, block: block %}
+
+            <!-- ADD TO CART -->
+            {% when 'add_to_cart_form' %}
+              {% render 'main-add-to-cart-form', product: product, block: block %}
+
+            <!-- SHORT DESCRIPTION -->
+            {% when 'short_description' %}
+              {% if product.metafields.custom.short_description != blank %}
+                <div class="product-block short-description" {{ block.shopify_attributes }}>
+                  <h3 class="label {{ block.settings.text_size }}">
+                    {{ block.settings.heading }}
+                  </h3>
+                  {{ product.metafields.custom.short_description }}
+                </div>
+              {% endif %}
+
+            <!-- FULL DESCRIPTION -->
+            {% when 'description' %}
+              <div class="product-block main-description" {{ block.shopify_attributes }}>
+                <h3 class="label {{ block.settings.text_size }}">
+                  {{ block.settings.heading }}
+                </h3>
+                {{ product.description }}
               </div>
-            {% endif %}
 
-          <!-- =====================
-               icon list item
-          ====================== -->
-          {% when 'icon_list_item' %}
-            {% render 'icon-list-item', block: block %}
-          <!-- =====================
-               CUSTOM LIQUID
-          ====================== -->
-          {% when 'custom_liquid' %}
-            <div class="product-block custom-liquid" {{ block.shopify_attributes }}>
-              {{ block.settings.custom_liquid }}
-            </div>
+            <!-- ACCORDION -->
+            {% when 'accordion' %}
+              {% render 'product-accordion', block: block %}
 
-          <!-- =====================
-               Addon buttons
-          ====================== -->
-          {% when 'addon_buttons' %}
-            {% render 'addon-buttons', block: block %}
+            <!-- PRODUCT META -->
+            {% when 'product_meta' %}
+              {% render 'product-meta', block: block %}
 
-          <!-- =====================
-               RICHTEXT
-          ====================== -->
-          {% when 'richtext' %}
-            <div class="product-block richtext" {{ block.shopify_attributes }}>
-              {{ block.settings.text }}
-            </div>
-          {% when 'empty_space' %}
-            <!-- Empty block for spacing -->
-            <div class="empty-space" style="height: {{ block.settings.height }}px" {{ block.shopify_attributes }}>
-              {% if block.settings.show_divider %}
-                <div class="divider"></div>
-              {% endif %}
-            </div>
-        {% endcase %}
-      {% endfor %}
+            <!-- ICON LIST -->
+            {% when 'icon_list_item' %}
+              {% render 'icon-list-item', block: block %}
+
+            <!-- CUSTOM LIQUID -->
+            {% when 'custom_liquid' %}
+              <div class="product-block custom-liquid" {{ block.shopify_attributes }}>
+                {{ block.settings.custom_liquid }}
+              </div>
+
+            <!-- ADDON BUTTONS -->
+            {% when 'addon_buttons' %}
+              {% render 'addon-buttons', block: block %}
+
+            <!-- RICHTEXT -->
+            {% when 'richtext' %}
+              <div class="product-block richtext" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </div>
+
+            <!-- EMPTY SPACE -->
+            {% when 'empty_space' %}
+              <div class="empty-space"
+                   style="height: {{ block.settings.height }}px"
+                   {{ block.shopify_attributes }}>
+                {% if block.settings.show_divider %}
+                  <div class="divider"></div>
+                {% endif %}
+              </div>
+
+          {% endcase %}
+        {% endfor %}
+
+      {% endform %}
 
     </div>
 
