@@ -34,7 +34,7 @@
       {% endif %}
 
       {%- comment -%}
-      2️⃣ First product image (if different)
+      2️⃣ First product image (if different from variant)
       {%- endcomment -%}
       {% if first_media and first_media.id != variant_media.id %}
         <div class="swiper-slide" data-media-id="{{ first_media.id }}">
@@ -50,7 +50,7 @@
       {% endif %}
 
       {%- comment -%}
-      3️⃣ Rest of gallery images
+      3️⃣ Rest of gallery images (excluding variant and first if already shown)
       {%- endcomment -%}
       {% for media in product.media %}
         {% if media.media_type == 'image'
