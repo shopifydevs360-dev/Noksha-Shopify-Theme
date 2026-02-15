@@ -174,19 +174,26 @@ function initProductMedia() {
 
 }
 
-// After lightbox opens
-document.querySelectorAll('.lightbox-image-wrapper img').forEach(img => {
-  const loader = img.closest('.lightbox-image-wrapper').querySelector('.image-loader');
+function handleLightboxImageLoading() {
+  document.querySelectorAll('.lightbox-image-wrapper img').forEach(img => {
+    const loader = img.closest('.lightbox-image-wrapper').querySelector('.image-loader');
 
-  if (!img.complete) {
-    // Waiting for load
-    img.addEventListener('load', () => {
+    if (!img.complete) {
+      loader.style.display = 'flex';
+
+      img.addEventListener('load', () => {
+        loader.style.display = 'none';
+        img.style.opacity = '1';
+      });
+    } else {
       loader.style.display = 'none';
       img.style.opacity = '1';
-    });
-  } else {
-    // Already loaded
-    loader.style.display = 'none';
-    img.style.opacity = '1';
-  }
-});
+    }
+  });
+}
+
+// Run once on load
+handleLightboxImageLoading();
+
+// Also run when slide changes
+lightboxSwiper.on('slideChangeTransitionStart', handleLightboxImageLoading);
