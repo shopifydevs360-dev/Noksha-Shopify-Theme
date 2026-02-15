@@ -147,20 +147,12 @@
         {% for media in product.media %}
           {% if media.media_type == 'image' %}
             <div class="swiper-slide">
-              <img
-                srcset="
-                  {%- if media.width >= 720 -%}{{ media | image_url: width: 720 }} 720w,{%- endif -%}
-                  {%- if media.width >= 1066 -%}{{ media | image_url: width: 1066 }} 1066w,{%- endif -%}
-                  {%- if media.width >= 1500 -%}{{ media | image_url: width: 1500 }} 1500w,{%- endif -%}
-                  {{ media | image_url }} {{ media.width }}w
-                "
-                src="{{ media | image_url: width: 720 }}"
-                sizes="90vw"
-                alt="{{ media.alt | escape }}"
-                loading="lazy"
-                width="{{ media.width }}"
-                height="{{ media.height }}"
-              >
+              {% render 'image',
+                image: media,
+                width: media.width,
+                height: media.height,
+                img_alt: media.alt
+              %}
             </div>
           {% endif %}
         {% endfor %}
