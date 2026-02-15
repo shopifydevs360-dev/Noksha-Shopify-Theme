@@ -49,29 +49,31 @@ function initProductMedia() {
   /* =========================
      OPEN LIGHTBOX (IMAGES ONLY)
   ========================== */
-  document.addEventListener('click', e => {
-    const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
-    if (!slide) return;
+document.addEventListener('click', e => {
+  const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
+  if (!slide) return;
 
-    const img = e.target.closest('img');
-    if (!img) return;
+  const img = e.target.closest('img');
+  if (!img) return;
 
-    e.preventDefault();
-    e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
 
-    let index = 0;
+  let index = 0;
 
-    if (slide.classList.contains('swiper-slide')) {
-      index = Array.from(slide.parentNode.children).indexOf(slide);
-    }
+  if (slide.classList.contains('swiper-slide')) {
+    index = Array.from(slide.parentNode.children).indexOf(slide);
+  }
 
-    lightbox.classList.add('is-open');
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+  lightbox.classList.add('is-open');
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
 
-    resetZoom();
-    lightboxSwiper.slideToLoop(index, 0);
-  });
+  resetZoom();
+  lightboxSwiper.slideToLoop(index, 0);
+});
+
+
 
   /* =========================
      CLOSE LIGHTBOX
@@ -157,20 +159,12 @@ function initProductMedia() {
       hasMoved = true;
     }
 
-    // Calculate boundaries to prevent image from going out of view
-    const scale = zoomLevel === 1 ? 1.6 : 2.6;
-    const imgRect = activeImg.getBoundingClientRect();
-    const containerRect = sliderEl.getBoundingClientRect();
-    
-    // Calculate max allowed translation values
-    const maxX = Math.max(0, (imgRect.width - containerRect.width) / 2);
-    const maxY = Math.max(0, (imgRect.height - containerRect.height) / 2);
-    
-    // Apply boundaries
-    currentX = Math.min(maxX, Math.max(-maxX, dx));
-    currentY = Math.min(maxY, Math.max(-maxY, dy));
+    currentX = dx;
+    currentY = dy;
 
-    activeImg.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+    const scale = zoomLevel === 1 ? 1.6 : 2.6;
+    activeImg.style.transform =
+      `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
   });
 
   /* ---------- END DRAG ---------- */
