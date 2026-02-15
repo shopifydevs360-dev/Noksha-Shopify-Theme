@@ -39,3 +39,51 @@
     {% endfor %}
   </div>
 {% endunless %}
+{% stylesheet %}
+.variant-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.variant-btn {
+  position: relative;
+  cursor: pointer;
+}
+
+.variant-btn input {
+  display: none;
+}
+
+/* ===== TEXT OPTIONS ===== */
+.variant-text {
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.variant-btn input:checked + .variant-text {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+
+/* ===== COLOR SWATCH ===== */
+.variant-color .color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: block;
+  border: 1px solid #ddd;
+  transition: all 0.2s ease;
+}
+
+.variant-color input:checked + .color-swatch {
+  border: 2px solid #000;
+  transform: scale(1.1);
+}
+
+/* Tooltip (uses title attribute automatically) */
+
+{% endstylesheet %}
