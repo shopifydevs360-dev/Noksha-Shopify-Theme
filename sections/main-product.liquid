@@ -35,9 +35,12 @@
               {% render 'review-count', product: product, block: block %}
             {% endif %}
 
-          <!-- ADD TO CART FORM -->
+          {% when 'variant_picker' %}
+            {% render 'product-variant-picker', product: product, block: block %}
+
           {% when 'add_to_cart_form' %}
             {% render 'main-add-to-cart-form', product: product, block: block %}
+
 
 
           <!-- SHORT DESCRIPTION -->
@@ -196,6 +199,12 @@
       ]
     },
     { "type": "review-count", "name": "Reviews count", "limit": 1 },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1,
+      "settings": []
+    },
     { 
       "type": "add_to_cart_form", 
       "name": "Add to cart", 
