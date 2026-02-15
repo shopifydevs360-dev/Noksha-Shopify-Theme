@@ -1,328 +1,156 @@
 {%- liquid
   if product == blank
-    assign no_product = true
-  else
-    assign no_product = false
+    echo 'Product media unavailable'
+    break
   endif
 
-  unless no_product
-    assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
-    assign media_count = product.media.size
-  endunless
+  assign featured_media = product.featured_media
+  assign media_count = product.media.size
+
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+
 -%}
 
-{% if no_product %}
-  <p>{{ 'products.media.unavailable' | t }}</p>
-{% else %}
-  <div class="product-media">
-    <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape swiper js-product-media-main">
-      <div class="swiper-wrapper">
-        {% if featured_media %}
-          <div class="swiper-slide">
-            {% render 'image',
-              class: 'js-open-lightbox',
-              image: featured_media,
-              width: featured_media.width,
-              height: featured_media.height,
-              crop: 'center',
-              img_alt: featured_media.alt,
-              style: wrapper_style
-            %}
-          </div>
-        {% endif %}
+<div class="product-media">
 
-        {% for media in product.media %}
-          {% if media.id != featured_media.id and media.media_type == 'image' %}
-            <div class="swiper-slide">
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: media,
-                crop: 'center',
-                width: media.width,
-                height: media.height,
-                img_alt: media.alt
-              %}
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
+  <!-- =====================
+       MAIN MEDIA
+  ====================== -->
+  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
 
-      <div class="swiper-nav-wrapper">
-        <button class="swiper-button-prev" type="button" aria-label="{{ 'products.media.previous' | t }}">
-          <span class="inner-text h5">{{ 'products.media.previous' | t }}</span>
-        </button>
-
-        <button class="swiper-button-next" type="button" aria-label="{{ 'products.media.next' | t }}">
-          <span class="line"></span>
-          <span class="inner-text h5">{{ 'products.media.next' | t }}</span>
-        </button>
-      </div>
-
-      <div class="swiper-pagination"></div>
-    </div>
-
-    {% assign has_video = false %}
-    {% for media in product.media %}
-      {% if media.media_type contains 'video' %}
-        {% assign has_video = true %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
-
-    {% if has_video %}
-      <div class="product-media__video-row hide-tablet hide-mobile hide-tablet-landscape">
-        {% for media in product.media %}
-          {% if media.media_type contains 'video' %}
-            <div class="product-media__video js-open-lightbox">
-              {{ media | video_tag:
-                autoplay: true,
-                loop: true,
-                muted: true,
-                controls: false,
-                playsinline: true,
-                preload: 'metadata'
-              }}
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {% if media_count > 1 %}
-      <div class="product-media__thumbs swiper js-product-media-thumbs">
-        <div class="swiper-wrapper">
-          {% if featured_media %}
-            <div class="swiper-slide">
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: featured_media,
-                crop: 'center',
-                width: featured_media.width,
-                height: featured_media.height,
-                img_alt: featured_media.alt
-              %}
-            </div>
-          {% endif %}
-
-          {% for media in product.media %}
-            {% if media.id != featured_media.id and media.media_type == 'image' %}
-              <div class="swiper-slide">
-                {% render 'image',
-                  class: 'js-open-lightbox',
-                  image: media,
-                  crop: 'center',
-                  width: media.width,
-                  height: media.height,
-                  img_alt: media.alt
-                %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-
-        <div class="swiper-nav-wrapper">
-          <button class="swiper-button-prev" type="button" aria-label="{{ 'products.media.previous' | t }}">
-            <span class="inner-text h5">{{ 'products.media.previous' | t }}</span>
-          </button>
-
-          <button class="swiper-button-next" type="button" aria-label="{{ 'products.media.next' | t }}">
-            <span class="line"></span>
-            <span class="inner-text h5">{{ 'products.media.next' | t }}</span>
-          </button>
-        </div>
-
-        <div class="swiper-pagination"></div>
-      </div>
-    {% endif %}
+    {% render 'image',
+      class: 'js-open-lightbox',
+      image: featured_media,
+      width: featured_media.width,
+      height: featured_media.height,
+      crop: 'center',
+      img_alt: featured_media.alt,
+      style: wrapper_style
+    %}
   </div>
 
-  <div class="media-lightbox" id="mediaLightbox" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="media-lightbox__overlay"></div>
+  <!-- =====================
+       VIDEO ROW (IF EXISTS)
+  ====================== -->
+  {% assign has_video = false %}
+  {% for media in product.media %}
+    {% if media.media_type contains 'video' %}
+      {% assign has_video = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
 
-    <div class="media-lightbox__content">
-      <button class="media-lightbox__close" type="button" aria-label="{{ 'products.media.close' | t }}">×</button>
-
-      <div class="swiper media-lightbox__slider js-media-lightbox-slider">
-        <div class="swiper-wrapper">
-          {% for media in product.media %}
-            {% if media.media_type == 'image' %}
-              <div class="swiper-slide">
-                {% render 'image',
-                  image: media,
-                  width: media.width,
-                  height: media.height,
-                  img_alt: media.alt,
-                  loading: 'eager'
-                %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-pagination"></div>
-      </div>
+  {% if has_video %}
+    <div class="product-media__video-row hide-tablet hide-mobile hide-tablet-landscape">
+      {% for media in product.media %}
+        {% if media.media_type contains 'video' %}
+          <div class="product-media__video js-open-lightbox">
+            {{ media | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              preload: 'metadata'
+            }}
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
+  {% endif %}
+
+{% if media_count > 1 %}
+  <div class="product-media__thumbs swiper">
+    <div class="swiper-wrapper">
+
+      {%- comment -%}
+      First pass: render all images EXCEPT the first
+      {%- endcomment -%}
+      {% for media in product.media offset: 1 %}
+        {% if media.media_type == 'image' %}
+          <div class="swiper-slide">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: media,
+            crop: 'center',
+            width: media.width,
+            height: media.height,
+            img_alt: media.alt
+          %}
+
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {%- comment -%}
+      Second pass: render the FIRST image at the end
+      {%- endcomment -%}
+      {% assign first_media = product.media.first %}
+      {% if first_media.media_type == 'image' %}
+        <div class="swiper-slide">
+        {% render 'image',
+          class: 'js-open-lightbox',
+          image: first_media,
+          crop: 'center',
+          width: first_media.width,
+          height: first_media.height,
+          img_alt: first_media.alt,
+          data_lightbox_index: product.media.size | minus: 1
+        %}
+        </div>
+      {% endif %}
+
+    </div>
+
+    <div class="swiper-nav-wrapper">
+      <button class="swiper-button-prev" aria-label="Previous slide">
+        <span class="inner-text h5">Previous</span>
+      </button>
+
+      <button class="swiper-button-next" aria-label="Next slide">
+        <span class="line"></span>
+        <span class="inner-text h5">Next</span>
+      </button>
+    </div>
+
+    <div class="swiper-pagination"></div>
   </div>
 {% endif %}
 
-{% stylesheet %}
-  .product-media {
-    position: relative;
-  }
 
-  .product-media__main,
-  .product-media__thumbs {
-    width: 100%;
-  }
+</div>
 
-  .product-media__video-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-  }
+<!-- =====================
+     LIGHTBOX
+====================== -->
+<div class="media-lightbox" id="mediaLightbox">
+  <div class="media-lightbox__overlay"></div>
 
-  .product-media__video {
-    position: relative;
-    overflow: hidden;
-    border-radius: 0.5rem;
-  }
+  <div class="media-lightbox__content">
+    <button class="media-lightbox__close" aria-label="Close">×</button>
 
-  .media-lightbox {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-  }
+    <div class="swiper media-lightbox__slider">
+      <div class="swiper-wrapper">
 
-  .media-lightbox.is-open {
-    display: flex;
-  }
+        {% for media in product.media %}
+          {% if media.media_type == 'image' %}
+            <div class="swiper-slide">
+              {% render 'image',
+                image: media,
+                width: media.width,
+                height: media.height,
+                img_alt: media.alt,
+                loading: 'eager'
+              %}
+            </div>
+          {% endif %}
+        {% endfor %}
 
-  .media-lightbox__overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-  }
+      </div>
 
-  .media-lightbox__content {
-    position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-    width: 100%;
-    background: #fff;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    box-sizing: border-box;
-  }
-
-  .media-lightbox__close {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    background: transparent;
-    border: 0;
-    font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
-  }
-
-  .media-lightbox__slider .swiper-wrapper {
-    align-items: center;
-  }
-{% endstylesheet %}
-
-{% javascript %}
-  (function() {
-    if (typeof Swiper === 'undefined') return;
-
-    var mainEl = document.querySelector('.js-product-media-main');
-    var thumbsEl = document.querySelector('.js-product-media-thumbs');
-    var lightboxEl = document.getElementById('mediaLightbox');
-    var lightboxSliderEl = document.querySelector('.js-media-lightbox-slider');
-
-    if (!mainEl) return;
-
-    var thumbsSwiper = thumbsEl ? new Swiper(thumbsEl, {
-      slidesPerView: 'auto',
-      spaceBetween: 8,
-      watchSlidesProgress: true,
-      navigation: {
-        nextEl: thumbsEl.querySelector('.swiper-button-next'),
-        prevEl: thumbsEl.querySelector('.swiper-button-prev')
-      },
-      pagination: {
-        el: thumbsEl.querySelector('.swiper-pagination'),
-        clickable: true
-      }
-    }) : null;
-
-    var mainSwiper = new Swiper(mainEl, {
-      spaceBetween: 10,
-      navigation: {
-        nextEl: mainEl.querySelector('.swiper-button-next'),
-        prevEl: mainEl.querySelector('.swiper-button-prev')
-      },
-      pagination: {
-        el: mainEl.querySelector('.swiper-pagination'),
-        clickable: true
-      },
-      thumbs: thumbsSwiper ? { swiper: thumbsSwiper } : undefined
-    });
-
-    var lightboxSwiper = lightboxSliderEl ? new Swiper(lightboxSliderEl, {
-      spaceBetween: 10,
-      navigation: {
-        nextEl: lightboxSliderEl.querySelector('.swiper-button-next'),
-        prevEl: lightboxSliderEl.querySelector('.swiper-button-prev')
-      },
-      pagination: {
-        el: lightboxSliderEl.querySelector('.swiper-pagination'),
-        clickable: true
-      }
-    }) : null;
-
-    var openButtons = document.querySelectorAll('.js-open-lightbox');
-    var closeButton = lightboxEl ? lightboxEl.querySelector('.media-lightbox__close') : null;
-    var overlay = lightboxEl ? lightboxEl.querySelector('.media-lightbox__overlay') : null;
-
-    function openLightbox(index) {
-      if (!lightboxEl || !lightboxSwiper) return;
-      lightboxEl.classList.add('is-open');
-      lightboxEl.setAttribute('aria-hidden', 'false');
-      lightboxSwiper.slideTo(index || 0);
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      if (!lightboxEl) return;
-      lightboxEl.classList.remove('is-open');
-      lightboxEl.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
-
-    openButtons.forEach(function(button, index) {
-      button.addEventListener('click', function() {
-        openLightbox(index);
-      });
-    });
-
-    if (closeButton) {
-      closeButton.addEventListener('click', closeLightbox);
-    }
-
-    if (overlay) {
-      overlay.addEventListener('click', closeLightbox);
-    }
-
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        closeLightbox();
-      }
-    });
-  })();
-{% endjavascript %}
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</div>
