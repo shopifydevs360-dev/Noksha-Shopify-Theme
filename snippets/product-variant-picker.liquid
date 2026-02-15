@@ -1,136 +1,274 @@
-{% unless product.has_only_default_variant %}
-  <div class="variant-selector">
+{% doc %}
+  Renders the product variant selector based on global theme settings.
 
-    {% assign default_design = settings.variant_option_design_default %}
+  Uses the following global settings from config/settings_schema.json:
+  - variant_option_design_default: default design when no specific match is found
+  - variant_option_title[1-5]: option names to match against product.options
+  - variant_option_design[1-5]: design per matched option (default, color, image, button, dropdown)
+  - variant_option_display_name[1-5]: optional alternative label for the option legend
 
-    {% for option in product.options_with_values %}
-      
+  Matching is done case-insensitively by option name.
+
+  Designs:
+  - dropdown: renders a <select> for the option
+  - button: renders text buttons (radio inputs)
+  - color: renders color swatches (radio inputs)
+  - image: renders image swatches using the matched variant's featured_media
+  - default: falls back to a custom-image style (image if available, otherwise text)
+
+  Expected to be rendered inside a product form context where `product` is available.
+
+  @example
+  {% render 'product-variant-selector', product: product %}
+{% enddoc %}
+
+{% assign current_product = product | default: all_products[product.handle] %}
+
+{% unless current_product.has_only_default_variant %}
+  <div class="main-product-variant-selector">
+    {% for option in current_product.options_with_values %}
       {% assign option_name = option.name %}
       {% assign option_name_downcase = option_name | downcase %}
-      {% assign design = default_design %}
-      {% assign display_name = option_name %}
+
+      {% assign matched_design = settings.variant_option_design_default %}
+      {% assign matched_display_name = '' %}
 
       {% for i in (1..5) %}
-        {% assign schema_title = settings["variant_option_title" | append: i] | downcase %}
-        {% if option_name_downcase == schema_title %}
-          {% assign design = settings["variant_option_design" | append: i] %}
-          {% assign alt_name = settings["variant_option_display_name" | append: i] %}
-          {% if alt_name != blank %}
-            {% assign display_name = alt_name %}
-          {% endif %}
+        {% assign title_setting_id = 'variant_option_title' | append: i %}
+        {% assign design_setting_id = 'variant_option_design' | append: i %}
+        {% assign display_setting_id = 'variant_option_display_name' | append: i %}
+
+        {% assign title_setting_value = settings[title_setting_id] | downcase %}
+
+        {% if title_setting_value != '' and title_setting_value == option_name_downcase %}
+          {% assign matched_design = settings[design_setting_id] %}
+          {% assign matched_display_name = settings[display_setting_id] %}
         {% endif %}
       {% endfor %}
 
-      <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
-        <legend>{{ display_name }}</legend>
+      {% assign option_label = option_name %}
+      {% if matched_display_name != '' %}
+        {% assign option_label = matched_display_name %}
+      {% endif %}
 
-        {% case design %}
+      {% assign option_index0 = forloop.index0 %}
+      {% assign option_position = option.position %}
+      {% assign option_key = 'option' | append: option_position %}
 
-        {% when 'dropdown' %}
-          <div class="variant-dropdown">
-            <select name="options[{{ option.name }}]">
+      <fieldset class="variant-group" data-option-index="{{ option_index0 }}">
+        <legend>{{ option_label }}</legend>
+
+        {% case matched_design %}
+          {% when 'dropdown' %}
+            <div class="variant-dropdown-wrapper">
+              <select
+                class="variant-dropdown"
+                name="options[{{ option_name }}]"
+                data-option-position="{{ option_position }}"
+              >
+                {% for value in option.values %}
+                  <option
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}selected{% endif %}
+                  >
+                    {{ value }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+          {% when 'color' %}
+            <div class="variant-buttons is-color" data-option-position="{{ option_position }}">
               {% for value in option.values %}
-                <option value="{{ value }}"
-                  {% if option.selected_value == value %}selected{% endif %}>
-                  {{ value }}
-                </option>
+                <label class="variant-btn variant-color">
+                  <input
+                    type="radio"
+                    name="options[{{ option_name }}]"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
+                  <span
+                    class="color-swatch"
+                    style="background-color: {{ value | downcase }};"
+                    title="{{ value }}"
+                  ></span>
+                </label>
               {% endfor %}
-            </select>
-          </div>
+            </div>
 
+          {% when 'image' %}
+            <div class="variant-buttons is-image" data-option-position="{{ option_position }}">
+              {% for value in option.values %}
+                {% assign variants_for_value = current_product.variants | where: option_key, value %}
+                {% assign variant_for_value = variants_for_value | first %}
 
-        {% when 'button' %}
-          <div class="variant-buttons">
-            {% for value in option.values %}
-              <label class="variant-btn">
-                <input
-                  type="radio"
-                  name="options[{{ option.name }}]"
-                  value="{{ value }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                >
-                <span class="variant-text">{{ value }}</span>
-              </label>
-            {% endfor %}
-          </div>
+                <label class="variant-btn variant-image">
+                  <input
+                    type="radio"
+                    name="options[{{ option_name }}]"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
 
-
-        {% when 'color' %}
-          <div class="variant-buttons is-color">
-            {% for value in option.values %}
-              <label class="variant-btn variant-color">
-                <input
-                  type="radio"
-                  name="options[{{ option.name }}]"
-                  value="{{ value }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                >
-                <span
-                  class="color-swatch"
-                  style="background-color: {{ value | downcase }};"
-                  title="{{ value }}"
-                ></span>
-              </label>
-            {% endfor %}
-          </div>
-
-
-        {% when 'image' %}
-          <div class="variant-buttons is-image">
-            {% for value in option.values %}
-              
-              {% assign variant_image = blank %}
-              {% for variant in product.variants %}
-                {% if variant.title contains value and variant.image %}
-                  {% assign variant_image = variant.image %}
-                {% endif %}
+                  {% if variant_for_value and variant_for_value.featured_media %}
+                    {{ variant_for_value.featured_media
+                      | image_url: width: 80, height: 80, crop: 'center'
+                      | image_tag: class: 'variant-image-thumb', alt: value
+                    }}
+                  {% else %}
+                    <span class="variant-text">{{ value }}</span>
+                  {% endif %}
+                </label>
               {% endfor %}
+            </div>
 
-              <label class="variant-btn variant-image">
-                <input
-                  type="radio"
-                  name="options[{{ option.name }}]"
-                  value="{{ value }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                >
-
-                {% if variant_image %}
-                  <span class="image-swatch">
-                    <img 
-                      src="{{ variant_image | image_url: width: 100 }}"
-                      alt="{{ value }}"
-                      width="50"
-                      height="50"
-                    >
-                  </span>
-                {% else %}
+          {% when 'button' %}
+            <div class="variant-buttons" data-option-position="{{ option_position }}">
+              {% for value in option.values %}
+                <label class="variant-btn">
+                  <input
+                    type="radio"
+                    name="options[{{ option_name }}]"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
                   <span class="variant-text">{{ value }}</span>
-                {% endif %}
-              </label>
+                </label>
+              {% endfor %}
+            </div>
 
-            {% endfor %}
-          </div>
+          {% else %}
+            <div class="variant-buttons is-default" data-option-position="{{ option_position }}">
+              {% for value in option.values %}
+                {% assign variants_for_value = current_product.variants | where: option_key, value %}
+                {% assign variant_for_value = variants_for_value | first %}
 
+                <label class="variant-btn variant-default">
+                  <input
+                    type="radio"
+                    name="options[{{ option_name }}]"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
 
-        {% else %}
-          <div class="variant-buttons">
-            {% for value in option.values %}
-              <label class="variant-btn">
-                <input
-                  type="radio"
-                  name="options[{{ option.name }}]"
-                  value="{{ value }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                >
-                <span class="variant-text">{{ value }}</span>
-              </label>
-            {% endfor %}
-          </div>
-
+                  {% if variant_for_value and variant_for_value.featured_media %}
+                    {{ variant_for_value.featured_media
+                      | image_url: width: 80, height: 80, crop: 'center'
+                      | image_tag: class: 'variant-image-thumb', alt: value
+                    }}
+                  {% else %}
+                    <span class="variant-text">{{ value }}</span>
+                  {% endif %}
+                </label>
+              {% endfor %}
+            </div>
         {% endcase %}
-
       </fieldset>
-
     {% endfor %}
   </div>
 {% endunless %}
+
+{% stylesheet %}
+  .main-product-variant-selector fieldset.variant-group {
+    border: 1px solid rgb(var(--color-border));
+    padding: 0.75rem 1rem 1rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .main-product-variant-selector legend {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+
+  .main-product-variant-selector .variant-buttons {
+    display: flex;
+    row-gap: 0.75rem;
+    column-gap: 0.5rem;
+    padding: 0.6rem 0 0;
+    flex-wrap: wrap;
+  }
+
+  .main-product-variant-selector .variant-dropdown-wrapper {
+    margin-top: 0.5rem;
+  }
+
+  .main-product-variant-selector .variant-dropdown {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0;
+    border: 1px solid rgb(var(--color-border));
+    background-color: rgb(var(--color-background));
+    color: rgb(var(--color-text));
+  }
+
+  .main-product-variant-selector .variant-btn input {
+    display: none;
+  }
+
+  .main-product-variant-selector .variant-btn span,
+  .main-product-variant-selector .variant-image-thumb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgb(var(--color-border));
+    cursor: pointer;
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    box-sizing: border-box;
+  }
+
+  .main-product-variant-selector .variant-btn input:checked + span,
+  .main-product-variant-selector .variant-btn input:checked + .variant-image-thumb {
+    border-color: rgb(var(--color-heading));
+  }
+
+  .main-product-variant-selector .variant-btn .variant-text {
+    font-size: 0.85rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .main-product-variant-selector .variant-btn.variant-color .color-swatch {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border-radius: 999px;
+    border-width: 1px;
+  }
+
+  .main-product-variant-selector .variant-btn.variant-image .variant-image-thumb,
+  .main-product-variant-selector .variant-btn.variant-default .variant-image-thumb {
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    object-fit: cover;
+  }
+
+  .main-product-variant-selector .variant-btn.stock-out span,
+  .main-product-variant-selector .variant-btn.stock-out .variant-image-thumb {
+    border-color: rgb(var(--color-border));
+    color: rgb(var(--color-subtext));
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
+  .main-product-variant-selector .variant-btn.stock-out.checked span,
+  .main-product-variant-selector .variant-btn.stock-out.checked .variant-image-thumb {
+    background: transparent;
+    color: rgb(var(--color-subtext));
+  }
+
+  .main-product-variant-selector .variant-btn:not(.stock-out):hover span,
+  .main-product-variant-selector .variant-btn:not(.stock-out):hover .variant-image-thumb {
+    border-color: rgb(var(--color-heading));
+  }
+
+  .main-product-variant-selector .variant-btn span,
+  .main-product-variant-selector .variant-btn .variant-image-thumb {
+    transition: all 0.2s ease;
+  }
+{% endstylesheet %}
