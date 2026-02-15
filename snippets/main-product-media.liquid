@@ -124,3 +124,18 @@
   {% endif %}
 
 </div>
+<script>
+  const mainSlider = new Swiper('.product-media__main', {
+  slidesPerView: 1,
+  loop: false,
+  navigation: {
+    nextEl: '.product-media__main .swiper-button-next',
+    prevEl: '.product-media__main .swiper-button-prev',
+  },
+  pagination: {
+    el: '.product-media__main .swiper-pagination',
+    clickable: true,
+  }
+});
+
+</script>
