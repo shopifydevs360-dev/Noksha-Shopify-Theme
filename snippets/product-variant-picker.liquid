@@ -76,25 +76,33 @@
                 {% endfor %}
               </select>
             </div>
+{% when 'color' %}
+  <div class="variant-buttons is-color" data-option-position="{{ option_position }}">
+    {% for value in option.values %}
+      {% assign variants_for_value = current_product.variants | where: option_key, value %}
+      {% assign variant_for_value = variants_for_value | first %}
 
-          {% when 'color' %}
-            <div class="variant-buttons is-color" data-option-position="{{ option_position }}">
-              {% for value in option.values %}
-                <label class="variant-btn variant-color">
-                  <input
-                    type="radio"
-                    name="options[{{ option_name }}]"
-                    value="{{ value }}"
-                    {% if option.selected_value == value %}checked{% endif %}
-                  >
-                  <span
-                    class="color-swatch"
-                    style="background-color: {{ value | downcase }};"
-                    title="{{ value }}"
-                  ></span>
-                </label>
-              {% endfor %}
-            </div>
+      {% assign color_code = value %}
+      {% if variant_for_value and variant_for_value.metafields.custom.color_code != blank %}
+        {% assign color_code = variant_for_value.metafields.custom.color_code %}
+      {% endif %}
+
+      <label class="variant-btn variant-color">
+        <input
+          type="radio"
+          name="options[{{ option_name }}]"
+          value="{{ value }}"
+          {% if option.selected_value == value %}checked{% endif %}
+        >
+        <span
+          class="color-swatch"
+          style="background-color: {{ color_code }};"
+          title="{{ value }}"
+        ></span>
+      </label>
+    {% endfor %}
+  </div>
+
 
           {% when 'image' %}
             <div class="variant-buttons is-image" data-option-position="{{ option_position }}">
