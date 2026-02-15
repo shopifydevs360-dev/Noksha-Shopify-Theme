@@ -78,7 +78,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   const variants = JSON.parse(document.getElementById('ProductVariantsJson').textContent);
-  const mainMediaWrapper = document.getElementById('MainProductMedia');
+
+  const swiperEl = document.querySelector('.product-media__thumbs');
+  const swiperInstance = swiperEl?.swiper;
 
   function getSelectedOptions() {
     const selected = [];
@@ -97,18 +99,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  function updateMainImage(variant) {
+  function slideToVariantImage(variant) {
     if (!variant || !variant.featured_media) return;
 
-    const newImage = `
-      <img 
-        src="${variant.featured_media.preview_image.src}" 
-        alt="${variant.featured_media.alt || ''}"
-        class="js-open-lightbox"
-      />
-    `;
+    const mediaId = variant.featured_media.id;
 
-    mainMediaWrapper.innerHTML = newImage;
+    const slides = document.querySelectorAll('.product-media__thumbs .swiper-slide');
+    slides.forEach((slide, index) => {
+      if (slide.dataset.mediaId == mediaId) {
+        swiperInstance.slideTo(index);
+      }
+    });
   }
 
   document.querySelectorAll('.main-product-variant-selector input, .main-product-variant-selector select')
@@ -116,9 +117,10 @@ document.addEventListener('DOMContentLoaded', function () {
       el.addEventListener('change', function () {
         const selectedOptions = getSelectedOptions();
         const matchedVariant = findMatchingVariant(selectedOptions);
-        updateMainImage(matchedVariant);
+        slideToVariantImage(matchedVariant);
       });
     });
 
 });
 </script>
+
