@@ -49,25 +49,30 @@ function initProductMedia() {
   /* =========================
      OPEN LIGHTBOX (IMAGES ONLY)
   ========================== */
-document.querySelectorAll('.js-open-lightbox').forEach(el => {
-  el.addEventListener('click', e => {
+document.addEventListener('click', e => {
+  const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
+  if (!slide) return;
 
-    const img = e.target.closest('img');
-    if (!img) return;
+  const img = e.target.closest('img');
+  if (!img) return;
 
-    e.preventDefault();
-    e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
 
-    const index = Number(img.dataset.lightboxIndex) || 0;
+  let index = 0;
 
-    lightbox.classList.add('is-open');
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+  if (slide.classList.contains('swiper-slide')) {
+    index = Array.from(slide.parentNode.children).indexOf(slide);
+  }
 
-    resetZoom();
-    lightboxSwiper.slideToLoop(index, 0);
-  });
+  lightbox.classList.add('is-open');
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+
+  resetZoom();
+  lightboxSwiper.slideToLoop(index, 0);
 });
+
 
 
   /* =========================
