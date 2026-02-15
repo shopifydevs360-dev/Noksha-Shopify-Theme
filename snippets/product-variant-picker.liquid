@@ -1,209 +1,41 @@
 {% unless product.has_only_default_variant %}
   <div class="variant-selector">
     {% for option in product.options_with_values %}
-      {% assign option_index = forloop.index0 %}
+
       {% assign option_name_downcase = option.name | downcase %}
-      
-      {% comment %} Determine design type from schema settings {% endcomment %}
-      {% assign option_design = settings.variant_option_design_default %}
-      {% assign option_alt_name = option.name %}
-      
-      {% comment %} Check each option title in schema {% endcomment %}
-      {% if option_name_downcase contains settings.variant_option_title1 | downcase %}
-        {% if settings.variant_option_design1 != 'default' %}
-          {% assign option_design = settings.variant_option_design1 %}
-        {% endif %}
-        {% if settings.variant_option_display_name1 != blank %}
-          {% assign option_alt_name = settings.variant_option_display_name1 %}
-        {% endif %}
-      {% elsif option_name_downcase contains settings.variant_option_title2 | downcase %}
-        {% if settings.variant_option_design2 != 'default' %}
-          {% assign option_design = settings.variant_option_design2 %}
-        {% endif %}
-        {% if settings.variant_option_display_name2 != blank %}
-          {% assign option_alt_name = settings.variant_option_display_name2 %}
-        {% endif %}
-      {% elsif option_name_downcase contains settings.variant_option_title3 | downcase %}
-        {% if settings.variant_option_design3 != 'default' %}
-          {% assign option_design = settings.variant_option_design3 %}
-        {% endif %}
-        {% if settings.variant_option_display_name3 != blank %}
-          {% assign option_alt_name = settings.variant_option_display_name3 %}
-        {% endif %}
-      {% elsif option_name_downcase contains settings.variant_option_title4 | downcase %}
-        {% if settings.variant_option_design4 != 'default' %}
-          {% assign option_design = settings.variant_option_design4 %}
-        {% endif %}
-        {% if settings.variant_option_display_name4 != blank %}
-          {% assign option_alt_name = settings.variant_option_display_name4 %}
-        {% endif %}
-      {% elsif option_name_downcase contains settings.variant_option_title5 | downcase %}
-        {% if settings.variant_option_design5 != 'default' %}
-          {% assign option_design = settings.variant_option_design5 %}
-        {% endif %}
-        {% if settings.variant_option_display_name5 != blank %}
-          {% assign option_alt_name = settings.variant_option_display_name5 %}
-        {% endif %}
+      {% assign is_color = false %}
+
+      {% if option_name_downcase contains 'color' or option_name_downcase contains 'colour' %}
+        {% assign is_color = true %}
       {% endif %}
 
-      {% comment %} Check if it's a color option for swatch detection {% endcomment %}
-      {% assign is_color_option = false %}
-      {% if option_design == 'color' or option_name_downcase contains 'color' or option_name_downcase contains 'colour' %}
-        {% assign is_color_option = true %}
-      {% endif %}
+      <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
+        <legend>{{ option.name }}</legend>
 
-      {% if option_design == 'dropdown' %}
-        {% comment %} Dropdown Design {% endcomment %}
-        <div class="variant-group variant-group--dropdown" data-option-index="{{ option_index }}">
-          <label for="Option-{{ option.name }}-{{ section.id }}" class="variant-label">
-            {{ option_alt_name }}
-          </label>
-          <select 
-            id="Option-{{ option.name }}-{{ section.id }}"
-            class="variant-select"
-            name="options[{{ option.name | escape }}]"
-            form="{{ product_form_id }}"
-          >
-            {% for value in option.values %}
-              <option 
-                value="{{ value | escape }}"
-                {% if option.selected_value == value %}selected="selected"{% endif %}
+        <div class="variant-buttons {% if is_color %}is-color{% endif %}">
+          {% for value in option.values %}
+            <label class="variant-btn {% if is_color %}variant-color{% endif %}">
+              <input
+                type="radio"
+                name="options[{{ option.name }}]"
+                value="{{ value }}"
+                {% if option.selected_value == value %}checked{% endif %}
               >
-                {{ value }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
 
-      {% elsif option_design == 'button' or option_design == 'color' %}
-        {% comment %} Button or Color Swatch Design {% endcomment %}
-        <fieldset class="variant-group" data-option-index="{{ option_index }}">
-          <legend class="variant-label">{{ option_alt_name }}</legend>
-          
-          <div class="variant-buttons {% if is_color_option %}variant-buttons--color{% endif %}">
-            {% for value in option.values %}
-              {% assign variant_available = true %}
-              {% comment %} Check variant availability {% endcomment %}
-              {% for variant in product.variants %}
-                {% if variant.options[option_index] == value and variant.available == false %}
-                  {% assign variant_available = false %}
-                {% endif %}
-              {% endfor %}
-
-              <label class="variant-btn {% unless variant_available %}stock-out{% endunless %} {% if is_color_option %}variant-btn--color{% endif %}">
-                <input
-                  type="radio"
-                  name="options[{{ option.name | escape }}]"
-                  value="{{ value | escape }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                  data-option-index="{{ option_index }}"
-                  form="{{ product_form_id }}"
-                  {% unless variant_available %}disabled{% endunless %}
-                >
-
-                {% if is_color_option %}
-                  {% comment %} Color swatch with custom color or pattern {% endcomment %}
-                  {% assign color_value = value | downcase | replace: ' ', '' %}
-                  <span
-                    class="color-swatch"
-                    style="background-color: {{ color_value }}; {% if color_value == 'white' or color_value == '#ffffff' %}border: 1px solid #ddd;{% endif %}"
-                    title="{{ value | escape }}"
-                  >
-                    <span class="visually-hidden">{{ value }}</span>
-                  </span>
-                {% else %}
-                  {% comment %} Regular button style {% endcomment %}
-                  <span class="variant-text">{{ value }}</span>
-                {% endif %}
-              </label>
-            {% endfor %}
-          </div>
-        </fieldset>
-
-      {% elsif option_design == 'image' %}
-        {% comment %} Variant Image Design (with product images) {% endcomment %}
-        <fieldset class="variant-group variant-group--image" data-option-index="{{ option_index }}">
-          <legend class="variant-label">{{ option_alt_name }}</legend>
-          
-          <div class="variant-buttons variant-buttons--image">
-            {% for value in option.values %}
-              {% assign variant_available = true %}
-              {% assign variant_image = blank %}
-              
-              {% comment %} Find first variant with this option value and get its image {% endcomment %}
-              {% for variant in product.variants %}
-                {% if variant.options[option_index] == value %}
-                  {% unless variant.available %}
-                    {% assign variant_available = false %}
-                  {% endunless %}
-                  {% if variant.image %}
-                    {% assign variant_image = variant.image %}
-                  {% endif %}
-                  {% break %}
-                {% endif %}
-              {% endfor %}
-
-              <label class="variant-btn variant-btn--image {% unless variant_available %}stock-out{% endunless %}">
-                <input
-                  type="radio"
-                  name="options[{{ option.name | escape }}]"
-                  value="{{ value | escape }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                  data-option-index="{{ option_index }}"
-                  form="{{ product_form_id }}"
-                  {% unless variant_available %}disabled{% endunless %}
-                >
-
-                <span class="variant-image-wrapper">
-                  {% if variant_image %}
-                    <img 
-                      src="{{ variant_image | img_url: '100x100', crop: 'center' }}" 
-                      alt="{{ value | escape }}"
-                      loading="lazy"
-                      width="50"
-                      height="50"
-                    >
-                  {% else %}
-                    <span class="variant-image-placeholder">{{ value | slice: 0, 2 | upcase }}</span>
-                  {% endif %}
-                  <span class="variant-image-label">{{ value }}</span>
-                </span>
-              </label>
-            {% endfor %}
-          </div>
-        </fieldset>
-
-      {% else %}
-        {% comment %} Default/Custom Image Design (similar to image but with custom images - you'd need to add metafield support) {% endcomment %}
-        <fieldset class="variant-group variant-group--default" data-option-index="{{ option_index }}">
-          <legend class="variant-label">{{ option_alt_name }}</legend>
-          
-          <div class="variant-buttons">
-            {% for value in option.values %}
-              {% assign variant_available = true %}
-              {% for variant in product.variants %}
-                {% if variant.options[option_index] == value and variant.available == false %}
-                  {% assign variant_available = false %}
-                {% endif %}
-              {% endfor %}
-
-              <label class="variant-btn {% unless variant_available %}stock-out{% endunless %}">
-                <input
-                  type="radio"
-                  name="options[{{ option.name | escape }}]"
-                  value="{{ value | escape }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                  data-option-index="{{ option_index }}"
-                  form="{{ product_form_id }}"
-                  {% unless variant_available %}disabled{% endunless %}
-                >
-
+              {% if is_color %}
+                <span
+                  class="color-swatch"
+                  style="background-color: {{ value | downcase }};"
+                  title="{{ value }}"
+                ></span>
+              {% else %}
                 <span class="variant-text">{{ value }}</span>
-              </label>
-            {% endfor %}
-          </div>
-        </fieldset>
-      {% endif %}
+              {% endif %}
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
     {% endfor %}
   </div>
 {% endunless %}
