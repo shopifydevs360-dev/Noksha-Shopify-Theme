@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   initProductMedia();
+  initVariantImageSwitch();
 });
 
 function initProductMedia() {
@@ -174,3 +175,38 @@ function initProductMedia() {
 
 }
 
+function initVariantImageSwitch() {
+
+  const productJsonEl = document.getElementById('ProductJson-' + window.ShopifyAnalytics.meta.product.id);
+  if (!productJsonEl) return;
+
+  const productData = JSON.parse(productJsonEl.textContent);
+  const form = document.querySelector('form[action*="/cart/add"]');
+  if (!form) return;
+
+  form.addEventListener('change', () => {
+    const formData = new FormData(form);
+
+    const selectedOptions = productData.options.map(optionName =>
+      formData.get(`options[${optionName}]`)
+    );
+
+    const selectedVariant = productData.variants.find(variant =>
+      variant.options.every((opt, index) => opt === selectedOptions[index])
+    );
+
+    if (!selectedVariant || !selectedVariant.featured_media) return;
+
+    const mediaId = selectedVariant.featured_media.id;
+
+    const slides = document.querySelectorAll('.product-media__thumbs .swiper-slide');
+
+    slides.forEach((slide, index) => {
+      if (slide.dataset.mediaId == mediaId) {
+        if (thumbsSwiper) {
+          thumbsSwiper.slideToLoop(index);
+        }
+      }
+    });
+  });
+}
