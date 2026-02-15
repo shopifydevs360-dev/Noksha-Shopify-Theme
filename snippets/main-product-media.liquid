@@ -27,6 +27,7 @@
         playsinline: true,
         preload: 'metadata'
       }}
+
     {% elsif featured_media.media_type == 'image' %}
     {% render 'image',
       class: 'js-open-lightbox',
@@ -85,6 +86,7 @@
           {% render 'image',
             class: 'js-open-lightbox',
             image: media,
+            crop: 'center',
             width: media.width,
             height: media.height,
             img_alt: media.alt
@@ -103,6 +105,7 @@
         {% render 'image',
           class: 'js-open-lightbox',
           image: first_media,
+          crop: 'center',
           width: first_media.width,
           height: first_media.height,
           img_alt: first_media.alt,
