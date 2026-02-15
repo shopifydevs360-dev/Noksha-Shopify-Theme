@@ -77,19 +77,24 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  const variants = JSON.parse(
-    document.getElementById('ProductVariantsJson').textContent
-  );
-
   const mainSwiper = new Swiper('#MainProductMedia', {
     loop: true,
     slidesPerView: 1,
     spaceBetween: 0,
+
+    effect: 'fade',
+    fadeEffect: {
+      crossFade: true
+    },
+
+    speed: 500, // fade speed (ms)
     autoHeight: true,
+
     navigation: {
       nextEl: '#MainProductMedia .swiper-button-next',
       prevEl: '#MainProductMedia .swiper-button-prev',
     },
+
     pagination: {
       el: '#MainProductMedia .swiper-pagination',
       clickable: true,
