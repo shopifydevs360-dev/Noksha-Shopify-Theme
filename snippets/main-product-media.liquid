@@ -10,6 +10,12 @@
   assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
 
 -%}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign variant_has_image = false %}
+
+{% if current_variant.featured_media != blank %}
+  {% assign variant_has_image = true %}
+{% endif %}
 
 <div class="product-media">
 
