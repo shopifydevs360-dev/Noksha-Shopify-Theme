@@ -3,6 +3,26 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initProductMedia() {
+  // Initialize main product media slider
+  const mainSlider = document.querySelector('.product-media__main');
+  
+  if (mainSlider) {
+    new Swiper(mainSlider, {
+      slidesPerView: 1,
+      loop: true,
+      navigation: {
+        nextEl: '.product-media__main .swiper-button-next',
+        prevEl: '.product-media__main .swiper-button-prev',
+      },
+      pagination: {
+        el: '.product-media__main .swiper-pagination',
+        clickable: true,
+      },
+      // Optional: Add effect if desired
+      effect: 'slide',
+      speed: 400,
+    });
+  }
 
   const thumbs = document.querySelector('.product-media__thumbs');
 
@@ -40,8 +60,9 @@ function initProductMedia() {
     },
   });
 
+  // Open lightbox from main slider or thumbs
   document.addEventListener('click', e => {
-    const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
+    const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main .swiper-slide');
     if (!slide) return;
 
     const img = e.target.closest('img');
@@ -173,4 +194,3 @@ function initProductMedia() {
   }
 
 }
-
