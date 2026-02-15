@@ -4,30 +4,79 @@
     break
   endif
 
-  assign featured_media = product.featured_media
+  assign variant_media = product.selected_or_first_available_variant.featured_media
+  assign first_media = product.media.first
   assign media_count = product.media.size
-
-  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
-
 -%}
 
 <div class="product-media">
 
   <!-- =====================
-       MAIN MEDIA
+       MAIN SWIPER (UPDATED)
   ====================== -->
-  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
+  <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape">
+    <div class="swiper-wrapper">
 
-    {% render 'image',
-      class: 'js-open-lightbox',
-      image: featured_media,
-      width: featured_media.width,
-      height: featured_media.height,
-      crop: 'center',
-      img_alt: featured_media.alt,
-      style: wrapper_style
-    %}
+      {%- comment -%}
+      1️⃣ Variant image first (if exists)
+      {%- endcomment -%}
+      {% if variant_media %}
+        <div class="swiper-slide" data-media-id="{{ variant_media.id }}">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: variant_media,
+            width: variant_media.width,
+            height: variant_media.height,
+            crop: 'center',
+            img_alt: variant_media.alt
+          %}
+        </div>
+      {% endif %}
+
+      {%- comment -%}
+      2️⃣ First product image (if different)
+      {%- endcomment -%}
+      {% if first_media and first_media.id != variant_media.id %}
+        <div class="swiper-slide" data-media-id="{{ first_media.id }}">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: first_media,
+            width: first_media.width,
+            height: first_media.height,
+            crop: 'center',
+            img_alt: first_media.alt
+          %}
+        </div>
+      {% endif %}
+
+      {%- comment -%}
+      3️⃣ Rest of gallery images
+      {%- endcomment -%}
+      {% for media in product.media %}
+        {% if media.media_type == 'image'
+          and media.id != variant_media.id
+          and media.id != first_media.id
+        %}
+          <div class="swiper-slide" data-media-id="{{ media.id }}">
+            {% render 'image',
+              class: 'js-open-lightbox',
+              image: media,
+              width: media.width,
+              height: media.height,
+              crop: 'center',
+              img_alt: media.alt
+            %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-pagination"></div>
   </div>
+
 
   <!-- =====================
        VIDEO ROW (IF EXISTS)
