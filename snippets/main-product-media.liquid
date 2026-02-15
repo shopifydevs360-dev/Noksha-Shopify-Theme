@@ -29,6 +29,7 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
+      <div class="image-loader"></div>
     {% render 'image',
       class: 'js-open-lightbox',
       image: featured_media,
