@@ -1,84 +1,70 @@
-{{ 'collection-tab.css' | asset_url | stylesheet_tag }}
-{% render 'section-base-style' %}
-
 {% if product %}
 
-{% assign related_collection = product.collections.first %}
-{% assign related_products = related_collection.products | where: "id", product.id, false %}
+<section
+  id="product-recommendations-{{ section.id }}"
+  class="product-related-carousel {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}"
+>
+  <product-recommendations
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}"
+  >
 
-<div class="product-tabs-carousel related-products-carousel {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
-  <div class="product-carousel section-{{ section.id }}-padding">
+    {% if recommendations.performed and recommendations.products_count > 0 %}
 
-    <!-- ================= TITLE ================= -->
-    <h2 class="container {{ section.settings.title_font_size }}">
-      <div class="info-title">
-        {{ section.settings.title }}
-      </div>
-    </h2>
+      <div class="product-carousel section-{{ section.id }}-padding">
 
-    <!-- ================= PRODUCTS CAROUSEL ================= -->
-    <div class="swiper swiper-container-related">
-      <div class="swiper-wrapper">
-
-        <!-- Desktop Lead Card -->
-        <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
-          <div class="collection-lead-info">
-            <h2 class="{{ section.settings.title_font_size }}">
+        {% if section.settings.title != blank %}
+          <h2 class="container">
+            <div class="info-title">
               {{ section.settings.title }}
-            </h2>
-            {% if related_collection %}
-              <a href="{{ related_collection.url }}" class="btn btn-arrow">
-                SHOP NOW
-                <span class="icon">
-                  {% render 'theme-icon', icon: 'right-arrow' %}
-                </span>
-              </a>
-            {% endif %}
-          </div>
-        </div>
-
-        <!-- Related Products -->
-        {% if related_collection %}
-          {% for related_product in related_collection.products %}
-            {% if related_product.id != product.id %}
-              <div class="swiper-slide product-slide">
-                {% render 'product-card', product: related_product %}
-              </div>
-            {% endif %}
-          {% endfor %}
+            </div>
+          </h2>
         {% endif %}
 
+        <div class="swiper swiper-container-product">
+          <div class="swiper-wrapper">
+
+            {% for recommended_product in recommendations.products %}
+              <div class="swiper-slide product-slide">
+                {% render 'product-card', product: recommended_product %}
+              </div>
+            {% endfor %}
+
+          </div>
+
+          <div class="swiper-scrollbar hide-desktop hide-large-screens"></div>
+        </div>
+
       </div>
 
-      <div class="swiper-scrollbar hide-desktop hide-large-screens"></div>
-    </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const section = document.querySelector('#product-recommendations-{{ section.id }}');
+          if (!section) return;
 
-  </div>
-</div>
+          new Swiper(section.querySelector('.swiper-container-product'), {
+            slidesPerView: 1.2,
+            spaceBetween: 24,
+            observer: true,
+            observeParents: true,
+            scrollbar: {
+              el: section.querySelector('.swiper-scrollbar'),
+              draggable: true
+            },
+            breakpoints: {
+              580: { slidesPerView: 2.5 },
+              991: { slidesPerView: 3 },
+              1321: { slidesPerView: 3.5 }
+            }
+          });
+        });
+      </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  const section = document.querySelector('.related-products-carousel');
-  if (!section) return;
-
-  new Swiper(section.querySelector('.swiper-container-related'), {
-    slidesPerView: 1.2,
-    scrollbar: {
-      el: section.querySelector('.swiper-scrollbar'),
-      draggable: true
-    },
-    breakpoints: {
-      580: { slidesPerView: 2.5 },
-      991: { slidesPerView: 3 },
-      1321: { slidesPerView: 3.5 }
-    }
-  });
-
-});
-</script>
+    {% endif %}
+  </product-recommendations>
+</section>
 
 {% endif %}
+
 {% schema %}
 {
   "name": "Related Products",
@@ -92,19 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "Related Products"
-    },
-    {
-      "type": "select",
-      "id": "title_font_size",
-      "label": "Font size",
-      "options": [
-        { "value": "h1", "label": "h1" },
-        { "value": "h2", "label": "h2" },
-        { "value": "h3", "label": "h3" },
-        { "value": "h4", "label": "h4" }
-      ],
-      "default": "h3"
+      "default": "You may also like"
     },
     {
       "type": "header",
@@ -129,6 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
       "unit": "px",
       "label": "Bottom padding",
       "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Option"
     },
     {
       "type": "text",
