@@ -77,38 +77,24 @@
               </select>
             </div>
 
-{% when 'color' %}
-  <div class="variant-buttons is-color" data-option-position="{{ option_position }}">
-    {% for value in option.values %}
-      {%- assign color_code = value | strip -%}
-
-      {%- if value contains '#' -%}
-        {%- assign parts = value | split: '#' -%}
-        {%- assign code_part = parts | last | strip -%}
-        {%- assign color_code = '#' | append: code_part -%}
-      {%- elsif value contains '(' and value contains ')' -%}
-        {%- assign before_paren = value | split: '(' | first -%}
-        {%- assign inner_paren = value | split: '(' | last | split: ')' | first | strip -%}
-        {%- if inner_paren contains '#' -%}
-          {%- assign color_code = inner_paren -%}
-        {%- endif -%}
-      {%- endif -%}
-
-      <label class="variant-btn variant-color">
-        <input
-          type="radio"
-          name="options[{{ option_name }}]"
-          value="{{ value }}"
-          {% if option.selected_value == value %}checked{% endif %}
-        >
-        <span
-          class="color-swatch"
-          style="background-color: {{ color_code }};"
-          title="{{ value }}"
-        ></span>
-      </label>
-    {% endfor %}
-  </div>
+          {% when 'color' %}
+            <div class="variant-buttons is-color" data-option-position="{{ option_position }}">
+              {% for value in option.values %}
+                <label class="variant-btn variant-color">
+                  <input
+                    type="radio"
+                    name="options[{{ option_name }}]"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
+                  <span
+                    class="color-swatch"
+                    style="background-color: {{ value | downcase }};"
+                    title="{{ value }}"
+                  ></span>
+                </label>
+              {% endfor %}
+            </div>
 
           {% when 'image' %}
             <div class="variant-buttons is-image" data-option-position="{{ option_position }}">
