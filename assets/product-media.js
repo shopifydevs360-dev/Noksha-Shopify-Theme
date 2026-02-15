@@ -149,23 +149,37 @@ document.addEventListener('click', e => {
   });
 
   /* ---------- DRAG MOVE ---------- */
-  window.addEventListener('mousemove', e => {
-    if (!isDragging || !activeImg) return;
+window.addEventListener('mousemove', e => {
+  if (!isDragging || !activeImg) return;
 
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
 
-    if (Math.abs(dx - currentX) > MOVE_THRESHOLD || Math.abs(dy - currentY) > MOVE_THRESHOLD) {
-      hasMoved = true;
-    }
+  if (
+    Math.abs(dx - currentX) > MOVE_THRESHOLD ||
+    Math.abs(dy - currentY) > MOVE_THRESHOLD
+  ) {
+    hasMoved = true;
+  }
 
-    currentX = dx;
-    currentY = dy;
+  const scale = zoomLevel === 1 ? 1.6 : 2.6;
 
-    const scale = zoomLevel === 1 ? 1.6 : 2.6;
-    activeImg.style.transform =
-      `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
-  });
+  const containerRect = sliderEl.getBoundingClientRect();
+  const imgRect = activeImg.getBoundingClientRect();
+
+  const scaledWidth = imgRect.width;
+  const scaledHeight = imgRect.height;
+
+  const maxX = (scaledWidth - containerRect.width) / 2;
+  const maxY = (scaledHeight - containerRect.height) / 2;
+
+  currentX = Math.max(-maxX, Math.min(maxX, dx));
+  currentY = Math.max(-maxY, Math.min(maxY, dy));
+
+  activeImg.style.transform =
+    `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+});
+
 
   /* ---------- END DRAG ---------- */
   window.addEventListener('mouseup', () => {
