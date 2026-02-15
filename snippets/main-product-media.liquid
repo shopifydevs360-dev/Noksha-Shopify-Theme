@@ -82,7 +82,7 @@
       {%- endcomment -%}
       {% for media in product.media offset: 1 %}
         {% if media.media_type == 'image' %}
-          <div class="swiper-slide" data-media-id="{{ media.id }}>
+          <div class="swiper-slide" data-media-id="{{ media.id }}">
           {% render 'image',
             class: 'js-open-lightbox',
             image: media,
