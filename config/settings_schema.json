@@ -510,8 +510,261 @@
     "name": "Product options design",
     "settings": [
       {
+        "type": "paragraph",
+        "content": "[Read How-to](https://codecraftmehedi.com/noksha)"
+      },
+      {
         "type": "header",
-        "content": "Product options design"
+        "content": "Default option design"
+      },
+      {
+        "type": "select",
+        "id": "variant_option_design_default",
+        "label": "Design",
+        "options": [
+          {
+            "value": "default",
+            "label": "Custom image"
+          },
+          {
+            "value": "color",
+            "label": "Color"
+          },
+          {
+            "value": "image",
+            "label": "Variant image"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          },
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          }
+        ],
+        "default": "button",
+        "info": "Default design if option's name doesn't match any of the 5 names in the below settings"
+      },
+      {
+        "type": "header",
+        "content": "Option 1"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_title1",
+        "label": "Name",
+        "default": "Size"
+      },
+      {
+        "type": "select",
+        "id": "variant_option_design1",
+        "label": "Design",
+        "options": [
+          {
+            "value": "default",
+            "label": "Custom image"
+          },
+          {
+            "value": "color",
+            "label": "Color"
+          },
+          {
+            "value": "image",
+            "label": "Variant image"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          },
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          }
+        ],
+        "default": "button"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_display_name1",
+        "label": "Alternative name",
+        "info": "Example: Select a size"
+      },
+      {
+        "type": "header",
+        "content": "Option 2"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_title2",
+        "label": "Name",
+        "default": "Color"
+      },
+      {
+        "type": "select",
+        "id": "variant_option_design2",
+        "label": "Design",
+        "options": [
+          {
+            "value": "default",
+            "label": "Custom image"
+          },
+          {
+            "value": "color",
+            "label": "Color"
+          },
+          {
+            "value": "image",
+            "label": "Variant image"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          },
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          }
+        ],
+        "default": "color"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_display_name2",
+        "label": "Alternative name",
+        "info": "Example: Select a color"
+      },
+      {
+        "type": "header",
+        "content": "Option 3"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_title3",
+        "label": "Name",
+        "default": "Material"
+      },
+      {
+        "type": "select",
+        "id": "variant_option_design3",
+        "label": "Design",
+        "options": [
+          {
+            "value": "default",
+            "label": "Custom image"
+          },
+          {
+            "value": "color",
+            "label": "Color"
+          },
+          {
+            "value": "image",
+            "label": "Variant image"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          },
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          }
+        ],
+        "default": "dropdown"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_display_name3",
+        "label": "Alternative name",
+        "info": "Example: Select a material"
+      },
+      {
+        "type": "header",
+        "content": "Option 4"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_title4",
+        "label": "Name",
+        "default": "Brand"
+      },
+      {
+        "type": "select",
+        "id": "variant_option_design4",
+        "label": "Design",
+        "options": [
+          {
+            "value": "default",
+            "label": "Custom image"
+          },
+          {
+            "value": "color",
+            "label": "Color"
+          },
+          {
+            "value": "image",
+            "label": "Variant image"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          },
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          }
+        ],
+        "default": "dropdown"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_display_name4",
+        "label": "Alternative name",
+        "info": "Example: Select a brand"
+      },
+      {
+        "type": "header",
+        "content": "Option 5"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_title5",
+        "label": "Name",
+        "default": "Type"
+      },
+      {
+        "type": "select",
+        "id": "variant_option_design5",
+        "label": "Design",
+        "options": [
+          {
+            "value": "default",
+            "label": "Custom image"
+          },
+          {
+            "value": "color",
+            "label": "Color"
+          },
+          {
+            "value": "image",
+            "label": "Variant image"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          },
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          }
+        ],
+        "default": "default"
+      },
+      {
+        "type": "text",
+        "id": "variant_option_display_name5",
+        "label": "Alternative name",
+        "info": "Example: Select a type"
       }
     ]
   },
