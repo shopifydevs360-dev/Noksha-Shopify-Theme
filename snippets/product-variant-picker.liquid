@@ -1,23 +1,37 @@
 {% unless product.has_only_default_variant %}
   <div class="variant-selector">
     {% for option in product.options_with_values %}
+      {% assign is_color = false %}
+      {% if option.name | downcase contains 'color' %}
+        {% assign is_color = true %}
+      {% endif %}
+
       <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
         <legend>{{ option.name }}</legend>
 
-        <div class="variant-buttons">
+        <div class="variant-buttons {% if is_color %}is-color{% endif %}">
           {% for value in option.values %}
-            <label class="variant-btn">
+            <label class="variant-btn {% if is_color %}variant-color{% endif %}">
               <input
                 type="radio"
                 name="options[{{ option.name }}]"
                 value="{{ value }}"
                 {% if option.selected_value == value %}checked{% endif %}
               >
-              <span>{{ value }}</span>
+
+              {% if is_color %}
+                <span 
+                  class="color-swatch"
+                  style="background-color: {{ value | downcase }};"
+                  title="{{ value }}"
+                ></span>
+              {% else %}
+                <span class="variant-text">{{ value }}</span>
+              {% endif %}
             </label>
           {% endfor %}
         </div>
       </fieldset>
     {% endfor %}
   </div>
-{% endunless %} 
+{% endunless %}
