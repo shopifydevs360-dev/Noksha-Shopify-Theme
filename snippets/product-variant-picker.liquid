@@ -1,39 +1,23 @@
-<div class="product-block variant-picker" {{ block.shopify_attributes }}>
+{% unless product.has_only_default_variant %}
+  <div class="variant-selector">
+    {% for option in product.options_with_values %}
+      <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
+        <legend>{{ option.name }}</legend>
 
-  {% if product.options.size > 0 %}
-
-    <div class="variant-selector" data-variant-picker>
-
-      {% for option in product.options_with_values %}
-
-        <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
-
-          <legend class="variant-label">
-            {{ option.name }}
-          </legend>
-
-          <div class="variant-buttons">
-
-            {% for value in option.values %}
-              <label class="variant-btn">
-                <input
-                  type="radio"
-                  name="options[{{ option.name }}]"
-                  value="{{ value }}"
-                  {% if option.selected_value == value %}checked{% endif %}
-                >
-                <span>{{ value }}</span>
-              </label>
-            {% endfor %}
-
-          </div>
-
-        </fieldset>
-
-      {% endfor %}
-
-    </div>
-
-  {% endif %}
-
-</div>
+        <div class="variant-buttons">
+          {% for value in option.values %}
+            <label class="variant-btn">
+              <input
+                type="radio"
+                name="options[{{ option.name }}]"
+                value="{{ value }}"
+                {% if option.selected_value == value %}checked{% endif %}
+              >
+              <span>{{ value }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+    {% endfor %}
+  </div>
+{% endunless %}
