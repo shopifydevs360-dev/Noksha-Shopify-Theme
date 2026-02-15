@@ -137,13 +137,12 @@
         "color_control": "section-light"
       }
     },
-    "related_products_zMnrHG": {
+    "related_products_qEP6zE": {
       "type": "related-products",
       "name": "Related Products",
       "settings": {
-        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "color_scheme": "",
         "title": "Related Products",
-        "title_font_size": "h3",
         "padding_top": 40,
         "padding_bottom": 52,
         "custom_class": "",
@@ -153,6 +152,6 @@
   },
   "order": [
     "main",
-    "related_products_zMnrHG"
+    "related_products_qEP6zE"
   ]
 }
