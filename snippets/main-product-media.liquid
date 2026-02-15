@@ -22,8 +22,39 @@
   <!-- =====================
        MAIN MEDIA
   ====================== -->
-  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
+<div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
 
+  {% if variant_has_image %}
+
+    <!-- Variant has its own image → make slider -->
+    <div class="swiper product-main-slider">
+      <div class="swiper-wrapper">
+
+        {% for media in product.media %}
+          {% if media.media_type == 'image' %}
+            <div class="swiper-slide">
+              {% render 'image',
+                class: 'js-open-lightbox',
+                image: media,
+                width: media.width,
+                height: media.height,
+                crop: 'center',
+                img_alt: media.alt
+              %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+      </div>
+
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+  {% else %}
+
+    <!-- Normal single featured media -->
     {% if featured_media.media_type contains 'video' %}
       {{ featured_media | video_tag:
         autoplay: true,
@@ -35,19 +66,20 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
-    {% render 'image',
-      class: 'js-open-lightbox',
-      image: featured_media,
-      width: featured_media.width,
-      height: featured_media.height,
-      crop: 'center',
-      img_alt: featured_media.alt,
-      style: wrapper_style
-    %}
-
+      {% render 'image',
+        class: 'js-open-lightbox',
+        image: featured_media,
+        width: featured_media.width,
+        height: featured_media.height,
+        crop: 'center',
+        img_alt: featured_media.alt
+      %}
     {% endif %}
 
-  </div>
+  {% endif %}
+
+</div>
+
 
   <!-- =====================
        VIDEO ROW (IF EXISTS)
