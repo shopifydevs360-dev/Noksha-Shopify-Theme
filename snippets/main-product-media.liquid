@@ -29,7 +29,6 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
-      
     {% render 'image',
       class: 'js-open-lightbox',
       image: featured_media,
@@ -146,9 +145,10 @@
 
     <div class="swiper media-lightbox__slider">
       <div class="swiper-wrapper">
- <div class="image-loader"></div>
+
         {% for media in product.media %}
           {% if media.media_type == 'image' %}
+             <div class="image-loader"></div>
             <div class="swiper-slide">
               {% render 'image',
                 image: media,
