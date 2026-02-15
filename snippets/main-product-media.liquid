@@ -4,81 +4,48 @@
     break
   endif
 
-  assign featured_media = product.featured_media
+  assign current_variant = product.selected_or_first_available_variant
   assign media_count = product.media.size
-
-  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
-
 -%}
-{% assign current_variant = product.selected_or_first_available_variant %}
-{% assign variant_has_image = false %}
-
-{% if current_variant.featured_media != blank %}
-  {% assign variant_has_image = true %}
-{% endif %}
 
 <div class="product-media">
 
   <!-- =====================
        MAIN MEDIA
   ====================== -->
-<div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
+  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
 
-  {% if variant_has_image %}
+    {% if current_variant.featured_media %}
 
-    <!-- Variant has its own image → make slider -->
-    <div class="swiper product-main-slider">
-      <div class="swiper-wrapper">
-
-        {% for media in product.media %}
-          {% if media.media_type == 'image' %}
-            <div class="swiper-slide">
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: media,
-                width: media.width,
-                height: media.height,
-                crop: 'center',
-                img_alt: media.alt
-              %}
-            </div>
-          {% endif %}
-        {% endfor %}
-
-      </div>
-
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-pagination"></div>
-    </div>
-
-  {% else %}
-
-    <!-- Normal single featured media -->
-    {% if featured_media.media_type contains 'video' %}
-      {{ featured_media | video_tag:
-        autoplay: true,
-        loop: true,
-        muted: true,
-        controls: false,
-        playsinline: true,
-        preload: 'metadata'
-      }}
-
-    {% elsif featured_media.media_type == 'image' %}
+      {%- comment -%} Show Variant Image Only {%- endcomment -%}
       {% render 'image',
         class: 'js-open-lightbox',
-        image: featured_media,
-        width: featured_media.width,
-        height: featured_media.height,
+        image: current_variant.featured_media,
+        width: current_variant.featured_media.width,
+        height: current_variant.featured_media.height,
         crop: 'center',
-        img_alt: featured_media.alt
+        img_alt: current_variant.featured_media.alt
       %}
+
+    {% else %}
+
+      {%- comment -%} Fallback to First Product Image {%- endcomment -%}
+      {% assign first_media = product.media.first %}
+
+      {% if first_media.media_type == 'image' %}
+        {% render 'image',
+          class: 'js-open-lightbox',
+          image: first_media,
+          width: first_media.width,
+          height: first_media.height,
+          crop: 'center',
+          img_alt: first_media.alt
+        %}
+      {% endif %}
+
     {% endif %}
 
-  {% endif %}
-
-</div>
+  </div>
 
 
   <!-- =====================
@@ -111,66 +78,49 @@
     </div>
   {% endif %}
 
-{% if media_count > 1 %}
-  <div class="product-media__thumbs swiper">
-    <div class="swiper-wrapper">
 
-      {%- comment -%}
-      First pass: render all images EXCEPT the first
-      {%- endcomment -%}
-      {% for media in product.media offset: 1 %}
-        {% if media.media_type == 'image' %}
-          <div class="swiper-slide">
-          {% render 'image',
-            class: 'js-open-lightbox',
-            image: media,
-            crop: 'center',
-            width: media.width,
-            height: media.height,
-            img_alt: media.alt
-          %}
+  <!-- =====================
+       THUMBNAIL SLIDER
+  ====================== -->
+  {% if media_count > 1 %}
+    <div class="product-media__thumbs swiper">
+      <div class="swiper-wrapper">
 
-          </div>
-        {% endif %}
-      {% endfor %}
+        {% for media in product.media %}
+          {% if media.media_type == 'image' %}
+            <div class="swiper-slide">
+              {% render 'image',
+                class: 'js-open-lightbox',
+                image: media,
+                crop: 'center',
+                width: media.width,
+                height: media.height,
+                img_alt: media.alt
+              %}
+            </div>
+          {% endif %}
+        {% endfor %}
 
-      {%- comment -%}
-      Second pass: render the FIRST image at the end
-      {%- endcomment -%}
-      {% assign first_media = product.media.first %}
-      {% if first_media.media_type == 'image' %}
-        <div class="swiper-slide">
-        {% render 'image',
-          class: 'js-open-lightbox',
-          image: first_media,
-          crop: 'center',
-          width: first_media.width,
-          height: first_media.height,
-          img_alt: first_media.alt,
-          data_lightbox_index: product.media.size | minus: 1
-        %}
-        </div>
-      {% endif %}
+      </div>
 
+      <div class="swiper-nav-wrapper">
+        <button class="swiper-button-prev" aria-label="Previous slide">
+          <span class="inner-text h5">Previous</span>
+        </button>
+
+        <button class="swiper-button-next" aria-label="Next slide">
+          <span class="line"></span>
+          <span class="inner-text h5">Next</span>
+        </button>
+      </div>
+
+      <div class="swiper-pagination"></div>
     </div>
-
-    <div class="swiper-nav-wrapper">
-      <button class="swiper-button-prev" aria-label="Previous slide">
-        <span class="inner-text h5">Previous</span>
-      </button>
-
-      <button class="swiper-button-next" aria-label="Next slide">
-        <span class="line"></span>
-        <span class="inner-text h5">Next</span>
-      </button>
-    </div>
-
-    <div class="swiper-pagination"></div>
-  </div>
-{% endif %}
-
+  {% endif %}
 
 </div>
+
+
 
 <!-- =====================
      LIGHTBOX
@@ -206,27 +156,3 @@
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-
-  const mainSlider = document.querySelector('.product-main-slider');
-
-  if (mainSlider) {
-    new Swiper(mainSlider, {
-      loop: true,
-      slidesPerView: 1,
-      spaceBetween: 0,
-      navigation: {
-        nextEl: '.product-main-slider .swiper-button-next',
-        prevEl: '.product-main-slider .swiper-button-prev',
-      },
-      pagination: {
-        el: '.product-main-slider .swiper-pagination',
-        clickable: true,
-      },
-    });
-  }
-
-});
-
-</script>
