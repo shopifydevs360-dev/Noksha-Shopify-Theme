@@ -47,33 +47,30 @@ function initProductMedia() {
   });
 
   /* =========================
-     OPEN LIGHTBOX (IMAGES ONLY)
+     OPEN LIGHTBOX
   ========================== */
-document.addEventListener('click', e => {
-  const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
-  if (!slide) return;
+  document.addEventListener('click', e => {
+    const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
+    if (!slide) return;
 
-  const img = e.target.closest('img');
-  if (!img) return;
+    const img = e.target.closest('img');
+    if (!img) return;
 
-  e.preventDefault();
-  e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-  let index = 0;
+    let index = 0;
+    if (slide.classList.contains('swiper-slide')) {
+      index = Array.from(slide.parentNode.children).indexOf(slide);
+    }
 
-  if (slide.classList.contains('swiper-slide')) {
-    index = Array.from(slide.parentNode.children).indexOf(slide);
-  }
+    lightbox.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 
-  lightbox.classList.add('is-open');
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
-
-  resetZoom();
-  lightboxSwiper.slideToLoop(index, 0);
-});
-
-
+    resetZoom();
+    lightboxSwiper.slideToLoop(index, 0);
+  });
 
   /* =========================
      CLOSE LIGHTBOX
@@ -93,7 +90,7 @@ document.addEventListener('click', e => {
   });
 
   /* =========================
-     ZOOM + PAN (FIXED CLEANLY)
+     ZOOM + PAN WITH LIMITS
   ========================== */
   let zoomLevel = 0;
   let activeImg = null;
@@ -106,14 +103,13 @@ document.addEventListener('click', e => {
   let currentX = 0;
   let currentY = 0;
 
-  const MOVE_THRESHOLD = 5; // px
+  const MOVE_THRESHOLD = 5;
 
   /* ---------- CLICK → ZOOM ---------- */
   sliderEl.addEventListener('click', e => {
     const img = e.target.closest('img');
     if (!img) return;
 
-    /* IMPORTANT: block zoom if drag happened */
     if (hasMoved) {
       hasMoved = false;
       return;
@@ -148,7 +144,7 @@ document.addEventListener('click', e => {
     activeImg.classList.add('is-dragging');
   });
 
-  /* ---------- DRAG MOVE ---------- */
+  /* ---------- DRAG MOVE WITH LIMITS ---------- */
   window.addEventListener('mousemove', e => {
     if (!isDragging || !activeImg) return;
 
@@ -159,10 +155,21 @@ document.addEventListener('click', e => {
       hasMoved = true;
     }
 
-    currentX = dx;
-    currentY = dy;
-
     const scale = zoomLevel === 1 ? 1.6 : 2.6;
+    const containerRect = sliderEl.getBoundingClientRect();
+    const imgRect = activeImg.getBoundingClientRect();
+
+    const scaledWidth = imgRect.width;
+    const scaledHeight = imgRect.height;
+
+    // LIMIT HORIZONTAL MOVEMENT
+    const maxX = Math.max(0, (scaledWidth - containerRect.width) / 2);
+    currentX = Math.max(-maxX, Math.min(maxX, dx));
+
+    // LIMIT VERTICAL MOVEMENT
+    const maxY = Math.max(0, (scaledHeight - containerRect.height) / 2);
+    currentY = Math.max(-maxY, Math.min(maxY, dy));
+
     activeImg.style.transform =
       `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
   });
