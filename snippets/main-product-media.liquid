@@ -26,6 +26,17 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
+        {% render 'image',
+          class: 'js-open-lightbox',
+          image: product.featured_media,
+          url: product.url,
+          width: {{ image.width }},
+          height: {{ image.height }},
+          crop: 'center',
+          mobile_image: block.settings.image_mobile,
+          img_alt: collection.title,
+          style: wrapper_style
+        %}
       <img
         srcset="
           {%- if featured_media.width >= 165 -%}{{ featured_media | image_url: width: 165 }} 165w,{%- endif -%}
