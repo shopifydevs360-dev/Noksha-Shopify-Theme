@@ -34,6 +34,10 @@
             "text_size": "h4"
           }
         },
+        "variant_picker_4C7HbC": {
+          "type": "variant_picker",
+          "settings": {}
+        },
         "add_to_cart_form_8aMLxd": {
           "type": "add_to_cart_form",
           "settings": {
@@ -120,6 +124,7 @@
         "breadcrumb_6V9nX7",
         "title_price_YnB7D8",
         "description_Th49Tf",
+        "variant_picker_4C7HbC",
         "add_to_cart_form_8aMLxd",
         "addon_buttons_HDrn66",
         "accordion_GJhgHM",
