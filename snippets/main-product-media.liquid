@@ -16,24 +16,34 @@
 
   <div class="swiper-wrapper">
 
-    {% for media in product.media %}
-      {% if media.media_type == 'image' %}
-        <div class="swiper-slide" data-media-id="{{ media.id }}">
-          {% render 'image',
-            class: 'js-open-lightbox',
-            image: media,
-            width: media.width,
-            height: media.height,
-            crop: 'center',
-            img_alt: media.alt,
-            style: wrapper_style
-          %}
-        </div>
+    {% assign rendered_media_ids = '' %}
+
+    {% for variant in product.variants %}
+      {% if variant.featured_media %}
+        {% assign media_id = variant.featured_media.id | append: '' %}
+
+        {% unless rendered_media_ids contains media_id %}
+          {% assign rendered_media_ids = rendered_media_ids | append: media_id | append: ',' %}
+
+          <div class="swiper-slide" data-media-id="{{ variant.featured_media.id }}">
+            {% render 'image',
+              class: 'js-open-lightbox',
+              image: variant.featured_media,
+              width: variant.featured_media.width,
+              height: variant.featured_media.height,
+              crop: 'center',
+              img_alt: variant.featured_media.alt,
+              style: wrapper_style
+            %}
+          </div>
+
+        {% endunless %}
       {% endif %}
     {% endfor %}
 
   </div>
 </div>
+
 
 
   <!-- =====================
