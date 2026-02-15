@@ -4,9 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initProductMedia() {
 
-  /* =========================
-     INLINE SLIDER
-  ========================== */
   const thumbs = document.querySelector('.product-media__thumbs');
 
   if (thumbs) {
@@ -24,9 +21,6 @@ function initProductMedia() {
     });
   }
 
-  /* =========================
-     LIGHTBOX
-  ========================== */
   const lightbox = document.getElementById('mediaLightbox');
   if (!lightbox) return;
 
@@ -46,38 +40,29 @@ function initProductMedia() {
     },
   });
 
-  /* =========================
-     OPEN LIGHTBOX (IMAGES ONLY)
-  ========================== */
-document.addEventListener('click', e => {
-  const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
-  if (!slide) return;
+  document.addEventListener('click', e => {
+    const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
+    if (!slide) return;
 
-  const img = e.target.closest('img');
-  if (!img) return;
+    const img = e.target.closest('img');
+    if (!img) return;
 
-  e.preventDefault();
-  e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-  let index = 0;
+    let index = 0;
+    if (slide.classList.contains('swiper-slide')) {
+      index = Array.from(slide.parentNode.children).indexOf(slide);
+    }
 
-  if (slide.classList.contains('swiper-slide')) {
-    index = Array.from(slide.parentNode.children).indexOf(slide);
-  }
+    lightbox.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 
-  lightbox.classList.add('is-open');
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
+    resetZoom();
+    lightboxSwiper.slideToLoop(index, 0);
+  });
 
-  resetZoom();
-  lightboxSwiper.slideToLoop(index, 0);
-});
-
-
-
-  /* =========================
-     CLOSE LIGHTBOX
-  ========================== */
   function closeLightbox() {
     lightbox.classList.remove('is-open');
     document.documentElement.style.overflow = '';
@@ -87,14 +72,8 @@ document.addEventListener('click', e => {
 
   closeBtn.addEventListener('click', closeLightbox);
   overlay.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeLightbox();
-  });
-
-  /* =========================
-     ZOOM + PAN (FIXED CLEANLY)
-  ========================== */
   let zoomLevel = 0;
   let activeImg = null;
 
@@ -106,14 +85,12 @@ document.addEventListener('click', e => {
   let currentX = 0;
   let currentY = 0;
 
-  const MOVE_THRESHOLD = 5; // px
+  const MOVE_THRESHOLD = 5;
 
-  /* ---------- CLICK → ZOOM ---------- */
   sliderEl.addEventListener('click', e => {
     const img = e.target.closest('img');
     if (!img) return;
 
-    /* IMPORTANT: block zoom if drag happened */
     if (hasMoved) {
       hasMoved = false;
       return;
@@ -135,7 +112,6 @@ document.addEventListener('click', e => {
     sliderEl.swiper.allowTouchMove = false;
   });
 
-  /* ---------- START DRAG ---------- */
   sliderEl.addEventListener('mousedown', e => {
     if (!activeImg || zoomLevel === 0) return;
 
@@ -148,7 +124,6 @@ document.addEventListener('click', e => {
     activeImg.classList.add('is-dragging');
   });
 
-  /* ---------- DRAG MOVE ---------- */
   window.addEventListener('mousemove', e => {
     if (!isDragging || !activeImg) return;
 
@@ -159,24 +134,31 @@ document.addEventListener('click', e => {
       hasMoved = true;
     }
 
-    currentX = dx;
-    currentY = dy;
-
     const scale = zoomLevel === 1 ? 1.6 : 2.6;
-    activeImg.style.transform =
-      `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+    const containerRect = sliderEl.getBoundingClientRect();
+    const imgRect = activeImg.getBoundingClientRect();
+
+    const scaledWidth = imgRect.width;
+    const scaledHeight = imgRect.height;
+
+    // calculate how far it can move without leaving container
+    const limitX = Math.max((scaledWidth - containerRect.width) / 2, 0);
+    const limitY = Math.max((scaledHeight - containerRect.height) / 2, 0);
+
+    currentX = Math.max(-limitX, Math.min(limitX, dx));
+    currentY = Math.max(-limitY, Math.min(limitY, dy));
+
+    activeImg.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
   });
 
-  /* ---------- END DRAG ---------- */
   window.addEventListener('mouseup', () => {
     isDragging = false;
     if (activeImg) activeImg.classList.remove('is-dragging');
   });
 
-  /* ---------- RESET ---------- */
   function resetZoom() {
     sliderEl.querySelectorAll('img').forEach(img => {
-      img.style.transform = 'scale(1) translate(0,0)';
+      img.style.transform = "scale(1) translate(0px, 0px)";
       img.classList.remove('is-zoomed', 'is-dragging');
     });
 
@@ -189,4 +171,5 @@ document.addEventListener('click', e => {
 
     sliderEl.swiper.allowTouchMove = true;
   }
+
 }
