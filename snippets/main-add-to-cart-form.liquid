@@ -1,5 +1,4 @@
 <div class="product-block product-form-wrapper" {{ block.shopify_attributes }}>
-
   {% form 'product', product, class: 'product-form' %}
         {% assign current_variant = product.selected_or_first_available_variant %}
     <!-- REQUIRED VARIANT ID (CRITICAL) -->
