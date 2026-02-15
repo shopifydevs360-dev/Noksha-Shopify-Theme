@@ -82,21 +82,15 @@
       {% for media in product.media offset: 1 %}
         {% if media.media_type == 'image' %}
           <div class="swiper-slide">
-            <img
-              srcset="
-                {%- if media.width >= 360 -%}{{ media | image_url: width: 360 }} 360w,{%- endif -%}
-                {%- if media.width >= 720 -%}{{ media | image_url: width: 720 }} 720w,{%- endif -%}
-                {%- if media.width >= 1066 -%}{{ media | image_url: width: 1066 }} 1066w,{%- endif -%}
-                {%- if media.width >= 1500 -%}{{ media | image_url: width: 1500 }} 1500w,{%- endif -%}
-                {{ media | image_url }} {{ media.width }}w
-              "
-              src="{{ media | image_url: width: 720 }}"
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              alt="{{ media.alt | escape }}"
-              width="{{ media.width }}"
-              height="{{ media.height }}"
-              class="js-open-lightbox"
-            >
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: media,
+            width: media.width,
+            height: media.height,
+            img_alt: media.alt,
+            data_lightbox_index: forloop.index0
+          %}
+
           </div>
         {% endif %}
       {% endfor %}
