@@ -47,7 +47,7 @@ function initProductMedia() {
   });
 
   /* =========================
-     OPEN LIGHTBOX
+     OPEN LIGHTBOX (IMAGES ONLY)
   ========================== */
   document.addEventListener('click', e => {
     const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
@@ -60,6 +60,7 @@ function initProductMedia() {
     e.stopPropagation();
 
     let index = 0;
+
     if (slide.classList.contains('swiper-slide')) {
       index = Array.from(slide.parentNode.children).indexOf(slide);
     }
@@ -90,7 +91,7 @@ function initProductMedia() {
   });
 
   /* =========================
-     ZOOM + PAN
+     ZOOM + PAN (WITH BOUNDARIES)
   ========================== */
   let zoomLevel = 0;
   let activeImg = null;
@@ -105,7 +106,7 @@ function initProductMedia() {
 
   const MOVE_THRESHOLD = 5;
 
-  /* ---------- CLICK TO ZOOM ---------- */
+  /* ---------- CLICK → ZOOM ---------- */
   sliderEl.addEventListener('click', e => {
     const img = e.target.closest('img');
     if (!img) return;
@@ -144,7 +145,7 @@ function initProductMedia() {
     activeImg.classList.add('is-dragging');
   });
 
-  /* ---------- MOVE DRAG WITH CONSTRAINTS ---------- */
+  /* ---------- DRAG MOVE WITH BOUNDARIES ---------- */
   window.addEventListener("mousemove", (e) => {
     if (!isDragging || !activeImg) return;
 
@@ -165,30 +166,24 @@ function initProductMedia() {
     const scaledW = imgRect.width;
     const scaledH = imgRect.height;
 
-    // Horizontal boundaries
+    // Horizontal limits
     const overflowX = Math.max(0, (scaledW - containerRect.width) / 2);
-    const maxAllowedX = overflowX; 
-    const minAllowedX = -overflowX;
-    currentX = Math.max(minAllowedX, Math.min(maxAllowedX, dx));
+    currentX = Math.max(-overflowX, Math.min(overflowX, dx));
 
-    // Vertical boundaries
+    // Vertical limits
     const containerH = containerRect.height;
     const imgH = scaledH;
 
     if (imgH > containerH) {
-      const vertOverflow = (imgH - containerH) / 2;
+      const overflowVert = (imgH - containerH) / 2;
+      const verticalLimit = Math.min(overflowVert, 50); // max allowed y shift
 
-      // Allow at most 50px gap
-      const maxAllowedY = Math.min(vertOverflow, 50);
-      const minAllowedY = -Math.min(vertOverflow, 50);
-
-      currentY = Math.max(minAllowedY, Math.min(maxAllowedY, dy));
+      currentY = Math.max(-verticalLimit, Math.min(verticalLimit, dy));
     } else {
       currentY = 0;
     }
 
-    activeImg.style.transform =
-      `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+    activeImg.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
   });
 
   /* ---------- END DRAG ---------- */
