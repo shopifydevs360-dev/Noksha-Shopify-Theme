@@ -4,97 +4,29 @@
     break
   endif
 
-  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+  assign featured_media = product.featured_media
   assign media_count = product.media.size
-  assign featured_media_id = featured_media.id
+
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+
 -%}
 
 <div class="product-media">
 
   <!-- =====================
-       MAIN MEDIA (SWIPER)
-       - First slide: selected variant featured_media (or product.featured_media)
-       - Following slides: remaining product.media in original order
+       MAIN MEDIA
   ====================== -->
-  <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape">
-    <div class="swiper-wrapper">
+  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
 
-      {%- comment -%}
-        First: render the selected / featured media as the first slide
-        (only if it exists in product.media)
-      {%- endcomment -%}
-      {% for media in product.media %}
-        {% if media.id == featured_media_id %}
-          <div class="swiper-slide">
-            {% if media.media_type contains 'video' %}
-              {{ media | video_tag:
-                autoplay: true,
-                loop: true,
-                muted: true,
-                controls: false,
-                playsinline: true,
-                preload: 'metadata'
-              }}
-            {% elsif media.media_type == 'image' %}
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: media,
-                width: media.width,
-                height: media.height,
-                crop: 'center',
-                img_alt: media.alt,
-                style: wrapper_style
-              %}
-            {% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
-
-      {%- comment -%}
-        Then: render all remaining media except the featured one,
-        preserving their natural order
-      {%- endcomment -%}
-      {% for media in product.media %}
-        {% if media.id != featured_media_id %}
-          <div class="swiper-slide">
-            {% if media.media_type contains 'video' %}
-              {{ media | video_tag:
-                autoplay: true,
-                loop: true,
-                muted: true,
-                controls: false,
-                playsinline: true,
-                preload: 'metadata'
-              }}
-            {% elsif media.media_type == 'image' %}
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: media,
-                width: media.width,
-                height: media.height,
-                crop: 'center',
-                img_alt: media.alt,
-                style: wrapper_style
-              %}
-            {% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
-
-    </div>
-
-    <div class="swiper-nav-wrapper">
-      <button class="swiper-button-prev" type="button" aria-label="Previous slide">
-        <span class="inner-text h5">Previous</span>
-      </button>
-
-      <button class="swiper-button-next" type="button" aria-label="Next slide">
-        <span class="line"></span>
-        <span class="inner-text h5">Next</span>
-      </button>
-    </div>
-
-    <div class="swiper-pagination"></div>
+    {% render 'image',
+      class: 'js-open-lightbox',
+      image: featured_media,
+      width: featured_media.width,
+      height: featured_media.height,
+      crop: 'center',
+      img_alt: featured_media.alt,
+      style: wrapper_style
+    %}
   </div>
 
   <!-- =====================
