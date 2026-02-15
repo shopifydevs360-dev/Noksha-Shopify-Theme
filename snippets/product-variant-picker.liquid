@@ -79,17 +79,15 @@
 {% when 'color' %}
   <div class="variant-buttons is-color" data-option-position="{{ option_position }}">
     {% for value in option.values %}
-      {% assign variants_for_value = current_product.variants | where: option_key, value %}
-      {% assign variant_for_value = variants_for_value | first %}
+      
+      {% assign color_hex = blank %}
 
-      {% assign color_code = blank %}
-
-      {% if variant_for_value and variant_for_value.metafields.custom.color_code != blank %}
-        {% assign color_code = variant_for_value.metafields.custom.color_code.value %}
+      {% if value.swatch and value.swatch.color %}
+        {% assign color_hex = value.swatch.color %}
       {% endif %}
 
-      {% if color_code == blank %}
-        {% assign color_code = value %}
+      {% if color_hex == blank %}
+        {% assign color_hex = value %}
       {% endif %}
 
       <label class="variant-btn variant-color">
@@ -101,7 +99,7 @@
         >
         <span
           class="color-swatch"
-          style="background-color: {{ color_code }};"
+          style="background-color: {{ color_hex }};"
           title="{{ value }}"
         ></span>
       </label>
