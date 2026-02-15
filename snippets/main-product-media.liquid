@@ -4,30 +4,43 @@
     break
   endif
 
-  assign featured_media = product.featured_media
   assign media_count = product.media.size
-
-  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
-
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.media.first
 -%}
 
 <div class="product-media">
 
   <!-- =====================
-       MAIN MEDIA
+       MAIN SWIPER SLIDER
   ====================== -->
-  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
+  <div class="product-media__main swiper js-product-main-slider">
+    <div class="swiper-wrapper">
 
-    {% render 'image',
-      class: 'js-open-lightbox',
-      image: featured_media,
-      width: featured_media.width,
-      height: featured_media.height,
-      crop: 'center',
-      img_alt: featured_media.alt,
-      style: wrapper_style
-    %}
+      {% for media in product.media %}
+        {% if media.media_type == 'image' %}
+          <div 
+            class="swiper-slide"
+            data-media-id="{{ media.id }}"
+          >
+            {% render 'image',
+              class: 'js-open-lightbox',
+              image: media,
+              width: media.width,
+              height: media.height,
+              crop: 'center',
+              img_alt: media.alt
+            %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-pagination"></div>
   </div>
+
 
   <!-- =====================
        VIDEO ROW (IF EXISTS)
@@ -41,10 +54,10 @@
   {% endfor %}
 
   {% if has_video %}
-    <div class="product-media__video-row hide-tablet hide-mobile hide-tablet-landscape">
+    <div class="product-media__video-row">
       {% for media in product.media %}
         {% if media.media_type contains 'video' %}
-          <div class="product-media__video js-open-lightbox">
+          <div class="product-media__video">
             {{ media | video_tag:
               autoplay: true,
               loop: true,
@@ -59,66 +72,38 @@
     </div>
   {% endif %}
 
-{% if media_count > 1 %}
-  <div class="product-media__thumbs swiper">
-    <div class="swiper-wrapper">
 
-      {%- comment -%}
-      First pass: render all images EXCEPT the first
-      {%- endcomment -%}
-      {% for media in product.media offset: 1 %}
-        {% if media.media_type == 'image' %}
-          <div class="swiper-slide">
-          {% render 'image',
-            class: 'js-open-lightbox',
-            image: media,
-            crop: 'center',
-            width: media.width,
-            height: media.height,
-            img_alt: media.alt
-          %}
+  <!-- =====================
+       THUMBNAILS
+  ====================== -->
+  {% if media_count > 1 %}
+    <div class="product-media__thumbs swiper js-product-thumbs">
+      <div class="swiper-wrapper">
 
-          </div>
-        {% endif %}
-      {% endfor %}
+        {% for media in product.media %}
+          {% if media.media_type == 'image' %}
+            <div 
+              class="swiper-slide"
+              data-media-id="{{ media.id }}"
+            >
+              {% render 'image',
+                image: media,
+                crop: 'center',
+                width: media.width,
+                height: media.height,
+                img_alt: media.alt
+              %}
+            </div>
+          {% endif %}
+        {% endfor %}
 
-      {%- comment -%}
-      Second pass: render the FIRST image at the end
-      {%- endcomment -%}
-      {% assign first_media = product.media.first %}
-      {% if first_media.media_type == 'image' %}
-        <div class="swiper-slide">
-        {% render 'image',
-          class: 'js-open-lightbox',
-          image: first_media,
-          crop: 'center',
-          width: first_media.width,
-          height: first_media.height,
-          img_alt: first_media.alt,
-          data_lightbox_index: product.media.size | minus: 1
-        %}
-        </div>
-      {% endif %}
-
+      </div>
     </div>
-
-    <div class="swiper-nav-wrapper">
-      <button class="swiper-button-prev" aria-label="Previous slide">
-        <span class="inner-text h5">Previous</span>
-      </button>
-
-      <button class="swiper-button-next" aria-label="Next slide">
-        <span class="line"></span>
-        <span class="inner-text h5">Next</span>
-      </button>
-    </div>
-
-    <div class="swiper-pagination"></div>
-  </div>
-{% endif %}
-
+  {% endif %}
 
 </div>
+
+
 
 <!-- =====================
      LIGHTBOX
@@ -129,7 +114,7 @@
   <div class="media-lightbox__content">
     <button class="media-lightbox__close" aria-label="Close">×</button>
 
-    <div class="swiper media-lightbox__slider">
+    <div class="swiper media-lightbox__slider js-lightbox-slider">
       <div class="swiper-wrapper">
 
         {% for media in product.media %}
