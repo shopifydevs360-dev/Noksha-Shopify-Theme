@@ -1,8 +1,11 @@
 {% unless product.has_only_default_variant %}
   <div class="variant-selector">
     {% for option in product.options_with_values %}
+
+      {% assign option_name_downcase = option.name | downcase %}
       {% assign is_color = false %}
-      {% if option.name | downcase contains 'color' %}
+
+      {% if option_name_downcase contains 'color' or option_name_downcase contains 'colour' %}
         {% assign is_color = true %}
       {% endif %}
 
@@ -20,7 +23,7 @@
               >
 
               {% if is_color %}
-                <span 
+                <span
                   class="color-swatch"
                   style="background-color: {{ value | downcase }};"
                   title="{{ value }}"
@@ -32,6 +35,7 @@
           {% endfor %}
         </div>
       </fieldset>
+
     {% endfor %}
   </div>
 {% endunless %}
