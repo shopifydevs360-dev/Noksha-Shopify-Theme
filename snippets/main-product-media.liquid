@@ -29,15 +29,20 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
-{% render 'image',
-  class: 'js-open-lightbox main-product-image',
-  image: featured_media,
-  width: featured_media.width,
-  height: featured_media.height,
-  crop: 'center',
-  img_alt: featured_media.alt,
-  style: wrapper_style
-%}
+{% for media in product.media %}
+  {% if media.media_type == 'image' %}
+    <div class="swiper-slide"
+         data-media-id="{{ media.id }}">
+      {% render 'image',
+        image: media,
+        width: 1200,
+        height: media.height,
+        crop: 'center',
+        img_alt: media.alt
+      %}
+    </div>
+  {% endif %}
+{% endfor %}
 
 
     {% endif %}
