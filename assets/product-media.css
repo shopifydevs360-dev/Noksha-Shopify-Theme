@@ -148,15 +148,14 @@
 .media-lightbox img {
   max-width: 95vw;
   max-height: 95vh;
+  width: auto;
+  height: auto;
   object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
   cursor: zoom-in;
-  transition: transform 0.25s ease;
-  pointer-events: auto;
-  height: 100%;
-  width: auto;
 }
+
 
 /* Zoom states (used by JS) */
 .media-lightbox img.is-zoomed {
