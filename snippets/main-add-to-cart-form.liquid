@@ -1,20 +1,35 @@
 <div class="product-block product-form-wrapper" {{ block.shopify_attributes }}>
 
-  {% form 'product', product, class: 'product-form', data-product-form: '' %}
+  {% form 'product', product, class: 'product-form' %}
+        {% assign current_variant = product.selected_or_first_available_variant %}
+    <!-- REQUIRED VARIANT ID (CRITICAL) -->
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <!-- VARIANTS -->
+    <div class="variant-selector">
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
+            <legend>{{ option.name }}</legend>
 
-    {% assign current_variant = product.selected_or_first_available_variant %}
-
-    <!-- REQUIRED VARIANT ID -->
-    <input
-      type="hidden"
-      name="id"
-      value="{{ current_variant.id }}"
-      data-variant-id
-    >
-
-    <!-- Quantity + Cart -->
+            <div class="variant-buttons">
+              {% for value in option.values %}
+                <label class="variant-btn">
+                  <input
+                    type="radio"
+                    name="options[{{ option.name }}]"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
+                  <span>{{ value }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+      {% endunless %}
+    </div>
     <div class="qty-cart-btn-wrap">
-
+      <!-- QUANTITY -->
       <div class="quantity-dropdown" data-qty-dropdown>
         <button type="button" class="qty-toggle" data-qty-toggle>
           Qty 1
@@ -32,8 +47,10 @@
           {% endfor %}
         </ul>
 
+        <!-- Hidden input for Shopify -->
         <input type="hidden" name="quantity" value="1">
       </div>
+
 
       <!-- ADD TO CART -->
       <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
@@ -50,7 +67,6 @@
           {% endif %}
         </button>
       </div>
-
     </div>
 
     <!-- BUY / NOTIFY -->
