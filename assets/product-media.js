@@ -49,24 +49,26 @@ function initProductMedia() {
   /* =========================
      OPEN LIGHTBOX (IMAGES ONLY)
   ========================== */
-  document.querySelectorAll('.js-open-lightbox').forEach(el => {
-    el.addEventListener('click', e => {
+document.querySelectorAll('.js-open-lightbox').forEach(el => {
+  el.addEventListener('click', e => {
 
-      if (el.tagName !== 'IMG') return;
+    const img = e.target.closest('img');
+    if (!img) return;
 
-      e.preventDefault();
-      e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-      const index = Number(el.dataset.lightboxIndex) || 0;
+    const index = Number(img.dataset.lightboxIndex) || 0;
 
-      lightbox.classList.add('is-open');
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
+    lightbox.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 
-      resetZoom();
-      lightboxSwiper.slideToLoop(index, 0);
-    });
+    resetZoom();
+    lightboxSwiper.slideToLoop(index, 0);
   });
+});
+
 
   /* =========================
      CLOSE LIGHTBOX
