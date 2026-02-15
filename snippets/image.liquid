@@ -35,6 +35,7 @@
 {% enddoc %}
 
 {% liquid
+  assign loading = loading | default: 'lazy'
   unless height
     assign width = width | default: image.width
   endunless
