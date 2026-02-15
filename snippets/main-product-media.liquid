@@ -6,6 +6,9 @@
 
   assign featured_media = product.featured_media
   assign media_count = product.media.size
+
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+
 -%}
 
 <div class="product-media">
@@ -24,10 +27,7 @@
         playsinline: true,
         preload: 'metadata'
       }}
-
     {% elsif featured_media.media_type == 'image' %}
-    {% assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media %}
-
     {% render 'image',
       class: 'js-open-lightbox',
       image: featured_media,
