@@ -93,7 +93,7 @@ document.addEventListener('click', e => {
   });
 
   /* =========================
-     ZOOM + PAN (WITH BOUNDARIES)
+     ZOOM + PAN (FIXED CLEANLY)
   ========================== */
   let zoomLevel = 0;
   let activeImg = null;
@@ -106,46 +106,7 @@ document.addEventListener('click', e => {
   let currentX = 0;
   let currentY = 0;
 
-  let imgWidth = 0;
-  let imgHeight = 0;
-  let containerWidth = 0;
-  let containerHeight = 0;
-
   const MOVE_THRESHOLD = 5; // px
-
-  /* ---------- Helper function to calculate boundaries ---------- */
-  function calculateBoundaries(img, scale) {
-    const container = sliderEl.querySelector('.swiper-slide-active');
-    if (!container) return { maxX: 0, maxY: 0 };
-    
-    containerWidth = container.offsetWidth;
-    containerHeight = container.offsetHeight;
-    imgWidth = img.naturalWidth * scale;
-    imgHeight = img.naturalHeight * scale;
-    
-    // Calculate how much the image overflows the container
-    const overflowX = Math.max(0, (imgWidth - containerWidth) / 2);
-    const overflowY = Math.max(0, (imgHeight - containerHeight) / 2);
-    
-    return {
-      maxX: overflowX,
-      maxY: overflowY
-    };
-  }
-
-  /* ---------- Apply transform with boundaries ---------- */
-  function applyTransform(img, scale, x, y) {
-    const bounds = calculateBoundaries(img, scale);
-    
-    // Constrain x and y within boundaries
-    const constrainedX = Math.max(-bounds.maxX, Math.min(bounds.maxX, x));
-    const constrainedY = Math.max(-bounds.maxY, Math.min(bounds.maxY, y));
-    
-    currentX = constrainedX;
-    currentY = constrainedY;
-    
-    img.style.transform = `scale(${scale}) translate(${constrainedX}px, ${constrainedY}px)`;
-  }
 
   /* ---------- CLICK → ZOOM ---------- */
   sliderEl.addEventListener('click', e => {
@@ -167,13 +128,9 @@ document.addEventListener('click', e => {
 
     activeImg = img;
     const scale = zoomLevel === 1 ? 1.6 : 2.6;
-    
-    // Reset position when zooming
-    currentX = 0;
-    currentY = 0;
 
     img.classList.add('is-zoomed');
-    applyTransform(img, scale, 0, 0);
+    img.style.transform = `scale(${scale}) translate(0px, 0px)`;
 
     sliderEl.swiper.allowTouchMove = false;
   });
@@ -202,8 +159,12 @@ document.addEventListener('click', e => {
       hasMoved = true;
     }
 
+    currentX = dx;
+    currentY = dy;
+
     const scale = zoomLevel === 1 ? 1.6 : 2.6;
-    applyTransform(activeImg, scale, dx, dy);
+    activeImg.style.transform =
+      `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
   });
 
   /* ---------- END DRAG ---------- */
@@ -228,12 +189,4 @@ document.addEventListener('click', e => {
 
     sliderEl.swiper.allowTouchMove = true;
   }
-
-  /* ---------- Recalculate boundaries on window resize ---------- */
-  window.addEventListener('resize', () => {
-    if (activeImg && zoomLevel > 0) {
-      const scale = zoomLevel === 1 ? 1.6 : 2.6;
-      applyTransform(activeImg, scale, currentX, currentY);
-    }
-  });
 }
