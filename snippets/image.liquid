@@ -31,12 +31,16 @@
     crop: 'center',
     mobile_image: block.settings.image_mobile,
     img_alt: collection.title,
-    style: wrapper_style
+    style: wrapper_style,
+
+    loading: eager-- auto -- lazy,
+    fetchpriority: low or high
   %}
 {% enddoc %}
 
 {% liquid
   assign loading = loading | default: 'lazy'
+  assign fetchpriority = fetchpriority | default: 'low'
   unless height
     assign width = width | default: image.width
   endunless
