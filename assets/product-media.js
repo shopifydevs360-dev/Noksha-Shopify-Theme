@@ -173,3 +173,20 @@ function initProductMedia() {
   }
 
 }
+
+// After lightbox opens
+document.querySelectorAll('.lightbox-image-wrapper img').forEach(img => {
+  const loader = img.closest('.lightbox-image-wrapper').querySelector('.image-loader');
+
+  if (!img.complete) {
+    // Waiting for load
+    img.addEventListener('load', () => {
+      loader.style.display = 'none';
+      img.style.opacity = '1';
+    });
+  } else {
+    // Already loaded
+    loader.style.display = 'none';
+    img.style.opacity = '1';
+  }
+});
