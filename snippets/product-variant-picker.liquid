@@ -82,9 +82,14 @@
       {% assign variants_for_value = current_product.variants | where: option_key, value %}
       {% assign variant_for_value = variants_for_value | first %}
 
-      {% assign color_code = value %}
+      {% assign color_code = blank %}
+
       {% if variant_for_value and variant_for_value.metafields.custom.color_code != blank %}
-        {% assign color_code = variant_for_value.metafields.custom.color_code %}
+        {% assign color_code = variant_for_value.metafields.custom.color_code.value %}
+      {% endif %}
+
+      {% if color_code == blank %}
+        {% assign color_code = value %}
       {% endif %}
 
       <label class="variant-btn variant-color">
