@@ -3,31 +3,89 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initProductMedia() {
+  const productMedia = document.querySelector('.product-media');
+  if (!productMedia) return;
+  
+  initMainMediaSwitcher(productMedia);
+  initThumbnails(productMedia);
+  initLightbox(productMedia);
+}
 
-  const thumbs = document.querySelector('.product-media__thumbs');
-
-  if (thumbs) {
-    new Swiper(thumbs, {
-      slidesPerView: 1,
-      loop: true,
-      navigation: {
-        nextEl: '.product-media__thumbs .swiper-button-next',
-        prevEl: '.product-media__thumbs .swiper-button-prev',
-      },
-      pagination: {
-        el: '.product-media__thumbs .swiper-pagination',
-        clickable: true,
-      },
+function initMainMediaSwitcher(container) {
+  const thumbs = container.querySelectorAll('.product-media__thumb');
+  const featuredContainer = container.querySelector('.product-media__featured');
+  const videoRow = container.querySelector('.product-media__video-row');
+  const counter = container.querySelector('.product-media__counter .current');
+  
+  thumbs.forEach((thumb, index) => {
+    thumb.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Update active states
+      thumbs.forEach(t => t.classList.remove('is-active'));
+      thumb.classList.add('is-active');
+      
+      // Update counter
+      if (counter) counter.textContent = index + 1;
+      
+      // Get media data
+      const mediaId = thumb.dataset.mediaId;
+      const mediaType = thumb.dataset.mediaType;
+      
+      // Here you would load the corresponding media
+      // This might require an AJAX call or preloaded data
+      loadMediaIntoFeatured(mediaId, mediaType, featuredContainer);
+      
+      // Hide video row if featured is video
+      if (videoRow) {
+        videoRow.style.display = mediaType === 'video' ? 'none' : 'flex';
+      }
     });
-  }
+  });
+}
 
+function loadMediaIntoFeatured(mediaId, mediaType, container) {
+  // Implementation depends on your data structure
+  // Could be preloaded HTML or AJAX fetch
+}
+
+function initThumbnails(container) {
+  const thumbsSlider = container.querySelector('[data-thumbs-slider]');
+  if (!thumbsSlider) return;
+  
+  const isVertical = container.querySelector('.product-media__container--thumbnails-left');
+  
+  new Swiper(thumbsSlider, {
+    slidesPerView: 4,
+    spaceBetween: 10,
+    direction: isVertical ? 'vertical' : 'horizontal',
+    navigation: {
+      nextEl: '.product-media__thumbs .swiper-button-next',
+      prevEl: '.product-media__thumbs .swiper-button-prev',
+    },
+    pagination: {
+      el: '.product-media__thumbs .swiper-pagination',
+      clickable: true,
+    },
+    breakpoints: {
+      320: { slidesPerView: 3 },
+      768: { slidesPerView: 4 },
+      1024: { slidesPerView: isVertical ? 5 : 4 }
+    }
+  });
+}
+
+function initLightbox(container) {
   const lightbox = document.getElementById('mediaLightbox');
   if (!lightbox) return;
-
+  
+  const openButtons = container.querySelectorAll('.js-media-trigger, .js-open-lightbox');
   const closeBtn = lightbox.querySelector('.media-lightbox__close');
   const overlay = lightbox.querySelector('.media-lightbox__overlay');
-  const sliderEl = lightbox.querySelector('.media-lightbox__slider');
-
+  const sliderEl = lightbox.querySelector('[data-lightbox-slider]');
+  const thumbsEl = lightbox.querySelector('[data-lightbox-thumbs]');
+  
+  // Initialize main lightbox slider
   const lightboxSwiper = new Swiper(sliderEl, {
     loop: true,
     navigation: {
@@ -38,139 +96,197 @@ function initProductMedia() {
       el: '.media-lightbox .swiper-pagination',
       clickable: true,
     },
-  });
-
-  document.addEventListener('click', e => {
-    const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
-    if (!slide) return;
-
-    const img = e.target.closest('img');
-    if (!img) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    let index = 0;
-    if (slide.classList.contains('swiper-slide')) {
-      index = Array.from(slide.parentNode.children).indexOf(slide);
+    thumbs: {
+      swiper: thumbsEl ? new Swiper(thumbsEl, {
+        slidesPerView: 5,
+        spaceBetween: 10,
+        freeMode: true,
+        watchSlidesProgress: true,
+      }) : null
     }
-
-    lightbox.classList.add('is-open');
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-
-    resetZoom();
-    lightboxSwiper.slideToLoop(index, 0);
   });
+  
+  // Open lightbox with specific slide
+  openButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      let slideIndex = 0;
+      const mediaId = btn.closest('[data-media-id]')?.dataset.mediaId;
+      
+      if (mediaId) {
+        // Find slide index by media ID
+        const slides = lightbox.querySelectorAll('[data-media-id]');
+        slides.forEach((slide, i) => {
+          if (slide.dataset.mediaId === mediaId) {
+            slideIndex = i;
+          }
+        });
+      }
+      
+      openLightbox(lightbox, lightboxSwiper, slideIndex);
+    });
+  });
+  
+  // Tab functionality
+  const tabs = lightbox.querySelectorAll('.media-lightbox__tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabType = tab.dataset.tab;
+      
+      tabs.forEach(t => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      
+      filterLightboxSlides(lightbox, lightboxSwiper, tabType);
+    });
+  });
+  
+  // Close handlers
+  closeBtn.addEventListener('click', () => closeLightbox(lightbox));
+  overlay.addEventListener('click', () => closeLightbox(lightbox));
+  document.addEventListener('keydown', e => { 
+    if (e.key === 'Escape') closeLightbox(lightbox); 
+  });
+  
+  // Initialize zoom functionality
+  initLightboxZoom(lightbox, sliderEl);
+}
 
-  function closeLightbox() {
-    lightbox.classList.remove('is-open');
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    resetZoom();
-  }
+function openLightbox(lightbox, swiper, index = 0) {
+  lightbox.classList.add('is-open');
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+  
+  // Reset zoom
+  resetAllZoom(lightbox);
+  
+  // Go to slide
+  swiper.slideToLoop(index, 0);
+}
 
-  closeBtn.addEventListener('click', closeLightbox);
-  overlay.addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+function closeLightbox(lightbox) {
+  lightbox.classList.remove('is-open');
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+  
+  // Stop any playing videos
+  lightbox.querySelectorAll('video').forEach(video => {
+    video.pause();
+  });
+  
+  resetAllZoom(lightbox);
+}
 
+function filterLightboxSlides(lightbox, swiper, filterType) {
+  const slides = lightbox.querySelectorAll('.swiper-slide');
+  
+  slides.forEach(slide => {
+    const mediaType = slide.dataset.mediaType;
+    
+    if (filterType === 'all') {
+      slide.style.display = 'flex';
+    } else if (filterType === 'images' && mediaType === 'image') {
+      slide.style.display = 'flex';
+    } else if (filterType === 'videos' && (mediaType === 'video' || mediaType === 'external_video')) {
+      slide.style.display = 'flex';
+    } else if (filterType === 'models' && mediaType === 'model') {
+      slide.style.display = 'flex';
+    } else {
+      slide.style.display = 'none';
+    }
+  });
+  
+  swiper.update();
+}
+
+function initLightboxZoom(lightbox, sliderEl) {
   let zoomLevel = 0;
   let activeImg = null;
-
   let isDragging = false;
   let hasMoved = false;
-
-  let startX = 0;
-  let startY = 0;
-  let currentX = 0;
-  let currentY = 0;
-
+  let startX, startY, currentX = 0, currentY = 0;
   const MOVE_THRESHOLD = 5;
-
-  sliderEl.addEventListener('click', e => {
+  
+  sliderEl.addEventListener('click', (e) => {
     const img = e.target.closest('img');
-    if (!img) return;
-
+    if (!img || img.closest('.swiper-button') || img.closest('.media-lightbox__thumb')) return;
+    
     if (hasMoved) {
       hasMoved = false;
       return;
     }
-
-    zoomLevel = (zoomLevel + 1) % 3;
-
+    
+    // Cycle zoom levels: 0 (none) -> 1 (1.5x) -> 2 (2.5x) -> 3 (4x)
+    zoomLevel = (zoomLevel + 1) % 4;
+    
     if (zoomLevel === 0) {
-      resetZoom();
+      resetImageZoom(img);
+      activeImg = null;
+      sliderEl.swiper.allowTouchMove = true;
       return;
     }
-
+    
     activeImg = img;
-    const scale = zoomLevel === 1 ? 1.6 : 2.6;
-
+    const scales = [1, 1.5, 2.5, 4];
+    const scale = scales[zoomLevel];
+    
     img.classList.add('is-zoomed');
     img.style.transform = `scale(${scale}) translate(0px, 0px)`;
-
     sliderEl.swiper.allowTouchMove = false;
   });
-
-  sliderEl.addEventListener('mousedown', e => {
+  
+  // Drag to pan when zoomed
+  sliderEl.addEventListener('mousedown', (e) => {
     if (!activeImg || zoomLevel === 0) return;
-
+    
     isDragging = true;
     hasMoved = false;
-
+    
     startX = e.clientX - currentX;
     startY = e.clientY - currentY;
-
+    
     activeImg.classList.add('is-dragging');
   });
-
-  window.addEventListener('mousemove', e => {
+  
+  window.addEventListener('mousemove', (e) => {
     if (!isDragging || !activeImg) return;
-
+    
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
-
+    
     if (Math.abs(dx - currentX) > MOVE_THRESHOLD || Math.abs(dy - currentY) > MOVE_THRESHOLD) {
       hasMoved = true;
     }
-
-    const scale = zoomLevel === 1 ? 1.6 : 2.6;
+    
+    const scales = [1, 1.5, 2.5, 4];
+    const scale = scales[zoomLevel];
     const containerRect = sliderEl.getBoundingClientRect();
     const imgRect = activeImg.getBoundingClientRect();
-
+    
     const scaledWidth = imgRect.width;
     const scaledHeight = imgRect.height;
-
-    // calculate how far it can move without leaving container
+    
     const limitX = Math.max((scaledWidth - containerRect.width) / 2, 0);
     const limitY = Math.max((scaledHeight - containerRect.height) / 2, 0);
-
+    
     currentX = Math.max(-limitX, Math.min(limitX, dx));
     currentY = Math.max(-limitY, Math.min(limitY, dy));
-
+    
     activeImg.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
   });
-
+  
   window.addEventListener('mouseup', () => {
     isDragging = false;
     if (activeImg) activeImg.classList.remove('is-dragging');
   });
-
-  function resetZoom() {
-    sliderEl.querySelectorAll('img').forEach(img => {
-      img.style.transform = "scale(1) translate(0px, 0px)";
-      img.classList.remove('is-zoomed', 'is-dragging');
-    });
-
-    zoomLevel = 0;
-    currentX = 0;
-    currentY = 0;
-    activeImg = null;
-    hasMoved = false;
-    isDragging = false;
-
-    sliderEl.swiper.allowTouchMove = true;
-  }
-
 }
 
+function resetImageZoom(img) {
+  if (!img) return;
+  img.style.transform = "scale(1) translate(0px, 0px)";
+  img.classList.remove('is-zoomed', 'is-dragging');
+}
+
+function resetAllZoom(lightbox) {
+  lightbox.querySelectorAll('img').forEach(resetImageZoom);
+}
