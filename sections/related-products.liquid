@@ -1,37 +1,33 @@
-{% if product %}
+{% if product and product.collections.size > 0 %}
 
-<section
-  id="product-recommendations-{{ section.id }}"
-  style="padding: 40px 0;"
->
+{% assign related_collection = product.collections.first %}
 
-  <product-recommendations
-    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=6&intent=related"
-  >
+<section style="padding:40px 0;">
 
-    {% if recommendations.products_count > 0 %}
+  <div class="container">
+    <h2>Related Products</h2>
 
-      <div class="container">
+    <ul>
+      {% assign shown = 0 %}
 
-        <h2>Related Products (Test Mode)</h2>
+      {% for related_product in related_collection.products %}
+        {% if related_product.id != product.id and shown < 6 %}
 
-        <ul>
-          {% for recommended_product in recommendations.products %}
-            <li style="margin-bottom: 10px;">
-              {{ recommended_product.title }}
-            </li>
-          {% endfor %}
-        </ul>
+          <li style="margin-bottom:10px;">
+            {{ related_product.title }}
+          </li>
 
-      </div>
+          {% assign shown = shown | plus: 1 %}
 
-    {% else %}
+        {% endif %}
+      {% endfor %}
 
-      <p style="padding:20px;">No recommendations found.</p>
+      {% if shown == 0 %}
+        <p>No related products found in this collection.</p>
+      {% endif %}
 
-    {% endif %}
-
-  </product-recommendations>
+    </ul>
+  </div>
 
 </section>
 
