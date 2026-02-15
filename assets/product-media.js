@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   initProductMedia();
-  initVariantMainImageSwitch();
+  initVariantImageSwitch();
 });
 
 function initProductMedia() {
@@ -174,18 +174,26 @@ function initProductMedia() {
   }
 
 }
+const mainEl = document.querySelector('.product-media__main');
 
-function initVariantMainImageSwitch() {
+let mainSwiper;
+
+if (mainEl) {
+  mainSwiper = new Swiper(mainEl, {
+    slidesPerView: 1,
+    loop: true,
+  });
+}
+
+function initVariantSwitch(mainSwiper) {
+
+  const form = document.querySelector('form[action*="/cart/add"]');
+  if (!form) return;
 
   const productJson = document.getElementById('ProductJson-' + window.ShopifyAnalytics.meta.product.id);
   if (!productJson) return;
 
   const productData = JSON.parse(productJson.textContent);
-  const form = document.querySelector('form[action*="/cart/add"]');
-  if (!form) return;
-
-  const mainMediaContainer = document.querySelector('.product-media__main');
-  if (!mainMediaContainer) return;
 
   form.addEventListener('change', () => {
 
@@ -201,11 +209,15 @@ function initVariantMainImageSwitch() {
 
     if (!selectedVariant || !selectedVariant.featured_media) return;
 
-    const newImageUrl = selectedVariant.featured_media.preview_image.src;
+    const mediaId = selectedVariant.featured_media.id;
 
-    const existingImg = mainMediaContainer.querySelector('img');
-    if (!existingImg) return;
+    const slides = mainEl.querySelectorAll('.swiper-slide');
 
-    existingImg.src = newImageUrl;
+    slides.forEach((slide, index) => {
+      if (slide.dataset.mediaId == mediaId) {
+        mainSwiper.slideToLoop(index);
+      }
+    });
+
   });
 }
