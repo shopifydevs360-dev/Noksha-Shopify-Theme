@@ -16,7 +16,6 @@
   @param {string} [img_alt] - The crop position of the image
   @param {string} [mobile_image] - Responsize image can added
   @param {string} [style] - custom style in the image
-  @param {string} [data-lightbox-index] - custom style in the image
 
   @example
   {% render 'image', image: product.featured_image %}
@@ -76,8 +75,7 @@
             widths: '360,533,720,940,1066,1500',
             sizes: '(min-width: 1024px) 50vw, 100vw',
             width: width,
-            height: height,
-            data-lightbox-index: data_lightbox_index
+            height: height
         }}
     </picture>
   {% else %}
@@ -90,8 +88,7 @@
         widths: '360,533,720,940,1066,1500',
         sizes: '(min-width: 1024px) 50vw, 100vw',
         width: width,
-        height: height,
-        data-lightbox-index: data_lightbox_index
+        height: height
     }}
   {% endif %}
 </{{ wrapper }}>
