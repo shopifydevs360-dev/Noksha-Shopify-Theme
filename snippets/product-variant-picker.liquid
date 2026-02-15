@@ -10,10 +10,6 @@
       {% assign design = default_design %}
       {% assign display_name = option_name %}
 
-      {%- comment -%}
-      Match option name with schema titles (1–5)
-      {%- endcomment -%}
-
       {% for i in (1..5) %}
         {% assign schema_title = settings["variant_option_title" | append: i] | downcase %}
         {% if option_name_downcase == schema_title %}
@@ -30,7 +26,6 @@
 
         {% case design %}
 
-        
         {% when 'dropdown' %}
           <div class="variant-dropdown">
             <select name="options[{{ option.name }}]">
@@ -44,7 +39,6 @@
           </div>
 
 
-       
         {% when 'button' %}
           <div class="variant-buttons">
             {% for value in option.values %}
@@ -61,7 +55,6 @@
           </div>
 
 
-       
         {% when 'color' %}
           <div class="variant-buttons is-color">
             {% for value in option.values %}
@@ -82,7 +75,6 @@
           </div>
 
 
-        
         {% when 'image' %}
           <div class="variant-buttons is-image">
             {% for value in option.values %}
@@ -120,8 +112,7 @@
           </div>
 
 
-        
-        {% when 'default' %}
+        {% else %}
           <div class="variant-buttons">
             {% for value in option.values %}
               <label class="variant-btn">
