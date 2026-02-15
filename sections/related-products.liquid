@@ -1,37 +1,89 @@
-{% if product and product.collections.size > 0 %}
+{{ 'collection-tab.css' | asset_url | stylesheet_tag }}
+{% render 'section-base-style' %}
 
-{% assign related_collection = product.collections.first %}
-{% assign limit = section.settings.limit | default: 6 %}
-{% assign shown = 0 %}
+{% liquid
+  assign selected_collection = collections[section.settings.related_collection]
+  assign related_products = selected_collection.products | where: "available", true | limit: 6
 
-<section
-  id="product-recommendations-{{ section.id }}"
-  class="product-related-carousel {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }} {{ section.settings.color_control }}"
->
+  assign recommended_products = recommendations.products | where: "available", true | limit: 6
+
+  assign has_related = false
+  assign has_recommended = false
+
+  if related_products.size > 0
+    assign has_related = true
+  endif
+
+  if recommended_products.size > 0
+    assign has_recommended = true
+  endif
+%}
+
+{% if has_related or has_recommended %}
+
+<div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
 
   <div class="product-carousel section-{{ section.id }}-padding">
 
-    {% if section.settings.title != blank %}
-      <h2 class="container">
-        <div class="info-title">
-          {{ section.settings.title }}
-        </div>
-      </h2>
-    {% endif %}
+    <!-- ================= FILTER TABS ================= -->
+    <div class="swiper swiper-container-filter">
+      <div class="swiper-wrapper">
 
+        {% if has_related %}
+        <div class="related-product-caps swiper-slide active">
+          <a href="#" class="js-slider-filter" data-filter="related">
+            {{ section.settings.related_tab_label }}
+          </a>
+        </div>
+        {% endif %}
+
+        {% if has_recommended %}
+        <div class="related-product-caps swiper-slide {% unless has_related %}active{% endunless %}">
+          <a href="#" class="js-slider-filter" data-filter="recommended">
+            {{ section.settings.recommended_tab_label }}
+          </a>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- ================= PRODUCTS CAROUSEL ================= -->
     <div class="swiper swiper-container-product">
       <div class="swiper-wrapper">
 
-        {% for related_product in related_collection.products %}
-          {% if related_product.id != product.id and shown < limit %}
+        <!-- Desktop Lead Card -->
+        <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
+          <div class="collection-lead-info">
+            <h2 class="{{ section.settings.title_font_size }}">
+              {{ section.settings.title }}
+            </h2>
+          </div>
+        </div>
 
-            <div class="swiper-slide product-slide">
-              {% render 'product-card', product: related_product %}
+        <!-- RELATED PRODUCTS -->
+        {% if has_related %}
+          {% for product in related_products %}
+            <div class="swiper-slide product-slide"
+              data-type="related"
+              {% unless forloop.first %}hidden{% endunless %}
+            >
+              {% render 'product-card', product: product %}
             </div>
+          {% endfor %}
+        {% endif %}
 
-            {% assign shown = shown | plus: 1 %}
-          {% endif %}
-        {% endfor %}
+        <!-- RECOMMENDED PRODUCTS -->
+        {% if has_recommended %}
+          {% for product in recommended_products %}
+            <div class="swiper-slide product-slide"
+              data-type="recommended"
+              hidden
+            >
+              {% render 'product-card', product: product %}
+            </div>
+          {% endfor %}
+        {% endif %}
 
       </div>
 
@@ -39,41 +91,76 @@
     </div>
 
   </div>
+</div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const section = document.querySelector('#product-recommendations-{{ section.id }}');
-      if (!section) return;
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-      const swiperEl = section.querySelector('.swiper-container-product');
-      if (!swiperEl) return;
+  const section = document.querySelector('.js-product-carousel-{{ section.id }}');
+  if (!section) return;
 
-      new Swiper(swiperEl, {
-        slidesPerView: 1.2,
-        spaceBetween: 24,
-        observer: true,
-        observeParents: true,
-        scrollbar: {
-          el: section.querySelector('.swiper-scrollbar'),
-          draggable: true
-        },
-        breakpoints: {
-          580: { slidesPerView: 2.5 },
-          991: { slidesPerView: 3 },
-          1321: { slidesPerView: 3.5 }
-        }
-      });
+  const tabs = section.querySelectorAll('.js-slider-filter');
+  const slides = section.querySelectorAll('.product-slide');
+
+  new Swiper(section.querySelector('.swiper-container-filter'), {
+    slidesPerView: 'auto',
+    freeMode: true,
+    spaceBetween: 40
+  });
+
+  const productSwiper = new Swiper(section.querySelector('.swiper-container-product'), {
+    slidesPerView: 1.2,
+    scrollbar: {
+      el: section.querySelector('.swiper-scrollbar'),
+      draggable: true
+    },
+    breakpoints: {
+      580: { slidesPerView: 2.5 },
+      991: { slidesPerView: 3 },
+      1321: { slidesPerView: 3.5 }
+    }
+  });
+
+  function activateTab(type, tab) {
+
+    section.querySelectorAll('.related-product-caps')
+      .forEach(el => el.classList.remove('active'));
+
+    tab.closest('.related-product-caps').classList.add('active');
+
+    slides.forEach(slide => {
+      slide.style.display = 'none';
     });
-  </script>
 
-</section>
+    slides.forEach(slide => {
+      if (slide.dataset.type === type) {
+        slide.style.display = 'block';
+      }
+    });
+
+    productSwiper.update();
+    productSwiper.slideTo(0, 0);
+  }
+
+  if (tabs.length) {
+    activateTab(tabs[0].dataset.filter, tabs[0]);
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      activateTab(tab.dataset.filter, tab);
+    });
+  });
+
+});
+</script>
 
 {% endif %}
 
-
 {% schema %}
 {
-  "name": "Related Products",
+  "name": "Related & Recommended",
   "settings": [
     {
       "type": "color_scheme",
@@ -84,44 +171,36 @@
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "You may also like"
+      "default": "You May Also Like"
     },
     {
-      "type": "range",
-      "id": "limit",
-      "min": 2,
-      "max": 12,
-      "step": 1,
-      "label": "Products to show",
-      "default": 6
+      "type": "select",
+      "id": "title_font_size",
+      "label": "Font size",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" }
+      ],
+      "default": "h3"
     },
     {
-      "type": "header",
-      "content": "Section padding"
+      "type": "collection",
+      "id": "related_collection",
+      "label": "Related Products Collection"
     },
     {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 40
+      "type": "text",
+      "id": "related_tab_label",
+      "label": "Related Tab Label",
+      "default": "Related Products"
     },
     {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 52
-    },
-    {
-      "type": "header",
-      "content": "Dynamic Option"
+      "type": "text",
+      "id": "recommended_tab_label",
+      "label": "Recommended Tab Label",
+      "default": "You May Like"
     },
     {
       "type": "text",
@@ -141,7 +220,7 @@
   ],
   "presets": [
     {
-      "name": "Related Products",
+      "name": "Related & Recommended",
       "category": "Products"
     }
   ]
