@@ -154,9 +154,12 @@
   cursor: zoom-in;
   transition: transform 0.25s ease;
   pointer-events: auto;
-  height: 100%;
-  width: auto;
+  
+  /* REMOVE forced sizing */
+  width: auto !important;
+  height: auto !important;
 }
+
 
 /* Zoom states (used by JS) */
 .media-lightbox img.is-zoomed {
