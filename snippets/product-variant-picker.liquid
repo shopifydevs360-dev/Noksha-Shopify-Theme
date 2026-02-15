@@ -1,39 +1,143 @@
 {% unless product.has_only_default_variant %}
   <div class="variant-selector">
+
+    {% assign default_design = settings.variant_option_design_default %}
+
     {% for option in product.options_with_values %}
+      
+      {% assign option_name = option.name %}
+      {% assign option_name_downcase = option_name | downcase %}
+      {% assign design = default_design %}
+      {% assign display_name = option_name %}
 
-      {% assign option_name_downcase = option.name | downcase %}
-      {% assign is_color = false %}
+      {%- comment -%}
+      Match option name with schema titles (1–5)
+      {%- endcomment -%}
 
-      {% if option_name_downcase contains 'color' or option_name_downcase contains 'colour' %}
-        {% assign is_color = true %}
-      {% endif %}
+      {% for i in (1..5) %}
+        {% assign schema_title = settings["variant_option_title" | append: i] | downcase %}
+        {% if option_name_downcase == schema_title %}
+          {% assign design = settings["variant_option_design" | append: i] %}
+          {% assign alt_name = settings["variant_option_display_name" | append: i] %}
+          {% if alt_name != blank %}
+            {% assign display_name = alt_name %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
 
       <fieldset class="variant-group" data-option-index="{{ forloop.index0 }}">
-        <legend>{{ option.name }}</legend>
+        <legend>{{ display_name }}</legend>
 
-        <div class="variant-buttons {% if is_color %}is-color{% endif %}">
-          {% for value in option.values %}
-            <label class="variant-btn {% if is_color %}variant-color{% endif %}">
-              <input
-                type="radio"
-                name="options[{{ option.name }}]"
-                value="{{ value }}"
-                {% if option.selected_value == value %}checked{% endif %}
-              >
+        {% case design %}
 
-              {% if is_color %}
+        
+        {% when 'dropdown' %}
+          <div class="variant-dropdown">
+            <select name="options[{{ option.name }}]">
+              {% for value in option.values %}
+                <option value="{{ value }}"
+                  {% if option.selected_value == value %}selected{% endif %}>
+                  {{ value }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+
+       
+        {% when 'button' %}
+          <div class="variant-buttons">
+            {% for value in option.values %}
+              <label class="variant-btn">
+                <input
+                  type="radio"
+                  name="options[{{ option.name }}]"
+                  value="{{ value }}"
+                  {% if option.selected_value == value %}checked{% endif %}
+                >
+                <span class="variant-text">{{ value }}</span>
+              </label>
+            {% endfor %}
+          </div>
+
+
+       
+        {% when 'color' %}
+          <div class="variant-buttons is-color">
+            {% for value in option.values %}
+              <label class="variant-btn variant-color">
+                <input
+                  type="radio"
+                  name="options[{{ option.name }}]"
+                  value="{{ value }}"
+                  {% if option.selected_value == value %}checked{% endif %}
+                >
                 <span
                   class="color-swatch"
                   style="background-color: {{ value | downcase }};"
                   title="{{ value }}"
                 ></span>
-              {% else %}
+              </label>
+            {% endfor %}
+          </div>
+
+
+        
+        {% when 'image' %}
+          <div class="variant-buttons is-image">
+            {% for value in option.values %}
+              
+              {% assign variant_image = blank %}
+              {% for variant in product.variants %}
+                {% if variant.title contains value and variant.image %}
+                  {% assign variant_image = variant.image %}
+                {% endif %}
+              {% endfor %}
+
+              <label class="variant-btn variant-image">
+                <input
+                  type="radio"
+                  name="options[{{ option.name }}]"
+                  value="{{ value }}"
+                  {% if option.selected_value == value %}checked{% endif %}
+                >
+
+                {% if variant_image %}
+                  <span class="image-swatch">
+                    <img 
+                      src="{{ variant_image | image_url: width: 100 }}"
+                      alt="{{ value }}"
+                      width="50"
+                      height="50"
+                    >
+                  </span>
+                {% else %}
+                  <span class="variant-text">{{ value }}</span>
+                {% endif %}
+              </label>
+
+            {% endfor %}
+          </div>
+
+
+        
+        {% when 'default' %}
+          <div class="variant-buttons">
+            {% for value in option.values %}
+              <label class="variant-btn">
+                <input
+                  type="radio"
+                  name="options[{{ option.name }}]"
+                  value="{{ value }}"
+                  {% if option.selected_value == value %}checked{% endif %}
+                >
                 <span class="variant-text">{{ value }}</span>
-              {% endif %}
-            </label>
-          {% endfor %}
-        </div>
+              </label>
+            {% endfor %}
+          </div>
+
+        {% endcase %}
+
       </fieldset>
 
     {% endfor %}
