@@ -70,8 +70,14 @@
         | image_url: width: width, height: height, crop: crop
         | image_tag:
           alt: img_alt,
+          class: class,
           loading: 'lazy',
-          decoding: 'async'
+          decoding: 'async',
+          widths: '360, 533, 720, 940, 1066, 1500',
+          sizes: '(min-width: 1024px) 50vw, 100vw',
+          width: width,
+          height: height,
+          data-lightbox-index: data_lightbox_index
       }}
     </picture>
   {% else %}
