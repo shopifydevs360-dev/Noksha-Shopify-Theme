@@ -4,146 +4,109 @@
     break
   endif
 
-  assign featured_media = product.featured_media
   assign media_count = product.media.size
-
-  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
-
 -%}
 
-<div class="product-media">
+<div class="product-media" data-product-media>
 
-  <!-- =====================
-       MAIN MEDIA
-  ====================== -->
-  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
-
-    {% if featured_media.media_type contains 'video' %}
-      {{ featured_media | video_tag:
-        autoplay: true,
-        loop: true,
-        muted: true,
-        controls: false,
-        playsinline: true,
-        preload: 'metadata'
-      }}
-
-    {% elsif featured_media.media_type == 'image' %}
-    {% render 'image',
-      class: 'js-open-lightbox',
-      image: featured_media,
-      width: featured_media.width,
-      height: featured_media.height,
-      crop: 'center',
-      img_alt: featured_media.alt,
-      style: wrapper_style
-    %}
-
-    {% endif %}
-
-  </div>
-
-  <!-- =====================
-       VIDEO ROW (IF EXISTS)
-  ====================== -->
-  {% assign has_video = false %}
-  {% for media in product.media %}
-    {% if media.media_type contains 'video' %}
-      {% assign has_video = true %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-
-  {% if has_video %}
-    <div class="product-media__video-row hide-tablet hide-mobile hide-tablet-landscape">
-      {% for media in product.media %}
-        {% if media.media_type contains 'video' %}
-          <div class="product-media__video js-open-lightbox">
-            {{ media | video_tag:
-              autoplay: true,
-              loop: true,
-              muted: true,
-              controls: false,
-              playsinline: true,
-              preload: 'metadata'
-            }}
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-  {% endif %}
-
-{% if media_count > 1 %}
-  <div class="product-media__thumbs swiper">
+  {% if media_count > 0 %}
+  <!-- ======================
+       MAIN SLIDER
+  ======================= -->
+  <div class="product-media__main swiper" data-main-slider>
     <div class="swiper-wrapper">
 
-      {%- comment -%}
-      First pass: render all images EXCEPT the first
-      {%- endcomment -%}
-      {% for media in product.media offset: 1 %}
-        {% if media.media_type == 'image' %}
-          <div class="swiper-slide">
-          {% render 'image',
-            class: 'js-open-lightbox',
-            image: media,
-            crop: 'center',
-            width: media.width,
-            height: media.height,
-            img_alt: media.alt
-          %}
+      {% for media in product.media %}
+        <div class="swiper-slide"
+             data-media-id="{{ media.id }}"
+             data-lightbox-index="{{ forloop.index0 }}">
 
-          </div>
-        {% endif %}
+          {% case media.media_type %}
+
+            {% when 'image' %}
+              {% render 'image',
+                image: media,
+                width: media.width,
+                height: media.height,
+                img_alt: media.alt,
+                class: 'product-media__image js-open-lightbox',
+                loading: forloop.first | default: 'eager' | replace: 'true', 'eager' | replace: 'false', 'lazy'
+              %}
+
+            {% when 'video' %}
+              {{ media | video_tag:
+                controls: true,
+                autoplay: false,
+                loop: false,
+                muted: false,
+                playsinline: true,
+                preload: 'metadata'
+              }}
+
+            {% when 'external_video' %}
+              {{ media | external_video_tag }}
+
+            {% when 'model' %}
+              {{ media | model_viewer_tag }}
+
+          {% endcase %}
+        </div>
       {% endfor %}
 
-      {%- comment -%}
-      Second pass: render the FIRST image at the end
-      {%- endcomment -%}
-      {% assign first_media = product.media.first %}
-      {% if first_media.media_type == 'image' %}
-        <div class="swiper-slide">
-        {% render 'image',
-          class: 'js-open-lightbox',
-          image: first_media,
-          crop: 'center',
-          width: first_media.width,
-          height: first_media.height,
-          img_alt: first_media.alt,
-          data_lightbox_index: product.media.size | minus: 1
-        %}
-        </div>
-      {% endif %}
-
     </div>
 
-    <div class="swiper-nav-wrapper">
-      <button class="swiper-button-prev" aria-label="Previous slide">
-        <span class="inner-text h5">Previous</span>
-      </button>
-
-      <button class="swiper-button-next" aria-label="Next slide">
-        <span class="line"></span>
-        <span class="inner-text h5">Next</span>
-      </button>
-    </div>
-
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
     <div class="swiper-pagination"></div>
   </div>
-{% endif %}
 
 
+  <!-- ======================
+       THUMBNAILS
+  ======================= -->
+  {% if media_count > 1 %}
+  <div class="product-media__thumbs swiper" data-thumb-slider>
+    <div class="swiper-wrapper">
+
+      {% for media in product.media %}
+        <div class="swiper-slide"
+             data-media-id="{{ media.id }}"
+             data-lightbox-index="{{ forloop.index0 }}">
+
+          {% if media.media_type == 'image' %}
+            {% render 'image',
+              image: media,
+              width: 150,
+              height: 150,
+              crop: 'center',
+              img_alt: media.alt,
+              loading: 'lazy'
+            %}
+          {% else %}
+            <div class="thumb-video-label">Video</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+  {% endif %}
+
+  {% endif %}
 </div>
 
-<!-- =====================
+
+<!-- ======================
      LIGHTBOX
 ====================== -->
-<div class="media-lightbox" id="mediaLightbox">
+<div class="media-lightbox" data-media-lightbox aria-hidden="true" role="dialog">
+
   <div class="media-lightbox__overlay"></div>
 
   <div class="media-lightbox__content">
     <button class="media-lightbox__close" aria-label="Close">×</button>
 
-    <div class="swiper media-lightbox__slider">
+    <div class="swiper media-lightbox__slider" data-lightbox-slider>
       <div class="swiper-wrapper">
 
         {% for media in product.media %}
@@ -153,7 +116,8 @@
                 image: media,
                 width: media.width,
                 height: media.height,
-                img_alt: media.alt
+                img_alt: media.alt,
+                loading: 'lazy'
               %}
             </div>
           {% endif %}
@@ -165,5 +129,6 @@
       <div class="swiper-button-next"></div>
       <div class="swiper-pagination"></div>
     </div>
+
   </div>
 </div>
