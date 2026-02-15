@@ -24,61 +24,46 @@
   ====================== -->
 <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
 
-  {% if variant_has_image %}
+  {% if current_variant.featured_media %}
 
-    <!-- Variant has its own image → make slider -->
+    <!-- Variant has its own image -->
     <div class="swiper product-main-slider">
       <div class="swiper-wrapper">
 
-        {% for media in product.media %}
-          {% if media.media_type == 'image' %}
-            <div class="swiper-slide">
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: media,
-                width: media.width,
-                height: media.height,
-                crop: 'center',
-                img_alt: media.alt
-              %}
-            </div>
-          {% endif %}
-        {% endfor %}
+        <div class="swiper-slide">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: current_variant.featured_media,
+            width: current_variant.featured_media.width,
+            height: current_variant.featured_media.height,
+            crop: 'center',
+            img_alt: current_variant.featured_media.alt
+          %}
+        </div>
 
       </div>
-
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-pagination"></div>
     </div>
 
   {% else %}
 
-    <!-- Normal single featured media -->
-    {% if featured_media.media_type contains 'video' %}
-      {{ featured_media | video_tag:
-        autoplay: true,
-        loop: true,
-        muted: true,
-        controls: false,
-        playsinline: true,
-        preload: 'metadata'
-      }}
+    <!-- No variant image → show only first product image -->
+    {% assign first_image = product.media.first %}
 
-    {% elsif featured_media.media_type == 'image' %}
+    {% if first_image.media_type == 'image' %}
       {% render 'image',
         class: 'js-open-lightbox',
-        image: featured_media,
-        width: featured_media.width,
-        height: featured_media.height,
+        image: first_image,
+        width: first_image.width,
+        height: first_image.height,
         crop: 'center',
-        img_alt: featured_media.alt
+        img_alt: first_image.alt
       %}
     {% endif %}
 
   {% endif %}
 
 </div>
+
 
 
   <!-- =====================
