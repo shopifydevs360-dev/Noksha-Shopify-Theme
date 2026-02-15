@@ -3,9 +3,9 @@
 
 {% liquid
   assign selected_collection = collections[section.settings.related_collection]
-  assign related_products = selected_collection.products | where: "available", true | limit: 6
+  assign related_products = selected_collection.products
 
-  assign recommended_products = recommendations.products | where: "available", true | limit: 6
+  assign recommended_products = recommendations.products
 
   assign has_related = false
   assign has_recommended = false
