@@ -15,23 +15,53 @@
        MAIN SWIPER (UPDATED)
   ====================== -->
   <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape">
-<div class="swiper-wrapper">
-  {% assign current_variant = product.selected_or_first_available_variant %}
+    <div class="swiper-wrapper">
 
-  {% if current_variant.featured_media %}
-    <div class="swiper-slide" data-media-id="{{ current_variant.featured_media.id }}">
-      {% render 'image',
-        class: 'js-open-lightbox',
-        image: current_variant.featured_media,
-        width: current_variant.featured_media.width,
-        height: current_variant.featured_media.height,
-        crop: 'center',
-        img_alt: current_variant.featured_media.alt
-      %}
+      {% if variant_media %}
+        <div class="swiper-slide" data-media-id="{{ variant_media.id }}">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: variant_media,
+            width: variant_media.width,
+            height: variant_media.height,
+            crop: 'center',
+            img_alt: variant_media.alt
+          %}
+        </div>
+      {% endif %}
+
+      {% if first_media and first_media.id != variant_media.id %}
+        <div class="swiper-slide" data-media-id="{{ first_media.id }}">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: first_media,
+            width: first_media.width,
+            height: first_media.height,
+            crop: 'center',
+            img_alt: first_media.alt
+          %}
+        </div>
+      {% endif %}
+
+      {% for media in product.media %}
+        {% if media.media_type == 'image'
+          and media.id != variant_media.id
+          and media.id != first_media.id
+        %}
+          <div class="swiper-slide" data-media-id="{{ media.id }}">
+            {% render 'image',
+              class: 'js-open-lightbox',
+              image: media,
+              width: media.width,
+              height: media.height,
+              crop: 'center',
+              img_alt: media.alt
+            %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
     </div>
-  {% endif %}
-</div>
-
 
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
