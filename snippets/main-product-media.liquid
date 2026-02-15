@@ -26,17 +26,17 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
-{% assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media %}
+    {% assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media %}
 
-{% render 'image',
-  class: 'js-open-lightbox',
-  image: featured_media,
-  width: featured_media.width,
-  height: featured_media.height,
-  crop: 'center',
-  img_alt: featured_media.alt,
-  style: wrapper_style
-%}
+    {% render 'image',
+      class: 'js-open-lightbox',
+      image: featured_media,
+      width: featured_media.width,
+      height: featured_media.height,
+      crop: 'center',
+      img_alt: featured_media.alt,
+      style: wrapper_style
+    %}
 
     {% endif %}
 
