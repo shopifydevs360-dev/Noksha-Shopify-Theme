@@ -16,7 +16,8 @@
   @param {string} [img_alt] - The crop position of the image
   @param {string} [mobile_image] - Responsize image can added
   @param {string} [style] - custom style in the image
-  @param {string} [loading] - custom style in the image
+  @param {string} [loading]
+  @param {string} [fetchpriority]
 
   @example
   {% render 'image', image: product.featured_image %}
@@ -73,6 +74,7 @@
         | image_tag:
             alt: img_alt,
             loading: loading,
+            fetchpriority: fetchpriority,
             decoding: 'async',
             widths: '360,533,720,940,1066,1500',
             sizes: '(min-width: 1024px) 50vw, 100vw',
@@ -86,6 +88,7 @@
       | image_tag:
         alt: img_alt,
         loading: loading,
+        fetchpriority: fetchpriority,
         decoding: 'async',
         widths: '360,533,720,940,1066,1500',
         sizes: '(min-width: 1024px) 50vw, 100vw',
