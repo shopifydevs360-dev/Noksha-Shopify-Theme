@@ -16,27 +16,32 @@
   <!-- =====================
        MAIN MEDIA
   ====================== -->
-<div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape">
-  <div class="swiper-wrapper">
+  <div class="product-media__main hide-tablet hide-mobile hide-tablet-landscape">
 
-    {% for media in product.media %}
-      {% if media.media_type == 'image' %}
-        <div class="swiper-slide"
-             data-media-id="{{ media.id }}">
-          {% render 'image',
-            image: media,
-            width: 1200,
-            height: media.height,
-            crop: 'center',
-            img_alt: media.alt
-          %}
-        </div>
-      {% endif %}
-    {% endfor %}
+    {% if featured_media.media_type contains 'video' %}
+      {{ featured_media | video_tag:
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false,
+        playsinline: true,
+        preload: 'metadata'
+      }}
+
+    {% elsif featured_media.media_type == 'image' %}
+    {% render 'image',
+      class: 'js-open-lightbox',
+      image: featured_media,
+      width: featured_media.width,
+      height: featured_media.height,
+      crop: 'center',
+      img_alt: featured_media.alt,
+      style: wrapper_style
+    %}
+
+    {% endif %}
 
   </div>
-</div>
-
 
   <!-- =====================
        VIDEO ROW (IF EXISTS)
