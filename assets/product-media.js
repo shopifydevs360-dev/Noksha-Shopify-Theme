@@ -174,3 +174,54 @@ function initProductMedia() {
 
 }
 
+const variantsJsonEl = document.getElementById('ProductVariantsJson');
+
+if (variantsJsonEl && mainSwiper) {
+
+  const variants = JSON.parse(variantsJsonEl.textContent);
+
+  function getSelectedOptions() {
+    const selected = [];
+    document.querySelectorAll('.main-product-variant-selector fieldset')
+      .forEach(fieldset => {
+        const checked = fieldset.querySelector('input:checked');
+        const select = fieldset.querySelector('select');
+        if (checked) selected.push(checked.value);
+        else if (select) selected.push(select.value);
+      });
+    return selected;
+  }
+
+  function findMatchingVariant(options) {
+    return variants.find(variant => {
+      return variant.options.every((opt, index) => opt === options[index]);
+    });
+  }
+
+  function slideToVariant(variant) {
+    if (!variant || !variant.featured_media) return;
+
+    const mediaId = variant.featured_media.id;
+
+    const slides = mainEl.querySelectorAll(
+      '.swiper-slide:not(.swiper-slide-duplicate)'
+    );
+
+    slides.forEach((slide, index) => {
+      if (slide.dataset.mediaId == mediaId) {
+        mainSwiper.slideToLoop(index);
+      }
+    });
+  }
+
+  document.querySelectorAll(
+    '.main-product-variant-selector input, .main-product-variant-selector select'
+  ).forEach(el => {
+    el.addEventListener('change', function () {
+      const selectedOptions = getSelectedOptions();
+      const matchedVariant = findMatchingVariant(selectedOptions);
+      slideToVariant(matchedVariant);
+    });
+  });
+
+}
