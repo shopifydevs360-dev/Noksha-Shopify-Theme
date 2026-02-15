@@ -4,79 +4,90 @@
     break
   endif
 
-  assign variant_media = product.selected_or_first_available_variant.featured_media
-  assign first_media = product.media.first
+  assign featured_media = product.featured_media
   assign media_count = product.media.size
+
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+
 -%}
 
 <div class="product-media">
 
-  <!-- =====================
-       MAIN SWIPER (UPDATED)
-  ====================== -->
-  <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape">
-    <div class="swiper-wrapper">
+  {% if media_count > 1 %}
+    <div class="product-media__thumbs swiper">
+      <div class="swiper-wrapper">
 
-      {%- comment -%}
-      1️⃣ Variant image first (if exists)
-      {%- endcomment -%}
-      {% if variant_media %}
-        <div class="swiper-slide" data-media-id="{{ variant_media.id }}">
-          {% render 'image',
-            class: 'js-open-lightbox',
-            image: variant_media,
-            width: variant_media.width,
-            height: variant_media.height,
-            crop: 'center',
-            img_alt: variant_media.alt
-          %}
-        </div>
-      {% endif %}
-
-      {%- comment -%}
-      2️⃣ First product image (if different)
-      {%- endcomment -%}
-      {% if first_media and first_media.id != variant_media.id %}
-        <div class="swiper-slide" data-media-id="{{ first_media.id }}">
-          {% render 'image',
-            class: 'js-open-lightbox',
-            image: first_media,
-            width: first_media.width,
-            height: first_media.height,
-            crop: 'center',
-            img_alt: first_media.alt
-          %}
-        </div>
-      {% endif %}
-
-      {%- comment -%}
-      3️⃣ Rest of gallery images
-      {%- endcomment -%}
-      {% for media in product.media %}
-        {% if media.media_type == 'image'
-          and media.id != variant_media.id
-          and media.id != first_media.id
-        %}
-          <div class="swiper-slide" data-media-id="{{ media.id }}">
+        {%- comment -%}
+        First: Show variant featured image (if exists) at the beginning
+        {%- endcomment -%}
+        {% if featured_media != blank and featured_media.media_type == 'image' %}
+          <div class="swiper-slide">
             {% render 'image',
               class: 'js-open-lightbox',
-              image: media,
-              width: media.width,
-              height: media.height,
+              image: featured_media,
               crop: 'center',
-              img_alt: media.alt
+              width: featured_media.width,
+              height: featured_media.height,
+              img_alt: featured_media.alt,
+              data_variant_image: true
             %}
           </div>
         {% endif %}
-      {% endfor %}
 
+        {%- comment -%}
+        Then: Show all other images except the first product image
+        (to avoid duplication with the last slide)
+        {%- endcomment -%}
+        {% for media in product.media %}
+          {% if media.media_type == 'image' and media.id != featured_media.id %}
+            <div class="swiper-slide">
+              {% render 'image',
+                class: 'js-open-lightbox',
+                image: media,
+                crop: 'center',
+                width: media.width,
+                height: media.height,
+                img_alt: media.alt
+              %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {%- comment -%}
+        Finally: Show the first product image at the end
+        (only if it's different from featured_media)
+        {%- endcomment -%}
+        {% assign first_media = product.media.first %}
+        {% if first_media.media_type == 'image' and first_media.id != featured_media.id %}
+          <div class="swiper-slide">
+            {% render 'image',
+              class: 'js-open-lightbox',
+              image: first_media,
+              crop: 'center',
+              width: first_media.width,
+              height: first_media.height,
+              img_alt: first_media.alt,
+              data_lightbox_index: product.media.size | minus: 1
+            %}
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="swiper-nav-wrapper">
+        <button class="swiper-button-prev" aria-label="Previous slide">
+          <span class="inner-text h5">Previous</span>
+        </button>
+
+        <button class="swiper-button-next" aria-label="Next slide">
+          <span class="line"></span>
+          <span class="inner-text h5">Next</span>
+        </button>
+      </div>
+
+      <div class="swiper-pagination"></div>
     </div>
-
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-pagination"></div>
-  </div>
-
+  {% endif %}
 
   <!-- =====================
        VIDEO ROW (IF EXISTS)
@@ -107,65 +118,6 @@
       {% endfor %}
     </div>
   {% endif %}
-
-{% if media_count > 1 %}
-  <div class="product-media__thumbs swiper">
-    <div class="swiper-wrapper">
-
-      {%- comment -%}
-      First pass: render all images EXCEPT the first
-      {%- endcomment -%}
-      {% for media in product.media offset: 1 %}
-        {% if media.media_type == 'image' %}
-          <div class="swiper-slide">
-          {% render 'image',
-            class: 'js-open-lightbox',
-            image: media,
-            crop: 'center',
-            width: media.width,
-            height: media.height,
-            img_alt: media.alt
-          %}
-
-          </div>
-        {% endif %}
-      {% endfor %}
-
-      {%- comment -%}
-      Second pass: render the FIRST image at the end
-      {%- endcomment -%}
-      {% assign first_media = product.media.first %}
-      {% if first_media.media_type == 'image' %}
-        <div class="swiper-slide">
-        {% render 'image',
-          class: 'js-open-lightbox',
-          image: first_media,
-          crop: 'center',
-          width: first_media.width,
-          height: first_media.height,
-          img_alt: first_media.alt,
-          data_lightbox_index: product.media.size | minus: 1
-        %}
-        </div>
-      {% endif %}
-
-    </div>
-
-    <div class="swiper-nav-wrapper">
-      <button class="swiper-button-prev" aria-label="Previous slide">
-        <span class="inner-text h5">Previous</span>
-      </button>
-
-      <button class="swiper-button-next" aria-label="Next slide">
-        <span class="line"></span>
-        <span class="inner-text h5">Next</span>
-      </button>
-    </div>
-
-    <div class="swiper-pagination"></div>
-  </div>
-{% endif %}
-
 
 </div>
 
@@ -203,3 +155,201 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  initProductMedia();
+});
+
+function initProductMedia() {
+  const thumbs = document.querySelector('.product-media__thumbs');
+
+  if (thumbs) {
+    const swiper = new Swiper(thumbs, {
+      slidesPerView: 1,
+      loop: true,
+      navigation: {
+        nextEl: '.product-media__thumbs .swiper-button-next',
+        prevEl: '.product-media__thumbs .swiper-button-prev',
+      },
+      pagination: {
+        el: '.product-media__thumbs .swiper-pagination',
+        clickable: true,
+      },
+      on: {
+        init: function() {
+          // When swiper initializes, make sure we show the variant image first
+          const variantSlide = document.querySelector('[data-variant-image]')?.closest('.swiper-slide');
+          if (variantSlide) {
+            const slideIndex = Array.from(variantSlide.parentNode.children).indexOf(variantSlide);
+            this.slideToLoop(slideIndex, 0);
+          }
+        }
+      }
+    });
+
+    // Listen for variant change events (you'll need to implement this based on your theme)
+    document.addEventListener('variant:changed', function(event) {
+      const variantImage = event.detail?.variant?.featured_media;
+      if (variantImage && variantImage.media_type === 'image') {
+        // Find the slide with the matching image
+        const slides = document.querySelectorAll('.product-media__thumbs .swiper-slide img');
+        for (let i = 0; i < slides.length; i++) {
+          if (slides[i].src.includes(variantImage.src) || slides[i].alt === variantImage.alt) {
+            swiper.slideToLoop(i, 300);
+            break;
+          }
+        }
+      }
+    });
+  }
+
+  const lightbox = document.getElementById('mediaLightbox');
+  if (!lightbox) return;
+
+  const closeBtn = lightbox.querySelector('.media-lightbox__close');
+  const overlay = lightbox.querySelector('.media-lightbox__overlay');
+  const sliderEl = lightbox.querySelector('.media-lightbox__slider');
+
+  const lightboxSwiper = new Swiper(sliderEl, {
+    loop: true,
+    navigation: {
+      nextEl: '.media-lightbox .swiper-button-next',
+      prevEl: '.media-lightbox .swiper-button-prev',
+    },
+    pagination: {
+      el: '.media-lightbox .swiper-pagination',
+      clickable: true,
+    },
+  });
+
+  document.addEventListener('click', e => {
+    const slide = e.target.closest('.product-media__thumbs .swiper-slide');
+    if (!slide) return;
+
+    const img = e.target.closest('img');
+    if (!img) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    let index = Array.from(slide.parentNode.children).indexOf(slide);
+
+    lightbox.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    resetZoom();
+    lightboxSwiper.slideToLoop(index, 0);
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    resetZoom();
+  }
+
+  closeBtn.addEventListener('click', closeLightbox);
+  overlay.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  let zoomLevel = 0;
+  let activeImg = null;
+
+  let isDragging = false;
+  let hasMoved = false;
+
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  const MOVE_THRESHOLD = 5;
+
+  sliderEl.addEventListener('click', e => {
+    const img = e.target.closest('img');
+    if (!img) return;
+
+    if (hasMoved) {
+      hasMoved = false;
+      return;
+    }
+
+    zoomLevel = (zoomLevel + 1) % 3;
+
+    if (zoomLevel === 0) {
+      resetZoom();
+      return;
+    }
+
+    activeImg = img;
+    const scale = zoomLevel === 1 ? 1.6 : 2.6;
+
+    img.classList.add('is-zoomed');
+    img.style.transform = `scale(${scale}) translate(0px, 0px)`;
+
+    sliderEl.swiper.allowTouchMove = false;
+  });
+
+  sliderEl.addEventListener('mousedown', e => {
+    if (!activeImg || zoomLevel === 0) return;
+
+    isDragging = true;
+    hasMoved = false;
+
+    startX = e.clientX - currentX;
+    startY = e.clientY - currentY;
+
+    activeImg.classList.add('is-dragging');
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (!isDragging || !activeImg) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    if (Math.abs(dx - currentX) > MOVE_THRESHOLD || Math.abs(dy - currentY) > MOVE_THRESHOLD) {
+      hasMoved = true;
+    }
+
+    const scale = zoomLevel === 1 ? 1.6 : 2.6;
+    const containerRect = sliderEl.getBoundingClientRect();
+    const imgRect = activeImg.getBoundingClientRect();
+
+    const scaledWidth = imgRect.width;
+    const scaledHeight = imgRect.height;
+
+    // calculate how far it can move without leaving container
+    const limitX = Math.max((scaledWidth - containerRect.width) / 2, 0);
+    const limitY = Math.max((scaledHeight - containerRect.height) / 2, 0);
+
+    currentX = Math.max(-limitX, Math.min(limitX, dx));
+    currentY = Math.max(-limitY, Math.min(limitY, dy));
+
+    activeImg.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    if (activeImg) activeImg.classList.remove('is-dragging');
+  });
+
+  function resetZoom() {
+    sliderEl.querySelectorAll('img').forEach(img => {
+      img.style.transform = "scale(1) translate(0px, 0px)";
+      img.classList.remove('is-zoomed', 'is-dragging');
+    });
+
+    zoomLevel = 0;
+    currentX = 0;
+    currentY = 0;
+    activeImg = null;
+    hasMoved = false;
+    isDragging = false;
+
+    sliderEl.swiper.allowTouchMove = true;
+  }
+}
+</script>
