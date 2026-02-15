@@ -35,9 +35,12 @@
               {% render 'review-count', product: product, block: block %}
             {% endif %}
 
-          <!-- ADD TO CART FORM -->
+          {% when 'variant_picker' %}
+            {% render 'product-variant-picker', product: product, block: block %}
+
           {% when 'add_to_cart_form' %}
             {% render 'main-add-to-cart-form', product: product, block: block %}
+
 
 
           <!-- SHORT DESCRIPTION -->
