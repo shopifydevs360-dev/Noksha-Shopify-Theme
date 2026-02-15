@@ -49,31 +49,29 @@ function initProductMedia() {
   /* =========================
      OPEN LIGHTBOX (IMAGES ONLY)
   ========================== */
-document.addEventListener('click', e => {
-  const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
-  if (!slide) return;
+  document.addEventListener('click', e => {
+    const slide = e.target.closest('.product-media__thumbs .swiper-slide, .product-media__main');
+    if (!slide) return;
 
-  const img = e.target.closest('img');
-  if (!img) return;
+    const img = e.target.closest('img');
+    if (!img) return;
 
-  e.preventDefault();
-  e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-  let index = 0;
+    let index = 0;
 
-  if (slide.classList.contains('swiper-slide')) {
-    index = Array.from(slide.parentNode.children).indexOf(slide);
-  }
+    if (slide.classList.contains('swiper-slide')) {
+      index = Array.from(slide.parentNode.children).indexOf(slide);
+    }
 
-  lightbox.classList.add('is-open');
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
+    lightbox.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 
-  resetZoom();
-  lightboxSwiper.slideToLoop(index, 0);
-});
-
-
+    resetZoom();
+    lightboxSwiper.slideToLoop(index, 0);
+  });
 
   /* =========================
      CLOSE LIGHTBOX
@@ -93,7 +91,7 @@ document.addEventListener('click', e => {
   });
 
   /* =========================
-     ZOOM + PAN (FIXED CLEANLY)
+     ZOOM + PAN (FIXED WITH BOUNDARIES)
   ========================== */
   let zoomLevel = 0;
   let activeImg = null;
@@ -106,14 +104,13 @@ document.addEventListener('click', e => {
   let currentX = 0;
   let currentY = 0;
 
-  const MOVE_THRESHOLD = 5; // px
+  const MOVE_THRESHOLD = 5;
 
   /* ---------- CLICK → ZOOM ---------- */
   sliderEl.addEventListener('click', e => {
     const img = e.target.closest('img');
     if (!img) return;
 
-    /* IMPORTANT: block zoom if drag happened */
     if (hasMoved) {
       hasMoved = false;
       return;
@@ -148,23 +145,52 @@ document.addEventListener('click', e => {
     activeImg.classList.add('is-dragging');
   });
 
-  /* ---------- DRAG MOVE ---------- */
-  window.addEventListener('mousemove', e => {
+  /* ---------- DRAG MOVE WITH BOUNDARIES ---------- */
+  window.addEventListener("mousemove", (e) => {
     if (!isDragging || !activeImg) return;
 
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
 
-    if (Math.abs(dx - currentX) > MOVE_THRESHOLD || Math.abs(dy - currentY) > MOVE_THRESHOLD) {
+    if (
+      Math.abs(dx - currentX) > MOVE_THRESHOLD ||
+      Math.abs(dy - currentY) > MOVE_THRESHOLD
+    ) {
       hasMoved = true;
     }
 
-    currentX = dx;
-    currentY = dy;
-
     const scale = zoomLevel === 1 ? 1.6 : 2.6;
-    activeImg.style.transform =
-      `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+
+    const containerRect = sliderEl.getBoundingClientRect();
+    const imgRect = activeImg.getBoundingClientRect();
+
+    const scaledW = imgRect.width;
+    const scaledH = imgRect.height;
+
+    // horizontal limits
+    const overflowX = Math.max(0, (scaledW - containerRect.width) / 2);
+    const margin = 100;
+    const minAllowedX = -overflowX - margin;
+    const maxAllowedX = overflowX + margin;
+
+    currentX = Math.max(minAllowedX, Math.min(maxAllowedX, dx));
+
+    // vertical limits
+    const containerH = containerRect.height;
+    const imgH = scaledH;
+
+    if (imgH > containerH) {
+      const overflowVert = (imgH - containerH) / 2;
+      const minAllowedY = -overflowVert - margin;
+      const maxAllowedY = overflowVert + margin;
+
+      currentY = Math.max(minAllowedY, Math.min(maxAllowedY, dy));
+    } else {
+      // no vertical drag if image smaller
+      currentY = 0;
+    }
+
+    activeImg.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
   });
 
   /* ---------- END DRAG ---------- */
@@ -189,4 +215,5 @@ document.addEventListener('click', e => {
 
     sliderEl.swiper.allowTouchMove = true;
   }
+
 }
