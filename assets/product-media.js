@@ -149,23 +149,49 @@ document.addEventListener('click', e => {
   });
 
   /* ---------- DRAG MOVE ---------- */
-  window.addEventListener('mousemove', e => {
-    if (!isDragging || !activeImg) return;
+window.addEventListener('mousemove', e => {
+  if (!isDragging || !activeImg) return;
 
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
 
-    if (Math.abs(dx - currentX) > MOVE_THRESHOLD || Math.abs(dy - currentY) > MOVE_THRESHOLD) {
-      hasMoved = true;
-    }
+  if (
+    Math.abs(dx - currentX) > MOVE_THRESHOLD ||
+    Math.abs(dy - currentY) > MOVE_THRESHOLD
+  ) {
+    hasMoved = true;
+  }
 
-    currentX = dx;
-    currentY = dy;
+  const scale = zoomLevel === 1 ? 1.6 : 2.6;
 
-    const scale = zoomLevel === 1 ? 1.6 : 2.6;
-    activeImg.style.transform =
-      `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
-  });
+  const containerRect = sliderEl.getBoundingClientRect();
+
+  const naturalW = activeImg.naturalWidth;
+  const naturalH = activeImg.naturalHeight;
+
+  const scaledW = naturalW * scale;
+  const scaledH = naturalH * scale;
+
+  // overflow amount beyond viewport
+  const overflowX = Math.max(0, (scaledW - containerRect.width) / 2);
+  const overflowY = Math.max(0, (scaledH - containerRect.height) / 2);
+
+  const margin = 100; // max 100px gap
+
+  // New boundaries
+  const minX = -overflowX - margin;
+  const maxX = overflowX + margin;
+
+  const minY = -overflowY - margin;
+  const maxY = overflowY + margin;
+
+  currentX = Math.max(minX, Math.min(maxX, dx));
+  currentY = Math.max(minY, Math.min(maxY, dy));
+
+  activeImg.style.transform =
+    `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+});
+
 
   /* ---------- END DRAG ---------- */
   window.addEventListener('mouseup', () => {
