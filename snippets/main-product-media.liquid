@@ -49,26 +49,6 @@
         </div>
       {% endif %}
 
-      {%- comment -%}
-      3️⃣ Rest of gallery images (excluding variant and first if already shown)
-      {%- endcomment -%}
-      {% for media in product.media %}
-        {% if media.media_type == 'image'
-          and media.id != variant_media.id
-          and media.id != first_media.id
-        %}
-          <div class="swiper-slide" data-media-id="{{ media.id }}">
-            {% render 'image',
-              class: 'js-open-lightbox',
-              image: media,
-              width: media.width,
-              height: media.height,
-              crop: 'center',
-              img_alt: media.alt
-            %}
-          </div>
-        {% endif %}
-      {% endfor %}
 
     </div>
 
