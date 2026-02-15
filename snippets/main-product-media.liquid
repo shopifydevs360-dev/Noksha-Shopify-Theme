@@ -29,15 +29,16 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
-    {% render 'image',
-      class: 'js-open-lightbox',
-      image: featured_media,
-      width: featured_media.width,
-      height: featured_media.height,
-      crop: 'center',
-      img_alt: featured_media.alt,
-      style: wrapper_style
-    %}
+{% render 'image',
+  class: 'js-open-lightbox main-product-image',
+  image: featured_media,
+  width: featured_media.width,
+  height: featured_media.height,
+  crop: 'center',
+  img_alt: featured_media.alt,
+  style: wrapper_style
+%}
+
 
     {% endif %}
 
@@ -82,7 +83,7 @@
       {%- endcomment -%}
       {% for media in product.media offset: 1 %}
         {% if media.media_type == 'image' %}
-          <div class="swiper-slide" data-media-id="{{ media.id }}>
+          <div class="swiper-slide">
           {% render 'image',
             class: 'js-open-lightbox',
             image: media,
