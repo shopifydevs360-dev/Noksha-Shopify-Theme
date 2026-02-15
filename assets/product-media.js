@@ -167,27 +167,34 @@ window.addEventListener("mousemove", (e) => {
   const containerRect = sliderEl.getBoundingClientRect();
   const imgRect = activeImg.getBoundingClientRect();
 
-  // Compute scaled dimensions
-  const scaledWidth = imgRect.width;
-  const scaledHeight = imgRect.height;
+  const scaledW = imgRect.width;
+  const scaledH = imgRect.height;
 
-  // Compute how much image exceeds container
-  const limitX = Math.max(0, (scaledWidth - containerRect.width) / 2);
-  const limitY = Math.max(0, (scaledHeight - containerRect.height) / 2);
-
+  // horizontal limits
+  const limitX = Math.max(0, (scaledW - containerRect.width) / 2);
   const margin = 100;
-
-  const maxX = limitX + margin;
   const minX = -limitX - margin;
+  const maxX = limitX + margin;
 
-  const maxY = limitY + margin;
-  const minY = -limitY - margin;
-
-  // Clamp movement
   currentX = Math.max(minX, Math.min(maxX, dx));
-  currentY = Math.max(minY, Math.min(maxY, dy));
 
-  activeImg.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+  // vertical limits
+  const containerH = containerRect.height;
+  const imgH = scaledH;
+
+  if (imgH > containerH) {
+    const overflowVert = (imgH - containerH) / 2;
+    const maxAllowedY = overflowVert + margin;
+    const minAllowedY = -overflowVert - margin;
+
+    currentY = Math.max(minAllowedY, Math.min(maxAllowedY, dy));
+  } else {
+    // if image height <= container height, no vertical drag
+    currentY = 0;
+  }
+
+  activeImg.style.transform =
+    `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
 });
 
 
