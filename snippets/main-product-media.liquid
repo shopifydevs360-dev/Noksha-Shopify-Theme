@@ -26,36 +26,19 @@
       }}
 
     {% elsif featured_media.media_type == 'image' %}
-        {% render 'image',
-          class: 'js-open-lightbox',
-          image: product.featured_media,
-          url: product.url,
-          width: {{ image.width }},
-          height: {{ image.height }},
-          crop: 'center',
-          mobile_image: block.settings.image_mobile,
-          img_alt: collection.title,
-          style: wrapper_style
-        %}
-      <img
-        srcset="
-          {%- if featured_media.width >= 165 -%}{{ featured_media | image_url: width: 165 }} 165w,{%- endif -%}
-          {%- if featured_media.width >= 360 -%}{{ featured_media | image_url: width: 360 }} 360w,{%- endif -%}
-          {%- if featured_media.width >= 533 -%}{{ featured_media | image_url: width: 533 }} 533w,{%- endif -%}
-          {%- if featured_media.width >= 720 -%}{{ featured_media | image_url: width: 720 }} 720w,{%- endif -%}
-          {%- if featured_media.width >= 940 -%}{{ featured_media | image_url: width: 940 }} 940w,{%- endif -%}
-          {%- if featured_media.width >= 1066 -%}{{ featured_media | image_url: width: 1066 }} 1066w,{%- endif -%}
-          {%- if featured_media.width >= 1500 -%}{{ featured_media | image_url: width: 1500 }} 1500w,{%- endif -%}
-          {{ featured_media | image_url }} {{ featured_media.width }}w
-        "
-        src="{{ featured_media | image_url: width: 360 }}"
-        sizes="(min-width: 1024px) 50vw, 100vw"
-        alt="{{ featured_media.alt | escape }}"
-        loading="lazy"
-        class="js-open-lightbox"
-        width="{{ featured_media.width }}"
-        height="{{ featured_media.height }}"
-      >
+      {% assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media %}
+
+      {% render 'image',
+        class: 'js-open-lightbox',
+        image: featured_media,
+        url: product.url,
+        width: featured_media.width,
+        height: featured_media.height,
+        crop: 'center',
+        img_alt: featured_media.alt,
+        style: wrapper_style
+      %}
+
     {% endif %}
 
   </div>
