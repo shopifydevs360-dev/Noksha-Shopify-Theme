@@ -82,29 +82,12 @@
     <h3>Ask a Question</h3>
 
     {% form 'contact' %}
-
       <!-- Hidden product data -->
-      <input type="hidden" 
-             name="contact[Product Name]" 
-             value="{{ product.title }}">
-
+      <input type="hidden" name="contact[Product Name]" value="{{ product.title }}">
       <!-- User fields -->
-      <input type="text" 
-             name="contact[name]" 
-             placeholder="Your Name" 
-             required>
-
-      <input type="email" 
-             name="contact[email]" 
-             placeholder="Your Email" 
-             required>
-
-      <textarea 
-        name="contact[Message]" 
-        placeholder="Your Question" 
-        required>
-      </textarea>
-
+      <input type="text" name="contact[name]" placeholder="Your Name" required>
+      <input type="email" name="contact[email]" placeholder="Your Email" required>
+      <textarea name="contact[Message]" placeholder="Your Question" required></textarea>
       <button type="submit">Send Question</button>
 
     {% endform %}
