@@ -40,15 +40,13 @@
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-        <div class="hero-info text-{{ ss.text_align }}">
-            {% render 'hero-info',
-            heading: blog.title,
-            heading_tag: 'h1',
-            heading_size: ss.font_size,
-            text_align: ss.text_align,
-            container_width: container_width
-            %} 
-        </div>
+        {% render 'hero-info',
+        heading: blog.title,
+        heading_tag: 'h1',
+        heading_size: ss.font_size,
+        text_align: ss.text_align,
+        container_width: container_width
+        %} 
       <div class="inner-blog-list">
         <div class="{{ blog_classes }}" style="--grid-gap: {{ ss.grid_gap }}px">
           {% paginate blog.articles by 5 %}
