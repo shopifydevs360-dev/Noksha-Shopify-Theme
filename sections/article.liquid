@@ -21,15 +21,6 @@
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
       <div class="article-header">
-        <div class="article-info">
-            {% render 'hero-info',
-            heading: article.title,
-            heading_tag: 'h1',
-            heading_size: ss.font_size,
-            text_align: ss.text_align,
-            container_width: container_width
-            %} 
-        </div>
         {% if article.image %}
         <div class="article-image">
             {% render 'image',
@@ -39,6 +30,15 @@
               width: 1000,
               img_alt: article.title
             %}
+        </div>
+        <div class="article-info">
+            {% render 'hero-info',
+            heading: article.title,
+            heading_tag: 'h1',
+            heading_size: ss.font_size,
+            text_align: ss.text_align,
+            container_width: container_width
+            %} 
         </div>
         {% endif %}
       </div>
