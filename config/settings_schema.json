@@ -888,7 +888,7 @@
     "settings": [
       { "type": "header", "content": "Cart addons", },
       { "type": "checkbox", "id": "show_cart_note", "label": "Show cart note", "default":true },
-      { "type": "checkbox", "id": "show_discount_code", "label": "Show cart note", "default":true },
+      { "type": "checkbox", "id": "show_discount_code", "label": "Show discount", "default":true },
       { "type": "checkbox", "id": "show_delivery_days", "label": "Show estimate delivery days", "default":true },
     ]
   },
