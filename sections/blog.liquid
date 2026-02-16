@@ -20,6 +20,29 @@
   if ss.show_two_mobile
   assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
   endif
+
+  assign image_wapper_classes = 'cropped-image-wrapper'
+  assign wrapper_style = ''
+
+  if ss.aspect_ratio == 'adapt-to-image'
+    assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+
+  elsif ss.aspect_ratio == 'custom-height'
+    assign image_wapper_classes = image_wapper_classes | append: ' custom-height-image'
+    assign wrapper_style = 'height:' | append: ss.custom_height | append: 'px;'
+
+  else
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.aspect_ratio
+  endif
+
+  if ss.hover_effect_action != 'no-effect'
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.hover_effect_action
+  endif
+
+  assign custom_width_style = ''
+  if ss.enable_custom_width and ss.custom_width != blank
+    assign custom_width_style = 'max-width:' | append: ss.custom_width | append: '%;margin-left:auto;margin-right:auto;'
+  endif
 %}
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
@@ -30,7 +53,8 @@
             heading_tag: 'h1',
             heading_size: ss.font_size,
             text_align: ss.text_align,
-            container_width: container_width
+            container_width: container_width,
+            style: custom_width_style
             %} 
         </div>
       <div class="inner-blog-list">
@@ -40,7 +64,14 @@
             <div>
               {% if article.image %}
 
-                
+                  {% render 'image',
+                    class: '{{ ss.image_wapper_class }}',
+                    image: article.imag,
+                    url: article.url,
+                    width: 1000,
+                    img_alt: ss.title,
+                    style: wrapper_style
+                  %}
 
                 {{ article.image | image_url: width: 1000 | image_tag }}
               {% endif %}
