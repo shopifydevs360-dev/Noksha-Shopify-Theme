@@ -193,7 +193,7 @@ function initCartRemove() {
 ============================ */
 function initCouponAjax() {
   document.addEventListener("click", function (e) {
-    if (!e.target.id === "apply-coupon-btn") return;
+    if (e.target.id !== "apply-coupon-btn") return;
 
     const btn = e.target;
     const codeInput = document.getElementById("coupon-code");
