@@ -111,7 +111,10 @@
               {% unless cart.cart_level_discount_applications.size > 0 %}
                 style="display:none;"
               {% endunless %}>
-            <h5>Discount</h5>
+              <h5>
+              Discount
+              <button type="button" class="remove-discount">Remove</button>
+            </h5>
             <span class="cart-discount-amount">
               {% if cart.cart_level_discount_applications.size > 0 %}
                 -{{ cart.total_discount | money }}
