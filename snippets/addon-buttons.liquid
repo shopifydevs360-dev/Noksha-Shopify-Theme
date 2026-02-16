@@ -66,8 +66,8 @@
         {% if product.featured_image %}
             {% render 'image',
               image: product.featured_image,
-              width: {{ image.width }},
-              height: {{ image.height }},
+              width: 250,
+              height: 250,
               crop: 'center',
               img_alt: product.title
             %}
