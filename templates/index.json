@@ -243,7 +243,7 @@
       "settings": {
         "enable_sidebar_space": true,
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_width": "extended",
+        "container_width": "container-fluid",
         "hero_title": "Lookbook",
         "font_size": "h2",
         "hero_description": "<p>Real styles for the modern woman. Get inspired by our latest collections in action.</p>",
