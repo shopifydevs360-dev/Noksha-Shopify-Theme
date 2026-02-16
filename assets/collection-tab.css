@@ -115,15 +115,15 @@
 }
 /* first few get stagger */
 
-.product-carousel .product-slide[item-index="1"] .product-card.is-animated { transition-delay: 0.02s; }
-.product-carousel .product-slide[item-index="2"] .product-card.is-animated { transition-delay: 0.1s; }
-.product-carousel .product-slide[item-index="3"] .product-card.is-animated { transition-delay: 0.2s; }
-.product-carousel .product-slide[item-index="4"] .product-card.is-animated { transition-delay: 0.3s; }
-.product-carousel .product-slide[item-index="5"] .product-card.is-animated { transition-delay: 0.4s; }
-.product-carousel .product-slide[item-index="6"] .product-card.is-animated { transition-delay: 0.5s; }
-.product-carousel .product-slide[item-index="7"] .product-card.is-animated { transition-delay: 0.6s; }
-.product-carousel .product-slide[item-index="8"] .product-card.is-animated { transition-delay: 0.7s; }
-.product-carousel .product-slide[item-index="9"] .product-card.is-animated { transition-delay: 0.8s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="1"] .product-card.is-animated { transition-delay: 0.02s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="3"] .product-card.is-animated { transition-delay: 0.2s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="2"] .product-card.is-animated { transition-delay: 0.1s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="4"] .product-card.is-animated { transition-delay: 0.3s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="5"] .product-card.is-animated { transition-delay: 0.4s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="6"] .product-card.is-animated { transition-delay: 0.5s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="7"] .product-card.is-animated { transition-delay: 0.6s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="8"] .product-card.is-animated { transition-delay: 0.7s; }
+.product-tabs-carousel .product-carousel .product-slide[item-index="9"] .product-card.is-animated { transition-delay: 0.8s; }
 
 
 

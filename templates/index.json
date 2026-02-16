@@ -130,24 +130,24 @@
     "collection_tab_HFCJgQ": {
       "type": "collection-tab",
       "blocks": {
-        "tab_Ug9LKW": {
+        "tab_YkmqyG": {
           "type": "tab",
           "settings": {
-            "tab_label": "ESARP",
-            "collection": "esarp"
+            "tab_label": "Everyday Essentials",
+            "collection": "jersey-hijab"
           }
         },
-        "tab_YMPbe7": {
+        "tab_xa3MVn": {
           "type": "tab",
           "settings": {
-            "tab_label": "Hijab Accessories",
-            "collection": "hijab-accessories"
+            "tab_label": "Noor Essentials",
+            "collection": "cotton-hijab"
           }
         }
       },
       "block_order": [
-        "tab_Ug9LKW",
-        "tab_YMPbe7"
+        "tab_YkmqyG",
+        "tab_xa3MVn"
       ],
       "name": "Product Tabs Carousel",
       "settings": {
