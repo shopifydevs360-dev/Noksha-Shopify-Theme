@@ -38,7 +38,6 @@ function renderAllCarts(cart) {
 function renderSingleCart(cart, root) {
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
-  updateDiscountProgress(cart, root);
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
 
@@ -217,47 +216,6 @@ function refreshCartItemList(root) {
     });
 }
 
-/* ============================
-   DISCOUNT PROGRESS
-============================ */
-function updateDiscountProgress(cart, root) {
-  const wrapper = root.querySelector(".cart-discount-wrapper");
-  if (!wrapper) return;
-
-  const bar = wrapper.querySelector(".discount-progress-bar");
-  const remainingEl = wrapper.querySelector(".cart-discount-remaining");
-  const threshold = parseInt(root.dataset.discountThreshold, 10);
-
-  if (!threshold || threshold === 0) return;
-
-  const progress = Math.min(
-    (cart.total_price / threshold) * 100,
-    100
-  );
-
-  // Update progress bar
-  if (bar) {
-    bar.style.width = progress + "%";
-  }
-
-  // Unlock state
-  if (cart.total_price >= threshold) {
-    wrapper.classList.add("is-success");
-
-    // Optional: Replace text when unlocked
-    wrapper.querySelector("p").innerHTML =
-      '<span class="success-text">🔥 Discount unlocked!</span>';
-
-  } else {
-    wrapper.classList.remove("is-success");
-
-    if (remainingEl) {
-      remainingEl.textContent = formatMoney(
-        threshold - cart.total_price
-      );
-    }
-  }
-}
 
 
 
