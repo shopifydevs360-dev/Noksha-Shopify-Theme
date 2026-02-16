@@ -5,7 +5,92 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/article
 {% endcomment %}
+{% render 'section-base-style' %}
+{% liquid
+  assign ss = section.settings
 
+  assign first_class = 'store-location-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign container_width = ss.container_width
+
+  assign blog_classes = 'blogs'
+  assign blog_classes = blog_classes | append: ' ' | append: 'cols-' | append: ss.grid_columns
+  if ss.show_two_mobile
+  assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
+  endif
+
+  assign image_wapper_classes = 'cropped-image-wrapper'
+  assign wrapper_style = ''
+
+  if ss.aspect_ratio == 'adapt-to-image'
+    assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+  elsif ss.aspect_ratio == 'custom-height'
+    assign image_wapper_classes = image_wapper_classes | append: ' custom-height-image'
+    assign wrapper_style = 'height:' | append: ss.custom_height | append: 'px;'
+  else
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.aspect_ratio
+  endif
+
+  if ss.hover_effect_action != 'no-effect'
+    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.hover_effect_action
+  endif
+%}
+<div class="{{ first_class }}" id="store-location-{{ section.id }}">
+  <div class="{{ container_width }}">
+    <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+        <div class="hero-info text-{{ ss.text_align }}">
+            {% render 'hero-info',
+            heading: blog.title,
+            heading_tag: 'h1',
+            heading_size: ss.font_size,
+            text_align: ss.text_align,
+            container_width: container_width
+            %} 
+        </div>
+      <div class="inner-blog-list">
+        <div class="{{ blog_classes }}" style="--grid-gap: {{ ss.grid_gap }}px">
+          {% paginate blog.articles by 5 %}
+          {% for article in blog.articles %}
+            <div class="article-card">
+              {% if article.image %}
+                  {% render 'image',
+                    class: image_wapper_classes,
+                    image:  article.image,
+                    url: article.url,
+                    width: 1000, 
+                    img_alt: ss.title,
+                    style: wrapper_style
+                  %}
+              {% endif %}
+              <div class="artile-title">
+                <a href="article.url">{{ article.title }}</a>
+              </div>
+              {% assign date = article.published_at | time_tag: format: 'date' %}
+              <p class="article-metadata">{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
+              <p class="article-excerpt">{{ article.excerpt }}</p>
+            </div>
+          {% endfor %}
+
+          {%- if paginate.pages > 1 -%}
+            {{- paginate | default_pagination -}}
+          {%- endif -%}
+        {% endpaginate %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% stylesheet %}
+.artile-title {
+  margin: 0.5rem 0 0.2rem 0;
+}
+.article-metadata {
+    font-size: 0.8em;
+    color: rgba(var(--color-heading), 0.7);
+}
+{% endstylesheet %}
 {% if article.image %}
   {{ article.image | image_url: width: 1000 | image_tag }}
 {% endif %}
