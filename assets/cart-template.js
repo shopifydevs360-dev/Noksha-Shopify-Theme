@@ -248,7 +248,8 @@ function initRemoveDiscount() {
     btn.textContent = "Removing...";
     btn.disabled = true;
 
-    window.location.href = "/discount/";
+    // Safe way to clear discount
+    window.location.href = "/cart?discount=";
   });
 }
 
