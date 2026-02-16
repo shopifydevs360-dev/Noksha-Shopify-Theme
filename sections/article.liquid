@@ -50,13 +50,13 @@
       {% if blog.comments_enabled? %}
         <h2 class="sub-title">{{ 'blog.article_comments' | t }}</h2>
 
-        <div id="comments">
+        <div class="comment-list" id="comments">
           {% paginate article.comments by 10 %}
             {% for comment in article.comments %}
               <div class="comment-item">
-                <p>{{ comment.author }}</p>
-                <p>{{- comment.created_at | time_tag: format: 'date' -}}</p>
-                <p>{{ comment.content }}</p>
+                <p class="comment-author">{{ comment.author }}</p>
+                <p class="comment-date">{{- comment.created_at | time_tag: format: 'date' -}}</p>
+                <p class="comment-content">{{ comment.content }}</p>
               </div>
             {% endfor %}
 
