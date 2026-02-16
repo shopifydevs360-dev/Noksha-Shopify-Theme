@@ -261,7 +261,7 @@
         "grid_gap": 40,
         "aspect_ratio": "adapt-to-image",
         "custom_height": 300,
-        "hover_effect_action": "is-hover-zoom-in",
+        "hover_effect_action": "no-effect",
         "padding_top": 40,
         "padding_bottom": 52,
         "custom_class": "",
