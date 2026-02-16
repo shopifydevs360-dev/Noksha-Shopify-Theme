@@ -28,7 +28,9 @@
       class="collections cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}"
       style="--grid-gap: {{ section.settings.grid_gap }}px"
     >
-      {% for collection in collections %}
+    {% for collection in collections %}
+      {% if collection.products_count > 0 %}
+
         <a class="collection-card" href="{{ collection.url }}">
           {% if collection.featured_image %}
             {% render 'image',
@@ -37,16 +39,22 @@
               img_alt: collection.title
             %}
           {% endif %}
-          
 
           <div class="collection-card__content">
-            <p>{{ collection.title }} <span>({{ collection.products_count }})</span></p>
-            {% if collection.description %}
+            <p>
+              {{ collection.title }}
+              <span>({{ collection.products_count }})</span>
+            </p>
+
+            {% if collection.description != blank %}
               <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
             {% endif %}
           </div>
         </a>
-      {% endfor %}
+
+      {% endif %}
+    {% endfor %}
+
     </div>
     </div>
   </div>
