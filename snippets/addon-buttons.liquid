@@ -64,9 +64,13 @@
     <div class="ask-product-info">
       <div class="ask-product-image">
         {% if product.featured_image %}
-          <img 
-            src="{{ product.featured_image | image_url: width: 150 }}" 
-            alt="{{ product.title | escape }}">
+            {% render 'image',
+              image: product.featured_image,
+              width: {{ image.width }},
+              height: {{ image.height }},
+              crop: 'center',
+              img_alt: product.title
+            %}
         {% endif %}
       </div>
 
