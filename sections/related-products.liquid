@@ -4,32 +4,26 @@
 {%- liquid
   assign current_product = product
   assign related_collection = current_product.collections.first
-  assign related_products = blank
+  assign has_related = false
+  assign has_recommended = false
 
-  if related_collection != blank
-    assign related_products = related_collection.products | where: "id", current_product.id, false
+  if related_collection and related_collection.products_count > 1
+    assign has_related = true
+  endif
+
+  if recommendations.performed and recommendations.products_count > 0
+    assign has_recommended = true
   endif
 -%}
 
-{% assign has_related = false %}
-{% assign has_recommended = false %}
-
-{% if related_collection and related_collection.products_count > 1 %}
-  {% assign has_related = true %}
-{% endif %}
-
-{% if recommendations.performed and recommendations.products_count > 0 %}
-  {% assign has_recommended = true %}
-{% endif %}
-
 {% if has_related or has_recommended %}
 
-<div class="product-tabs-carousel js-product-carousel-{{ section.id }} m-color-{{ section.settings.color_scheme }}">
+<div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
   <div class="product-carousel section-{{ section.id }}-padding">
 
-    <!-- ================= TITLE ================= -->
-    <h2 class="container {{ section.settings.title_font_size }}">
-      <div class="info-title">
+    <!-- ================= MOBILE TITLE ================= -->
+    <h2 class="container hide-desktop hide-large-screens {{ section.settings.title_font_size }}">
+      <div data-reveal="lines-masked" class="info-title">
         {{ section.settings.title }}
       </div>
     </h2>
@@ -61,6 +55,18 @@
     <div class="swiper swiper-container-product">
       <div class="swiper-wrapper">
 
+        <!-- Desktop Lead Card (EXACT SAME AS YOUR ORIGINAL) -->
+        <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
+          <div class="collection-lead-info">
+            <h2 class="{{ section.settings.title_font_size }}">
+              <div data-reveal="lines-masked" class="info-title">
+                {{ section.settings.title }}
+              </div>
+            </h2>
+          </div>
+        </div>
+
+        <!-- Related Products -->
         {% if has_related %}
           {% for product in related_collection.products limit: 8 %}
             {% unless product.id == current_product.id %}
@@ -74,6 +80,7 @@
           {% endfor %}
         {% endif %}
 
+        <!-- Recommended Products -->
         {% if has_recommended %}
           {% for product in recommendations.products limit: 8 %}
             <div
@@ -102,14 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabs = section.querySelectorAll('.js-slider-filter');
   const slides = section.querySelectorAll('.product-slide');
 
-  /* ---------------- FILTER TABS SWIPER ---------------- */
+  /* FILTER TABS SWIPER */
   new Swiper(section.querySelector('.swiper-container-filter'), {
     slidesPerView: 'auto',
     freeMode: true,
     spaceBetween: 40
   });
 
-  /* ---------------- PRODUCTS SWIPER ---------------- */
+  /* PRODUCT SWIPER */
   const productSwiper = new Swiper(section.querySelector('.swiper-container-product'), {
     slidesPerView: 1.2,
     scrollbar: {
@@ -124,8 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function activateTab(filter, tab) {
+
     section.querySelectorAll('.related-product-caps')
       .forEach(el => el.classList.remove('active'));
+
     tab.closest('.related-product-caps').classList.add('active');
 
     slides.forEach(slide => {
@@ -142,18 +151,17 @@ document.addEventListener('DOMContentLoaded', () => {
     productSwiper.slideTo(0, 0);
   }
 
-  /* ---------------- INIT FIRST TAB ---------------- */
   if (tabs.length) {
     activateTab(tabs[0].dataset.filter, tabs[0]);
   }
 
-  /* ---------------- TAB CLICK EVENTS ---------------- */
   tabs.forEach(tab => {
     tab.addEventListener('click', e => {
       e.preventDefault();
       activateTab(tab.dataset.filter, tab);
     });
   });
+
 });
 </script>
 
@@ -180,6 +188,21 @@ document.addEventListener('DOMContentLoaded', () => {
         { "value": "h4", "label": "h4" }
       ],
       "default": "h3"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
     },
     {
       "type": "color_scheme",
