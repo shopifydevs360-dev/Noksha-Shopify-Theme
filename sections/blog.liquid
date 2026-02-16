@@ -30,7 +30,6 @@
   elsif ss.aspect_ratio == 'custom-height'
     assign image_wapper_classes = image_wapper_classes | append: ' custom-height-image'
     assign wrapper_style = 'height:' | append: ss.custom_height | append: 'px;'
-
   else
     assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.aspect_ratio
   endif
