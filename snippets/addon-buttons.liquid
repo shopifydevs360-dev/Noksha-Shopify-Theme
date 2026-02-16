@@ -85,9 +85,12 @@
       <!-- Hidden product data -->
       <input type="hidden" name="contact[Product Name]" value="{{ product.title }}">
       <!-- User fields -->
-      <input type="text" name="contact[name]" placeholder="Your Name" required>
-      <input type="email" name="contact[email]" placeholder="Your Email" required>
-      <textarea name="contact[Message]" placeholder="Your Question" required></textarea>
+      <label for="yourname">Name</label>
+      <input type="text" name="contact[name]" id="yourname" placeholder="Your Name" required>
+      <label for="youremail">Email</label>
+      <input type="email" name="contact[email]" id="youremail" placeholder="Your Email" required>
+      <label for="yourquestion">Massage</label>
+      <textarea name="contact[Message]" id="yourquestion" placeholder="Your Question" required></textarea>
       <button type="submit">Send Question</button>
 
     {% endform %}
@@ -224,23 +227,23 @@ document.addEventListener('DOMContentLoaded', function() {
     gap: 1rem;
     margin-bottom: 1rem;
 }
-.register-page .field {
+.ask-contact .field {
     display: flex;
     flex-direction: column;
 }
-.register-page label {
+.ask-contact label {
     font-size: 0.9em;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
 }
-.register-page input {
+.ask-contact input {
     padding: .8rem 0;
     border-bottom: 2px solid rgb(var(--color-border));
     border-radius: 0;
     margin-bottom: 1.4rem;
 }
-.register-page .button {
+.ask-contact .button {
     background: rgb(var(--color-heading));
     color: rgb(var(--color-background));
     border: 2px solid rgb(var(--color-heading));
@@ -250,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
     letter-spacing: 1.2px;
     margin-bottom: 1rem;
 }
-.register-page .button:hover {
+.ask-contact .button:hover {
     background: transparent;
     color: rgb(var(--color-heading));
 }
