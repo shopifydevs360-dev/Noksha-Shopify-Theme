@@ -141,16 +141,11 @@
       "type": "related-products",
       "name": "Product Recommendations",
       "settings": {
-        "color_scheme": "",
         "title": "You May Also Like",
         "title_font_size": "h3",
-        "title_link": "",
-        "related_tab_label": "Related Products",
-        "recommended_tab_label": "You May Also Like",
+        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "padding_top": 40,
-        "padding_bottom": 52,
-        "custom_class": "",
-        "color_control": "section-light"
+        "padding_bottom": 52
       }
     }
   },
