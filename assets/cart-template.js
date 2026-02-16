@@ -57,9 +57,27 @@ function renderSingleCart(cart, root) {
 ============================ */
 function updateSubtotal(cart, root) {
   const subtotalEl = root.querySelector(".cart-subtotal");
-  if (!subtotalEl) return;
+  const totalEl = root.querySelector(".cart-total");
+  const discountRow = root.querySelector(".cart-discount-row");
+  const discountAmountEl = root.querySelector(".cart-discount-amount");
 
-  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
+  if (subtotalEl) {
+    subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
+  }
+
+  if (totalEl) {
+    totalEl.textContent = formatMoney(cart.total_price);
+  }
+
+  if (cart.total_discount > 0) {
+    if (discountRow) discountRow.style.display = "flex";
+    if (discountAmountEl) {
+      discountAmountEl.textContent =
+        "-" + formatMoney(cart.total_discount);
+    }
+  } else {
+    if (discountRow) discountRow.style.display = "none";
+  }
 }
 
 /* ============================
