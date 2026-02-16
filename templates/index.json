@@ -72,29 +72,37 @@
         "tab_Nq43z7": {
           "type": "tab",
           "settings": {
-            "tab_label": "Borkini",
+            "tab_label": "PLAIN HIJAB",
             "collection": "borkini"
           }
         },
         "tab_KtWxa4": {
           "type": "tab",
           "settings": {
-            "tab_label": "Borkini 2",
+            "tab_label": "JERSEY H IJAB",
             "collection": "chiffon-hijab"
           }
         },
         "tab_CNPqei": {
           "type": "tab",
           "settings": {
-            "tab_label": "Plain Hijab",
+            "tab_label": "CHIFFON HIJAB",
             "collection": "plain-hijab"
+          }
+        },
+        "tab_9nLCyp": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "COTTON HIJAB",
+            "collection": "cotton-hijab"
           }
         }
       },
       "block_order": [
         "tab_Nq43z7",
         "tab_KtWxa4",
-        "tab_CNPqei"
+        "tab_CNPqei",
+        "tab_9nLCyp"
       ],
       "name": "Product Tabs Carousel",
       "settings": {
