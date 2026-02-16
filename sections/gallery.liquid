@@ -11,10 +11,10 @@
 
   assign container_width = ss.container_width
 
-  assign grid_classes = 'gallery-grid cols-' | append: ss.grid_columns
+  assign grid_classes = 'gallery-grid cols-item-' | append: ss.grid_columns
 
   if ss.show_two_mobile
-    assign grid_classes = grid_classes | append: ' cols-mobile-2'
+    assign grid_classes = grid_classes | append: ' cols-item-mobile-2'
   endif
 
   assign image_wrapper_classes = 'cropped-image-wrapper'
@@ -81,7 +81,21 @@
 </div>
 
 {% stylesheet %}
+.gallery-grid {
+  display: grid;
+}
 
+.gallery-grid.cols-item-2 { grid-template-columns: repeat(2, 1fr); }
+.gallery-grid.cols-item-3 { grid-template-columns: repeat(3, 1fr); }
+.gallery-grid.cols-item-4 { grid-template-columns: repeat(4, 1fr); }
+.gallery-grid.cols-item-5 { grid-template-columns: repeat(5, 1fr); }
+.gallery-grid.cols-item-6 { grid-template-columns: repeat(6, 1fr); }
+
+@media (max-width: 767px) {
+  .gallery-grid.cols-item-mobile-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 {% endstylesheet %}
 {% schema %}
 {
