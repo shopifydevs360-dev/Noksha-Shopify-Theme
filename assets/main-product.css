@@ -206,69 +206,7 @@
   color: rgb(var(--color-background));
 }
 
-/* ============================
-   VARIANT SELECTOR
-============================ */
-.main-product fieldset.variant-group {
-  border: 1px solid rgb(var(--color-border));
-}
 
-.main-product .variant-selector {
-  margin-bottom: 1rem;
-}
-
-.main-product .variant-buttons {
-    display: flex;
-    row-gap: 2rem;
-    column-gap: 0.5rem;
-    padding: .6rem 0;
-    flex-wrap: wrap;
-}
-
-.main-product .variant-btn input {
-  display: none;
-}
-
-.main-product .variant-btn span {
-  padding: 0.6rem 1rem;
-  border: 1px solid rgb(var(--color-border));
-  cursor: pointer;
-  color: rgb(var(--color-text));
-}
-
-.main-product .variant-btn input:checked + span {
-  border-color: rgb(var(--color-heading));
-}
-.main-product .variant-btn.checked span {
-  border-color: rgb(var(--color-heading));
-  background-color: rgb(var(--color-heading));
-  color: rgb(var(--color-background));
-}
-
-.main-product .variant-btn.stock-out {
-  /* pointer-events: none; */
-}
-
-.main-product .variant-btn.stock-out span {
-  border-color: rgb(var(--color-border));
-  color: rgb(var(--color-subtext));
-  opacity: 0.5;
-  text-decoration: line-through;
-}
-
-.main-product .variant-btn.stock-out.checked span {
-  background: transparent;
-  color: rgb(var(--color-subtext));
-}
-
-/* Hover state (only for available variants) */
-.main-product .variant-btn:not(.stock-out):hover span {
-  border-color: rgb(var(--color-heading));
-}
-
-.main-product .variant-btn span {
-  transition: all 0.2s ease;
-}
 /* ============================
    PRODUCT DESCRIPTION
 ============================ */
