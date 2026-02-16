@@ -70,7 +70,7 @@
                 <a href="article.url">{{ article.title }}</a>
               </div>
               {% assign date = article.published_at | time_tag: format: 'date' %}
-              <p>{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
+              <p class="article-metadata">{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
               <p class="article-excerpt">{{ article.excerpt }}</p>
             </div>
           {% endfor %}
