@@ -38,11 +38,6 @@
   if ss.hover_effect_action != 'no-effect'
     assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.hover_effect_action
   endif
-
-  assign custom_width_style = ''
-  if ss.enable_custom_width and ss.custom_width != blank
-    assign custom_width_style = 'max-width:' | append: ss.custom_width | append: '%;margin-left:auto;margin-right:auto;'
-  endif
 %}
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
@@ -69,7 +64,7 @@
                     url: article.url,
                     width: 1000,
                     img_alt: ss.title,
-                    style: custom_width_style
+                    style: wrapper_style
                   %}
 
                 {{ article.image | image_url: width: 1000 | image_tag }}
