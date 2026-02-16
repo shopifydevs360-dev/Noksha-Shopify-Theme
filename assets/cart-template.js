@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartQuantity();
   initCartRemove();
   initCouponAjax();
+  initRemoveDiscount();
   initCartInitialSync();
 });
 
@@ -37,7 +38,7 @@ function renderAllCarts(cart) {
    RENDER SINGLE CART
 ============================ */
 function renderSingleCart(cart, root) {
-  updateSubtotal(cart, root);
+  updateSummary(cart, root);
   updateFreeShipping(cart, root);
   updateDiscountProgress(cart, root);
   updateLineItems(cart, root);
@@ -50,13 +51,36 @@ function renderSingleCart(cart, root) {
 }
 
 /* ============================
-   SUBTOTAL
+   SUMMARY (Subtotal + Discount + Total)
 ============================ */
-function updateSubtotal(cart, root) {
+function updateSummary(cart, root) {
   const subtotalEl = root.querySelector(".cart-subtotal");
-  if (!subtotalEl) return;
+  const totalEl = root.querySelector(".cart-total");
+  const discountRow = root.querySelector(".cart-discount-row");
+  const discountAmountEl = root.querySelector(".cart-discount-amount");
+  const discountNameEl = root.querySelector(".cart-discount-name");
 
-  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
+  if (subtotalEl) {
+    subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
+  }
+
+  if (totalEl) {
+    totalEl.textContent = formatMoney(cart.total_price);
+  }
+
+  if (cart.total_discount > 0) {
+    if (discountRow) discountRow.style.display = "flex";
+    if (discountAmountEl)
+      discountAmountEl.textContent =
+        "-" + formatMoney(cart.total_discount);
+
+    if (discountNameEl && cart.cart_level_discount_applications.length) {
+      discountNameEl.textContent =
+        cart.cart_level_discount_applications[0].title;
+    }
+  } else {
+    if (discountRow) discountRow.style.display = "none";
+  }
 }
 
 /* ============================
@@ -69,7 +93,6 @@ function updateFreeShipping(cart, root) {
   const bar = wrapper.querySelector(".shipping-progress-bar");
   const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
   const threshold = parseInt(root.dataset.freeShippingThreshold || 0, 10);
-
   if (!threshold) return;
 
   const progress = Math.min((cart.total_price / threshold) * 100, 100);
@@ -98,7 +121,6 @@ function updateDiscountProgress(cart, root) {
   const bar = wrapper.querySelector(".discount-progress-bar");
   const remainingEl = wrapper.querySelector(".cart-discount-remaining");
   const threshold = parseInt(root.dataset.discountThreshold || 0, 10);
-
   if (!threshold) return;
 
   const progress = Math.min((cart.total_price / threshold) * 100, 100);
@@ -130,13 +152,11 @@ function updateLineItems(cart, root) {
     const priceEl = row.querySelector(".cart-item-price");
     const qtyInput = row.querySelector("input");
 
-    if (priceEl) {
+    if (priceEl)
       priceEl.textContent = formatMoney(item.final_line_price);
-    }
 
-    if (qtyInput) {
+    if (qtyInput)
       qtyInput.value = item.quantity;
-    }
   });
 }
 
@@ -147,7 +167,6 @@ function removeDeletedItems(cart, root) {
   root.querySelectorAll(".cart-item").forEach((row) => {
     const key = row.dataset.key;
     const exists = cart.items.some((item) => item.key === key);
-
     if (!exists) row.remove();
   });
 }
@@ -175,7 +194,7 @@ function initCartQuantity() {
 }
 
 /* ============================
-   REMOVE EVENT
+   REMOVE ITEM
 ============================ */
 function initCartRemove() {
   document.addEventListener("click", (e) => {
@@ -189,13 +208,12 @@ function initCartRemove() {
 }
 
 /* ============================
-   AJAX COUPON APPLY
+   APPLY COUPON (AJAX STYLE)
 ============================ */
 function initCouponAjax() {
   document.addEventListener("click", function (e) {
     if (e.target.id !== "apply-coupon-btn") return;
 
-    const btn = e.target;
     const codeInput = document.getElementById("coupon-code");
     const message = document.querySelector(".coupon-message");
 
@@ -207,14 +225,30 @@ function initCouponAjax() {
     const code = codeInput.value.trim();
 
     fetch("/discount/" + code)
-      .then(() => {
+      .then(() => fetch("/cart.js"))
+      .then(res => res.json())
+      .then(cart => {
+        renderAllCarts(cart);
         message.textContent = "Coupon applied!";
-        setTimeout(() => {
-          refreshAllCartsUI();
-        }, 1000);
       })
       .catch(() => {
         message.textContent = "Invalid coupon code.";
+      });
+  });
+}
+
+/* ============================
+   REMOVE DISCOUNT
+============================ */
+function initRemoveDiscount() {
+  document.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("remove-discount")) return;
+
+    fetch("/discount/")
+      .then(() => fetch("/cart.js"))
+      .then(res => res.json())
+      .then(cart => {
+        renderAllCarts(cart);
       });
   });
 }
@@ -224,10 +258,8 @@ function initCouponAjax() {
 ============================ */
 function initCartInitialSync() {
   fetch("/cart.js")
-    .then((res) => res.json())
-    .then((cart) => {
-      renderAllCarts(cart);
-    });
+    .then(res => res.json())
+    .then(cart => renderAllCarts(cart));
 }
 
 /* ============================
@@ -235,41 +267,16 @@ function initCartInitialSync() {
 ============================ */
 function refreshCartItemList(root) {
   fetch("/cart?view=ajax")
-    .then((res) => res.text())
-    .then((html) => {
+    .then(res => res.text())
+    .then(html => {
       const temp = document.createElement("div");
       temp.innerHTML = html;
-
       const newList = temp.querySelector(".cart-list-items");
       if (!newList) return;
 
       let currentList = root.querySelector(".cart-list-items");
-      const emptyMessage = root.querySelector(".cart-empty-message");
-      const continueLink = root.querySelector(".continue-shopping");
-
-      if (!currentList) {
-        if (emptyMessage) emptyMessage.remove();
-        if (continueLink) continueLink.remove();
-
-        root.querySelector(".cart-template-left")
-          .appendChild(newList);
-
-        return;
-      }
-
-      currentList.innerHTML = newList.innerHTML;
-    });
-}
-
-/* ============================
-   FULL REFRESH
-============================ */
-function refreshAllCartsUI() {
-  fetch("/cart.js")
-    .then((res) => res.json())
-    .then((cart) => {
-      renderAllCarts(cart);
-      updateCartCount();
+      if (currentList)
+        currentList.innerHTML = newList.innerHTML;
     });
 }
 
