@@ -14,7 +14,7 @@
 
 <div class="{{ section_classes }}" id="custom-liquid-{{ section.id }}">
   <div class="{{ container_width }}">
-    <div class="custom-liquid-wrapper rte">
+    <div class="custom-liquid-wrapper rte {% if ss.enable_sidebar_space %}{% endif %}">
       {{ ss.custom_liquid }}
     </div>
   </div>
