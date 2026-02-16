@@ -38,6 +38,7 @@ function renderAllCarts(cart) {
 function renderSingleCart(cart, root) {
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
+  updateDiscountProgress(cart, root);
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
 
