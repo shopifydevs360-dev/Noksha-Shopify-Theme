@@ -259,7 +259,12 @@ function initRemoveDiscount() {
   document.addEventListener("click", function (e) {
     if (!e.target.classList.contains("remove-discount")) return;
 
-    window.location.href = "/cart?discount=";
+    const btn = e.target;
+    btn.textContent = "Removing...";
+    btn.disabled = true;
+
+    // Apply fake code to clear existing discount
+    window.location.href = "/discount/REMOVE?redirect=/cart";
   });
 }
 
