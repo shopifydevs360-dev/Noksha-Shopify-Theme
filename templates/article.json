@@ -13,10 +13,10 @@
       "type": "article",
       "settings": {
         "enable_sidebar_space": false,
-        "color_scheme": "",
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "container_width": "full-width",
         "font_size": "h3",
-        "padding_top": 32,
+        "padding_top": 0,
         "padding_bottom": 52,
         "custom_class": "",
         "color_control": "section-dark"
