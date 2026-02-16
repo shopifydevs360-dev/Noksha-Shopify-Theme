@@ -272,7 +272,7 @@
         "font_size": "h2",
         "hero_description": "<p>Real styles for the modern woman. Get inspired by our latest collections in action.</p>",
         "text_align": "center",
-        "grid_columns": "4",
+        "grid_columns": "5",
         "show_two_mobile": true,
         "grid_gap": 40,
         "aspect_ratio": "adapt-to-image",
