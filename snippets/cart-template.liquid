@@ -89,6 +89,13 @@
 
         <!-- RIGHT -->
         <div class="cart-template-right">
+            {% if settings.show_discount_code %}
+            <div class="cart-coupon">
+              <input type="text" id="coupon-code" placeholder="Enter coupon code">
+              <button type="button" id="apply-coupon-btn">Apply</button>
+              <p class="coupon-message"></p>
+            </div>
+          {% endif %}
 
           <h4>Order Summary</h4>
 
@@ -106,15 +113,6 @@
           <p class="cart-note">
             Shipping and taxes calculated at checkout.
           </p>
-          {% if settings.show_discount_code %}
-            <div class="cart-coupon">
-              <input type="text" id="coupon-code" placeholder="Enter coupon code">
-              <button type="button" id="apply-coupon-btn">Apply</button>
-              <p class="coupon-message"></p>
-            </div>
-          {% endif %}
-
-
         </div>
 
       </div>
