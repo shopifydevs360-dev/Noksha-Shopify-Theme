@@ -50,7 +50,11 @@
             container_width: container_width
             %} 
         </div>
-        <div class="article-image"></div>
+        {% if article.image %}
+        <div class="article-image">
+          {{ article.image | image_url: width: 1000 | image_tag }}
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
