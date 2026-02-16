@@ -81,13 +81,13 @@
                 >
                   {{ form.errors | default_errors }}
 
-                  <input name="address[first_name]" value="{{ form.first_name }}">
-                  <input name="address[last_name]" value="{{ form.last_name }}">
-                  <input name="address[address1]" value="{{ form.address1 }}">
-                  <input name="address[city]" value="{{ form.city }}">
-                  <input name="address[zip]" value="{{ form.zip }}">
-                  <input name="address[country]" value="{{ form.country }}">
-                  <input name="address[phone]" value="{{ form.phone }}">
+                  <input name="address[first_name]" value="{{ form.first_name }}" placeholder="First name">
+                  <input name="address[last_name]" value="{{ form.last_name }}" placeholder="Last name">
+                  <input name="address[address1]" value="{{ form.address1 }}" placeholder="Address">
+                  <input name="address[city]" value="{{ form.city }}" placeholder="City">
+                  <input name="address[zip]" value="{{ form.zip }}" placeholder="ZIP">
+                  <input name="address[country]" value="{{ form.country }}" placeholder="Country">
+                  <input name="address[phone]" value="{{ form.phone }}" placeholder="Phone">
 
                   <button class="button" type="submit">
                     Update address
