@@ -46,7 +46,8 @@
             "show_compare": false,
             "show_wishlist": false,
             "show_ask_question": true,
-            "show_size_guide": false,
+            "show_size_guide": true,
+            "size_guide_page": "about-us",
             "show_social_share": true,
             "show_track_order": false
           }
@@ -143,6 +144,8 @@
       "settings": {
         "title": "You May Also Like",
         "title_font_size": "h3",
+        "custom_class": "",
+        "color_control": "section-light",
         "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
         "padding_top": 40,
         "padding_bottom": 52
