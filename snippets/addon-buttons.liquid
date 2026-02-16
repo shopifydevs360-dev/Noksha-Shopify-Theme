@@ -50,3 +50,93 @@
     {% endif %}
  </ul>
 </div>
+
+
+<div class="noksha-popup-overlay"></div>
+
+<!-- Ask Question -->
+<div class="noksha-popup" id="popup-ask-question">
+  <div class="popup-inner">
+    <button class="popup-close">&times;</button>
+    <h3>Ask a Question</h3>
+
+    {% form 'contact' %}
+      <input type="hidden" name="contact[product]" value="{{ product.title }}">
+      <input type="hidden" name="contact[product_url]" value="{{ shop.url }}{{ product.url }}">
+
+      <input type="text" name="contact[name]" placeholder="Your Name" required>
+      <input type="email" name="contact[email]" placeholder="Your Email" required>
+      <textarea name="contact[body]" placeholder="Your Question" required></textarea>
+
+      <button type="submit">Send</button>
+    {% endform %}
+  </div>
+</div>
+
+<!-- Size Guide -->
+<div class="noksha-popup" id="popup-size-guide">
+  <div class="popup-inner">
+    <button class="popup-close">&times;</button>
+    <h3>Size Guide</h3>
+
+    {% if block.settings.size_guide_page != blank %}
+      {{ pages[block.settings.size_guide_page].content }}
+    {% else %}
+      <p>No size guide page selected.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Share -->
+<div class="noksha-popup" id="popup-share">
+  <div class="popup-inner">
+    <button class="popup-close">&times;</button>
+    <h3>Share Product</h3>
+
+    <div class="share-links">
+      <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}">Facebook</a>
+      <a target="_blank" href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}">Twitter</a>
+      <a target="_blank" href="https://wa.me/?text={{ shop.url }}{{ product.url }}">WhatsApp</a>
+    </div>
+
+    <div class="copy-link">
+      <input type="text" value="{{ shop.url }}{{ product.url }}" id="noksha-share-url" readonly>
+      <button type="button" id="noksha-copy-btn">Copy</button>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  const overlay = document.querySelector('.noksha-popup-overlay');
+  const popups = document.querySelectorAll('.noksha-popup');
+
+  document.querySelectorAll('[data-popup]').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const popup = document.getElementById('popup-' + this.dataset.popup);
+      overlay.classList.add('active');
+      popup.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.popup-close, .noksha-popup-overlay').forEach(el => {
+    el.addEventListener('click', function() {
+      overlay.classList.remove('active');
+      popups.forEach(p => p.classList.remove('active'));
+    });
+  });
+
+  const copyBtn = document.getElementById('noksha-copy-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      const input = document.getElementById('noksha-share-url');
+      input.select();
+      document.execCommand('copy');
+      this.innerText = "Copied!";
+      setTimeout(() => this.innerText = "Copy", 2000);
+    });
+  }
+
+});
+</script>
