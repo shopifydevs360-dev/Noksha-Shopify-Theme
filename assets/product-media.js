@@ -94,6 +94,7 @@ function initProductMediaThumbs() {
     pagination: {
       el: '.product-media__thumbs .swiper-pagination',
       clickable: true,
+      type: 'fraction'
     },
   });
 }
