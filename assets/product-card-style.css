@@ -28,6 +28,14 @@
   color: #fff;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+.product-card .badge {
+  transform: translateY(0);
+  transition: transform .3s ease;
+}
+
+.product-card:hover .badge {
+  transform: translateY(-2px);
+}
 
 .product-card .image-wrap .hover-img {
     opacity: 0;
