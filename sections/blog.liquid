@@ -66,9 +66,9 @@
                     style: wrapper_style
                   %}
               {% endif %}
-              <h4 class="artile-title">
+              <div class="artile-title">
                 <a href="article.url">{{ article.title }}</a>
-              </h4>
+              </div>
               {% assign date = article.published_at | time_tag: format: 'date' %}
               <p>{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
               <p>{{ article.excerpt }}</p>
