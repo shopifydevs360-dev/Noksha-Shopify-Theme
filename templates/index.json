@@ -163,6 +163,26 @@
     },
     "gallery_QpapCr": {
       "type": "gallery",
+      "blocks": {
+        "image_eNwfPh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/T656-04278.jpg",
+            "image_url": ""
+          }
+        },
+        "image_8tn9gc": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/T656-04262.jpg",
+            "image_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_eNwfPh",
+        "image_8tn9gc"
+      ],
       "name": "Gallery",
       "settings": {
         "enable_sidebar_space": true,
