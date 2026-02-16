@@ -21,21 +21,7 @@
   assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
   endif
 
-  assign image_wapper_classes = 'cropped-image-wrapper'
-  assign wrapper_style = ''
-
-  if ss.aspect_ratio == 'adapt-to-image'
-    assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
-  elsif ss.aspect_ratio == 'custom-height'
-    assign image_wapper_classes = image_wapper_classes | append: ' custom-height-image'
-    assign wrapper_style = 'height:' | append: ss.custom_height | append: 'px;'
-  else
-    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.aspect_ratio
-  endif
-
-  if ss.hover_effect_action != 'no-effect'
-    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.hover_effect_action
-  endif
+  assign image_wapper_classes = 'cropped-image-wrapper '
 %}
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
@@ -56,9 +42,9 @@
               class: image_wapper_classes,
               image:  article.image,
               url: article.url,
-              width: 1000, 
-              img_alt: article.title,
-              style: wrapper_style
+              width: 1000,
+              crop: 'center'
+              img_alt: article.title
             %}
           {{ article.image | image_url: width: 1000 | image_tag }}
         </div>
