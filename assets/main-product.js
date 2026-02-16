@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMainProductCart();
   initQuantityDropdown();
   initVariantButtonState();
+  initVariantSelectedLabelUpdate();
 });
 
 /* =================================
@@ -260,6 +261,39 @@ function initQuantityDropdown() {
 
       item.classList.add('is-selected');
       container.classList.remove('is-open');
+    }
+  });
+}
+
+
+/* =================================
+   Variant Label update
+================================= */
+
+function initVariantSelectedLabelUpdate() {
+  const variantGroups = document.querySelectorAll('.variant-group');
+
+  variantGroups.forEach(group => {
+    const selectedValueEl = group.querySelector('[data-selected-value]');
+    if (!selectedValueEl) return;
+
+    const radios = group.querySelectorAll('input[type="radio"]');
+    const select = group.querySelector('select');
+
+    // For radio buttons (button, color, image)
+    radios.forEach(radio => {
+      radio.addEventListener('change', function () {
+        if (this.checked) {
+          selectedValueEl.textContent = this.value;
+        }
+      });
+    });
+
+    // For dropdown
+    if (select) {
+      select.addEventListener('change', function () {
+        selectedValueEl.textContent = this.value;
+      });
     }
   });
 }
