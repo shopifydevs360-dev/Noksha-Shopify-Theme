@@ -47,36 +47,6 @@
         text_align: ss.text_align,
         container_width: container_width
         %} 
-      <div class="inner-blog-list">
-        <div class="{{ blog_classes }}" style="--grid-gap: {{ ss.grid_gap }}px">
-          {% paginate blog.articles by 5 %}
-          {% for article in blog.articles %}
-            <div class="article-card">
-              {% if article.image %}
-                  {% render 'image',
-                    class: image_wapper_classes,
-                    image:  article.image,
-                    url: article.url,
-                    width: 1000, 
-                    img_alt: ss.title,
-                    style: wrapper_style
-                  %}
-              {% endif %}
-              <div class="artile-title">
-                <a href="article.url">{{ article.title }}</a>
-              </div>
-              {% assign date = article.published_at | time_tag: format: 'date' %}
-              <p class="article-metadata">{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
-              <p class="article-excerpt">{{ article.excerpt }}</p>
-            </div>
-          {% endfor %}
-
-          {%- if paginate.pages > 1 -%}
-            {{- paginate | default_pagination -}}
-          {%- endif -%}
-        {% endpaginate %}
-        </div>
-      </div>
     </div>
   </div>
 </div>
