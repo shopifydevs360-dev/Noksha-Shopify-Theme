@@ -164,6 +164,13 @@
     "gallery_QpapCr": {
       "type": "gallery",
       "blocks": {
+        "image_EmCKnK": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/stay_inspired_never_stop.png",
+            "image_url": ""
+          }
+        },
         "image_hgq8Rk": {
           "type": "image",
           "settings": {
@@ -236,6 +243,7 @@
         }
       },
       "block_order": [
+        "image_EmCKnK",
         "image_hgq8Rk",
         "image_hCzLpT",
         "image_MFnGNi",
