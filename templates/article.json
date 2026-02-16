@@ -12,14 +12,14 @@
     "main": {
       "type": "article",
       "settings": {
-        "enable_sidebar_space": true,
+        "enable_sidebar_space": false,
         "color_scheme": "",
         "container_width": "full-width",
         "font_size": "h3",
         "padding_top": 32,
         "padding_bottom": 52,
         "custom_class": "",
-        "color_control": "section-light"
+        "color_control": "section-dark"
       }
     }
   },
