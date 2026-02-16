@@ -1,7 +1,8 @@
 {{ 'cart-template.css' | asset_url | stylesheet_tag }}
 
-{% assign free_shipping_threshold = settings.free_shipping_threshold %}
-{% assign discount_threshold = settings.order_discount_threshold %}
+{% assign free_shipping_threshold = settings.free_shipping_threshold | times: 100 %}
+{% assign discount_threshold = settings.order_discount_threshold | times: 100 %}
+
 
 
 <div class="cart-template" data-cart-root data-free-shipping-threshold="{{ free_shipping_threshold }}">
