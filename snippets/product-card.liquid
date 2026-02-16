@@ -7,12 +7,51 @@
   <!-- ================= IMAGE WRAP ================= -->
   <div class="image-wrap">
     <a href="{{ product.url }}" aria-label="{{ product.title }}">
-        <!-- ================= BADGE ================= -->
-        {% if product.tags contains 'best seller' %}
-          <div class="product-badges-wrapper">
-            <span>Best Seller</span>
-          </div>
-        {% endif %}
+      <!-- ================= BADGES ================= -->
+      {% assign product_tags = product.tags | join: ',' | downcase %}
+
+      {% if 
+        product_tags contains 'hot' or
+        product_tags contains 'new' or
+        product_tags contains 'sale' or
+        product_tags contains 'preorder' or
+        product.available == false
+      %}
+        <div class="product-badges-wrapper">
+
+          {% if product_tags contains 'hot' %}
+            <span class="badge badge--hot color-{{ settings.hot_badge }}">
+              Hot
+            </span>
+          {% endif %}
+
+          {% if product_tags contains 'new' %}
+            <span class="badge badge--new color-{{ settings.new_badge }}">
+              New
+            </span>
+          {% endif %}
+
+          {% if product_tags contains 'sale' %}
+            <span class="badge badge--sale color-{{ settings.sale_badge }}">
+              Sale
+            </span>
+          {% endif %}
+
+          {% if product_tags contains 'preorder' %}
+            <span class="badge badge--preorder color-{{ settings.preorder_badge }}">
+              Preorder
+            </span>
+          {% endif %}
+
+          {% unless product.available %}
+            <span class="badge badge--soldout color-{{ settings.sold_out_badge }}">
+              Sold Out
+            </span>
+          {% endunless %}
+
+        </div>
+      {% endif %}
+
         
       <div class="cropped-image-wrapper {{ settings.aspect_ratio }} is-hover-zoom-out">
         <!-- ================= PRIMARY IMAGE ================= -->
