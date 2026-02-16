@@ -6,7 +6,6 @@
 <div class="product-card" data-product-id="{{ product.id }}" data-product-collections="{{ collections_titles }}" data-product-tags="{{ tags }}" data-product-title="{{ title }}">
   <!-- ================= IMAGE WRAP ================= -->
   <div class="image-wrap">
-    <a href="{{ product.url }}" aria-label="{{ product.title }}">
       <!-- ================= BADGES ================= -->
       {% assign product_tags = product.tags | join: ',' | downcase %}
 
@@ -51,8 +50,7 @@
 
         </div>
       {% endif %}
-
-        
+    <a href="{{ product.url }}" aria-label="{{ product.title }}">
       <div class="cropped-image-wrapper {{ settings.aspect_ratio }} is-hover-zoom-out">
         <!-- ================= PRIMARY IMAGE ================= -->
         {% if product.featured_image %}
