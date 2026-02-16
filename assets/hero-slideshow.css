@@ -276,7 +276,7 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
     top: 50%;
     width: 50px;
     height: 1px;
-    background: #fff;
+    background: rgb(var(--color-heading));
     transform: translate(-100%);
     display: block;
 }
