@@ -1,112 +1,142 @@
 {{ 'collection-tab.css' | asset_url | stylesheet_tag }}
 {% render 'section-base-style' %}
 
-{% liquid
-  assign current_product = product
-  assign related_collection = current_product.collections.first
+{%- assign has_related = false -%}
+{%- assign has_recommended = false -%}
 
-  assign related_products = related_collection.products | where: "id", current_product.id, false
-  assign related_count = 0
+{%- if product and product.metafields.recommendations.related_products.value != blank -%}
+  {%- assign has_related = true -%}
+{%- endif -%}
 
-  if related_collection
-    for p in related_collection.products
-      if p.id != current_product.id
-        assign related_count = related_count | plus: 1
-      endif
-    endfor
-  endif
-%}
+{%- if product and product.metafields.recommendations.recommended_products.value != blank -%}
+  {%- assign has_recommended = true -%}
+{%- endif -%}
 
-{% capture recommendations %}
-  {% render 'product-recommendations',
-    product_id: product.id,
-    limit: 6
-  %}
-{% endcapture %}
-
-{% assign has_recommendations = false %}
-{% if recommendations contains 'product-card' %}
-  {% assign has_recommendations = true %}
-{% endif %}
-
-{% if related_count > 0 or has_recommendations %}
-
-<div class="product-tabs-carousel js-product-carousel-{{ section.id }} m-color-{{ section.settings.color_scheme }}">
+{%- if has_related or has_recommended -%}
+<div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
   <div class="product-carousel section-{{ section.id }}-padding">
+    <!-- ================= MOBILE TITLE ================= -->
+    <h2 class="container hide-desktop hide-large-screens {{ section.settings.title_font_size }}">
+      <a class="{{ section.settings.title_font_size }}" href="{{ section.settings.title_link }}" aria-label="{{ section.settings.title }}">
+        <div data-reveal="lines-masked" class="info-title">
+          {{ section.settings.title }}
+        </div>
+      </a>
+    </h2>
 
     <!-- ================= FILTER TABS ================= -->
     <div class="swiper swiper-container-filter">
       <div class="swiper-wrapper">
-
-        {% if related_count > 0 %}
+        {%- if has_related -%}
         <div class="related-product-caps swiper-slide active">
-          <a href="#" class="js-slider-filter" data-filter="related">
-            Related Products
+          <a
+            href="#"
+            class="js-slider-filter"
+            data-filter="related"
+            aria-label="Related Products"
+          >
+            {{ section.settings.related_tab_label | default: 'Related Products' }}
           </a>
         </div>
-        {% endif %}
-
-        {% if has_recommendations %}
-        <div class="related-product-caps swiper-slide {% unless related_count > 0 %}active{% endunless %}">
-          <a href="#" class="js-slider-filter" data-filter="recommended">
-            You May Also Like
+        {%- endif -%}
+        
+        {%- if has_recommended -%}
+        <div class="related-product-caps swiper-slide {% unless has_related %}active{% endunless %}">
+          <a
+            href="#"
+            class="js-slider-filter"
+            data-filter="recommended"
+            aria-label="You May Also Like"
+          >
+            {{ section.settings.recommended_tab_label | default: 'You May Also Like' }}
           </a>
         </div>
-        {% endif %}
-
+        {%- endif -%}
       </div>
     </div>
-
+    
     <!-- ================= PRODUCTS CAROUSEL ================= -->
     <div class="swiper swiper-container-product">
       <div class="swiper-wrapper">
 
-        <!-- Related Products -->
-        {% if related_collection %}
-          {% for p in related_collection.products limit: 6 %}
-            {% if p.id != current_product.id %}
-              <div
-                class="swiper-slide product-slide"
-                data-type="related"
-                {% unless forloop.first %}hidden{% endunless %}
-              >
-                {% render 'product-card', product: p %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
+        <!-- Desktop Lead Card -->
+        <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
+          <div class="collection-lead-info">
+            <h2 class="{{ section.settings.title_font_size }}">
+              <a class="{{ section.settings.title_font_size }}" href="{{ section.settings.title_link }}">
+                <div data-reveal="lines-masked" class="info-title">
+                  {{ section.settings.title }}
+                </div>
+              </a>
+            </h2>
+            <a
+              href="#"
+              class="btn btn-arrow js-shop-now-btn"
+            >
+              SHOP NOW
+              <span class="icon">
+                {% render 'theme-icon', icon: 'right-arrow' %}
+              </span>
+            </a>
 
-        <!-- Recommended Products -->
-        {% if has_recommendations %}
-          <div class="recommended-wrapper" data-type="recommended" hidden>
-            {{ recommendations }}
           </div>
-        {% endif %}
+        </div>
+
+        <!-- Related Products -->
+        {%- if has_related -%}
+          {%- assign related_products = product.metafields.recommendations.related_products.value -%}
+          {% for related_product in related_products limit: 6 %}
+            <div
+              class="swiper-slide product-slide"
+              data-collection="related"
+              {% unless forloop.parentloop.first %}hidden{% endunless %}
+            >
+              {% render 'product-card', product: related_product %}
+            </div>
+          {% endfor %}
+        {%- endif -%}
+
+        <!-- Recommended Products (AI based) -->
+        {%- if has_recommended -%}
+          {%- assign recommended_products = product.metafields.recommendations.recommended_products.value -%}
+          {% for recommended_product in recommended_products limit: 6 %}
+            <div
+              class="swiper-slide product-slide"
+              data-collection="recommended"
+              {% if has_related %}hidden{% endif %}
+            >
+              {% render 'product-card', product: recommended_product %}
+            </div>
+          {% endfor %}
+        {%- endif -%}
 
       </div>
 
       <div class="swiper-scrollbar hide-desktop hide-large-screens"></div>
     </div>
-
   </div>
 </div>
+{%- endif -%}
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
   const section = document.querySelector('.js-product-carousel-{{ section.id }}');
   if (!section) return;
 
   const tabs = section.querySelectorAll('.js-slider-filter');
   const slides = section.querySelectorAll('.product-slide');
-  const recommendedWrapper = section.querySelector('[data-type="recommended"]');
+  const shopNowBtn = section.querySelector('.js-shop-now-btn');
 
-  new Swiper(section.querySelector('.swiper-container-filter'), {
-    slidesPerView: 'auto',
-    freeMode: true,
-    spaceBetween: 40
-  });
+  /* ---------------- FILTER TABS SWIPER ---------------- */
+  if (section.querySelector('.swiper-container-filter')) {
+    new Swiper(section.querySelector('.swiper-container-filter'), {
+      slidesPerView: 'auto',
+      freeMode: true,
+      spaceBetween: 40
+    });
+  }
 
+  /* ---------------- PRODUCTS SWIPER ---------------- */
   const productSwiper = new Swiper(section.querySelector('.swiper-container-product'), {
     slidesPerView: 1.2,
     scrollbar: {
@@ -117,61 +147,144 @@ document.addEventListener('DOMContentLoaded', () => {
       580: { slidesPerView: 2.5 },
       991: { slidesPerView: 3 },
       1321: { slidesPerView: 3.5 }
+    },
+    on: {
+      slideChangeTransitionEnd() {
+        animateVisibleCards();
+      }
     }
   });
 
-  function activateTab(type, tab) {
+  /* ---------------- ANIMATION HANDLER ---------------- */
+  function animateVisibleCards() {
+    // Remove animation from all cards
+    section.querySelectorAll('.product-card').forEach(card => {
+      card.classList.remove('is-animated');
+    });
 
+    // Force reflow
+    void section.offsetHeight;
+
+    // Animate only visible cards
+    section.querySelectorAll(
+      '.product-slide[style*="display: block"] .product-card'
+    ).forEach(card => {
+      card.classList.add('is-animated');
+    });
+  }
+
+  /* ---------------- ASSIGN VISIBLE INDEX ---------------- */
+  function updateVisibleIndexes() {
+    const visibleSlides = Array.from(slides).filter(
+      slide => slide.style.display === 'block'
+    );
+
+    visibleSlides.forEach((slide, index) => {
+      slide.setAttribute('item-index', index + 1);
+    });
+  }
+
+  /* ---------------- TAB ACTIVATION ---------------- */
+  function activateTab(filter, tab) {
+    // Active tab UI
     section.querySelectorAll('.related-product-caps')
       .forEach(el => el.classList.remove('active'));
     tab.closest('.related-product-caps').classList.add('active');
 
-    slides.forEach(slide => slide.style.display = 'none');
-
-    if (recommendedWrapper) {
-      recommendedWrapper.hidden = true;
-    }
-
-    if (type === 'related') {
-      slides.forEach(slide => {
-        if (slide.dataset.type === 'related') {
-          slide.style.display = 'block';
-        }
+    // Hide all slides
+    slides.forEach(slide => {
+      slide.style.display = 'none';
+      slide.removeAttribute('item-index');
+      slide.querySelectorAll('.product-card').forEach(card => {
+        card.classList.remove('is-animated');
       });
+    });
+
+    // Show selected slides
+    slides.forEach(slide => {
+      if (slide.dataset.collection === filter) {
+        slide.style.display = 'block';
+      }
+    });
+
+    // Assign fresh indexes ONLY to visible slides
+    updateVisibleIndexes();
+
+    // Update Shop Now button
+    if (shopNowBtn) {
+      shopNowBtn.href = `/collections/all`;
     }
 
-    if (type === 'recommended' && recommendedWrapper) {
-      recommendedWrapper.hidden = false;
-    }
-
+    // Reset swiper
     productSwiper.update();
     productSwiper.slideTo(0, 0);
+
+    // Animate visible cards
+    animateVisibleCards();
   }
 
+  /* ---------------- INIT FIRST TAB ---------------- */
   if (tabs.length) {
     activateTab(tabs[0].dataset.filter, tabs[0]);
   }
 
+  /* ---------------- TAB CLICK EVENTS ---------------- */
   tabs.forEach(tab => {
     tab.addEventListener('click', e => {
       e.preventDefault();
       activateTab(tab.dataset.filter, tab);
     });
   });
-
 });
 </script>
 
-{% endif %}
-
 {% schema %}
 {
-  "name": "Product Related Tabs",
+  "name": "Product Recommendations",
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "select",
+      "id": "title_font_size",
+      "label": "Font size",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "url",
+      "id": "title_link",
+      "label": "Title Link"
+    },
+    {
+      "type": "text",
+      "id": "related_tab_label",
+      "label": "Related Products Tab Label",
+      "default": "Related Products"
+    },
+    {
+      "type": "text",
+      "id": "recommended_tab_label",
+      "label": "Recommended Products Tab Label",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
     },
     {
       "type": "range",
@@ -192,11 +305,31 @@ document.addEventListener('DOMContentLoaded', () => {
       "unit": "px",
       "label": "Bottom padding",
       "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "info": "Color control for sidebar [Learn more](https://codecraftmehedi.com/)",      
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
     }
   ],
   "presets": [
     {
-      "name": "Product Related Tabs",
+      "name": "Product Recommendations",
       "category": "Products"
     }
   ]
