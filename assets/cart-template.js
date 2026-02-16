@@ -244,16 +244,25 @@ function initRemoveDiscount() {
   document.addEventListener("click", function (e) {
     if (!e.target.classList.contains("remove-discount")) return;
 
-    // Apply an empty discount to clear it
-    fetch("/discount/")
-      .then(() => fetch("/cart.js"))
+    const message = document.querySelector(".coupon-message");
+    if (message) message.textContent = "Removing discount...";
+
+    // 1️⃣ Redirect silently in background
+    fetch("/discount/") // no code clears it
+      .then(() => {
+        // 2️⃣ Now fetch updated cart
+        return fetch("/cart.js");
+      })
       .then(res => res.json())
       .then(cart => {
+        // 3️⃣ Re-render cart UI
         renderAllCarts(cart);
-        document.querySelector(".coupon-message").textContent = "Discount removed.";
+
+        if (message) message.textContent = "Discount removed.";
       });
   });
 }
+
  
 
 /* ============================
