@@ -156,7 +156,7 @@
         "title_font_size": "h3",
         "title_link": "shopify://collections/all",
         "padding_top": 52,
-        "padding_bottom": 0,
+        "padding_bottom": 20,
         "custom_class": "",
         "color_control": "section-light"
       }
@@ -271,7 +271,7 @@
         "custom_height": 300,
         "hover_effect_action": "no-effect",
         "padding_top": 40,
-        "padding_bottom": 52,
+        "padding_bottom": 72,
         "custom_class": "",
         "color_control": "section-light"
       }
