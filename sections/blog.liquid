@@ -65,8 +65,6 @@
                     img_alt: ss.title,
                     style: wrapper_style
                   %}
-
-                {{ article.image | image_url: width: 1000 | image_tag }}
               {% endif %}
               <h2>
                 {{ article.title | link_to: article.url }}
