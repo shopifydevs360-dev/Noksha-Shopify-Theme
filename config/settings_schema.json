@@ -798,11 +798,13 @@
     "name": "Badges",
     "settings": [
       { "type": "header", "content": "Product badges" },
+      { "type": "paragraph", "content": "Badges are shown automatically based on product tags. Add product tags: 'hot', 'new', 'sale', or 'preorder' to display badges. 'Sold Out' appears automatically when inventory is unavailable." },
+
       { "type": "color_scheme", "id": "hot_badge", "label": "Hot badge color", "default": "background-1" },
       { "type": "color_scheme", "id": "new_badge", "label": "New badge color", "default": "background-1" },
       { "type": "color_scheme", "id": "sale_badge", "label": "Sale badge color", "default": "background-1" },
       { "type": "color_scheme", "id": "preorder_badge", "label": "Preorder badge color", "default": "background-1" },
-      { "type": "color_scheme", "id": "sold_out_badge", "label": "Sold Out badge color", "default": "background-1" },
+      { "type": "color_scheme", "id": "sold_out_badge", "label": "Sold Out badge color", "default": "background-1" }
     ]
   },
   {
