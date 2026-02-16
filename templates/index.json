@@ -168,7 +168,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/10Asset_17_5x_cd67eccc-2d33-45a0-95fa-5f21f59eed96.png",
-            "image_url": ""
+            "image_url": "shopify://collections"
           }
         },
         "image_MFnGNi": {
