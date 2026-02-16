@@ -67,7 +67,7 @@
                   %}
               {% endif %}
               <h4 class="artile-title">
-                {{ article.title }}
+                <a href="article.url">{{ article.title }}</a>
               </h4>
               {% assign date = article.published_at | time_tag: format: 'date' %}
               <p>{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
