@@ -164,6 +164,20 @@
     "gallery_QpapCr": {
       "type": "gallery",
       "blocks": {
+        "image_eJ6KHQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/all_whata_woman_needs.png",
+            "image_url": ""
+          }
+        },
+        "image_i4mgEb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/where_modesty_meets_elegance.png",
+            "image_url": ""
+          }
+        },
         "image_rq3n3H": {
           "type": "image",
           "settings": {
@@ -250,6 +264,8 @@
         }
       },
       "block_order": [
+        "image_eJ6KHQ",
+        "image_i4mgEb",
         "image_rq3n3H",
         "image_EmCKnK",
         "image_hgq8Rk",
