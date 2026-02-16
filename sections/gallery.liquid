@@ -47,8 +47,7 @@
             <div>
                 {% for block in section.blocks %}
                     {% liquid 
-                        assign bs = block.settings
-                        assign image = bs.image
+                        assign image = block.settings
                     %}
                     <div class="image-item">
                           {% render 'image',
