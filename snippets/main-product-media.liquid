@@ -15,27 +15,39 @@
 <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape" id="MainProductMedia">
   <div class="swiper-wrapper">
 
-    {% assign current_variant = product.selected_or_first_available_variant %}
-    {% assign has_variant_image = false %}
+    {% assign rendered_media_ids = '' %}
+    {% assign has_variant_media = false %}
 
-    {% if current_variant.featured_media %}
-      {% assign has_variant_image = true %}
-      <div class="swiper-slide" data-media-id="{{ current_variant.featured_media.id }}">
-        {% render 'image',
-          class: 'js-open-lightbox',
-          image: current_variant.featured_media,
-          width: current_variant.featured_media.width,
-          height: current_variant.featured_media.height,
-          crop: 'center',
-          img_alt: current_variant.featured_media.alt,
-          style: wrapper_style
-        %}
-      </div>
-    {% endif %}
+    {% for variant in product.variants %}
+      {% if variant.featured_media %}
+        {% assign has_variant_media = true %}
+        {% assign media_id = variant.featured_media.id | append: '' %}
 
-    {% unless has_variant_image %}
+        {% unless rendered_media_ids contains media_id %}
+          {% assign rendered_media_ids = rendered_media_ids | append: media_id | append: ',' %}
+
+          <div class="swiper-slide" data-media-id="{{ variant.featured_media.id }}">
+            {% render 'image',
+              class: 'js-open-lightbox',
+              image: variant.featured_media,
+              width: variant.featured_media.width,
+              height: variant.featured_media.height,
+              crop: 'center',
+              img_alt: variant.featured_media.alt,
+              style: wrapper_style
+            %}
+          </div>
+
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+
+    {%- comment -%}
+    If NO variant images exist → fallback to first product image
+    {%- endcomment -%}
+    {% unless has_variant_media %}
       {% assign fallback_media = product.featured_media | default: product.media.first %}
-      {% if fallback_media %}
+      {% if fallback_media and fallback_media.media_type == 'image' %}
         <div class="swiper-slide" data-media-id="{{ fallback_media.id }}">
           {% render 'image',
             class: 'js-open-lightbox',
