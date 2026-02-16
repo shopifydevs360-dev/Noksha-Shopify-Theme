@@ -3,7 +3,7 @@
   {% assign collections_titles = product.collections | map: 'title' | join: ',' | downcase %}
   {% assign tags = product.tags | join: ',' | downcase %}
   {% assign title = product.title | downcase %}
-<div class="product-card js-product-card" data-product-id="{{ product.id }}" data-product-collections="{{ collections_titles }}" data-product-tags="{{ tags }}" data-product-title="{{ title }}">
+<div class="product-card" data-product-id="{{ product.id }}" data-product-collections="{{ collections_titles }}" data-product-tags="{{ tags }}" data-product-title="{{ title }}">
   <!-- ================= IMAGE WRAP ================= -->
   <div class="image-wrap">
     <a href="{{ product.url }}" aria-label="{{ product.title }}">
@@ -34,30 +34,28 @@
             width="{{ product.featured_image.width }}"
             height="{{ product.featured_image.height }}"
           >
-        {% else %}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {% endif %}
 
         <!-- ================= HOVER IMAGE ================= -->
         {% if product.images.size > 1 %}
           {% assign hover_image = product.images[1] %}
-          <img
-            srcset="
-              {{ hover_image | image_url: width: 165 }} 165w,
-              {{ hover_image | image_url: width: 360 }} 360w,
-              {{ hover_image | image_url: width: 533 }} 533w,
-              {{ hover_image | image_url: width: 720 }} 720w,
-              {{ hover_image | image_url: width: 940 }} 940w,
-              {{ hover_image | image_url: width: 1066 }} 1066w
-            "
-            src="{{ hover_image | image_url: width: 533 }}"
-            sizes="(min-width: 1100px) 535px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
-            alt="{{ hover_image.alt | escape }}"
-            class="hover-img"
-            loading="lazy"
-            width="{{ hover_image.width }}"
-            height="{{ hover_image.height }}"
-          >
+        <img
+          srcset="
+            {{ hover_image | image_url: width: 165 }} 165w,
+            {{ hover_image | image_url: width: 360 }} 360w,
+            {{ hover_image | image_url: width: 533 }} 533w,
+            {{ hover_image | image_url: width: 720 }} 720w,
+            {{ hover_image | image_url: width: 940 }} 940w,
+            {{ hover_image | image_url: width: 1066 }} 1066w
+          "
+          src="{{ hover_image | image_url: width: 533 }}"
+          sizes="(min-width: 1100px) 535px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
+          alt="{{ hover_image.alt | escape }}"
+          class="hover-img"
+          loading="lazy"
+          width="{{ hover_image.width }}"
+          height="{{ hover_image.height }}"
+        >
         {% endif %}
 
       </div>
@@ -86,20 +84,23 @@
         </div>
 
       {% else %}
+
         {% assign variant = product.variants.first %}
-        <button
-          type="button"
-          class="add-to-cart-btn single-product js-add-to-cart"
-          data-variant-id="{{ variant.id }}"
-          data-product-title="{{ product.title }}"
-          {% unless variant.available %}disabled{% endunless %}
-        >
-          {% if variant.available %}
-            Add to bag
-          {% else %}
-            Out of stock
-          {% endif %}
-        </button>
+        <form method="post" action="{{ routes.cart_add_url }}" class="product-form">
+          <input type="hidden" name="id" value="{{ variant.id }}">
+
+          <button
+            type="submit"
+            class="add-to-cart-btn single-product"
+            {% unless variant.available %}disabled{% endunless %}
+          >
+            {% if variant.available %}
+              Add to bag
+            {% else %}
+              Out of stock
+            {% endif %}
+          </button>
+        </form>
       {% endif %}
     </div>
 
@@ -113,14 +114,10 @@
         <a href="{{ product.url }}">{{ product.title }}</a>
       </span>
       <p class="price h5">
-        {% if product.compare_at_price > product.price %}
-          <span class="compare-at">{{ product.compare_at_price | money }}</span>
-        {% endif %}
-        <span class="current-price">{{ product.price | money }}</span>
+        {{ product.price | money }}
       </p>
 
     </div>
   </div>
 </div>
-
 {% endif %}
