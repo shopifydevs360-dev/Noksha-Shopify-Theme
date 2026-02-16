@@ -74,13 +74,13 @@
             <input type="text" name="comment[author]" id="author" value="{{ form.author }}" required>
           </div>
 
-          <div>
-            <label class="field" for="email">{{ 'blog.comment_form_email' | t }}</label>
+          <div class="field">
+            <label for="email">{{ 'blog.comment_form_email' | t }}</label>
             <input type="email" name="comment[email]" id="email" value="{{ form.email }}" required>
           </div>
 
-          <div>
-            <label class="field" for="body">{{ 'blog.comment_form_body' | t }}</label>
+          <div class="field">
+            <label for="body">{{ 'blog.comment_form_body' | t }}</label>
             <textarea name="comment[body]" id="body" required>{{ form.body }}</textarea>
           </div>
 
@@ -152,6 +152,10 @@
     border-left: 2px solid rgb(var(--color-border));
     padding-left: 0.4rem;
     margin-left: 0.4rem;
+}
+.article-comment form {
+  max-width: 26rem;
+  width: 100%;
 }
 .article-comment .field {
     display: flex;
