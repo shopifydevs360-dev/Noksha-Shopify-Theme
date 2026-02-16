@@ -144,6 +144,40 @@
       ],
       "default": "center"
     },
+            {
+      "type": "header",
+      "content": "Image Grid"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns",
+      "label": "Grid Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_two_mobile",
+      "label": "Show 2 col mobile",
+      "info": "You can show 2 column in a mobile",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "t:labels.grid_gap",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
     {
       "type": "header",
       "content": "Aspect Ratio"
