@@ -94,8 +94,11 @@ function initProductMediaThumbs() {
     pagination: {
       el: '.product-media__thumbs .swiper-pagination',
       clickable: true,
-      dynamicBullets: true,
-    dynamicMainBullets: 3
+          renderBullet: function (index, className) {
+      return '<span class="' + className + '">' 
+             + (index + 1) + 
+             '</span>';
+    }
     },
   });
 }
