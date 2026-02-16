@@ -94,8 +94,7 @@ function initProductMediaThumbs() {
     pagination: {
       el: '.product-media__thumbs .swiper-pagination',
       clickable: true,
-      dynamicBullets: true,
-    dynamicMainBullets: 3
+      type: 'progressbar'
     },
   });
 }
