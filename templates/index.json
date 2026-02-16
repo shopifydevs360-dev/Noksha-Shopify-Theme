@@ -73,21 +73,21 @@
           "type": "tab",
           "settings": {
             "tab_label": "PLAIN HIJAB",
-            "collection": "borkini"
+            "collection": "plain-hijab"
           }
         },
         "tab_KtWxa4": {
           "type": "tab",
           "settings": {
             "tab_label": "JERSEY H IJAB",
-            "collection": "chiffon-hijab"
+            "collection": "jersey-hijab"
           }
         },
         "tab_CNPqei": {
           "type": "tab",
           "settings": {
             "tab_label": "CHIFFON HIJAB",
-            "collection": "plain-hijab"
+            "collection": "chiffon-hijab"
           }
         },
         "tab_9nLCyp": {
