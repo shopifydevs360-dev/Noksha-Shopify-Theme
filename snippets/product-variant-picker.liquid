@@ -56,7 +56,7 @@
       {% assign option_key = 'option' | append: option_position %}
 
       <fieldset class="variant-group" data-option-index="{{ option_index0 }}">
-        <legend>{{ option_label }}: <span class="selected-value">{{ option.selected_value }}</span></legend>
+        <legend>{{ option_label }}: <span class="selected-value"> {{ option.selected_value }}</span></legend>
         {% case matched_design %}
           {% when 'dropdown' %}
             <div class="variant-dropdown-wrapper">
