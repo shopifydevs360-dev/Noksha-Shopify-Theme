@@ -48,7 +48,7 @@
       </div>
       <div class="article-comment">
       {% if blog.comments_enabled? %}
-        <h2>{{ 'blog.article_comments' | t }}</h2>
+        <h2 class="sub-title">{{ 'blog.article_comments' | t }}</h2>
 
         <div id="comments">
           {% paginate article.comments by 10 %}
@@ -86,7 +86,7 @@
             <textarea name="comment[body]" id="body" required>{{ form.body }}</textarea>
           </div>
 
-          <input  type="submit" value="{{ 'blog.comment_form_submit' | t }}">
+          <input class="button" type="submit" value="{{ 'blog.comment_form_submit' | t }}">
         {% endform %}
       {% endif %}
 
