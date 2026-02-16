@@ -237,6 +237,31 @@ function refreshCartItemList(root) {
     });
 }
 
+function initCouponAjax() {
+  document.addEventListener("click", function (e) {
+    if (e.target.id !== "apply-coupon-btn") return;
+
+    const codeInput = document.getElementById("coupon-code");
+    const message = document.querySelector(".coupon-message");
+
+    if (!codeInput || !codeInput.value.trim()) {
+      message.textContent = "Please enter a coupon code.";
+      return;
+    }
+
+    const code = codeInput.value.trim();
+
+    // Shopify requires navigation for discount apply
+    window.location.href = "/discount/" + code;
+  });
+}
+function initRemoveDiscount() {
+  document.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("remove-discount")) return;
+
+    window.location.href = "/cart?discount=";
+  });
+}
 
 
 
