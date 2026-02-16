@@ -138,6 +138,19 @@
         "color_control": "section-light"
       }
     },
+    "custom_liquid_QeDzD6": {
+      "type": "custom-liquid",
+      "name": "Custom Liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"AirReviews-Widget AirReviews-Widget--Block\"></div>",
+        "container_width": "container",
+        "color_scheme": "",
+        "color_control": "section-light",
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "custom_class": ""
+      }
+    },
     "related_products_x38JP7": {
       "type": "related-products",
       "name": "Product Recommendations",
@@ -154,6 +167,7 @@
   },
   "order": [
     "main",
+    "custom_liquid_QeDzD6",
     "related_products_x38JP7"
   ]
 }
