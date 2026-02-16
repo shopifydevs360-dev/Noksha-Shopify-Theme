@@ -9,7 +9,7 @@
 {% liquid
   assign ss = section.settings
 
-  assign first_class = 'store-location-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = 'article-list ' | append: 'm-color-' | append: ss.color_scheme 
   assign first_class = first_class | append: ' ' | append: ss.color_control
   assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
