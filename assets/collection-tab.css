@@ -1,4 +1,4 @@
-.swiper-wrapper {
+.product-tabs-carousel .swiper-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
@@ -7,21 +7,21 @@
     transition-property: transform;
     box-sizing: content-box;
 }
-.product-carousel .swiper-container-filter {
+.product-tabs-carousel .product-carousel .swiper-container-filter {
     width: calc(100% - 1.2rem);
     padding-top: 1.2rem;
     margin-left: 1.2rem;
     margin-right: 1.2rem;
 }
 @media (min-width: 991px) {
-  .product-carousel .swiper-container-filter {
+ .product-tabs-carousel .product-carousel .swiper-container-filter {
     width: calc(100% - 30rem);
     margin-left: 30rem;
     margin-right: 0;
   }
 }
 
-.swiper-wrapper {
+.product-tabs-carousel .swiper-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
@@ -30,17 +30,17 @@
     transition-property: transform;
     box-sizing: content-box;
 }
-.product-carousel .swiper-container-filter {
+.product-tabs-carousel .product-carousel .swiper-container-filter {
     margin-bottom: 2rem;
 }
-.product-carousel .swiper-container-filter .swiper-slide {
+.product-tabs-carousel .product-carousel .swiper-container-filter .swiper-slide {
     display: inline-block;
     width: auto;
 }
-.product-carousel .swiper-container-filter .swiper-slide a{
+.product-tabs-carousel .product-carousel .swiper-container-filter .swiper-slide a{
       position: relative;
 }
-.product-carousel .swiper-container-filter .swiper-slide a:after {
+.product-tabs-carousel .product-carousel .swiper-container-filter .swiper-slide a:after {
     content: "";
     background:#e3c7bf;
     position: absolute;
@@ -49,67 +49,67 @@
     bottom: -3px;
     left: 0;
 }
-.related-product-caps {
+.product-tabs-carousel .related-product-caps {
     letter-spacing: .02rem;
     font-size: 1.3rem;
     line-height: 1.53846;
     font-weight: 300;
     text-transform: uppercase;
 }
-.product-carousel .swiper-slide {
+.product-tabs-carousel .product-carousel .swiper-slide {
     height: auto;
     padding: 0 0.5rem;
 }
-.product-carousel .swiper-container-product {
+.product-tabs-carousel .product-carousel .swiper-container-product {
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     padding-bottom: 1.4rem;
 }
 @media (min-width: 991px) {
-  .product-carousel .swiper-container-product {
+ .product-tabs-carousel .product-carousel .swiper-container-product {
       padding-left: 8rem;
       padding-right: 4rem;
   }
 }
-.swiper-container-free-mode>.swiper-wrapper {
+.product-tabs-carousel .swiper-container-free-mode>.swiper-wrapper {
     transition-timing-function: ease-out;
     margin: 0 auto;
 }
-.v-aligner{
+.product-tabs-carousel .v-aligner{
     display: flex;
     align-items: center;
 }
-.product-carousel .collection-lead-info {
+.product-tabs-carousel .product-carousel .collection-lead-info {
     width: 88%;
     margin-left: auto;
 }
-.product-carousel .collection-lead-info {
+.product-tabs-carousel .product-carousel .collection-lead-info {
     padding-bottom: 5rem;
 }
-.product-carousel .collection-lead-info h2 {
+.product-tabs-carousel .product-carousel .collection-lead-info h2 {
     margin-bottom: 3.2rem;
 }
 
 
-.product-carousel .collection-lead-info .btn.btn-arrow {
+.product-tabs-carousel .product-carousel .collection-lead-info .btn.btn-arrow {
     font-size: 22px;
     padding: 0;
 }
-.product-carousel .collection-lead-info .btn-arrow .icon {
+.product-tabs-carousel .product-carousel .collection-lead-info .btn-arrow .icon {
     margin-bottom: -4px;
     margin-left: 30px;
 }
 /* Product Card Style */
-.product-carousel .product-card {
+.product-tabs-carousel .product-carousel .product-card {
   opacity: 0;
   transform: translateX(4rem);
   transition: opacity 0.6s cubic-bezier(0.72, 0, 0.28, 1),
     transform 1.5s cubic-bezier(0, 0, 0.002, 1);
 }
-.product-carousel .swiper-slide:first-child {
+.product-tabs-carousel .product-carousel .swiper-slide:first-child {
     max-width: 22rem;
 }
-.product-carousel .product-card.is-animated {
+.product-tabs-carousel .product-carousel .product-card.is-animated {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
