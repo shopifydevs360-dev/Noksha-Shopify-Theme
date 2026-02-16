@@ -244,22 +244,11 @@ function initRemoveDiscount() {
   document.addEventListener("click", function (e) {
     if (!e.target.classList.contains("remove-discount")) return;
 
-    const message = document.querySelector(".coupon-message");
-    if (message) message.textContent = "Removing discount...";
+    const btn = e.target;
+    btn.textContent = "Removing...";
+    btn.disabled = true;
 
-    // 1️⃣ Redirect silently in background
-    fetch("/discount/") // no code clears it
-      .then(() => {
-        // 2️⃣ Now fetch updated cart
-        return fetch("/cart.js");
-      })
-      .then(res => res.json())
-      .then(cart => {
-        // 3️⃣ Re-render cart UI
-        renderAllCarts(cart);
-
-        if (message) message.textContent = "Discount removed.";
-      });
+    window.location.href = "/discount/";
   });
 }
 
