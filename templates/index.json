@@ -317,9 +317,9 @@
             "image": "shopify://shop_images/DSC06449.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
-            "title": "ABAYAS",
+            "title": "Easy Hijab",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "shopify://collections/all",
             "button_type": "hover-fill-bg",
             "image_background_color": "#f3f3f4"
           }
@@ -330,9 +330,9 @@
             "image": "shopify://shop_images/DSC06366.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
-            "title": "HIJABS",
+            "title": "COTTON HIJAB",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "shopify://collections/all",
             "button_type": "hover-fill-bg",
             "image_background_color": "#f3f3f4"
           }
@@ -343,9 +343,9 @@
             "image": "shopify://shop_images/8-IMG_9612_d4d6a911-67dc-45cf-92dd-b626ce837d5a.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
-            "title": "MAXI DRESSES",
+            "title": "Hijab Accessories",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "shopify://collections/all",
             "button_type": "hover-fill-bg",
             "image_background_color": "#f3f3f4"
           }
@@ -356,9 +356,9 @@
             "image": "shopify://shop_images/DSC06443.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
-            "title": "CO-ORDS",
+            "title": "ESARP",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "shopify://collections/all",
             "button_type": "hover-fill-bg",
             "image_background_color": "#f3f3f4"
           }
