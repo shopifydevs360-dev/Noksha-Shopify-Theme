@@ -74,7 +74,7 @@
     height: 0;
     overflow: hidden;
     border-bottom: 1px solid #e3c7bf;
-    padding: 1rem 0;
+    padding: 0 0.7rem;
 }
 .product-card .cart-button-wrapper:hover .card-variants-wrapper {
     transform: translateY(0);
