@@ -89,46 +89,15 @@
 
         <!-- RIGHT -->
         <div class="cart-template-right">
-            {% if settings.show_discount_code %}
-            <div class="cart-coupon">
-              <input type="text" id="coupon-code" placeholder="Enter coupon code">
-              <button type="button" id="apply-coupon-btn">Apply</button>
-              <p class="coupon-message"></p>
-            </div>
-          {% endif %}
 
           <h4>Order Summary</h4>
 
           <div class="cart-summary-row">
-            <h5>Subtotal</h5>
+            <h5 class="sub-total">Subtotal</h5>
             <span class="cart-subtotal">
               {{ cart.items_subtotal_price | money }}
             </span>
           </div>
-
-          <!-- Discount Line (Hidden by default) -->
-          <div class="cart-summary-row cart-discount-row"
-              {% unless cart.cart_level_discount_applications.size > 0 %}
-                style="display:none;"
-              {% endunless %}>
-              <h5>
-              Discount
-              <button type="button" class="remove-discount">Remove</button>
-            </h5>
-            <span class="cart-discount-amount">
-              {% if cart.cart_level_discount_applications.size > 0 %}
-                -{{ cart.total_discount | money }}
-              {% endif %}
-            </span>
-          </div>
-
-          <div class="cart-summary-row cart-total-row">
-            <h5>Total</h5>
-            <span class="cart-total">
-              {{ cart.total_price | money }}
-            </span>
-          </div>
-
 
           <button type="submit" name="checkout" class="cart-checkout-btn">
             Checkout
@@ -137,8 +106,8 @@
           <p class="cart-note">
             Shipping and taxes calculated at checkout.
           </p>
-        </div>
 
+        </div>
       </div>
     </form>
   </div>
