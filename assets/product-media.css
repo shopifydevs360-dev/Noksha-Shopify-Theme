@@ -214,6 +214,7 @@
 ===================== */
 .media-lightbox .swiper-pagination {
   bottom: 1.5rem;
+  left: 1.5rem;
 }
 
 .media-lightbox .swiper-pagination-bullet {
