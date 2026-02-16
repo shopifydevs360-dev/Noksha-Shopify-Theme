@@ -75,8 +75,6 @@
     overflow: hidden;
     border-bottom: 1px solid #e3c7bf;
     padding: 1rem;
-    max-height: 50px;
-    
 }
 .product-card .cart-button-wrapper:hover .card-variants-wrapper {
     transform: translateY(0);
