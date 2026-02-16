@@ -40,13 +40,18 @@
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-        {% render 'hero-info',
-        heading: blog.title,
-        heading_tag: 'h1',
-        heading_size: ss.font_size,
-        text_align: ss.text_align,
-        container_width: container_width
-        %} 
+      <div class="article-header">
+        <div class="article-info">
+            {% render 'hero-info',
+            heading: blog.title,
+            heading_tag: 'h1',
+            heading_size: ss.font_size,
+            text_align: ss.text_align,
+            container_width: container_width
+            %} 
+        </div>
+        <div class="article-image"></div>
+      </div>
     </div>
   </div>
 </div>
