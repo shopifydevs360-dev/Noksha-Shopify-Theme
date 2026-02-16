@@ -87,21 +87,12 @@
 {
   "name": "Gallery",
   "settings": [
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sidebar_space",
-      "label": "Enable sidebar space",
-      "default": true
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme"
-    },
+    { "type": "header", "content": "Layout" },
+
+    { "type": "checkbox", "id": "enable_sidebar_space", "label": "Enable sidebar space", "default": true },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" },
+
     {
       "type": "select",
       "id": "container_width",
@@ -116,12 +107,9 @@
       ],
       "default": "extended"
     },
-    {
-        "type": "text",
-        "id": "hero_title",
-        "label": "Hero Title",
-        "default": "Lookbook"
-    },
+
+    { "type": "text", "id": "hero_title", "label": "Hero Title", "default": "Lookbook" },
+
     {
       "type": "select",
       "id": "font_size",
@@ -130,16 +118,18 @@
         { "value": "h1", "label": "h1" },
         { "value": "h2", "label": "h2" },
         { "value": "h3", "label": "h3" },
-        { "value": "h4", "label": "h4" },
+        { "value": "h4", "label": "h4" }
       ],
       "default": "h3"
     },
+
     {
-        "type": "richtext",
-        "id": "hero_description",
-        "label": "Hero description",
-        "default": "<p>Real styles for the modern woman. Get inspired by our latest collections in action.</p>"
+      "type": "richtext",
+      "id": "hero_description",
+      "label": "Hero description",
+      "default": "<p>Real styles for the modern woman. Get inspired by our latest collections in action.</p>"
     },
+
     {
       "type": "select",
       "id": "text_align",
@@ -147,14 +137,13 @@
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" },
+        { "value": "right", "label": "Right" }
       ],
       "default": "center"
     },
-            {
-      "type": "header",
-      "content": "Image Grid"
-    },
+
+    { "type": "header", "content": "Image Grid" },
+
     {
       "type": "select",
       "id": "grid_columns",
@@ -168,27 +157,22 @@
       ],
       "default": "4"
     },
-    {
-      "type": "checkbox",
-      "id": "show_two_mobile",
-      "label": "Show 2 col mobile",
-      "info": "You can show 2 column in a mobile",
-      "default": false
-    },
+
+    { "type": "checkbox", "id": "show_two_mobile", "label": "Show 2 col mobile", "default": false },
+
     {
       "type": "range",
       "id": "grid_gap",
-      "label": "t:labels.grid_gap",
+      "label": "Grid gap",
       "min": 0,
       "max": 50,
       "step": 5,
       "unit": "px",
       "default": 10
     },
-    {
-      "type": "header",
-      "content": "Aspect Ratio"
-    },
+
+    { "type": "header", "content": "Aspect Ratio" },
+
     {
       "type": "select",
       "id": "aspect_ratio",
@@ -204,6 +188,7 @@
         { "value": "custom-height", "label": "Custom height" }
       ]
     },
+
     {
       "type": "range",
       "id": "custom_height",
@@ -212,13 +197,11 @@
       "max": 1200,
       "step": 20,
       "unit": "px",
-      "default": 400,
-      "visible_if": "{{ section.settings.aspect_ratio == 'custom-height' }}"
+      "default": 400
     },
-    {
-      "type": "header",
-      "content": "Hover Effect"
-    },
+
+    { "type": "header", "content": "Hover Effect" },
+
     {
       "type": "select",
       "id": "hover_effect_action",
@@ -235,35 +218,12 @@
         { "value": "is-hover-overlay", "label": "Overlay" }
       ]
     },
-    {
-      "type": "header",
-      "content": "Section padding"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 52
-    },
-    {
-      "type": "text",
-      "id": "custom_class",
-      "label": "Custom class"
-    },
+
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 52 },
+
+    { "type": "text", "id": "custom_class", "label": "Custom class" },
+
     {
       "type": "select",
       "id": "color_control",
@@ -275,28 +235,21 @@
       "default": "section-light"
     }
   ],
+
   "blocks": [
     {
       "type": "image",
-      "name": "Imgae",
+      "name": "Image",
       "settings": [
-        {
-            "type": "image_picker",
-            "id": "image",
-            "label": "image"
-        },
-        {
-            "type": "url",
-            "id": "image_url",
-            "label": "Image link"
-        }
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "image_url", "label": "Image link" }
       ]
     }
   ],
+
   "presets": [
-    {
-      "name": "Gallery"
-    }
+    { "name": "Gallery" }
   ]
 }
+
 {% endschema %}
