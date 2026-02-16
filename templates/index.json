@@ -164,6 +164,13 @@
     "gallery_QpapCr": {
       "type": "gallery",
       "blocks": {
+        "image_hgq8Rk": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Untitled-11.png",
+            "image_url": ""
+          }
+        },
         "image_hCzLpT": {
           "type": "image",
           "settings": {
@@ -229,6 +236,7 @@
         }
       },
       "block_order": [
+        "image_hgq8Rk",
         "image_hCzLpT",
         "image_MFnGNi",
         "image_NMw7ME",
