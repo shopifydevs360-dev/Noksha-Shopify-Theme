@@ -55,7 +55,7 @@
         <div class="{{ blog_classes }}" style="--grid-gap: {{ ss.grid_gap }}px">
           {% paginate blog.articles by 5 %}
           {% for article in blog.articles %}
-            <div>
+            <div class="article-card">
               {% if article.image %}
 
                   {% render 'image',
