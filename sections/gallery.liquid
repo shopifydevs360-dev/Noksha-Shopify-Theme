@@ -30,7 +30,40 @@
         <div class="gallery-wrapper">
             <div>
                 {% for block in section.blocks %}
-                    <div class="image-item"></div>
+                    {% liquid 
+                        assign bs = block.settings
+                        assign image = bss.image
+                        assign image_wapper_classes = 'cropped-image-wrapper'
+                        assign wrapper_style = ''
+
+                        if bs.aspect_ratio == 'adapt-to-image'
+                            assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+
+                        elsif bs.aspect_ratio == 'custom-height'
+                            assign image_wapper_classes = image_wapper_classes | append: ' custom-height-image'
+                            assign wrapper_style = 'height:' | append: bs.custom_height | append: 'px;'
+
+                        else
+                            assign image_wapper_classes = image_wapper_classes | append: ' ' | append: bs.aspect_ratio
+                        endif
+
+                        if bs.hover_effect_action != 'no-effect'
+                            assign image_wapper_classes = image_wapper_classes | append: ' ' | append: bs.hover_effect_action
+                        endif
+                    %}
+                    <div class="image-item">
+                          {% render 'image',
+                            class: '{{ ss.image_wapper_class }}',
+                            image: image,
+                            url: product.url,
+                            width: {{ image.width }},
+                            height: {{ image.height }},
+                            crop: 'center',
+                            mobile_image: ss.image_mobile,
+                            img_alt: ss.title,
+                            style: wrapper_style
+                        %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -153,6 +186,11 @@
       "type": "image",
       "name": "Imgae",
       "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "image"
+        }
 
       ]
     }
