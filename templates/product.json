@@ -24,6 +24,13 @@
           "type": "shopify://apps/air-product-reviews/blocks/app-summary-block/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
           "settings": {}
         },
+        "empty_space_BGkTxy": {
+          "type": "empty_space",
+          "settings": {
+            "height": 10,
+            "show_divider": true
+          }
+        },
         "title_price_YnB7D8": {
           "type": "title_price",
           "settings": {
@@ -124,6 +131,7 @@
         "product_collection_3QwKdn",
         "breadcrumb_6V9nX7",
         "air_product_reviews_app_summary_block_tgfUmX",
+        "empty_space_BGkTxy",
         "title_price_YnB7D8",
         "description_Th49Tf",
         "add_to_cart_form_8aMLxd",
