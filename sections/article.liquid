@@ -67,7 +67,7 @@
         </div>
 
         {% form 'new_comment', article %}
-          <h2>{{ 'blog.comment_form_title' | t }}</h2>
+          <h2 class="sub-title">{{ 'blog.comment_form_title' | t }}</h2>
 
           {{ form.errors | default_errors }}
 
@@ -86,7 +86,7 @@
             <textarea name="comment[body]" id="body" required>{{ form.body }}</textarea>
           </div>
 
-          <input type="submit" value="{{ 'blog.comment_form_submit' | t }}">
+          <input  type="submit" value="{{ 'blog.comment_form_submit' | t }}">
         {% endform %}
       {% endif %}
 
