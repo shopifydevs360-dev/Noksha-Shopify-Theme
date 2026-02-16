@@ -84,14 +84,6 @@
              name="contact[Product Name]" 
              value="{{ product.title }}">
 
-      <input type="hidden" 
-             name="contact[Product URL]" 
-             value="{{ shop.url }}{{ product.url }}">
-
-      <input type="hidden" 
-             name="contact[Product Image]" 
-             value="{{ product.featured_image | image_url: width: 600 }}">
-
       <!-- User fields -->
       <input type="text" 
              name="contact[name]" 
