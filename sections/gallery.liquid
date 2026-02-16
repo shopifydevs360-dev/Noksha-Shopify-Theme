@@ -52,13 +52,15 @@
         <div class="gallery-wrapper">
             <div>
                 {% for block in section.blocks %}
+                    {% assign gallery_image = block.settings.image %}
+                    {% assign image_url = block.settings.image_url %}
                     <div class="image-item">
                           {% render 'image',
                             class: image_wapper_class,
-                            image: {{ block.settings.image }},
-                            url: product.url,
-                            width: {{ image.width }},
-                            height: {{ image.height }},
+                            image: gallery_image,
+                            url: image_url,
+                            width: gallery_image.width,
+                            height: gallery_image.height,
                             crop: 'center',
                             mobile_image: ss.image_mobile,
                             img_alt: ss.title,
@@ -241,8 +243,12 @@
             "type": "image_picker",
             "id": "image",
             "label": "image"
+        },
+        {
+            "type": "url",
+            "id": "image_url",
+            "label": "Image link"
         }
-
       ]
     }
   ],
