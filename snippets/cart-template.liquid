@@ -145,36 +145,4 @@
 </div>
 
 <script src="{{ 'cart-template.js' | asset_url }}" defer></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
 
-  const applyBtn = document.getElementById('apply-coupon-btn');
-
-  if (applyBtn) {
-    applyBtn.addEventListener('click', function() {
-
-      const code = document.getElementById('coupon-code').value.trim();
-      const message = document.querySelector('.coupon-message');
-
-      if (!code) {
-        message.textContent = "Please enter a code.";
-        return;
-      }
-
-      fetch('/discount/' + code)
-        .then(() => {
-          message.textContent = "Coupon applied!";
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        })
-        .catch(() => {
-          message.textContent = "Invalid coupon code.";
-        });
-
-    });
-  }
-
-});
-
-</script>
