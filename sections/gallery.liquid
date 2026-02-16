@@ -1,78 +1,85 @@
-
 {% render 'section-base-style' %}
+
 {% liquid
   assign ss = section.settings
 
-  assign first_class = 'store-location-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = 'gallery-section '
+  assign first_class = first_class | append: 'm-color-' | append: ss.color_scheme
   assign first_class = first_class | append: ' ' | append: ss.color_control
   assign first_class = first_class | append: ' ' | append: ss.custom_class
-  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign first_class = first_class | append: ' section-' | append: section.id | append: '-padding'
+
   assign container_width = ss.container_width
 
-  assign grid_classes = 'item'
-  assign grid_classes = grid_classes | append: ' ' | append: 'cols-' | append: ss.grid_columns
+  assign grid_classes = 'gallery-grid cols-' | append: ss.grid_columns
+
   if ss.show_two_mobile
-  assign grid_classes = grid_classes | append: ' ' | append: 'cols-mobile-2'
+    assign grid_classes = grid_classes | append: ' cols-mobile-2'
   endif
 
-    assign image_wapper_classes = 'cropped-image-wrapper'
-    assign wrapper_style = ''
+  assign image_wrapper_classes = 'cropped-image-wrapper'
 
-    if ss.aspect_ratio == 'adapt-to-image'
-        assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+  if ss.aspect_ratio == 'adapt-to-image'
+    assign image_wrapper_classes = image_wrapper_classes | append: ' adapt-image-height'
+  elsif ss.aspect_ratio == 'custom-height'
+    assign image_wrapper_classes = image_wrapper_classes | append: ' custom-height-image'
+    assign wrapper_style = 'height:' | append: ss.custom_height | append: 'px;'
+  else
+    assign image_wrapper_classes = image_wrapper_classes | append: ' ' | append: ss.aspect_ratio
+  endif
 
-    elsif ss.aspect_ratio == 'custom-height'
-        assign image_wapper_classes = image_wapper_classes | append: ' custom-height-image'
-        assign wrapper_style = 'height:' | append: ss.custom_height | append: 'px;'
-    else
-        assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.aspect_ratio
-    endif
-
-    if ss.hover_effect_action != 'no-effect'
-        assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.hover_effect_action
-    endif
-
-
+  if ss.hover_effect_action != 'no-effect'
+    assign image_wrapper_classes = image_wrapper_classes | append: ' ' | append: ss.hover_effect_action
+  endif
 %}
 
 
-<div class="{{ first_class }}" id="store-location-{{ section.id }}">
+<div class="{{ first_class }}" id="gallery-{{ section.id }}">
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-        <div class="hero-info text-{{ ss.text_align }}">
-            {% render 'hero-info',
-            heading: ss.hero_title,
-            description: ss.hero_description,
-            heading_tag: 'h1',
-            heading_size: ss.title_font_size,
-            text_align: ss.text_align,
-            container_width: ss.container_width
-            %} 
-        </div>
-        <div class="gallery-wrapper">
-            <div class="{{ grid_classes }}">
-                {% for block in section.blocks %}
-                    {% assign gallery_image = block.settings.image %}
-                    {% assign image_url = block.settings.image_url %}
-                    <div class="image-item">
-                          {% render 'image',
-                            class: image_wapper_class,
-                            image: gallery_image,
-                            url: image_url,
-                            width: gallery_image.width,
-                            height: gallery_image.height,
-                            crop: 'center',
-                            mobile_image: ss.image_mobile,
-                            img_alt: ss.title,
-                            style: wrapper_style
-                        %}
-                    </div>
-                {% endfor %}
+
+      <div class="hero-info text-{{ ss.text_align }}">
+        {% render 'hero-info',
+          heading: ss.hero_title,
+          description: ss.hero_description,
+          heading_tag: 'h1',
+          heading_size: ss.font_size,
+          text_align: ss.text_align,
+          container_width: ss.container_width
+        %}
+      </div>
+
+      <div class="gallery-wrapper">
+        <div class="{{ grid_classes }}" style="gap: {{ ss.grid_gap }}px;">
+
+          {% for block in section.blocks %}
+            {% assign gallery_image = block.settings.image %}
+            {% assign image_url = block.settings.image_url %}
+
+            <div class="image-item" {{ block.shopify_attributes }}>
+              {% if gallery_image != blank %}
+                {% render 'image',
+                  class: image_wrapper_classes,
+                  image: gallery_image,
+                  url: image_url,
+                  width: gallery_image.width,
+                  height: gallery_image.height,
+                  crop: 'center',
+                  img_alt: gallery_image.alt,
+                  style: wrapper_style
+                %}
+              {% endif %}
             </div>
+
+          {% endfor %}
+
         </div>
+      </div>
+
     </div>
   </div>
 </div>
+
 {% stylesheet %}
 
 {% endstylesheet %}
