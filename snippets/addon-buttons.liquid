@@ -55,23 +55,67 @@
 <div class="noksha-popup-overlay"></div>
 
 <!-- Ask Question -->
+<!-- Ask Question -->
 <div class="noksha-popup" id="popup-ask-question">
   <div class="popup-inner">
     <button class="popup-close">&times;</button>
+
+    <!-- Product Info Header -->
+    <div class="ask-product-info">
+      <div class="ask-product-image">
+        {% if product.featured_image %}
+          <img 
+            src="{{ product.featured_image | image_url: width: 150 }}" 
+            alt="{{ product.title | escape }}">
+        {% endif %}
+      </div>
+
+      <div class="ask-product-details">
+        <h4 class="ask-product-title">{{ product.title }}</h4>
+      </div>
+    </div>
+
     <h3>Ask a Question</h3>
 
     {% form 'contact' %}
-      <input type="hidden" name="contact[product]" value="{{ product.title }}">
-      <input type="hidden" name="contact[product_url]" value="{{ shop.url }}{{ product.url }}">
 
-      <input type="text" name="contact[name]" placeholder="Your Name" required>
-      <input type="email" name="contact[email]" placeholder="Your Email" required>
-      <textarea name="contact[body]" placeholder="Your Question" required></textarea>
+      <!-- Hidden product data -->
+      <input type="hidden" 
+             name="contact[Product Name]" 
+             value="{{ product.title }}">
 
-      <button type="submit">Send</button>
+      <input type="hidden" 
+             name="contact[Product URL]" 
+             value="{{ shop.url }}{{ product.url }}">
+
+      <input type="hidden" 
+             name="contact[Product Image]" 
+             value="{{ product.featured_image | image_url: width: 600 }}">
+
+      <!-- User fields -->
+      <input type="text" 
+             name="contact[name]" 
+             placeholder="Your Name" 
+             required>
+
+      <input type="email" 
+             name="contact[email]" 
+             placeholder="Your Email" 
+             required>
+
+      <textarea 
+        name="contact[Message]" 
+        placeholder="Your Question" 
+        required>
+      </textarea>
+
+      <button type="submit">Send Question</button>
+
     {% endform %}
+
   </div>
 </div>
+
 
 <!-- Size Guide -->
 <div class="noksha-popup" id="popup-size-guide">
