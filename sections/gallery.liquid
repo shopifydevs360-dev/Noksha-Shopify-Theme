@@ -1,4 +1,35 @@
 
+{% render 'section-base-style' %}
+{% liquid
+  assign ss = section.settings
+
+  assign first_class = 'store-location-section ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign container_width = ss.container_width
+
+
+
+%}
+
+
+<div class="{{ first_class }}" id="store-location-{{ section.id }}">
+  <div class="{{ container_width }}">
+    <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+        <div class="hero-info text-{{ ss.text_align }}">
+            {% render 'hero-info',
+            heading: ss.hero_title,
+            description: ss.hero_description,
+            heading_tag: 'h1',
+            heading_size: ss.title_font_size,
+            text_align: ss.text_align,
+            container_width: ss.container_width
+            %} 
+        </div>
+    </div>
+  </div>
+</div>
 {% stylesheet %}
 
 {% endstylesheet %}
