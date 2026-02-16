@@ -544,6 +544,9 @@ button:disabled,
   height: 0;
   overflow: hidden;
 }
+a.cropped-image-wrapper {
+  display: block;
+}
 
 /* =========================================
    Adapt to Image (Natural Height)
