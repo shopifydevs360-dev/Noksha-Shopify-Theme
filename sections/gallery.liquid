@@ -9,10 +9,10 @@
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
   assign container_width = ss.container_width
 
-
-  assign blog_classes = blog_classes | append: ' ' | append: 'cols-' | append: ss.grid_columns
+  assign grid_classes = 'item'
+  assign grid_classes = grid_classes | append: ' ' | append: 'cols-' | append: ss.grid_columns
   if ss.show_two_mobile
-  assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
+  assign grid_classes = grid_classes | append: ' ' | append: 'cols-mobile-2'
   endif
 
     assign image_wapper_classes = 'cropped-image-wrapper'
@@ -50,7 +50,7 @@
             %} 
         </div>
         <div class="gallery-wrapper">
-            <div>
+            <div class="{{ grid_classes }}">
                 {% for block in section.blocks %}
                     {% assign gallery_image = block.settings.image %}
                     {% assign image_url = block.settings.image_url %}
