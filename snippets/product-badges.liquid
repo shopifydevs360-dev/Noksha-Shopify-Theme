@@ -1,44 +1,47 @@
-<!-- ================= BADGES ================= -->
-{% assign product_tags = product.tags | downcase %}
+{% if product %}
+  {% assign product_tags = product.tags | downcase %}
 
-{% if  
-product_tags contains 'hot' or
-product_tags contains 'new' or
-product_tags contains 'sale' or
-product_tags contains 'preorder' or
-product.available == false
-%}
-<div class="product-badges-wrapper">
+  {% if 
+    product_tags contains 'hot' or
+    product_tags contains 'new' or
+    product_tags contains 'sale' or
+    product_tags contains 'preorder' or
+    product.available == false
+  %}
 
-    {% if product_tags contains 'hot' %}
-    <span class="badge badge--hot color-{{ settings.hot_badge }}">
-        Hot
-    </span>
-    {% endif %}
+    <div class="product-badges-wrapper">
 
-    {% if product_tags contains 'new' %}
-    <span class="badge badge--new color-{{ settings.new_badge }}">
-        New
-    </span>
-    {% endif %}
+      {% if product_tags contains 'hot' %}
+        <span class="badge badge--hot color-{{ settings.hot_badge }}">
+          Hot
+        </span>
+      {% endif %}
 
-    {% if product_tags contains 'sale' %}
-    <span class="badge badge--sale color-{{ settings.sale_badge }}">
-        Sale
-    </span>
-    {% endif %}
+      {% if product_tags contains 'new' %}
+        <span class="badge badge--new color-{{ settings.new_badge }}">
+          New
+        </span>
+      {% endif %}
 
-    {% if product_tags contains 'preorder' %}
-    <span class="badge badge--preorder color-{{ settings.preorder_badge }}">
-        Preorder
-    </span>
-    {% endif %}
+      {% if product_tags contains 'sale' %}
+        <span class="badge badge--sale color-{{ settings.sale_badge }}">
+          Sale
+        </span>
+      {% endif %}
 
-    {% unless product.available %}
-    <span class="badge badge--soldout color-{{ settings.sold_out_badge }}">
-        Sold Out
-    </span>
-    {% endunless %}
+      {% if product_tags contains 'preorder' %}
+        <span class="badge badge--preorder color-{{ settings.preorder_badge }}">
+          Preorder
+        </span>
+      {% endif %}
 
-</div>
+      {% unless product.available %}
+        <span class="badge badge--soldout color-{{ settings.sold_out_badge }}">
+          Sold Out
+        </span>
+      {% endunless %}
+
+    </div>
+
+  {% endif %}
 {% endif %}
