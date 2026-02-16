@@ -94,11 +94,7 @@ function initProductMediaThumbs() {
     pagination: {
       el: '.product-media__thumbs .swiper-pagination',
       clickable: true,
-          renderBullet: function (index, className) {
-      return '<span class="' + className + '">' 
-             + (index + 1) + 
-             '</span>';
-    }
+      type: 'fraction'
     },
   });
 }
