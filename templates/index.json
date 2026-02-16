@@ -161,6 +161,26 @@
         "color_control": "section-light"
       }
     },
+    "gallery_QpapCr": {
+      "type": "gallery",
+      "name": "Gallery",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "container_width": "extended",
+        "hero_title": "Lookbook",
+        "font_size": "h3",
+        "hero_description": "<p>Real styles for the modern woman. Get inspired by our latest collections in action.</p>",
+        "text_align": "center",
+        "aspect_ratio": "adapt-to-image",
+        "custom_height": 400,
+        "hover_effect_action": "no-effect",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "image_overlay_grid_Gz6VEw": {
       "type": "image-overlay-grid",
       "blocks": {
@@ -303,6 +323,7 @@
     "hero_slideshow_DY9JwJ",
     "collection_tab_jigG9e",
     "collection_tab_HFCJgQ",
+    "gallery_QpapCr",
     "image_overlay_grid_Gz6VEw",
     "article_wrapper_tkFWde",
     "feature_bar_pXf6dU"
