@@ -126,14 +126,3 @@ text-decoration: underline;
     font-size: 1em;
 }
 
-.product-card .title a {
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-}
-
-.product-card .price {
-  font-size: 14px;
-  font-weight: 600;
-  opacity: .8;
-}
