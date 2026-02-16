@@ -6,7 +6,7 @@
 <div class="product-card" data-product-id="{{ product.id }}" data-product-collections="{{ collections_titles }}" data-product-tags="{{ tags }}" data-product-title="{{ title }}">
   <!-- ================= IMAGE WRAP ================= -->
   <div class="image-wrap">
-    {% render 'product-badges' %}
+    {% render 'product-badges', product: product %}
     <a href="{{ product.url }}" aria-label="{{ product.title }}">
       <div class="cropped-image-wrapper {{ settings.aspect_ratio }} is-hover-zoom-out">
         <!-- ================= PRIMARY IMAGE ================= -->
