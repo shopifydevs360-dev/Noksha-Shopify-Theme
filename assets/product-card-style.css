@@ -50,9 +50,10 @@
     z-index: 3;
     text-align: left;
     transition: all .6s ease;
-    /* padding: 0 24px; */
+    transform: translateY(20px);
 }
 .product-card .image-wrap:hover .cart-button-wrapper {
+    transform: translateY(0);
     opacity: 1;
 }
 .product-card .add-to-cart-btn {
@@ -125,3 +126,14 @@ text-decoration: underline;
     font-size: 1em;
 }
 
+.product-card .title a {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.product-card .price {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: .8;
+}
