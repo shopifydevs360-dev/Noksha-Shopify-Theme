@@ -188,7 +188,6 @@
         { "value": "custom-height", "label": "Custom height" }
       ]
     },
-
     {
       "type": "range",
       "id": "custom_height",
@@ -197,7 +196,8 @@
       "max": 1200,
       "step": 20,
       "unit": "px",
-      "default": 400
+      "default": 400,
+      "visible_if": "{{ section.settings.aspect_ratio == 'custom-height' }}"
     },
 
     { "type": "header", "content": "Hover Effect" },
