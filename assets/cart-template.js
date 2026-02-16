@@ -2,7 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartAjax();
   initCartQuantity();
   initCartRemove();
+  initCouponAjax();
+  initRemoveDiscount();
   initCartInitialSync();
+
 });
 
 /* ============================
