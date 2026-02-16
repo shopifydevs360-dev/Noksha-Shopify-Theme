@@ -185,6 +185,13 @@
             "image_url": ""
           }
         },
+        "image_GetknC": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/10Asset_19_5x_a421aa1b-9caf-48fa-8754-4aa283f9b83a.png",
+            "image_url": ""
+          }
+        },
         "image_eJ6KHQ": {
           "type": "image",
           "settings": {
@@ -267,6 +274,7 @@
         "image_hCzLpT",
         "image_MFnGNi",
         "image_NMw7ME",
+        "image_GetknC",
         "image_eJ6KHQ",
         "image_rq3n3H",
         "image_hgq8Rk",
