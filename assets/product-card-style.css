@@ -28,6 +28,31 @@
   color: #fff;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+.badge--hot {
+  background: #ff4d4d;
+  color: #fff;
+}
+
+.badge--new {
+  background: #111;
+  color: #fff;
+}
+
+.badge--sale {
+  background: #e60023;
+  color: #fff;
+}
+
+.badge--preorder {
+  background: #6c5ce7;
+  color: #fff;
+}
+
+.badge--soldout {
+  background: #999;
+  color: #fff;
+}
+
 .product-card .badge {
   transform: translateY(0);
   transition: transform .3s ease;
