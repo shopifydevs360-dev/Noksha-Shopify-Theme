@@ -254,7 +254,7 @@ function initRemoveDiscount() {
       });
   });
 }
-
+ 
 
 /* ============================
    INITIAL SYNC
