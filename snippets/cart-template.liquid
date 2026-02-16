@@ -15,35 +15,29 @@
           <h4 class="cart-title">Your Bag</h4>
 
           <!-- FREE SHIPPING -->
-          <div class="cart-shipping-wrapper">
-
+          {% if settings.enable_free_shipping %}
             {% assign remaining = free_shipping_threshold | minus: cart.total_price %}
             {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
             {% if progress > 100 %}{% assign progress = 100 %}{% endif %}
 
-            <!-- DEFAULT TEXT -->
-            <p class="cart-free-shipping cart-shipping-default">
-              You are
-              <span class="cart-shipping-remaining">
-                {{ remaining | money }}
-              </span>
-              away from free shipping
-            </p>
+            <div class="cart-shipping-wrapper">
 
-            <!-- SUCCESS TEXT -->
-            <p class="cart-free-shipping cart-shipping-success">
-              🎉 You’ve unlocked free shipping!
-            </p>
+              {% if remaining > 0 %}
+                <p>
+                  You are <strong>{{ remaining | money }}</strong>
+                  away from free shipping
+                </p>
+              {% else %}
+                <p class="success-text">🎉 You’ve unlocked free shipping!</p>
+              {% endif %}
 
-            <!-- PROGRESS BAR (EXACTLY LIKE YOUR EXAMPLE) -->
-            <div class="shipping-progress">
-              <div
-                class="shipping-progress-bar"
-                style="width: {{ progress }}%;">
+              <div class="shipping-progress">
+                <div class="shipping-progress-bar" style="width: {{ progress }}%;"></div>
               </div>
-            </div>
 
-          </div>
+            </div>
+          {% endif %}
+
 
           {% if cart.item_count > 0 %}
             <div class="cart-list-items">
