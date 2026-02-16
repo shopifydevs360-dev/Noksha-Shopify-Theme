@@ -136,24 +136,9 @@
         "custom_class": "",
         "color_control": "section-light"
       }
-    },
-    "related_products_LKqNzC": {
-      "type": "related-products",
-      "name": "Related & Recommended",
-      "settings": {
-        "color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
-        "title": "You May Also Like",
-        "title_font_size": "h3",
-        "related_collection": "",
-        "related_tab_label": "Related Products",
-        "recommended_tab_label": "You May Like",
-        "custom_class": "",
-        "color_control": "section-light"
-      }
     }
   },
   "order": [
-    "main",
-    "related_products_LKqNzC"
+    "main"
   ]
 }
