@@ -9,7 +9,7 @@
   top: 12px;
   left: 12px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 8px;
   z-index: 5;
 }
