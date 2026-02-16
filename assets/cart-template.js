@@ -244,14 +244,17 @@ function initRemoveDiscount() {
   document.addEventListener("click", function (e) {
     if (!e.target.classList.contains("remove-discount")) return;
 
+    // Apply an empty discount to clear it
     fetch("/discount/")
       .then(() => fetch("/cart.js"))
       .then(res => res.json())
       .then(cart => {
         renderAllCarts(cart);
+        document.querySelector(".coupon-message").textContent = "Discount removed.";
       });
   });
 }
+
 
 /* ============================
    INITIAL SYNC
