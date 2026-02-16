@@ -201,7 +201,7 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
     font-weight: var(--font-heading-weight);
 }
 .hero-slideshow .text-content .btn.btn-arrow {
-    color: rgb(var(--color-heading);
+    color: rgb(var(--color-link));
     font-size: 22px;
     padding: 0;
 }
@@ -276,7 +276,7 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
     top: 50%;
     width: 50px;
     height: 1px;
-    background: rgb(var(--color-heading));
+    background: #fff;
     transform: translate(-100%);
     display: block;
 }
