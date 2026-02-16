@@ -49,6 +49,8 @@
     "variant_option_design1": "button",
     "variant_option_design2": "image",
     "sold_out_badge_bg": "#8e0404",
+    "custom_badge_bg": "#ffffff",
+    "custom_badge_text_color": "#c68b2f",
     "contact_phone_number": "+974 5590 3190",
     "contact_email": "contact@halla.qa",
     "whatsapp_number": "+974 5590 3190",
