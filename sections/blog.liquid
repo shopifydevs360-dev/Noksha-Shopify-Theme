@@ -16,6 +16,10 @@
   assign container_width = ss.container_width
 
   assign blog_classes = 'blogs'
+  assign blog_classes = blog_classes | append: ' ' | append: 'cols-' | append: ss.grid_columns
+  if ss.show_two_mobile
+  assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
+  endif
 %}
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
@@ -30,7 +34,7 @@
             %} 
         </div>
       <div class="inner-blog-list">
-        <div class="{{ blog_classes }} cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}" style="--grid-gap: {{ ss.grid_gap }}px">
+        <div class="{{ blog_classes }}" style="--grid-gap: {{ ss.grid_gap }}px">
 
         </div>
       </div>
