@@ -53,8 +53,7 @@
             heading_tag: 'h1',
             heading_size: ss.font_size,
             text_align: ss.text_align,
-            container_width: container_width,
-            style: custom_width_style
+            container_width: container_width
             %} 
         </div>
       <div class="inner-blog-list">
@@ -70,7 +69,7 @@
                     url: article.url,
                     width: 1000,
                     img_alt: ss.title,
-                    style: wrapper_style
+                    style: custom_width_style
                   %}
 
                 {{ article.image | image_url: width: 1000 | image_tag }}
