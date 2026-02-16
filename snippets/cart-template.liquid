@@ -37,6 +37,29 @@
 
             </div>
           {% endif %}
+          <!-- Discount unlock -->
+          {% if settings.enable_order_discount %}
+          {% assign discount_remaining = discount_threshold | minus: cart.total_price %}
+          {% assign discount_progress = cart.total_price | times: 100 | divided_by: discount_threshold %}
+          {% if discount_progress > 100 %}{% assign discount_progress = 100 %}{% endif %}
+
+          <div class="cart-discount-wrapper">
+
+            {% if discount_remaining > 0 %}
+              <p>
+                Spend <strong>{{ discount_remaining | money }}</strong>
+                more to unlock special discount
+              </p>
+            {% else %}
+              <p class="success-text">🔥 Discount unlocked!</p>
+            {% endif %}
+
+            <div class="discount-progress">
+              <div class="discount-progress-bar" style="width: {{ discount_progress }}%;"></div>
+            </div>
+
+          </div>
+        {% endif %}
 
 
           {% if cart.item_count > 0 %}
@@ -72,6 +95,14 @@
           <p class="cart-note">
             Shipping and taxes calculated at checkout.
           </p>
+          {% if settings.show_discount_code %}
+            <div class="cart-coupon">
+              <input type="text" id="coupon-code" placeholder="Enter coupon code">
+              <button type="button" id="apply-coupon-btn">Apply</button>
+              <p class="coupon-message"></p>
+            </div>
+          {% endif %}
+
 
         </div>
 
