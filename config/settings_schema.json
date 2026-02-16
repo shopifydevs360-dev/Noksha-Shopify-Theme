@@ -794,19 +794,71 @@
       { "type": "color_scheme", "id": "popup_color_scheme", "label": "Color Scheme", "default": "background-1" }
     ]
   },
-  {
-    "name": "Badges",
-    "settings": [
-      { "type": "header", "content": "Product badges" },
-      { "type": "paragraph", "content": "Badges are shown automatically based on product tags. Add product tags: 'hot', 'new', 'sale', or 'preorder' to display badges. 'Sold Out' appears automatically when inventory is unavailable." },
+{
+  "name": "Badges",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product badges"
+    },
+    {
+      "type": "paragraph",
+      "content": "Badges are shown automatically based on product tags. Add tags: 'hot', 'new', 'sale', 'preorder' or your custom badge tag. 'Sold Out' appears automatically when inventory is unavailable."
+    },
 
-      { "type": "color_scheme", "id": "hot_badge", "label": "Hot badge color", "default": "background-1" },
-      { "type": "color_scheme", "id": "new_badge", "label": "New badge color", "default": "background-1" },
-      { "type": "color_scheme", "id": "sale_badge", "label": "Sale badge color", "default": "background-1" },
-      { "type": "color_scheme", "id": "preorder_badge", "label": "Preorder badge color", "default": "background-1" },
-      { "type": "color_scheme", "id": "sold_out_badge", "label": "Sold Out badge color", "default": "background-1" }
-    ]
-  },
+    /* ================= HOT ================= */
+    { "type": "text", "id": "hot_badge_text", "label": "Hot badge text", "default": "Hot" },
+    { "type": "color", "id": "hot_badge_bg", "label": "Hot badge background", "default": "#111111" },
+    { "type": "color", "id": "hot_badge_text_color", "label": "Hot badge text color", "default": "#ffffff" },
+
+    /* ================= NEW ================= */
+    { "type": "text", "id": "new_badge_text", "label": "New badge text", "default": "New" },
+    { "type": "color", "id": "new_badge_bg", "label": "New badge background", "default": "#000000" },
+    { "type": "color", "id": "new_badge_text_color", "label": "New badge text color", "default": "#ffffff" },
+
+    /* ================= SALE ================= */
+    { "type": "text", "id": "sale_badge_text", "label": "Sale badge text", "default": "Sale" },
+    { "type": "color", "id": "sale_badge_bg", "label": "Sale badge background", "default": "#e60023" },
+    { "type": "color", "id": "sale_badge_text_color", "label": "Sale badge text color", "default": "#ffffff" },
+
+    /* ================= PREORDER ================= */
+    { "type": "text", "id": "preorder_badge_text", "label": "Preorder badge text", "default": "Preorder" },
+    { "type": "color", "id": "preorder_badge_bg", "label": "Preorder badge background", "default": "#6c5ce7" },
+    { "type": "color", "id": "preorder_badge_text_color", "label": "Preorder badge text color", "default": "#ffffff" },
+
+    /* ================= SOLD OUT ================= */
+    { "type": "text", "id": "sold_out_badge_text", "label": "Sold Out badge text", "default": "Sold Out" },
+    { "type": "color", "id": "sold_out_badge_bg", "label": "Sold Out badge background", "default": "#999999" },
+    { "type": "color", "id": "sold_out_badge_text_color", "label": "Sold Out badge text color", "default": "#ffffff" },
+
+    /* ================= CUSTOM BADGE ================= */
+    {
+      "type": "text",
+      "id": "custom_badge_tag",
+      "label": "Custom badge tag trigger",
+      "default": "featured"
+    },
+    {
+      "type": "text",
+      "id": "custom_badge_text",
+      "label": "Custom badge text",
+      "default": "Featured"
+    },
+    {
+      "type": "color",
+      "id": "custom_badge_bg",
+      "label": "Custom badge background",
+      "default": "#c7a17a"
+    },
+    {
+      "type": "color",
+      "id": "custom_badge_text_color",
+      "label": "Custom badge text color",
+      "default": "#ffffff"
+    }
+  ]
+},
+
   {
     "name": "Store Contact",
     "settings": [
