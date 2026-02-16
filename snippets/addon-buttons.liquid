@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <h3>Ask a Question</h3>
+    <h3 class="popup-title">Ask a Question</h3>
 
     {% form 'contact' %}
       <!-- Hidden product data -->
@@ -100,7 +100,7 @@
 <div class="noksha-popup" id="popup-size-guide">
   <div class="popup-inner">
     <button class="popup-close">&times;</button>
-    <h3>Size Guide</h3>
+    <h3 class="popup-title">Size Guide</h3>
 
     {% if block.settings.size_guide_page != blank %}
       {{ pages[block.settings.size_guide_page].content }}
