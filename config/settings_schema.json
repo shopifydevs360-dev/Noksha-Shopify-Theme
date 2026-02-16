@@ -898,10 +898,10 @@
         "default": true
       },
       {
-        "type": "number",
+        "type": "text",
         "id": "free_shipping_threshold",
-        "label": "Free shipping threshold (in cents)",
-        "default": 10000
+        "label": "Free shipping threshold",
+        "default": "100"
       },
 
       {
@@ -911,10 +911,10 @@
         "default": false
       },
       {
-        "type": "number",
+        "type": "text",
         "id": "order_discount_threshold",
-        "label": "Order discount threshold (in cents)",
-        "default": 20000
+        "label": "Order discount threshold",
+        "default": "200"
       },
 
       {
