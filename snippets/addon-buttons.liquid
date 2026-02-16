@@ -57,7 +57,7 @@
 <!-- Ask Question -->
 <!-- Ask Question -->
 <div class="noksha-popup" id="popup-ask-question">
-  <div class="popup-inner">
+  <div class="popup-inner ask-contact">
     <button class="popup-close">&times;</button>
 
     <!-- Product Info Header -->
@@ -224,5 +224,34 @@ document.addEventListener('DOMContentLoaded', function() {
     gap: 1rem;
     margin-bottom: 1rem;
 }
-
+.register-page .field {
+    display: flex;
+    flex-direction: column;
+}
+.register-page label {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+.register-page input {
+    padding: .8rem 0;
+    border-bottom: 2px solid rgb(var(--color-border));
+    border-radius: 0;
+    margin-bottom: 1.4rem;
+}
+.register-page .button {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    border: 2px solid rgb(var(--color-heading));
+    padding: 0.8rem 2rem;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 1rem;
+}
+.register-page .button:hover {
+    background: transparent;
+    color: rgb(var(--color-heading));
+}
 {% endstylesheet %}
