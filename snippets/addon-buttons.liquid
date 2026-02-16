@@ -18,18 +18,18 @@
     {% endif %}
     {% if block.settings.show_ask_question %}
     <li class="addon-item">
-      <a href="#ask-question" class="addon-link btn-ask-question">
+      <a href="#" class="addon-link" data-popup="ask-question">
         <span class="addon-icon">{% render 'theme-icon', icon: 'question' %}</span>
         <span class="addon-text">Ask Question</span>
-        </a>
+      </a>
     </li>
     {% endif %}
     {% if block.settings.show_size_guide %}
     <li class="addon-item">
-      <a href="#size-guide" class="addon-link btn-size-guide">
+      <a href="#" class="addon-link" data-popup="size-guide">
         <span class="addon-icon">{% render 'theme-icon', icon: 'measure' %}</span>
         <span class="addon-text">Size Guide</span>
-        </a>
+      </a>
     </li>
     {% endif %}
     {% if block.settings.show_track_order %}
@@ -42,7 +42,7 @@
     {% endif %}
     {% if block.settings.show_social_share %}
     <li class="addon-item">
-      <a href="#social-share" class="addon-link btn-social-share">
+      <a href="#" class="addon-link" data-popup="share">
         <span class="addon-icon">{% render 'theme-icon', icon: 'social-share' %}</span>
         <span class="addon-text">Share</span>
       </a>
