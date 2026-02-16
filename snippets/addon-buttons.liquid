@@ -140,3 +140,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 </script>
+{% stylesheet %}
+  .noksha-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s ease;
+  z-index: 999;
+}
+
+.noksha-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(.95);
+  background: #fff;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s ease;
+  z-index: 1000;
+}
+
+.noksha-popup.active,
+.noksha-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.noksha-popup.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+{% endstylesheet %}
