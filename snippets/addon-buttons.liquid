@@ -85,12 +85,18 @@
       <!-- Hidden product data -->
       <input type="hidden" name="contact[Product Name]" value="{{ product.title }}">
       <!-- User fields -->
+      <div class="field">
       <label for="yourname">Name</label>
       <input type="text" name="contact[name]" id="yourname" placeholder="Your Name" required>
+      </div>
+      <div class="field">
       <label for="youremail">Email</label>
       <input type="email" name="contact[email]" id="youremail" placeholder="Your Email" required>
+      </div>
+      <div class="field">
       <label for="yourquestion">Massage</label>
       <textarea name="contact[Message]" id="yourquestion" placeholder="Your Question" required></textarea>
+      </div>
       <button type="submit">Send Question</button>
 
     {% endform %}
