@@ -44,6 +44,9 @@
         </div>
         {% endif %}
       </div>
+      <div class="article-content">
+        {{ article.content }}
+      </div>
     </div>
   </div>
 </div>
@@ -57,7 +60,7 @@
 }
 {% endstylesheet %}
 
-{{ article.content }}
+
 
 {% if blog.comments_enabled? %}
   <h2>{{ 'blog.article_comments' | t }}</h2>
