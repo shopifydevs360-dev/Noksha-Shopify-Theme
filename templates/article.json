@@ -11,16 +11,7 @@
   "sections": {
     "main": {
       "type": "article",
-      "settings": {
-        "enable_sidebar_space": true,
-        "color_scheme": "",
-        "container_width": "full-width",
-        "font_size": "h3",
-        "padding_top": 40,
-        "padding_bottom": 52,
-        "custom_class": "",
-        "color_control": "section-light"
-      }
+      "settings": {}
     }
   },
   "order": [

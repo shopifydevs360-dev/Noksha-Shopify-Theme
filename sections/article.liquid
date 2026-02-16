@@ -14,13 +14,7 @@
   assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
   assign container_width = ss.container_width
-
-  assign blog_classes = 'blogs'
-  assign blog_classes = blog_classes | append: ' ' | append: 'cols-' | append: ss.grid_columns
-  if ss.show_two_mobile
-  assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
-  endif
-
+  
   assign image_wapper_classes = 'cropped-image-wrapper cropped-image--landscape'
 %}
 <div class="{{ first_class }}" id="store-location-{{ section.id }}">
