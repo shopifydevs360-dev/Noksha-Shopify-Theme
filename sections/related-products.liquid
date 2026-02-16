@@ -2,57 +2,46 @@
 {% render 'section-base-style' %}
 
 {% liquid
-  assign selected_collection = collections[section.settings.related_collection]
-  assign related_products = selected_collection.products
-
-  assign recommended_products = recommendations.products
-
+  assign related_collection = collections[section.settings.related_collection]
   assign has_related = false
-  assign has_recommended = false
 
-  if related_products.size > 0
+  if related_collection != blank and related_collection.products_count > 0
     assign has_related = true
-  endif
-
-  if recommended_products.size > 0
-    assign has_recommended = true
   endif
 %}
 
-{% if has_related or has_recommended %}
+{% if product != blank %}
 
 <div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
 
   <div class="product-carousel section-{{ section.id }}-padding">
 
-    <!-- ================= FILTER TABS ================= -->
+    <!-- ================= TABS ================= -->
     <div class="swiper swiper-container-filter">
       <div class="swiper-wrapper">
 
         {% if has_related %}
         <div class="related-product-caps swiper-slide active">
-          <a href="#" class="js-slider-filter" data-filter="related">
+          <a href="#" class="js-slider-filter" data-type="related">
             {{ section.settings.related_tab_label }}
           </a>
         </div>
         {% endif %}
 
-        {% if has_recommended %}
         <div class="related-product-caps swiper-slide {% unless has_related %}active{% endunless %}">
-          <a href="#" class="js-slider-filter" data-filter="recommended">
+          <a href="#" class="js-slider-filter" data-type="recommended">
             {{ section.settings.recommended_tab_label }}
           </a>
         </div>
-        {% endif %}
 
       </div>
     </div>
 
-    <!-- ================= PRODUCTS CAROUSEL ================= -->
+    <!-- ================= PRODUCTS ================= -->
     <div class="swiper swiper-container-product">
       <div class="swiper-wrapper">
 
-        <!-- Desktop Lead Card -->
+        <!-- Desktop Lead -->
         <div class="swiper-slide v-aligner hide-tablet hide-mobile hide-tablet-landscape">
           <div class="collection-lead-info">
             <h2 class="{{ section.settings.title_font_size }}">
@@ -61,29 +50,36 @@
           </div>
         </div>
 
-        <!-- RELATED PRODUCTS -->
+        <!-- ========== RELATED PRODUCTS ========== -->
         {% if has_related %}
-          {% for product in related_products %}
-            <div class="swiper-slide product-slide"
-              data-type="related"
-              {% unless forloop.first %}hidden{% endunless %}
-            >
-              {% render 'product-card', product: product %}
-            </div>
+          {% for related_product in related_collection.products limit: 6 %}
+            {% if related_product.id != product.id %}
+              <div class="swiper-slide product-slide"
+                data-type="related"
+                {% unless forloop.first %}style="display:none"{% endunless %}
+              >
+                {% render 'product-card', product: related_product %}
+              </div>
+            {% endif %}
           {% endfor %}
         {% endif %}
 
-        <!-- RECOMMENDED PRODUCTS -->
-        {% if has_recommended %}
-          {% for product in recommended_products %}
-            <div class="swiper-slide product-slide"
-              data-type="recommended"
-              hidden
-            >
-              {% render 'product-card', product: product %}
-            </div>
-          {% endfor %}
-        {% endif %}
+        <!-- ========== SHOPIFY AI RECOMMENDATIONS ========== -->
+        <product-recommendations
+          class="recommendations-wrapper"
+          data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=6&intent=related"
+        >
+          {% if recommendations.performed and recommendations.products_count > 0 %}
+            {% for recommendation in recommendations.products %}
+              <div class="swiper-slide product-slide"
+                data-type="recommended"
+                style="display:none"
+              >
+                {% render 'product-card', product: recommendation %}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </product-recommendations>
 
       </div>
 
@@ -143,13 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (tabs.length) {
-    activateTab(tabs[0].dataset.filter, tabs[0]);
+    activateTab(tabs[0].dataset.type, tabs[0]);
   }
 
   tabs.forEach(tab => {
     tab.addEventListener('click', e => {
       e.preventDefault();
-      activateTab(tab.dataset.filter, tab);
+      activateTab(tab.dataset.type, tab);
     });
   });
 
@@ -160,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 {% schema %}
 {
-  "name": "Related & Recommended",
+  "name": "Product Tabs",
   "settings": [
     {
       "type": "color_scheme",
@@ -220,8 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ],
   "presets": [
     {
-      "name": "Related & Recommended",
-      "category": "Products"
+      "name": "Product Tabs"
     }
   ]
 }
