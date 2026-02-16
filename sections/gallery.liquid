@@ -29,7 +29,9 @@
         </div>
         <div class="gallery-wrapper">
             <div>
-                
+                {% for block in section.blocks %}
+                    <div class="image-item"></div>
+                {% endfor %}
             </div>
         </div>
     </div>
