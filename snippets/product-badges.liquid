@@ -1,12 +1,14 @@
 {% if product %}
+
   {% assign product_tags = product.tags | downcase %}
+  {% assign custom_tag = settings.custom_badge_tag | downcase %}
 
   {% if 
     product_tags contains 'hot' or
     product_tags contains 'new' or
     product_tags contains 'sale' or
     product_tags contains 'preorder' or
-    product_tags contains settings.custom_badge_tag | downcase or
+    product_tags contains custom_tag or
     product.available == false
   %}
 
@@ -40,7 +42,7 @@
       </span>
     {% endif %}
 
-    {% if product_tags contains settings.custom_badge_tag | downcase %}
+    {% if product_tags contains custom_tag %}
       <span class="badge"
         style="background: {{ settings.custom_badge_bg }}; color: {{ settings.custom_badge_text_color }};">
         {{ settings.custom_badge_text }}
@@ -57,4 +59,5 @@
   </div>
 
   {% endif %}
+
 {% endif %}
