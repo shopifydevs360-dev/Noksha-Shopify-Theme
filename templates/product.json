@@ -146,9 +146,9 @@
         "enable_sidebar_space": true,
         "container_width": "container",
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "color_control": "section-light",
         "padding_top": 40,
         "padding_bottom": 40,
+        "color_control": "section-light",
         "custom_class": ""
       }
     },
