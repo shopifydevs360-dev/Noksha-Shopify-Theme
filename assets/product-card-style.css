@@ -68,18 +68,20 @@
 }
 
 .product-card .cart-button-wrapper .card-variants-wrapper {
+    transform: translateY(20px);
     opacity: 0;
     transition: all .6s ease;
     height: 0;
     overflow: hidden;
     border-bottom: 1px solid #e3c7bf;
     padding: 1rem;
+    max-height: 50px;
     
 }
 .product-card .cart-button-wrapper:hover .card-variants-wrapper {
+    transform: translateY(0);
     opacity: 1;
     visibility: visible;
-    transform: none;
     pointer-events: auto;
     height: auto;
 }
