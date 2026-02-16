@@ -958,7 +958,7 @@ a.cropped-image-wrapper {
 }
 
 @media (max-width: 990px) {
-  .template-page {
+  .template-page, .template-article, .template-blog{
       margin-top: 4.2rem;
   }
   .shopify-section-nav{
