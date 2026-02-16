@@ -103,6 +103,12 @@
   width: 0;
   transition: width 0.3s ease;
 } 
+.cart-discount-wrapper{
+    font-size: 0.7em;
+    margin-bottom: 1.6rem;
+    max-width: 22rem;
+    color: rgb(var(--color-text));
+}
 .discount-progress {
     background: rgb(var(--color-additional-1));
     height: 0.5rem;
