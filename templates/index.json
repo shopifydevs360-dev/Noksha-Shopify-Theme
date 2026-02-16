@@ -164,6 +164,13 @@
     "gallery_QpapCr": {
       "type": "gallery",
       "blocks": {
+        "image_rq3n3H": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/every_woman_deserves_to_feel_comfrotable_and_confident.png",
+            "image_url": ""
+          }
+        },
         "image_EmCKnK": {
           "type": "image",
           "settings": {
@@ -243,6 +250,7 @@
         }
       },
       "block_order": [
+        "image_rq3n3H",
         "image_EmCKnK",
         "image_hgq8Rk",
         "image_hCzLpT",
