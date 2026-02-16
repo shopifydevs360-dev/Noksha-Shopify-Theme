@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartAjax();
   initCartQuantity();
   initCartRemove();
+  initCouponAjax();
   initCartInitialSync();
 });
 
@@ -38,16 +39,15 @@ function renderAllCarts(cart) {
 function renderSingleCart(cart, root) {
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
+  updateDiscountProgress(cart, root);
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
 
-  // ✅ If cart has NEW items, refresh HTML list
   const domItems = root.querySelectorAll(".cart-item").length;
   if (cart.items.length > domItems) {
     refreshCartItemList(root);
   }
 }
-
 
 /* ============================
    SUBTOTAL
@@ -68,16 +68,13 @@ function updateFreeShipping(cart, root) {
 
   const bar = wrapper.querySelector(".shipping-progress-bar");
   const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
-  const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
+  const threshold = parseInt(root.dataset.freeShippingThreshold || 0, 10);
 
-  const progress = Math.min(
-    (cart.total_price / threshold) * 100,
-    100
-  );
+  if (!threshold) return;
 
-  if (bar) {
-    bar.style.width = progress + "%";
-  }
+  const progress = Math.min((cart.total_price / threshold) * 100, 100);
+
+  if (bar) bar.style.width = progress + "%";
 
   if (cart.total_price >= threshold) {
     wrapper.classList.add("is-success");
@@ -92,7 +89,36 @@ function updateFreeShipping(cart, root) {
 }
 
 /* ============================
-   LINE ITEMS (PRICE + QTY)
+   ORDER DISCOUNT PROGRESS
+============================ */
+function updateDiscountProgress(cart, root) {
+  const wrapper = root.querySelector(".cart-discount-wrapper");
+  if (!wrapper) return;
+
+  const bar = wrapper.querySelector(".discount-progress-bar");
+  const remainingEl = wrapper.querySelector(".cart-discount-remaining");
+  const threshold = parseInt(root.dataset.discountThreshold || 0, 10);
+
+  if (!threshold) return;
+
+  const progress = Math.min((cart.total_price / threshold) * 100, 100);
+
+  if (bar) bar.style.width = progress + "%";
+
+  if (cart.total_price >= threshold) {
+    wrapper.classList.add("is-success");
+  } else {
+    wrapper.classList.remove("is-success");
+    if (remainingEl) {
+      remainingEl.textContent = formatMoney(
+        threshold - cart.total_price
+      );
+    }
+  }
+}
+
+/* ============================
+   LINE ITEMS
 ============================ */
 function updateLineItems(cart, root) {
   cart.items.forEach((item) => {
@@ -122,9 +148,7 @@ function removeDeletedItems(cart, root) {
     const key = row.dataset.key;
     const exists = cart.items.some((item) => item.key === key);
 
-    if (!exists) {
-      row.remove();
-    }
+    if (!exists) row.remove();
   });
 }
 
@@ -165,6 +189,37 @@ function initCartRemove() {
 }
 
 /* ============================
+   AJAX COUPON APPLY
+============================ */
+function initCouponAjax() {
+  document.addEventListener("click", function (e) {
+    if (!e.target.id === "apply-coupon-btn") return;
+
+    const btn = e.target;
+    const codeInput = document.getElementById("coupon-code");
+    const message = document.querySelector(".coupon-message");
+
+    if (!codeInput || !codeInput.value.trim()) {
+      message.textContent = "Please enter a coupon code.";
+      return;
+    }
+
+    const code = codeInput.value.trim();
+
+    fetch("/discount/" + code)
+      .then(() => {
+        message.textContent = "Coupon applied!";
+        setTimeout(() => {
+          refreshAllCartsUI();
+        }, 1000);
+      })
+      .catch(() => {
+        message.textContent = "Invalid coupon code.";
+      });
+  });
+}
+
+/* ============================
    INITIAL SYNC
 ============================ */
 function initCartInitialSync() {
@@ -176,16 +231,8 @@ function initCartInitialSync() {
 }
 
 /* ============================
-   UTIL
+   REFRESH ITEM LIST
 ============================ */
-function formatMoney(cents) {
-  return (cents / 100).toLocaleString(undefined, {
-    style: "currency",
-    currency: Shopify.currency.active,
-  });
-}
-
-
 function refreshCartItemList(root) {
   fetch("/cart?view=ajax")
     .then((res) => res.text())
@@ -200,7 +247,6 @@ function refreshCartItemList(root) {
       const emptyMessage = root.querySelector(".cart-empty-message");
       const continueLink = root.querySelector(".continue-shopping");
 
-      // 🔥 CART WAS EMPTY → CREATE LIST
       if (!currentList) {
         if (emptyMessage) emptyMessage.remove();
         if (continueLink) continueLink.remove();
@@ -211,15 +257,13 @@ function refreshCartItemList(root) {
         return;
       }
 
-      // 🔁 CART HAD ITEMS → UPDATE LIST
       currentList.innerHTML = newList.innerHTML;
     });
 }
 
-
-
-
-
+/* ============================
+   FULL REFRESH
+============================ */
 function refreshAllCartsUI() {
   fetch("/cart.js")
     .then((res) => res.json())
@@ -227,4 +271,14 @@ function refreshAllCartsUI() {
       renderAllCarts(cart);
       updateCartCount();
     });
+}
+
+/* ============================
+   FORMAT MONEY
+============================ */
+function formatMoney(cents) {
+  return (cents / 100).toLocaleString(undefined, {
+    style: "currency",
+    currency: Shopify.currency.active,
+  });
 }
