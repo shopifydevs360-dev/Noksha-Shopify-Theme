@@ -244,15 +244,16 @@ function initRemoveDiscount() {
   document.addEventListener("click", function (e) {
     if (!e.target.classList.contains("remove-discount")) return;
 
-    const btn = e.target;
-    btn.textContent = "Removing...";
-    btn.disabled = true;
-
-    // Safe way to clear discount
-    window.location.href = "/cart?discount=";
+    // Apply an empty discount to clear it
+    fetch("/discount/")
+      .then(() => fetch("/cart.js"))
+      .then(res => res.json())
+      .then(cart => {
+        renderAllCarts(cart);
+        document.querySelector(".coupon-message").textContent = "Discount removed.";
+      });
   });
 }
-
  
 
 /* ============================
