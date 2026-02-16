@@ -2,10 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartAjax();
   initCartQuantity();
   initCartRemove();
-  initCouponAjax();
-  initRemoveDiscount();
   initCartInitialSync();
-
 });
 
 /* ============================
@@ -57,27 +54,9 @@ function renderSingleCart(cart, root) {
 ============================ */
 function updateSubtotal(cart, root) {
   const subtotalEl = root.querySelector(".cart-subtotal");
-  const totalEl = root.querySelector(".cart-total");
-  const discountRow = root.querySelector(".cart-discount-row");
-  const discountAmountEl = root.querySelector(".cart-discount-amount");
+  if (!subtotalEl) return;
 
-  if (subtotalEl) {
-    subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
-  }
-
-  if (totalEl) {
-    totalEl.textContent = formatMoney(cart.total_price);
-  }
-
-  if (cart.total_discount > 0) {
-    if (discountRow) discountRow.style.display = "flex";
-    if (discountAmountEl) {
-      discountAmountEl.textContent =
-        "-" + formatMoney(cart.total_discount);
-    }
-  } else {
-    if (discountRow) discountRow.style.display = "none";
-  }
+  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
 }
 
 /* ============================
@@ -237,36 +216,6 @@ function refreshCartItemList(root) {
     });
 }
 
-function initCouponAjax() {
-  document.addEventListener("click", function (e) {
-    if (e.target.id !== "apply-coupon-btn") return;
-
-    const codeInput = document.getElementById("coupon-code");
-    const message = document.querySelector(".coupon-message");
-
-    if (!codeInput || !codeInput.value.trim()) {
-      message.textContent = "Please enter a coupon code.";
-      return;
-    }
-
-    const code = codeInput.value.trim();
-
-    // Shopify requires navigation for discount apply
-    window.location.href = "/discount/" + code;
-  });
-}
-function initRemoveDiscount() {
-  document.addEventListener("click", function (e) {
-    if (!e.target.classList.contains("remove-discount")) return;
-
-    const btn = e.target;
-    btn.textContent = "Removing...";
-    btn.disabled = true;
-
-    // Apply fake code to clear existing discount
-    window.location.href = "/discount/REMOVE?redirect=/cart";
-  });
-}
 
 
 
