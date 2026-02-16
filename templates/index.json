@@ -69,8 +69,16 @@
     "collection_tab_jigG9e": {
       "type": "collection-tab",
       "blocks": {
+        "tab_D9EPrE": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Easy Hijab",
+            "collection": "easy-hijab"
+          }
+        },
         "tab_Nq43z7": {
           "type": "tab",
+          "disabled": true,
           "settings": {
             "tab_label": "PLAIN HIJAB",
             "collection": "plain-hijab"
@@ -78,6 +86,7 @@
         },
         "tab_KtWxa4": {
           "type": "tab",
+          "disabled": true,
           "settings": {
             "tab_label": "JERSEY H IJAB",
             "collection": "jersey-hijab"
@@ -85,6 +94,7 @@
         },
         "tab_CNPqei": {
           "type": "tab",
+          "disabled": true,
           "settings": {
             "tab_label": "CHIFFON HIJAB",
             "collection": "chiffon-hijab"
@@ -99,6 +109,7 @@
         }
       },
       "block_order": [
+        "tab_D9EPrE",
         "tab_Nq43z7",
         "tab_KtWxa4",
         "tab_CNPqei",
