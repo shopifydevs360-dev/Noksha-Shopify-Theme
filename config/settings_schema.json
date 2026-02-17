@@ -151,7 +151,7 @@
         "type": "font_picker",
         "id": "type_header_font",
         "label": "Font",
-        "default": "helvetica_n7"
+        "default": "poppins_n7"
       },
       {
         "type": "checkbox",
