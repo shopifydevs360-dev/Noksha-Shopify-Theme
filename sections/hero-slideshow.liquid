@@ -2,15 +2,12 @@
 
 {% liquid
   assign ss = section.settings
-  assign first_class = 'hero-slideshow hero-outer-wrap ' | append: 'm-color-' | append: ss.color_scheme 
-  assign first_class = first_class | append: ' ' | append: ss.color_control
-  assign first_class = first_class | append: ' ' | append: ss.custom_class
-  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+  assign first_class = 'hero-slideshow hero-outer-wrap ' | append: ss.color_control | append: ss.custom_class
 %}
 
 <div
   id="shopify-section-{{ section.id }}"
-  class="hero-slideshow hero-outer-wrap {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}"
+  class=" {{ first_class }}"
 >
   <header class="reverse-nav full-screen-slideshow sidebar-slideshow js-animate-on-load">
 
@@ -168,10 +165,6 @@
   "limit": 1,
   "max_blocks": 10,
   "settings": [
-    { "type": "color_scheme", 
-      "id": "color_scheme", 
-      "label": "color scheme" 
-    },
     {
       "type": "image_picker",
       "id": "sidebar_image",
