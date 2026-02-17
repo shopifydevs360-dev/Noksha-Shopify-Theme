@@ -217,9 +217,6 @@ p:empty {
     touch-action: manipulation;
     color: rgb(var(--color-heading));
 }
-.special-font-3 {
-  font-family: var(--font-custom-3);
-}
 
 h1, h2, h3, h4, h5, h6, 
 .h1, .h2, .h3, .h4, .h5, .h6
@@ -229,6 +226,12 @@ h1, h2, h3, h4, h5, h6,
   font-family: var(--font-heading-family, sans-serif);
   font-weight: var(--font-heading-weight, 600);
   letter-spacing: var(--font-heading-spacing, 0);
+}
+.special-font-3 {
+  font-family: var(--font-custom-3);
+}
+.special-font-4 {
+  font-family: var(--font-custom-4);
 }
 /* Mobile */
 h1, .h1 { font-size: calc(var(--font-h1-size, 36px) * 0.6); }
