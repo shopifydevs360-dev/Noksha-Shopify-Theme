@@ -14,6 +14,7 @@
       "blocks": {
         "image_slide_LK9aNK": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "text_color_scheme": "default",
             "image": "shopify://shop_images/14Asset_47_5x-Picsart-AiImageEnhancer.png",
@@ -33,15 +34,14 @@
         },
         "image_slide_da8geD": {
           "type": "image_slide",
-          "disabled": true,
           "settings": {
             "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
             "image": "shopify://shop_images/9-IMG_9615.jpg",
             "mobile_image": "shopify://shop_images/DSC06172.jpg",
-            "subheading": "MODEST SILHOUETTES FOR WORKOUTS",
+            "subheading": "Grace in Every Drape",
             "sub_heading_font_size": "h4",
-            "use_custom_font": "",
-            "heading": "ACTIVEWEAR SET",
+            "use_custom_font": "special-font-3",
+            "heading": "PREMIUM HIJAB COLLECTION",
             "heading_size": "h2",
             "cta_text": "SHOP NOW",
             "link": "shopify://collections/all",
@@ -49,7 +49,7 @@
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
             "vertical_alignment": "bottom",
-            "custom_class": ""
+            "custom_class": "slide-1"
           }
         },
         "image_slide_xNDwjP": {
