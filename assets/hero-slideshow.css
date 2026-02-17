@@ -201,7 +201,7 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
     font-weight: var(--font-heading-weight);
 }
 .hero-slideshow .text-content .btn.btn-arrow {
-    color: rgb(var(--color-link));
+    color: rgb(var(--color-heading));
     font-size: 22px;
     padding: 0;
 }
