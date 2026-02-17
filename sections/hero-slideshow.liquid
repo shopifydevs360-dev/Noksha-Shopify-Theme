@@ -2,7 +2,7 @@
 
 {% liquid
   assign ss = section.settings
-  assign first_class = 'hero-slideshow hero-outer-wrap ' | append: ss.color_control | append: ss.custom_class
+  assign first_class = 'hero-slideshow hero-outer-wrap ' | append: ss.color_control | append: ' ' | append: ss.custom_class
 %}
 
 <div
