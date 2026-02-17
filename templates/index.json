@@ -320,7 +320,7 @@
         "grid_gap": 40,
         "aspect_ratio": "adapt-to-image",
         "custom_height": 300,
-        "hover_effect_action": "no-effect",
+        "hover_effect_action": "is-hover-fade",
         "padding_top": 40,
         "padding_bottom": 72,
         "custom_class": "",
