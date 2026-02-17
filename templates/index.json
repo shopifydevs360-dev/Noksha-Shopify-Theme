@@ -27,7 +27,8 @@
             "background_color": "#f3e3d3",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
-            "vertical_alignment": "center"
+            "vertical_alignment": "center",
+            "custom_class": "slide-1"
           }
         },
         "image_slide_da8geD": {
@@ -47,7 +48,8 @@
             "background_color": "#f3e3d3",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
-            "vertical_alignment": "bottom"
+            "vertical_alignment": "bottom",
+            "custom_class": ""
           }
         },
         "image_slide_xNDwjP": {
@@ -66,7 +68,8 @@
             "background_color": "#f3e3d3",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
-            "vertical_alignment": "bottom"
+            "vertical_alignment": "bottom",
+            "custom_class": ""
           }
         }
       },
