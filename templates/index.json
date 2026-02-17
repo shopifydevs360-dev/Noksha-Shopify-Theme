@@ -15,10 +15,10 @@
         "image_slide_LK9aNK": {
           "type": "image_slide",
           "settings": {
-            "text_color_scheme": "",
+            "text_color_scheme": "default",
             "image": "shopify://shop_images/14Asset_47_5x-Picsart-AiImageEnhancer.png",
             "subheading": "Grace in Every Drape",
-            "sub_heading_font_size": "h4",
+            "sub_heading_font_size": "h3",
             "use_custom_font": "special-font-3",
             "heading": "PREMIUM HIJAB COLLECTION",
             "heading_size": "h2",
