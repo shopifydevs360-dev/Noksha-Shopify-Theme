@@ -78,6 +78,28 @@
   {% endif %}
 {% endif %}
 
+{% if settings.use_custom_font_3 and settings.custom_font_3_url != blank %}
+
+  {% assign font_url = settings.custom_font_3_url | strip %}
+  {% assign clean_url = font_url | split: '?' | first %}
+  {% assign extension = clean_url | split: '.' | last | downcase %}
+
+  @font-face {
+    font-family: '{{ settings.custom_font_3_name }}';
+    src: url('{{ font_url }}')
+      {% case extension %}
+        {% when 'woff2' %} format('woff2')
+        {% when 'woff' %} format('woff')
+        {% when 'ttf' %} format('truetype')
+        {% when 'otf' %} format('opentype')
+        {% else %} format('woff2')
+      {% endcase %};
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+{% endif %}
 
 
 
