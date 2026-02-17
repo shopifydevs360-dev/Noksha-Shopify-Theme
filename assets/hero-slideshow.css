@@ -188,10 +188,7 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
 }
 .hero-slideshow-sub-heading {
     margin: 0 0 2rem;
-    color: rgb(var(--color-subtext, var(--color-text)));
-    text-shadow: 1px 1px 3px rgba(0,0,0,.2);
-    font-family: var(--font-heading-family);
-    font-weight: var(--font-heading-weight);
+    text-shadow: 1px 1px 3px rgba(0,0,0,.2);;
 }
 .hero-slideshow-heading {
     margin: 0 0 2rem;
