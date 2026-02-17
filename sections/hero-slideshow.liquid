@@ -82,7 +82,7 @@
 
             <div class="text-content text-content--{{ block.settings.vertical_alignment }}-{{ block.settings.horizontal_alignment }} m-color-{{ block.settings.text_color_scheme }}">
               {% if block.settings.subheading != blank %}
-                <h4 class="hero-slideshow-sub-heading {{ block.settings.sub_heading_font_size }}">
+                <h4 class="hero-slideshow-sub-heading {{ block.settings.sub_heading_font_size }} {{ block.settings.use_custom_font }}">
                   {{ block.settings.subheading }}
                 </h4>
               {% endif %}
