@@ -80,7 +80,7 @@
         "image_slide_xNDwjP"
       ],
       "custom_css": [
-        "@media (max-width: 991px) {.slide-1 .inner-content {background: #a9776d8a; padding: 1rem 1rem 0.1rem 1rem; border-radius: 8px; backdrop-filter: blur(2px); }}"
+        ".slide-1 .inner-content {background: #a9776d8a; padding: 1rem 1rem 0.1rem 1rem; border-radius: 8px; backdrop-filter: blur(2px); }"
       ],
       "name": "Hero Slideshow",
       "settings": {
