@@ -53,34 +53,31 @@
 
 {% if settings.use_custom_font_heading and settings.custom_heading_font != blank %}
   {% assign heading_fonts = settings.custom_heading_font | split: '\n' %}
-  {% for font_item in heading_fonts %}
-    {% assign font_item = font_item | strip %}
-    {% if font_item != blank %}
+  {% assign last_font = heading_fonts | last | strip %}
 
-      {% assign parts = font_item | split: '@' %}
-      {% assign font_url = parts[0] | strip %}
-      {% assign font_weight = parts[1] | default: settings.custom_heading_weight | default: 700 %}
+  {% if last_font != blank %}
+    {% assign parts = last_font | split: '@' %}
+    {% assign font_url = parts[0] | strip %}
+    {% assign font_weight = parts[1] | default: settings.custom_heading_weight | default: 700 %}
 
-      {% assign clean_url = font_url | split: '?' | first %}
-      {% assign extension = clean_url | split: '.' | last | downcase %}
+    {% assign clean_url = font_url | split: '?' | first %}
+    {% assign extension = clean_url | split: '.' | last | downcase %}
 
-      @font-face {
-        font-family: 'CustomHeadingFont';
-        src: url('{{ font_url }}')
-          {% case extension %}
-            {% when 'woff2' %} format('woff2')
-            {% when 'woff' %} format('woff')
-            {% when 'ttf' %} format('truetype')
-            {% when 'otf' %} format('opentype')
-            {% else %} format('woff2')
-          {% endcase %};
-        font-weight: {{ font_weight }};
-        font-style: normal;
-        font-display: swap;
-      }
-
-    {% endif %}
-  {% endfor %}
+    @font-face {
+      font-family: 'CustomHeadingFont';
+      src: url('{{ font_url }}')
+        {% case extension %}
+          {% when 'woff2' %} format('woff2')
+          {% when 'woff' %} format('woff')
+          {% when 'ttf' %} format('truetype')
+          {% when 'otf' %} format('opentype')
+          {% else %} format('woff2')
+        {% endcase %};
+      font-weight: {{ font_weight }};
+      font-style: normal;
+      font-display: swap;
+    }
+  {% endif %}
 {% endif %}
 
 
