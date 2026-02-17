@@ -12,8 +12,27 @@
     "hero_slideshow_DY9JwJ": {
       "type": "hero-slideshow",
       "blocks": {
+        "image_slide_LK9aNK": {
+          "type": "image_slide",
+          "settings": {
+            "text_color_scheme": "",
+            "image": "shopify://shop_images/ChatGPT_Image_Feb_17_2026_05_16_29_PM.png",
+            "subheading": "",
+            "sub_heading_font_size": "h4",
+            "heading": "",
+            "heading_size": "h2",
+            "cta_text": "",
+            "link": "",
+            "background_color": "#f3e3d3",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "horizontal_alignment": "left",
+            "vertical_alignment": "bottom"
+          }
+        },
         "image_slide_da8geD": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
             "image": "shopify://shop_images/9-IMG_9615.jpg",
@@ -52,6 +71,7 @@
         }
       },
       "block_order": [
+        "image_slide_LK9aNK",
         "image_slide_da8geD",
         "image_slide_xNDwjP"
       ],
