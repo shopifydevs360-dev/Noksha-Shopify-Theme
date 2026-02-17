@@ -30,7 +30,7 @@
 
         {% for block in section.blocks %}
           <div
-            class="swiper-slide"
+            class="swiper-slide {{ block.settings.custom_class }}"
             style="background-color: {{ block.settings.background_color }};"
             {{ block.shopify_attributes }}
           >
