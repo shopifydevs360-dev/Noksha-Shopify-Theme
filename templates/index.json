@@ -25,7 +25,6 @@
             "cta_text": "",
             "link": "",
             "background_color": "#f3e3d3",
-            "overlay_color": "#000000",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
             "vertical_alignment": "center"
@@ -46,7 +45,6 @@
             "cta_text": "SHOP NOW",
             "link": "shopify://collections/all",
             "background_color": "#f3e3d3",
-            "overlay_color": "#000000",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
             "vertical_alignment": "bottom"
@@ -66,7 +64,6 @@
             "cta_text": "SHOP NOW",
             "link": "shopify://collections/all",
             "background_color": "#f3e3d3",
-            "overlay_color": "#000000",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
             "vertical_alignment": "bottom"
@@ -84,6 +81,7 @@
         "slide_effect": "slide",
         "enable_autoplay": false,
         "autoplay_speed": 10,
+        "overlay_color": "#ff1b1b",
         "custom_class": "",
         "color_control": "section-dark"
       }
