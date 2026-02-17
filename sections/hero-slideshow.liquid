@@ -121,7 +121,7 @@
         class="swiper-next-text js-next-{{ section.id }}"
         aria-label="Next slide"
       >
-        <span class="line" style="background: {{ section.settings.nav_color }}"></span>
+        <span class="line"></span>
         <span class="inner-text h5" style="color: {{ section.settings.nav_color }}">Next</span>
       </button>
     </div>
@@ -196,7 +196,7 @@
       "unit": "s",
       "default": 3
     },
-    { "type": "color", "id": "nav_color", "label": "Navigation color", "default": "#FFF2E7" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
     {
       "type": "text",
       "id": "custom_class",
@@ -327,6 +327,7 @@
         { "type": "url", "id": "link", "label": "Link" },
         { "type": "color", "id": "background_color", "label": "Background color", "default": "#f3e3d3" },
         { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
+        { "type": "color", "id": "nav_color", "label": "Navigation color", "default": "#FFF2E7" },
         {
           "type": "range",
           "id": "overlay_opacity",
