@@ -1,8 +1,16 @@
 {{ 'hero-slideshow.css' | asset_url | stylesheet_tag: preload: true }}
 
+{% liquid
+  assign ss = section.settings
+  assign first_class = 'hero-slideshow hero-outer-wrap ' | append: 'm-color-' | append: ss.color_scheme 
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+%}
+
 <div
   id="shopify-section-{{ section.id }}"
-  class="hero-slideshow hero-outer-wrap {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}"
+  class=" {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}"
 >
   <header class="reverse-nav full-screen-slideshow sidebar-slideshow js-animate-on-load">
 
@@ -34,7 +42,7 @@
               <div class="media-wrapper">
 
 
-                
+
                 <picture>
                   {% if block.settings.mobile_image != blank %}
                     <source
