@@ -35,7 +35,7 @@
         "image_slide_da8geD": {
           "type": "image_slide",
           "settings": {
-            "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+            "text_color_scheme": "default",
             "image": "shopify://shop_images/9-IMG_9615.jpg",
             "mobile_image": "shopify://shop_images/DSC06172.jpg",
             "subheading": "Grace in Every Drape",
@@ -43,7 +43,7 @@
             "use_custom_font": "special-font-3",
             "heading": "PREMIUM HIJAB COLLECTION",
             "heading_size": "h2",
-            "cta_text": "SHOP NOW",
+            "cta_text": "",
             "link": "shopify://collections/all",
             "background_color": "#f3e3d3",
             "overlay_opacity": 0,
