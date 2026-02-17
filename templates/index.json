@@ -14,10 +14,9 @@
       "blocks": {
         "image_slide_LK9aNK": {
           "type": "image_slide",
-          "disabled": true,
           "settings": {
             "text_color_scheme": "default",
-            "image": "shopify://shop_images/14Asset_47_5x-Picsart-AiImageEnhancer.png",
+            "image": "shopify://shop_images/IMG_4804.jpg",
             "subheading": "Grace in Every Drape",
             "sub_heading_font_size": "h3",
             "use_custom_font": "special-font-3",
@@ -34,6 +33,7 @@
         },
         "image_slide_da8geD": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "text_color_scheme": "default",
             "image": "shopify://shop_images/9-IMG_9615.jpg",
@@ -79,7 +79,7 @@
         "image_slide_xNDwjP"
       ],
       "custom_css": [
-        "@media (max-width: 991px) {.slide-1 .inner-content {background: #a9776d8a; padding: 1rem 1rem 0.1rem 1rem; border-radius: 8px; backdrop-filter: blur(2px);}}"
+        "@media (max-width: 991px) {.slide-1 .inner-content {background: #a9776d8a; padding: 1rem 1rem 0.1rem 1rem; border-radius: 8px; backdrop-filter: blur(2px); }}"
       ],
       "name": "Hero Slideshow",
       "settings": {
