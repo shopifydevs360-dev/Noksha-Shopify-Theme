@@ -23,10 +23,13 @@
   {% for font_item in body_fonts %}
     {% assign font_item = font_item | strip %}
     {% if font_item != blank %}
+
       {% assign parts = font_item | split: '@' %}
       {% assign font_url = parts[0] | strip %}
       {% assign font_weight = parts[1] | default: settings.custom_body_weight | default: 400 %}
-      {% assign extension = font_url | split: '.' | last | downcase %}
+
+      {% assign clean_url = font_url | split: '?' | first %}
+      {% assign extension = clean_url | split: '.' | last | downcase %}
 
       @font-face {
         font-family: 'CustomBodyFont';
@@ -42,6 +45,7 @@
         font-style: normal;
         font-display: swap;
       }
+
     {% endif %}
   {% endfor %}
 {% endif %}
@@ -52,10 +56,13 @@
   {% for font_item in heading_fonts %}
     {% assign font_item = font_item | strip %}
     {% if font_item != blank %}
+
       {% assign parts = font_item | split: '@' %}
       {% assign font_url = parts[0] | strip %}
       {% assign font_weight = parts[1] | default: settings.custom_heading_weight | default: 700 %}
-      {% assign extension = font_url | split: '.' | last | downcase %}
+
+      {% assign clean_url = font_url | split: '?' | first %}
+      {% assign extension = clean_url | split: '.' | last | downcase %}
 
       @font-face {
         font-family: 'CustomHeadingFont';
@@ -71,9 +78,11 @@
         font-style: normal;
         font-display: swap;
       }
+
     {% endif %}
   {% endfor %}
 {% endif %}
+
 
 
 
