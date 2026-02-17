@@ -78,6 +78,9 @@
         "image_slide_da8geD",
         "image_slide_xNDwjP"
       ],
+      "custom_css": [
+        ".slide-1 .inner-content {background: #a9776d8a; padding: 1rem 1rem 0.1rem 1rem; border-radius: 8px; backdrop-filter: blur(2px);}"
+      ],
       "name": "Hero Slideshow",
       "settings": {
         "sidebar_image": "shopify://shop_images/sidebar_image.jpg",
