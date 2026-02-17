@@ -23,9 +23,10 @@
     {% for font_item in body_fonts %}
       {% assign font_url = font_item | split: '@' | first %}
       {% assign font_weight = font_item | split: '@' | last | default: settings.custom_body_weight %}
+      {% assign extension = font_url | split: '.' | last | downcase %}
       @font-face {
         font-family: 'CustomBodyFont';
-        src: url('{{ font_url | strip }}') format('woff2');
+        src: url('{{ font_url | strip }}') format('{{ extension }}');
         font-weight: {{ font_weight }};
         font-style: normal;
         font-display: swap;
@@ -35,12 +36,13 @@
 
 {% if settings.use_custom_font_heading and settings.custom_heading_font != blank %}
     {% assign heading_fonts = settings.custom_heading_font | split: '\n' %}
+    {% assign extension = font_url | split: '.' | last | downcase %}
     {% for font_item in heading_fonts %}
       {% assign font_url = font_item | split: '@' | first %}
       {% assign font_weight = font_item | split: '@' | last | default: settings.custom_heading_weight %}
       @font-face {
         font-family: 'CustomHeadingFont';
-        src: url('{{ font_url | strip }}') format('woff2');
+        src: url('{{ font_url | strip }}') format('{{ extension }}');
         font-weight: {{ font_weight }};
         font-style: normal;
         font-display: swap;
