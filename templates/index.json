@@ -82,7 +82,7 @@
         "enable_autoplay": false,
         "autoplay_speed": 10,
         "nav_color": "#fff2e7",
-        "custom_class": "slide-1",
+        "custom_class": "",
         "color_control": "section-dark"
       }
     },
