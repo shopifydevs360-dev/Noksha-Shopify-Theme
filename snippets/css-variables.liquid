@@ -103,7 +103,7 @@
 
   {% if settings.use_custom_font_heading %}
     --font-heading-family: 'CustomHeadingFont', sans-serif;
-    --font-heading-weight: {{ font_weight }};
+    --font-heading-weight: {{ settings.custom_heading_weight }};
   {% else %}
     --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
     --font-heading-weight: {{ settings.type_header_font.weight }};
