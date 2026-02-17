@@ -192,27 +192,50 @@
         ]
       },
       {
-  "type": "header",
-  "content": "Additional Custom Fonts"
-},
-{
-  "type": "checkbox",
-  "id": "use_custom_font_3",
-  "label": "Enable Custom Font 3",
-  "default": false
-},
-{
-  "type": "text",
-  "id": "custom_font_3_name",
-  "label": "Font 3 Family Name",
-  "default": "CustomFontThree"
-},
-{
-  "type": "textarea",
-  "id": "custom_font_3_url",
-  "label": "Font 3 File URL",
-  "info": "Paste single font file URL (woff2, woff, ttf, otf)"
-},
+        "type": "header",
+        "content": "Additional Custom Fonts"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_custom_font_3",
+        "label": "Enable Custom Font 3",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "custom_font_3_name",
+        "label": "Font 3 Family Name",
+        "default": "CustomFontThree"
+      },
+      {
+        "type": "textarea",
+        "id": "custom_font_3_url",
+        "label": "Font 3 File URL",
+        "info": "Paste single font file URL (woff2, woff, ttf, otf)"
+      },
+      {
+        "type": "header",
+        "content": "Custom Font 4"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_custom_font_4",
+        "label": "Enable Custom Font 4",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "custom_font_4_family",
+        "label": "Font Family Name",
+        "default": "CustomFontFour"
+      },
+      {
+        "type": "textarea",
+        "id": "custom_font_4_url",
+        "label": "Font File URL",
+        "info": "Upload font in Shopify Files and paste URL (woff2, woff, ttf, otf)"
+      },
+
 
       { "type": "header", "content": "H1" },
       { "type": "range", "id": "h1_font_size", "label": "H1 font size", "default": 60, "min": 20, "max": 120, "step": 1, "unit": "px" },
