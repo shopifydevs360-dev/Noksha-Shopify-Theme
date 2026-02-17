@@ -217,6 +217,10 @@ p:empty {
     touch-action: manipulation;
     color: rgb(var(--color-heading));
 }
+.special-font-3 {
+  font-family: var(--font-custom-3);
+}
+
 h1, h2, h3, h4, h5, h6, 
 .h1, .h2, .h3, .h4, .h5, .h6
 {
