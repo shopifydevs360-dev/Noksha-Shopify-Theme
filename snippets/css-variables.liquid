@@ -19,37 +19,62 @@
   Load custom fonts if enabled
 {%- endcomment -%}
 {% if settings.use_custom_font_body and settings.custom_body_font != blank %}
-    {% assign body_fonts = settings.custom_body_font | split: '\n' %}
-    {% for font_item in body_fonts %}
-      {% assign font_url = font_item | split: '@' | first %}
-      {% assign font_weight = font_item | split: '@' | last | default: settings.custom_body_weight %}
+  {% assign body_fonts = settings.custom_body_font | split: '\n' %}
+  {% for font_item in body_fonts %}
+    {% assign font_item = font_item | strip %}
+    {% if font_item != blank %}
+      {% assign parts = font_item | split: '@' %}
+      {% assign font_url = parts[0] | strip %}
+      {% assign font_weight = parts[1] | default: settings.custom_body_weight | default: 400 %}
       {% assign extension = font_url | split: '.' | last | downcase %}
+
       @font-face {
         font-family: 'CustomBodyFont';
-        src: url('{{ font_url | strip }}') format('{{ extension }}');
+        src: url('{{ font_url }}')
+          {% case extension %}
+            {% when 'woff2' %} format('woff2')
+            {% when 'woff' %} format('woff')
+            {% when 'ttf' %} format('truetype')
+            {% when 'otf' %} format('opentype')
+            {% else %} format('woff2')
+          {% endcase %};
         font-weight: {{ font_weight }};
         font-style: normal;
         font-display: swap;
       }
-    {% endfor %}
+    {% endif %}
+  {% endfor %}
 {% endif %}
 
+
 {% if settings.use_custom_font_heading and settings.custom_heading_font != blank %}
-    {% assign heading_fonts = settings.custom_heading_font | split: '\n' %}
-    {% assign extension = font_url | split: '.' | last | downcase %}
-    {% for font_item in heading_fonts %}
-      {% assign font_url = font_item | split: '@' | first %}
-      {% assign font_weight = font_item | split: '@' | last | default: settings.custom_heading_weight %}
-      
+  {% assign heading_fonts = settings.custom_heading_font | split: '\n' %}
+  {% for font_item in heading_fonts %}
+    {% assign font_item = font_item | strip %}
+    {% if font_item != blank %}
+      {% assign parts = font_item | split: '@' %}
+      {% assign font_url = parts[0] | strip %}
+      {% assign font_weight = parts[1] | default: settings.custom_heading_weight | default: 700 %}
+      {% assign extension = font_url | split: '.' | last | downcase %}
+
       @font-face {
         font-family: 'CustomHeadingFont';
-        src: url('{{ font_url | strip }}') format('{{ extension }}');
+        src: url('{{ font_url }}')
+          {% case extension %}
+            {% when 'woff2' %} format('woff2')
+            {% when 'woff' %} format('woff')
+            {% when 'ttf' %} format('truetype')
+            {% when 'otf' %} format('opentype')
+            {% else %} format('woff2')
+          {% endcase %};
         font-weight: {{ font_weight }};
         font-style: normal;
         font-display: swap;
       }
-    {% endfor %}
+    {% endif %}
+  {% endfor %}
 {% endif %}
+
 
 
 {%- comment -%}
