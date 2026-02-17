@@ -130,6 +130,10 @@
     --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
     --font-heading-weight: {{ settings.type_header_font.weight }};
   {% endif %}
+  {% if settings.use_custom_font_3 %}
+  --font-custom-3: '{{ settings.custom_font_3_name }}', sans-serif;
+{% endif %}
+
 /* Heading style variable */
   --font-h1-size: {{ settings.h1_font_size }}px;
   --font-h1-weight: {{ settings.h1_font_weight }};
