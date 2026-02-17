@@ -82,7 +82,7 @@
 
             <div class="text-content text-content--{{ block.settings.vertical_alignment }}-{{ block.settings.horizontal_alignment }} m-color-{{ block.settings.text_color_scheme }}">
               {% if block.settings.subheading != blank %}
-                <h4 class="hero-slideshow-sub-heading {{ block.settings.sub_heading_font_size }} {{ block.settings.use_custom_font }}">
+                <h4 class="hero-slideshow-sub-heading {{ block.settings.sub_heading_font_size }}">
                   {{ block.settings.subheading }}
                 </h4>
               {% endif %}
@@ -241,8 +241,7 @@
             { "value": "", "label": "Default" },
             { "value": "special-font-3", "label": "Custom 3" },
             { "value": "special-font-4", "label": "Custom 4" }
-          ],
-          "default": ""
+          ]
         },
         { "type": "text", "id": "heading", "label": "Heading" },
         {
@@ -327,7 +326,6 @@
         { "type": "url", "id": "link", "label": "Link" },
         { "type": "color", "id": "background_color", "label": "Background color", "default": "#f3e3d3" },
         { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
-        { "type": "color", "id": "nav_color", "label": "Navigation color", "default": "#FFF2E7" },
         {
           "type": "range",
           "id": "overlay_opacity",
