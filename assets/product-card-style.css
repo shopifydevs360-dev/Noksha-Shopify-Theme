@@ -121,8 +121,9 @@ text-decoration: underline;
 }
 .product-card .title a {
     color: rgb(var(--color-heading));
-    font-size: .9em;
+    font-size: 1em;
     display: block;
+    text-transform: uppercase;
 }
 .product-card .price {
     color: rgb(var(--color-price-regular));
