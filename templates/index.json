@@ -81,7 +81,7 @@
         "slide_effect": "slide",
         "enable_autoplay": false,
         "autoplay_speed": 10,
-        "nav_color": "#111111",
+        "nav_color": "#fff2e7",
         "custom_class": "",
         "color_control": "section-dark"
       }
