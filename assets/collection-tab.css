@@ -125,12 +125,6 @@
 .product-tabs-carousel .product-carousel .product-slide[item-index="8"] .product-card.is-animated { transition-delay: 0.7s; }
 .product-tabs-carousel .product-carousel .product-slide[item-index="9"] .product-card.is-animated { transition-delay: 0.8s; }
 
-
-
-
-
-
-
 /* Slider Css */
 .swiper-slide.product-slide{
     display: none;
