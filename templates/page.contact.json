@@ -115,14 +115,15 @@
         },
         "location_KEqPad": {
           "type": "location",
+          "name": "Doha Festival City",
           "settings": {
-            "tab_title": "Mirqab Mall",
-            "store_name": "Mirqab Mall",
-            "location": "Al Mirqab, Doha",
+            "tab_title": "Doha Festival City",
+            "store_name": "Doha Festival City",
+            "location": "Ground Floor",
             "hours": "10:00 AM - 10:00 PM",
             "contact": "+974 4444 3333",
             "description": "<p>Mirqab Mall combines traditional Qatari architecture with modern shopping facilities, offering a unique retail experience in the heart of Doha.</p>",
-            "coordinates": "25.2854, 51.5348"
+            "coordinates": "25.386486517325434, 51.44309858650465"
           }
         },
         "location_R87QyC": {
