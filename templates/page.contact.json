@@ -89,15 +89,15 @@
         },
         "location_br4cbT": {
           "type": "location",
-          "name": "Festival Mall",
+          "name": "CITY CENTER MALL",
           "settings": {
-            "tab_title": "Festival Mall",
-            "store_name": "Festival Mall",
-            "location": "Al Waab Street, Doha",
+            "tab_title": "CITY CENTER MALL",
+            "store_name": "CITY CENTER MALL",
+            "location": "Second Floor",
             "hours": "10:00 AM - 11:00 PM",
-            "contact": "+974 4444 1111",
+            "contact": "+974 5590 3190",
             "description": "<p>Festival Mall offers a premium shopping experience with luxury brands, fine dining restaurants, and a state-of-the-art cinema complex.</p>",
-            "coordinates": "25.2854, 51.5310"
+            "coordinates": "25.326866279237894, 51.53068588044414"
           }
         },
         "location_MLLchN": {
