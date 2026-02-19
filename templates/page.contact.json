@@ -74,28 +74,15 @@
     "store_location_tabs_hyc7nq": {
       "type": "store-location-tabs",
       "blocks": {
-        "location_kGpR7V": {
-          "type": "location",
-          "disabled": true,
-          "settings": {
-            "tab_title": "",
-            "store_name": "",
-            "location": "",
-            "hours": "",
-            "contact": "",
-            "description": "",
-            "coordinates": "25.2651, 51.4758"
-          }
-        },
         "location_hp4MYh": {
           "type": "location",
-          "name": "Place Vendôme",
+          "name": "VILLAGGIO MALL",
           "settings": {
-            "tab_title": "Place Vendôme",
-            "store_name": "Place Vendôme",
-            "location": "Place Vendôme mall Kiosk (Ground Floor – Gate 2)",
+            "tab_title": "VILLAGGIO MALL",
+            "store_name": "VILLAGGIO MALL",
+            "location": "Ground Floor – Gate 2",
             "hours": "10:00 AM - 10:00 PM",
-            "contact": "+974 4444 0000",
+            "contact": "+974 5590 3190",
             "description": "<p>Al Aziziyah Mall is a popular shopping destination in Doha offering a mix of international and local brands, dining options, and entertainment facilities.</p>",
             "coordinates": "25.2651, 51.4758"
           }
@@ -116,7 +103,7 @@
         "location_MLLchN": {
           "type": "location",
           "settings": {
-            "tab_title": "Tiffany Tie-Back Bonnet-20qr",
+            "tab_title": "",
             "store_name": "Qatar Mall",
             "location": "Doha, Qatar",
             "hours": "9:00 AM - 10:00 PM",
@@ -163,7 +150,6 @@
         }
       },
       "block_order": [
-        "location_kGpR7V",
         "location_hp4MYh",
         "location_br4cbT",
         "location_MLLchN",
