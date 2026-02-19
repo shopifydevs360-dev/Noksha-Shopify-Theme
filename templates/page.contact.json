@@ -74,6 +74,19 @@
     "store_location_tabs_hyc7nq": {
       "type": "store-location-tabs",
       "blocks": {
+        "location_kGpR7V": {
+          "type": "location",
+          "disabled": true,
+          "settings": {
+            "tab_title": "",
+            "store_name": "",
+            "location": "",
+            "hours": "",
+            "contact": "",
+            "description": "",
+            "coordinates": "25.2651, 51.4758"
+          }
+        },
         "location_hp4MYh": {
           "type": "location",
           "name": "Place Vendôme",
@@ -150,6 +163,7 @@
         }
       },
       "block_order": [
+        "location_kGpR7V",
         "location_hp4MYh",
         "location_br4cbT",
         "location_MLLchN",
