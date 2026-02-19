@@ -76,6 +76,7 @@
       "blocks": {
         "location_hp4MYh": {
           "type": "location",
+          "name": "Place Vendôme",
           "settings": {
             "tab_title": "Place Vendôme",
             "store_name": "Halla Hijab",
@@ -88,6 +89,7 @@
         },
         "location_br4cbT": {
           "type": "location",
+          "name": "Festival Mall",
           "settings": {
             "tab_title": "Festival Mall",
             "store_name": "Festival Mall",
