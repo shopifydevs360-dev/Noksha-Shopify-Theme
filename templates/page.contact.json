@@ -102,14 +102,15 @@
         },
         "location_MLLchN": {
           "type": "location",
+          "name": "Tawar Mall",
           "settings": {
-            "tab_title": "",
-            "store_name": "Qatar Mall",
-            "location": "Doha, Qatar",
+            "tab_title": "Tawar Mall",
+            "store_name": "Tawar Mall",
+            "location": "Ground Floor",
             "hours": "9:00 AM - 10:00 PM",
             "contact": "+974 4444 2222",
             "description": "<p>Qatar Mall is one of the largest shopping centers in the country, featuring hundreds of stores, a large food court, and family entertainment options.</p>",
-            "coordinates": "25.2532, 51.5257"
+            "coordinates": "25.336802359291948, 51.480863390192944"
           }
         },
         "location_KEqPad": {
