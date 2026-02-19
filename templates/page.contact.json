@@ -40,7 +40,7 @@
           "type": "phone",
           "settings": {
             "title": "Phone",
-            "content": "<p>+974 6664 5477</p>"
+            "content": "<p><a href=\"https://wa.me/97455903190\" target=\"_blank\">+974 5590 3190</a></p>"
           }
         },
         "socials_link_8YHiB7": {
@@ -108,8 +108,8 @@
             "store_name": "Tawar Mall",
             "location": "Ground Floor",
             "hours": "9:00 AM - 10:00 PM",
-            "contact": "+974 4444 2222",
-            "description": "<p>Qatar Mall is one of the largest shopping centers in the country, featuring hundreds of stores, a large food court, and family entertainment options.</p>",
+            "contact": "+974 5590 3190",
+            "description": "<p>Tawar Mall delivers a stylish and contemporary shopping experience featuring diverse retail outlets, quality dining options, and family entertainment, making it a popular destination in Doha.</p>",
             "coordinates": "25.336802359291948, 51.480863390192944"
           }
         },
