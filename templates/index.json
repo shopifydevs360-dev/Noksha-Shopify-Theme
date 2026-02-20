@@ -55,7 +55,7 @@
         "image_slide_xNDwjP": {
           "type": "image_slide",
           "settings": {
-            "text_color_scheme": "default",
+            "text_color_scheme": "scheme-463aa170-38a9-48ec-ba18-a79d8cec742f",
             "image": "shopify://shop_images/558446874_18421428385107253_1412_1.jpg",
             "subheading": "PREMIUM HIJABS FOR DAILY WEAR",
             "sub_heading_font_size": "h4",
@@ -82,8 +82,8 @@
       "settings": {
         "sidebar_image": "shopify://shop_images/sidebar_image.jpg",
         "slide_effect": "slide",
-        "enable_autoplay": true,
-        "autoplay_speed": 2,
+        "enable_autoplay": false,
+        "autoplay_speed": 10,
         "nav_color": "#fff2e7",
         "custom_class": "",
         "color_control": "section-dark"
