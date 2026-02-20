@@ -90,7 +90,7 @@
           "type": "icon_list_item",
           "settings": {
             "theme_icon": "fast-shipping",
-            "text": "Free delivery on all orders over £120.00",
+            "text": "Reliable Delivery Across Qatar & UAE",
             "link": ""
           }
         },
@@ -98,7 +98,7 @@
           "type": "icon_list_item",
           "settings": {
             "theme_icon": "percel",
-            "text": "Free Exchanges & Quick and Easy Returns",
+            "text": "Smooth & Easy Exchanges",
             "link": ""
           }
         },
@@ -107,15 +107,15 @@
           "settings": {
             "theme_icon": "phone",
             "custom_icon": "shopify://shop_images/telephone.png",
-            "text": "Contact our customer care team",
-            "link": "shopify://products/abstract-ink-premium-modal-hijab"
+            "text": "Here for You — Customer Care Support",
+            "link": "shopify://pages/contact"
           }
         },
         "icon_list_item_c4jLwi": {
           "type": "icon_list_item",
           "settings": {
             "theme_icon": "tag",
-            "text": "Dsicover more about the brand",
+            "text": "Discover the Halla Experience",
             "link": ""
           }
         },
