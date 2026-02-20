@@ -128,14 +128,15 @@
         },
         "location_R87QyC": {
           "type": "location",
+          "name": "Mall of Qatar",
           "settings": {
-            "tab_title": "Dar Alsalam",
-            "store_name": "Dar Alsalam Mall",
-            "location": "Al Rayyan, Qatar",
+            "tab_title": "Mall of Qatar",
+            "store_name": "Mall of Qatar",
+            "location": "Ground Floor",
             "hours": "9:00 AM - 11:00 PM",
             "contact": "+974 4444 4444",
             "description": "<p>Dar Alsalam Mall serves the Al Rayyan community with a wide selection of retail stores, dining options, and family-friendly entertainment.</p>",
-            "coordinates": "25.3110, 51.4446"
+            "coordinates": "25.326646436920985, 51.35001805766976"
           }
         },
         "location_6xWPNg": {
