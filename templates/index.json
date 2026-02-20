@@ -75,7 +75,8 @@
           "type": "video_slide",
           "settings": {
             "text_color_scheme": "",
-            "source_type": "external",
+            "source_type": "hosted",
+            "video": "shopify://files/videos/Sequence 01.MP4",
             "external_video_url": "https://www.youtube.com/watch?v=5Ach6HiKg2U&list=RDQe6VVQdF-J4&index=12",
             "autoplay": true,
             "loop": false,
