@@ -151,6 +151,19 @@
             "description": "<p>Al Mirqab Mall blends traditional Qatari architectural design with modern retail experiences, offering a curated selection of international brands, dining options, and entertainment facilities in the heart of Doha.</p>",
             "coordinates": "25.274084939588594, 51.49929135229282"
           }
+        },
+        "location_Unmfga": {
+          "type": "location",
+          "name": "Dar Al Salam Mall",
+          "settings": {
+            "tab_title": "Dar Al Salam Mall",
+            "store_name": "Dar Al Salam Mall",
+            "location": "First Floor",
+            "hours": "",
+            "contact": "",
+            "description": "",
+            "coordinates": "25.247610095380555, 51.489465286504654"
+          }
         }
       },
       "block_order": [
@@ -159,7 +172,8 @@
         "location_MLLchN",
         "location_KEqPad",
         "location_R87QyC",
-        "location_6xWPNg"
+        "location_6xWPNg",
+        "location_Unmfga"
       ],
       "name": "Store Location Tabs",
       "settings": {
