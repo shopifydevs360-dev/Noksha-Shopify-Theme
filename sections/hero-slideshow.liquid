@@ -11,14 +11,14 @@
 >
   <header class="reverse-nav full-screen-slideshow sidebar-slideshow js-animate-on-load">
 
-    {% if section.settings.sidebar_image != blank %}
+    {% if ss.sidebar_image != blank %}
       <div class="sidebar-image">
         <div class="sidebar-image-wrapper">
           <img
-            src="{{ section.settings.sidebar_image | image_url: width: 800 }}"
-            alt="{{ section.settings.sidebar_image.alt | escape }}"
-            width="{{ section.settings.sidebar_image.width }}"
-            height="{{ section.settings.sidebar_image.height }}"
+            src="{{ ss.sidebar_image | image_url: width: 800 }}"
+            alt="{{ ss.sidebar_image.alt | escape }}"
+            width="{{ ss.sidebar_image.width }}"
+            height="{{ ss.sidebar_image.height }}"
             loading="lazy"
           >
         </div>
@@ -116,15 +116,15 @@
         class="swiper-prev-text js-prev-{{ section.id }}"
         aria-label="Previous slide"
       >
-        <span class="inner-text h5" style="color: {{ section.settings.nav_color }}">Previous</span>
+        <span class="inner-text h5" style="color: {{ ss.nav_color }}">Previous</span>
       </button>
 
       <button
         class="swiper-next-text js-next-{{ section.id }}"
         aria-label="Next slide"
       >
-        <span class="line" style="background: {{ section.settings.nav_color }}"></span>
-        <span class="inner-text h5" style="color: {{ section.settings.nav_color }}">Next</span>
+        <span class="line" style="background: {{ ss.nav_color }}"></span>
+        <span class="inner-text h5" style="color: {{ ss.nav_color }}">Next</span>
       </button>
     </div>
 
@@ -133,13 +133,13 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const effect = '{{ section.settings.slide_effect }}';
+    const effect = '{{ ss.slide_effect }}';
 
     const swiper = new Swiper('.myswiper-{{ section.id }}', {
       loop: true,
       effect: effect,
 
-      {% if section.settings.slide_effect == 'fade' %}
+      {% if ss.slide_effect == 'fade' %}
       fadeEffect: {
         crossFade: true
       },
@@ -150,9 +150,9 @@
         prevEl: '.js-prev-{{ section.id }}'
       },
 
-      {% if section.settings.enable_autoplay %}
+      {% if ss.enable_autoplay %}
       autoplay: {
-        delay: {{ section.settings.autoplay_speed | times: 1000 }},
+        delay: {{ ss.autoplay_speed | times: 1000 }},
         disableOnInteraction: false
       },
       {% endif %}
