@@ -60,21 +60,17 @@
 
             {% if block.type == 'video_slide' and block.settings.video_url_desktop != blank %}
               <div class="media-wrapper">
-            <video
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="metadata"
-              aria-hidden="true"
-              poster="{{ block.settings.poster | image_url: width: 1200 }}"
-            >
-              <source src="{{ block.settings.video_url_desktop }}" media="(min-width: 768px)">
-              {% if block.settings.video_url_mobile != blank %}
-                <source src="{{ block.settings.video_url_mobile }}" media="(max-width: 767px)">
-              {% endif %}
-            </video>
-
+                {% render 'video',
+                  video: render_video,
+                  external_video_url: render_external,
+                  class: video_wrapper_classes,
+                  style: wrapper_style,
+                  autoplay: block.settings.autoplay,
+                  loop: block.settings.loop,
+                  muted: block.settings.muted,
+                  controls: block.settings.controls,
+                  custom_thumbnail: block.settings.custom_thumbnail
+                %}
               </div>
             {% endif %}
 
