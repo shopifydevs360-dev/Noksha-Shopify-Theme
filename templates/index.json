@@ -33,7 +33,6 @@
         },
         "image_slide_da8geD": {
           "type": "image_slide",
-          "disabled": true,
           "settings": {
             "text_color_scheme": "default",
             "image": "shopify://shop_images/9-IMG_9615.jpg",
@@ -54,6 +53,7 @@
         },
         "image_slide_xNDwjP": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "text_color_scheme": "default",
             "image": "shopify://shop_images/14Asset_47_5x-Picsart-AiImageEnhancer.png",
