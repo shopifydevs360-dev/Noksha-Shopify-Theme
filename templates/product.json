@@ -28,7 +28,7 @@
           "type": "empty_space",
           "settings": {
             "height": 10,
-            "show_divider": true
+            "show_divider": false
           }
         },
         "title_price_YnB7D8": {
@@ -66,15 +66,15 @@
         "accordion_GJhgHM": {
           "type": "accordion",
           "settings": {
-            "title": "TELL ME MORE",
-            "content": "<p>This color-safe shampoo breathes life into fine, flat hair with strengthening keratin, biotin, and nourishing chia seed oil. Hair is left clean, bouncy, and full of volume, so you can finally be fine with being fine. Follow with Fine Conditioner for best results.</p>"
+            "title": "PRODUCT DETAILS",
+            "content": "<p>Each Halla Hijab piece is thoughtfully selected and designed to offer comfort, elegance, and versatility.<br/><br/>Our products are made using high-quality fabrics that are soft, breathable, and suitable for everyday wear or special occasions.<br/><br/>Designed for effortless styling and all-day confidence, every item reflects our commitment to modesty, femininity, and timeless elegance.<br/><br/>Please note: Slight color variations may occur due to lighting and screen settings.</p>"
           }
         },
         "accordion_EA3PW7": {
           "type": "accordion",
           "settings": {
-            "title": "FULL INGREDIENTS",
-            "content": "<p>Water / Aqua / Eau, Sodium C14-16 Olefin Sulfonate, Cocamidopropyl Betaine, Sodium Methyl Cocoyl Taurate, Peg-200 Hydrogenated Glyceryl Palmate, Cocamide Mipa, Fragrance / Parfum, , Panthenol, Cocoglucosides</p>"
+            "title": "CARE AND SHIPPING INFO",
+            "content": "<p>To maintain the beauty and quality of your Halla Hijab products, we recommend gentle care. Hand wash or use a delicate machine cycle with mild detergent. Avoid bleach and high heat. Air drying is preferred to preserve fabric softness and color.<br/><br/>We offer reliable delivery across our service locations. Orders are processed promptly, and estimated delivery times will be shown at checkout.<br/><br/>For exchanges or assistance, our customer support team is always happy to help.</p>"
           }
         },
         "product_meta_iat8W8": {
