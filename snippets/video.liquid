@@ -53,27 +53,50 @@
         <source src="{{ source.url }}" type="{{ source.mime_type }}">
       {% endfor %}
     </video>
+{% elsif external_video_url != blank %}
 
-  {% elsif external_video_url != blank %}
+  {% assign autoplay_param = '' %}
+  {% if is_autoplay %}
+    {% assign autoplay_param = '&autoplay=1&mute=1' %}
+  {% endif %}
 
-    {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
+  {%- comment -%}
+    ---------------------------
+    YOUTUBE
+    ---------------------------
+  {%- endcomment -%}
+  {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
+
+    {% if external_video_url contains 'youtu.be' %}
+      {% assign video_id = external_video_url | split: 'youtu.be/' | last | split: '?' | first %}
+    {% else %}
       {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
-      <iframe
-        src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1{% if is_autoplay %}&autoplay=1&mute=1{% endif %}"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-      ></iframe>
-
-    {% elsif external_video_url contains 'vimeo.com' %}
-      {% assign video_id = external_video_url | split: '/' | last %}
-      <iframe
-        src="https://player.vimeo.com/video/{{ video_id }}{% if is_autoplay %}?autoplay=1&muted=1{% endif %}"
-        frameborder="0"
-        allow="autoplay; fullscreen"
-        allowfullscreen
-      ></iframe>
     {% endif %}
+
+    <iframe
+      src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1&rel=0&enablejsapi=1{{ autoplay_param }}"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    ></iframe>
+
+  {%- comment -%}
+    ---------------------------
+    VIMEO
+    ---------------------------
+  {%- endcomment -%}
+  {% elsif external_video_url contains 'vimeo.com' %}
+
+    {% assign video_id = external_video_url | split: '/' | last %}
+
+    <iframe
+      src="https://player.vimeo.com/video/{{ video_id }}?title=0&byline=0&portrait=0{% if is_autoplay %}&autoplay=1&muted=1{% endif %}"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      allowfullscreen
+    ></iframe>
+
+  {% endif %}
 
   {% endif %}
 
