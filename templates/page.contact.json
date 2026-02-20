@@ -141,14 +141,15 @@
         },
         "location_6xWPNg": {
           "type": "location",
+          "name": "Al Mirqab Mall",
           "settings": {
-            "tab_title": "Tawar Mall",
-            "store_name": "Tawar Mall",
-            "location": "Doha, Qatar",
+            "tab_title": "Al Mirqab Mall",
+            "store_name": "Al Mirqab Mall",
+            "location": "Ground Floor",
             "hours": "10:00 AM - 10:00 PM",
             "contact": "+974 4444 5555",
             "description": "<p>Tawar Mall is a modern shopping destination offering a diverse mix of international brands, entertainment facilities, and culinary experiences.</p>",
-            "coordinates": "25.2935, 51.5088"
+            "coordinates": "25.274084939588594, 51.49929135229282"
           }
         }
       },
