@@ -58,20 +58,49 @@
               </div>
             {% endif %}
 
-            {% if block.type == 'video_slide' and block.settings.video_url_desktop != blank %}
-              <div class="media-wrapper">
-                {% render 'video',
-                  video: render_video,
-                  external_video_url: render_external,
-                  class: video_wrapper_classes,
-                  style: wrapper_style,
-                  autoplay: block.settings.autoplay,
-                  loop: block.settings.loop,
-                  muted: block.settings.muted,
-                  controls: block.settings.controls,
-                  custom_thumbnail: block.settings.custom_thumbnail
-                %}
-              </div>
+            {% if block.type == 'video_slide' %}
+
+              {% liquid
+                assign video_wrapper_classes = 'cropped-video-wrapper'
+                assign wrapper_style = ''
+
+                if block.settings.aspect_ratio == 'adapt-to-video'
+                  assign video_wrapper_classes = video_wrapper_classes | append: ' adapt-video-height'
+
+                elsif block.settings.aspect_ratio == 'custom-height'
+                  assign video_wrapper_classes = video_wrapper_classes | append: ' custom-height-video'
+                  assign wrapper_style = 'height:' | append: block.settings.custom_height | append: 'px;'
+
+                else
+                  assign video_wrapper_classes = video_wrapper_classes | append: ' ' | append: block.settings.aspect_ratio
+                endif
+
+                assign render_video = blank
+                assign render_external = blank
+
+                if block.settings.source_type == 'hosted'
+                  assign render_video = block.settings.video
+                elsif block.settings.source_type == 'external'
+                  assign render_external = block.settings.external_video_url
+                endif
+              %}
+
+              {% if render_video != blank or render_external != blank %}
+                <div class="media-wrapper">
+                  {% render 'video',
+                    video: render_video,
+                    external_video_url: render_external,
+                    class: video_wrapper_classes,
+                    style: wrapper_style,
+                    autoplay: block.settings.autoplay,
+                    loop: block.settings.loop,
+                    muted: block.settings.muted,
+                    controls: block.settings.controls,
+                    custom_thumbnail: block.settings.custom_thumbnail
+                  %}
+                </div>
+              {% endif %}
+
             {% endif %}
 
             <span class="overlay-bg" style=" background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity }};"></span>
