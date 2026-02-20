@@ -82,8 +82,8 @@
       "settings": {
         "sidebar_image": "shopify://shop_images/sidebar_image.jpg",
         "slide_effect": "slide",
-        "enable_autoplay": false,
-        "autoplay_speed": 10,
+        "enable_autoplay": true,
+        "autoplay_speed": 2,
         "nav_color": "#fff2e7",
         "custom_class": "",
         "color_control": "section-dark"
