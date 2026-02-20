@@ -61,20 +61,6 @@
             {% if block.type == 'video_slide' %}
 
               {% liquid
-                assign video_wrapper_classes = 'cropped-video-wrapper'
-                assign wrapper_style = ''
-
-                if block.settings.aspect_ratio == 'adapt-to-video'
-                  assign video_wrapper_classes = video_wrapper_classes | append: ' adapt-video-height'
-
-                elsif block.settings.aspect_ratio == 'custom-height'
-                  assign video_wrapper_classes = video_wrapper_classes | append: ' custom-height-video'
-                  assign wrapper_style = 'height:' | append: block.settings.custom_height | append: 'px;'
-
-                else
-                  assign video_wrapper_classes = video_wrapper_classes | append: ' ' | append: block.settings.aspect_ratio
-                endif
-
                 assign render_video = blank
                 assign render_external = blank
 
@@ -90,8 +76,7 @@
                   {% render 'video',
                     video: render_video,
                     external_video_url: render_external,
-                    class: video_wrapper_classes,
-                    style: wrapper_style,
+                    class: 'cropped-video-wrapper adapt-video-height',
                     autoplay: block.settings.autoplay,
                     loop: block.settings.loop,
                     muted: block.settings.muted,
@@ -328,9 +313,48 @@
       "type": "video_slide",
       "name": "Video Slide",
       "settings": [
+
         { "type": "color_scheme", "id": "text_color_scheme", "label": "Text color scheme" },
-        { "type": "text", "id": "video_url_desktop", "label": "Desktop video URL (mp4)" },
-        { "type": "text", "id": "video_url_mobile", "label": "Mobile video URL (mp4)" },
+
+        {
+          "type": "select",
+          "id": "source_type",
+          "label": "Video source",
+          "default": "hosted",
+          "options": [
+            { "value": "hosted", "label": "Shopify hosted video" },
+            { "value": "external", "label": "External video URL" }
+          ]
+        },
+
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Shopify hosted video",
+          "visible_if": "{{ block.settings.source_type == 'hosted' }}"
+        },
+
+        {
+          "type": "text",
+          "id": "external_video_url",
+          "label": "External video URL (YouTube/Vimeo)",
+          "visible_if": "{{ block.settings.source_type == 'external' }}"
+        },
+
+        {
+          "type": "image_picker",
+          "id": "custom_thumbnail",
+          "label": "Custom thumbnail image"
+        },
+        {
+          "type": "header",
+          "content": "Playback"
+        },
+        { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false },
+        { "type": "checkbox", "id": "loop", "label": "Loop", "default": false },
+        { "type": "checkbox", "id": "muted", "label": "Muted", "default": true },
+        { "type": "checkbox", "id": "controls", "label": "Show controls", "default": true },
+
         { "type": "text", "id": "subheading", "label": "Subheading" },
         {
           "type": "select",
