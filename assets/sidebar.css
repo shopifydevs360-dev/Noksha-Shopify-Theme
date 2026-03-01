@@ -126,7 +126,7 @@ body.has-promo-bar .m-sidebar__content {
     font-size: 0.8em;
     position: absolute;
     top: -13px;
-    left: 16px;
+    inset-inline-start: 16px;
     background: #231f20;
     height: 20px;
     width: 20px;
