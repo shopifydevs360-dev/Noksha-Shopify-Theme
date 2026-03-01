@@ -28,6 +28,10 @@
   padding: 2.5rem;
   padding-right: 0;
 }
+.rtl .m-sidebar__content {
+  padding-right: 2.5rem;
+  padding-left: 0;
+}
 body.has-promo-bar .m-sidebar__content {
     top: 3.2rem;
 }
