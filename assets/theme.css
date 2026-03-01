@@ -989,14 +989,16 @@ a.cropped-image-wrapper {
 /* ============================
    Text align
 ============================ */
-.text-left{
-  text-align: left;
+.text-left {
+  text-align: start;
 }
-.text-center{
+
+.text-center {
   text-align: center;
 }
-.text-right{
-  text-align: right;
+
+.text-right {
+  text-align: end;
 }
 /* ============================
    Accordion Style
