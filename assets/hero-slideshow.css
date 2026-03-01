@@ -337,3 +337,98 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
 .hero-slideshow .swiper-slide-active .text-content > *:nth-child(3) {
   transition-delay: 0.4s;
 }
+
+/* =====================================
+   HERO SLIDESHOW RTL SUPPORT
+===================================== */
+
+.rtl .hero-slideshow .sidebar-image {
+  left: auto;
+  right: 0;
+}
+
+.rtl .scrolled .hero-slideshow .sidebar-image {
+  transform: translateX(100%);
+}
+
+/* Swiper container shift */
+@media (min-width: 991px) {
+  .rtl .hero-slideshow .swiper-container-hero {
+    transform: translateX(-320px);
+  }
+
+  .rtl.scrolled .hero-slideshow .swiper-container-hero {
+    transform: translateX(0);
+  }
+}
+
+/* -------------------------------------
+   TEXT ALIGNMENTS
+------------------------------------- */
+
+.rtl .hero-slideshow .text-content--top-left,
+.rtl .hero-slideshow .text-content--center-left,
+.rtl .hero-slideshow .text-content--bottom-left {
+  left: auto;
+  right: 2.8rem;
+  text-align: right;
+}
+
+@media (min-width: 991px) {
+  .rtl.scrolled .hero-slideshow .text-content--top-left,
+  .rtl.scrolled .hero-slideshow .text-content--center-left,
+  .rtl.scrolled .hero-slideshow .text-content--bottom-left {
+    right: 9rem;
+  }
+}
+
+.rtl .hero-slideshow .text-content--top-right,
+.rtl .hero-slideshow .text-content--center-right,
+.rtl .hero-slideshow .text-content--bottom-right {
+  right: auto;
+  left: 2.8rem;
+  text-align: left;
+}
+
+/* -------------------------------------
+   BUTTON ICON SPACING
+------------------------------------- */
+
+.rtl .hero-slideshow .text-content .icon {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.rtl .hero-slideshow .text-content .btn-arrow:hover .icon {
+  transform: translateX(-4px);
+}
+
+/* -------------------------------------
+   NAVIGATION POSITION
+------------------------------------- */
+
+.rtl .hero-slideshow .swiper-nav-wrapper {
+  right: auto;
+  left: 60px;
+}
+
+@media (max-width: 991px) {
+  .rtl .hero-slideshow .swiper-nav-wrapper {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Next button spacing */
+.rtl .hero-slideshow .swiper-next-text {
+  margin-left: 0;
+  margin-right: 72px;
+  padding-left: 0 !important;
+  padding-right: 34px !important;
+}
+
+.rtl .hero-slideshow .swiper-next-text .line {
+  left: auto;
+  right: 0;
+  transform: translate(100%);
+}
