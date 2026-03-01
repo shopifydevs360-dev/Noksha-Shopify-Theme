@@ -313,9 +313,10 @@ body.disable-scrollbars {
   padding: 4rem 0.4rem 0.8rem 0.4rem;
 }
 @media (min-width: 991px) {
-    .drawer-space {
-        margin-inline-start: 9rem;
-    }
+    .rtl .drawer-space {
+        margin-left: 0;
+        margin-right: 9rem;
+        }
    .top-home .drawer-space {
         margin-left: 13rem;
     }
