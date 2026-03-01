@@ -121,5 +121,7 @@
   .collections-productlist.active {
     transform: translateX(0%);
   }
-
+  .collections-productlist-header, .child-linklist-header, .grandchild-linklist-header{
+    margin-top: 3.5rem;
+  }
 }
