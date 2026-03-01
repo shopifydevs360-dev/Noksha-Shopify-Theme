@@ -44,15 +44,11 @@
                   class="img-slide-bg"
                   style="background-color: {{ block.settings.image_background_color }};"
                 ></div>
-
-                {% if block.settings.image %}
                 {% render 'image',
                     image: block.settings.image,
                     class: image_wapper_classes,
                     img_alt: block.settings.title
                   %}
-
-                {% endif %}
               </div>
             </div>
 
