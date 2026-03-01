@@ -41,6 +41,11 @@
 {% liquid
   assign loading = loading | default: 'lazy'
   assign fetchpriority = fetchpriority | default: 'low'
+
+  if image == blank
+    assign image_is_blank = true
+  endif
+
   unless height
     assign width = width | default: image.width
   endunless
@@ -52,7 +57,6 @@
   endif
 
   assign wrapper_style = style | default: ''
-
 %}
 
 <{{ wrapper }}
@@ -64,15 +68,23 @@
     style="{{ wrapper_style }}"
   {% endif %}
 >
+{% if image_is_blank %}
+  <img
+    src="{{ 'default-image.svg' | asset_url }}"
+    alt="{{ img_alt | default: 'Default image' }}"
+    loading="{{ loading }}"
+    fetchpriority="{{ fetchpriority }}"
+    width="{{ width }}"
+    height="{{ height }}"
+  >
+{% else %}
   {% if mobile_image %}
     <picture>
-      <!-- Mobile image -->
       <source
         media="(max-width: 768px)"
         srcset="{{ mobile_image | image_url: width: 768 }}"
       >
 
-      <!-- Desktop / default image -->
       {{ image
         | image_url: width: width, height: height, crop: crop
         | image_tag:
@@ -84,20 +96,21 @@
             sizes: '(min-width: 1024px) 50vw, 100vw',
             width: width,
             height: height
-        }}
+      }}
     </picture>
   {% else %}
     {{ image
       | image_url: width: width, height: height, crop: crop
       | image_tag:
-        alt: img_alt,
-        loading: loading,
-        fetchpriority: fetchpriority,
-        decoding: 'async',
-        widths: '360,533,720,940,1066,1500',
-        sizes: '(min-width: 1024px) 50vw, 100vw',
-        width: width,
-        height: height
+          alt: img_alt,
+          loading: loading,
+          fetchpriority: fetchpriority,
+          decoding: 'async',
+          widths: '360,533,720,940,1066,1500',
+          sizes: '(min-width: 1024px) 50vw, 100vw',
+          width: width,
+          height: height
     }}
   {% endif %}
+{% endif %}
 </{{ wrapper }}>
