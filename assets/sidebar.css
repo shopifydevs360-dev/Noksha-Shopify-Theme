@@ -4,7 +4,10 @@
   width: 100%;
   transition: all .8s cubic-bezier(0,0,.002,1);
   z-index: 90;
-      width: auto;
+  width: auto;
+}
+.rtl .m-sidebar {
+  inset: 0 0 0 auto;
 }
 .expended{
     max-width: 20rem;
