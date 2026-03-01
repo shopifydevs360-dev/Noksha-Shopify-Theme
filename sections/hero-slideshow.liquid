@@ -38,7 +38,19 @@
             {% if block.type == 'image_slide' and block.settings.image != blank %}
               <div class="media-wrapper">
 
+              {% render 'image',
+                class: 'product__image {{ section.settings.image_wapper_class }}',
+                image: product.featured_image,
+                url: product.url,
+                width: {{ image.width }},
+                height: {{ image.height }},
+                crop: 'center',
+                mobile_image: block.settings.mobile_image,
+                img_alt: block.settings.image.alt | escape,
 
+                loading: eager,
+                fetchpriority: high
+              %}
 
                 <picture>
                   {% if block.settings.mobile_image != blank %}
@@ -142,32 +154,75 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const effect = '{{ ss.slide_effect }}';
+document.addEventListener('DOMContentLoaded', function () {
+  const effect = '{{ ss.slide_effect }}';
 
-    const swiper = new Swiper('.myswiper-{{ section.id }}', {
-      loop: true,
-      effect: effect,
+  /* =========================
+     YOUTUBE CONTROL HELPERS
+  ========================== */
 
-      {% if ss.slide_effect == 'fade' %}
-      fadeEffect: {
-        crossFade: true
-      },
-      {% endif %}
-
-      navigation: {
-        nextEl: '.js-next-{{ section.id }}',
-        prevEl: '.js-prev-{{ section.id }}'
-      },
-
-      {% if ss.enable_autoplay %}
-      autoplay: {
-        delay: {{ ss.autoplay_speed | times: 1000 }},
-        disableOnInteraction: false
-      },
-      {% endif %}
+  function pauseAllYouTube() {
+    document.querySelectorAll('.myswiper-{{ section.id }} iframe').forEach(function(iframe) {
+      iframe.contentWindow.postMessage(
+        '{"event":"command","func":"pauseVideo","args":""}',
+        '*'
+      );
     });
+  }
+
+  function playActiveYouTube(swiperInstance) {
+    const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+    if (!activeSlide) return;
+
+    const iframe = activeSlide.querySelector('iframe');
+    if (!iframe) return;
+
+    iframe.contentWindow.postMessage(
+      '{"event":"command","func":"playVideo","args":""}',
+      '*'
+    );
+  }
+
+  /* =========================
+     INIT SWIPER
+  ========================== */
+
+  const swiper = new Swiper('.myswiper-{{ section.id }}', {
+    loop: true,
+    effect: effect,
+
+    {% if ss.slide_effect == 'fade' %}
+    fadeEffect: {
+      crossFade: true
+    },
+    {% endif %}
+
+    navigation: {
+      nextEl: '.js-next-{{ section.id }}',
+      prevEl: '.js-prev-{{ section.id }}'
+    },
+
+    {% if ss.enable_autoplay %}
+    autoplay: {
+      delay: {{ ss.autoplay_speed | times: 1000 }},
+      disableOnInteraction: false
+    },
+    {% endif %}
+
+    on: {
+      init: function () {
+        playActiveYouTube(this);
+      },
+      slideChangeTransitionStart: function () {
+        pauseAllYouTube();
+      },
+      slideChangeTransitionEnd: function () {
+        playActiveYouTube(this);
+      }
+    }
   });
+
+});
 </script>
 
 
