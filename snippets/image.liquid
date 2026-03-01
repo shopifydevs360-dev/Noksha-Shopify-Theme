@@ -41,14 +41,20 @@
 {% liquid
   assign loading = loading | default: 'lazy'
   assign fetchpriority = fetchpriority | default: 'low'
+  assign image_is_blank = false
 
   if image == blank
     assign image_is_blank = true
   endif
 
-  unless height
-    assign width = width | default: image.width
-  endunless
+  if image_is_blank == false
+    unless height
+      assign width = width | default: image.width
+    endunless
+  else
+    assign width = width | default: 800
+    assign height = height | default: 800
+  endif
 
   if url
     assign wrapper = 'a'
@@ -68,7 +74,7 @@
     style="{{ wrapper_style }}"
   {% endif %}
 >
-{% if image_is_blank %}
+{% if image != blank %}
   <img
     src="{{ 'default-image.svg' | asset_url }}"
     alt="{{ img_alt | default: 'Default image' }}"
