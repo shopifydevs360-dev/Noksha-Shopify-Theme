@@ -298,6 +298,17 @@ body.disable-scrollbars {
   visibility: visible;
   pointer-events: auto;
 }
+
+.rtl .noksha-drawer {
+  transform: translateX(100%);
+}
+
+.rtl .noksha-drawer.bag-drawer-open,
+.rtl .noksha-drawer.account-drawer-open,
+.rtl .noksha-drawer.search-drawer-open,
+.rtl .noksha-drawer.nav-drawer-open {
+  transform: translateX(0);
+}
  .noksha-drawer .inner-section {
   padding: 4rem 0.4rem 0.8rem 0.4rem;
 }
