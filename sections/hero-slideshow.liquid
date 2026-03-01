@@ -41,12 +41,30 @@
               {% render 'image',
                 class: '',
                 image: block.settings.image,
+                width: {{ image.width }},
+                height: {{ image.height }},
                 mobile_image: block.settings.mobile_image,
                 img_alt: block.settings.image.alt | escape,
 
                 loading: eager,
                 fetchpriority: high
               %}
+
+                {% comment %} <picture>
+                  {% if block.settings.mobile_image != blank %}
+                    <source
+                      media="(max-width: 767px)"
+                      srcset="{{ block.settings.mobile_image | image_url: width: 900 }}"
+                    >
+                  {% endif %}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 2000 }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    loading="lazy"
+                  >
+                </picture> {% endcomment %}
               </div>
             {% endif %}
 
