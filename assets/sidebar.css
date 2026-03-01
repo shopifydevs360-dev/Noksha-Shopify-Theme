@@ -314,13 +314,10 @@ body.disable-scrollbars {
 }
 @media (min-width: 991px) {
     .drawer-space {
-        margin-left: 9rem;
+        margin-inline-start: 9rem;
     }
    .top-home .drawer-space {
         margin-left: 13rem;
-    }
-   .rtl .drawer-space {
-        margin-right: 9rem;
     }
      .noksha-drawer .inner-section {
         padding: 8rem 1.5rem 1.5rem 1rem;
