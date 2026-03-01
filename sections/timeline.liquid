@@ -203,7 +203,59 @@
     left: 0;
   }
 }
+/* =====================================
+   TIMELINE RTL SUPPORT
+===================================== */
 
+.rtl .timeline-section .timeline-container::after {
+  left: auto;
+  right: 50%;
+  margin-left: 0;
+  margin-right: -3px;
+}
+
+/* Default items */
+.rtl .timeline-section .timeline-item::after {
+  right: auto;
+  left: -9px;
+}
+
+/* Right items become left */
+.rtl .timeline-section .timeline-item-right {
+  left: auto;
+  right: 50%;
+}
+
+.rtl .timeline-section .timeline-item-right::after {
+  left: auto;
+  right: -11px;
+}
+
+/* ------------------------------
+   MOBILE RTL
+------------------------------ */
+
+@media (max-width: 768px) {
+
+  .rtl .timeline-section .timeline-container::after {
+    left: auto;
+    right: 31px;
+  }
+
+  .rtl .timeline-section .timeline-item {
+    padding-left: 25px;
+    padding-right: 70px;
+  }
+
+  .rtl .timeline-section .timeline-item::after {
+    left: auto;
+    right: 19px;
+  }
+
+  .rtl .timeline-section .timeline-item-right {
+    right: 0;
+  }
+}
 {% endstylesheet %}
 
 
