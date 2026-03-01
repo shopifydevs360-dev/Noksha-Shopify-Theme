@@ -15,7 +15,7 @@
     "logo_width_mobile": 100,
     "site_name": "Halla Hijab",
     "favicon": "shopify://shop_images/Halla_Hijab_English_Logo-01_1.png",
-    "enable_rtl": true,
+    "enable_rtl": false,
     "type_base_font": "chivo_n4",
     "use_custom_font_body": false,
     "custom_body_font": "https://cdn.shopify.com/s/files/1/0964/2108/5491/files/Sofia_Pro_Regular.woff2?v=1767820314",
