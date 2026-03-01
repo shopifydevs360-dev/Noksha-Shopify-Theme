@@ -37,20 +37,7 @@
 
             {% if block.type == 'image_slide' and block.settings.image != blank %}
               <div class="media-wrapper">
-
-              {% render 'image',
-                class: '',
-                image: block.settings.image,
-                width: {{ image.width }},
-                height: {{ image.height }},
-                mobile_image: block.settings.mobile_image,
-                img_alt: block.settings.image.alt | escape,
-
-                loading: eager,
-                fetchpriority: high
-              %}
-
-                {% comment %} <picture>
+                <picture>
                   {% if block.settings.mobile_image != blank %}
                     <source
                       media="(max-width: 767px)"
@@ -64,7 +51,7 @@
                     height="{{ block.settings.image.height }}"
                     loading="lazy"
                   >
-                </picture> {% endcomment %}
+                </picture>
               </div>
             {% endif %}
 
