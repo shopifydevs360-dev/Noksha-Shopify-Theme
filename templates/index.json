@@ -76,6 +76,7 @@
       "custom_css": [],
       "name": "Hero Slideshow",
       "settings": {
+        "sidebar_image": "shopify://shop_images/Aab_2025_09_27_0154_360x_ae3101d7-8e3f-4cc1-ad56-25da7bd664a0.jpg",
         "slide_effect": "slide",
         "enable_autoplay": false,
         "autoplay_speed": 10,
