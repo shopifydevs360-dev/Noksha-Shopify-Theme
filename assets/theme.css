@@ -966,6 +966,10 @@ a.cropped-image-wrapper {
   .sidebar-space{
     padding-left: 9rem;
   }
+  .rtl .sidebar-space{
+    padding-left: 0;
+    padding-right: 9rem;
+  }
   .section-x-padding{
     padding-left: 4rem;
     padding-right: 4rem;
