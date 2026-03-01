@@ -41,13 +41,8 @@
 {% liquid
   assign loading = loading | default: 'lazy'
   assign fetchpriority = fetchpriority | default: 'low'
-  assign image_is_blank = false
 
-  if image == blank
-    assign image_is_blank = true
-  endif
-
-  if image_is_blank == false
+  if image != blank
     unless height
       assign width = width | default: image.width
     endunless
