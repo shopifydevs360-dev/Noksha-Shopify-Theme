@@ -16,6 +16,8 @@
           "type": "image_slide",
           "settings": {
             "text_color_scheme": "default",
+            "image": "shopify://shop_images/Aab_2025_09_26_00214_620x_2cdd9ef0-e492-474a-9bdd-21ef85b4f18f.webp",
+            "mobile_image": "shopify://shop_images/Aab_2025_09_26_00213_360x_d1424c67-a840-4142-847e-3e23001c9b2d.webp",
             "subheading": "Grace in Every Drape",
             "sub_heading_font_size": "h3",
             "use_custom_font": "special-font-3",
