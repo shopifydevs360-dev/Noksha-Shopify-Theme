@@ -242,13 +242,13 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
 /* Mobile content centering */
 @media (max-width: 991px) {
 .hero-slideshow .text-content {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    text-align: center;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%);
+    text-align: center !important;
     bottom: 20%;
     top: auto;
-  }
+}
 /* .rtl .hero-slideshow .text-content {
     transform: translateX(10%);
     text-align: center;
