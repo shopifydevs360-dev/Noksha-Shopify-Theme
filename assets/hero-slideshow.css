@@ -249,10 +249,10 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
     bottom: 20%;
     top: auto;
   }
-.rtl .hero-slideshow .text-content {
+/* .rtl .hero-slideshow .text-content {
     transform: translateX(10%);
     text-align: center;
-  }
+  } */
 }
 
 /* =====================================
