@@ -172,7 +172,8 @@
   {% endif %}
  </section>
 </footer>
-
+{% comment %} Notify Me Template When a product is Sold Out {% endcomment %}
+ {% render 'notify-me' %}
 <script src="{{ 'footer.js' | asset_url }}" defer></script>
 
 {% schema %}
