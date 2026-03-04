@@ -837,7 +837,9 @@
     "settings": [
       { "type": "header", "content": "Newsletter" },
       { "type": "checkbox", "id": "enable_newsletter", "label": "Enable Newsletter" },
-      { "type": "color_scheme", "id": "popup_color_scheme", "label": "Color Scheme", "default": "background-1" }
+      { "type": "color_scheme", "id": "popup_color_scheme", "label": "Color Scheme", "default": "background-1" },
+      { "type": "checkbox", "id": "enable_notify_me", "label": "Enable Notify Me" },
+      { "type": "color_scheme", "id": "notify_me_color", "label": "Color Scheme", "default": "background-1" }
     ]
   },
 {
