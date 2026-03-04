@@ -23,8 +23,6 @@
 
       {% for block in section.blocks %}
         {% case block.type %}
-          {%- when '@app' -%}
-            {% render block %}
 
           <!-- TITLE + PRICE -->
           {% when 'title_price' %}

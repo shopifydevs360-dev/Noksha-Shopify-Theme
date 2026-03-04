@@ -103,14 +103,8 @@
   width: 0;
   transition: width 0.3s ease;
 } 
-.cart-discount-wrapper{
-    font-size: 0.7em;
-    margin-bottom: 1.6rem;
-    max-width: 22rem;
-    color: rgb(var(--color-text));
-}
 .discount-progress {
-    background: rgb(var(--color-additional-1));
+    background: rgb(var(--color-additional-2));
     height: 0.5rem;
     width: 100%;
     margin-top: 0.5rem;
@@ -119,10 +113,9 @@
 }
 
 .discount-progress-bar {
-  background: rgb(var(--color-additional-2));
   height: 100%;
-  width: 0;
-  transition: width 0.3s ease;
+  background: #111;
+  transition: width .4s ease;
 }
 
 /* Toggle text */
