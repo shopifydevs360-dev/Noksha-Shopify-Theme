@@ -14,6 +14,7 @@
       "blocks": {
         "image_slide_LK9aNK": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "text_color_scheme": "default",
             "image": "shopify://shop_images/Aab_2025_09_26_00214_620x_2cdd9ef0-e492-474a-9bdd-21ef85b4f18f.webp",
