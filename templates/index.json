@@ -12,29 +12,23 @@
     "hero_slideshow_DY9JwJ": {
       "type": "hero-slideshow",
       "blocks": {
-        "video_slide_wkgqqB": {
-          "type": "video_slide",
+        "image_slide_LK9aNK": {
+          "type": "image_slide",
+          "disabled": true,
           "settings": {
-            "text_color_scheme": "",
-            "source_type": "hosted",
-            "video": "shopify://files/videos/0624.mp4",
-            "external_video_url": "",
-            "autoplay": true,
-            "loop": false,
-            "muted": false,
-            "controls": false,
-            "subheading": "",
-            "sub_heading_font_size": "h4",
-            "use_custom_font": "",
-            "heading": "",
+            "text_color_scheme": "default",
+            "subheading": "Grace in Every Drape",
+            "sub_heading_font_size": "h3",
+            "use_custom_font": "special-font-3",
+            "heading": "PREMIUM HIJAB COLLECTION",
             "heading_size": "h2",
             "cta_text": "",
             "link": "",
             "background_color": "#f3e3d3",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
-            "vertical_alignment": "bottom",
-            "custom_class": ""
+            "vertical_alignment": "center",
+            "custom_class": "slide-1"
           }
         },
         "image_slide_da8geD": {
@@ -76,7 +70,7 @@
         }
       },
       "block_order": [
-        "video_slide_wkgqqB",
+        "image_slide_LK9aNK",
         "image_slide_da8geD",
         "image_slide_xNDwjP"
       ],
@@ -99,7 +93,7 @@
           "type": "tab",
           "settings": {
             "tab_label": "Easy Hijab",
-            "collection": "colored-contact-lenses-with-power-monthly"
+            "collection": "easy-hijab"
           }
         },
         "tab_Nq43z7": {
@@ -146,7 +140,7 @@
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "title": "Best Sellers",
         "title_font_size": "h3",
-        "title_link": "shopify://collections/colored-contact-lenses-with-power-monthly",
+        "title_link": "shopify://collections/all",
         "padding_top": 100,
         "padding_bottom": 0,
         "custom_class": "",
