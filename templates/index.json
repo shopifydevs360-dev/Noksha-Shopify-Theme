@@ -14,9 +14,10 @@
       "blocks": {
         "image_slide_LK9aNK": {
           "type": "image_slide",
-          "disabled": true,
           "settings": {
             "text_color_scheme": "default",
+            "image": "shopify://shop_images/Aab_2025_09_26_00214_620x_2cdd9ef0-e492-474a-9bdd-21ef85b4f18f.webp",
+            "mobile_image": "shopify://shop_images/Aab_2025_09_26_00213_360x_d1424c67-a840-4142-847e-3e23001c9b2d.webp",
             "subheading": "Grace in Every Drape",
             "sub_heading_font_size": "h3",
             "use_custom_font": "special-font-3",
@@ -77,7 +78,7 @@
       "custom_css": [],
       "name": "Hero Slideshow",
       "settings": {
-        "sidebar_image": "shopify://shop_images/background_image.jpg",
+        "sidebar_image": "shopify://shop_images/Aab_2025_09_27_0154_360x_ae3101d7-8e3f-4cc1-ad56-25da7bd664a0.jpg",
         "slide_effect": "slide",
         "enable_autoplay": false,
         "autoplay_speed": 10,
@@ -319,6 +320,7 @@
         "image_kECNVX": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/Aab_2025_09_26_00232_360x_22d58801-8580-41fc-b0f3-3effea44b094.webp",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
             "title": "Easy Hijab",
