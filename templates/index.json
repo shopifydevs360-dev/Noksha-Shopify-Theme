@@ -12,23 +12,29 @@
     "hero_slideshow_DY9JwJ": {
       "type": "hero-slideshow",
       "blocks": {
-        "image_slide_LK9aNK": {
-          "type": "image_slide",
-          "disabled": true,
+        "video_slide_wkgqqB": {
+          "type": "video_slide",
           "settings": {
-            "text_color_scheme": "default",
-            "subheading": "Grace in Every Drape",
-            "sub_heading_font_size": "h3",
-            "use_custom_font": "special-font-3",
-            "heading": "PREMIUM HIJAB COLLECTION",
+            "text_color_scheme": "",
+            "source_type": "hosted",
+            "video": "shopify://files/videos/0106.mp4",
+            "external_video_url": "",
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "controls": false,
+            "subheading": "",
+            "sub_heading_font_size": "h4",
+            "use_custom_font": "",
+            "heading": "",
             "heading_size": "h2",
             "cta_text": "",
             "link": "",
             "background_color": "#f3e3d3",
             "overlay_opacity": 0,
             "horizontal_alignment": "left",
-            "vertical_alignment": "center",
-            "custom_class": "slide-1"
+            "vertical_alignment": "bottom",
+            "custom_class": ""
           }
         },
         "image_slide_da8geD": {
@@ -70,7 +76,7 @@
         }
       },
       "block_order": [
-        "image_slide_LK9aNK",
+        "video_slide_wkgqqB",
         "image_slide_da8geD",
         "image_slide_xNDwjP"
       ],
