@@ -1,19 +1,40 @@
-<div id="js-notify-me" class="notify-me m-color-{{ settings.notify_me_color }}">
+<div id="js-notify-me" class="notify-me hide m-color-{{ settings.notify_me_color }}">
   <div class="inner-notify-me">
 
-<h2>Notify Me please</h2>
-  </div>
+    {% form 'customer', class: 'footer__form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="Email address" required>
 
+      {% if block.settings.text != blank %}
+        <div class="newsletter__text">{{ block.settings.text }}</div>
+      {% endif %}
+
+      <button type="submit" class="newsletter__submit">
+        Subscribe
+      </button>
+    {% endform %}
+
+  </div>
+<div id="notify-me-overlay"></div>
 </div>
 {% stylesheet %}
 .notify-me .inner-notify-me{
     position: fixed;
     bottom: 50%;
-    right: 50%;
+    right: 50%; 
     padding: 15px 25px;
-    cursor: pointer;
     z-index: 1000;
     transform: translateX(50%);
     background: rgb(var(--color-background));
+}
+#notify-me-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-overlay);
+    opacity: var(--color-overlay-opacity);
+    z-index: 999;
 }
 {% endstylesheet %}
