@@ -59,4 +59,17 @@ function initAccordion() {
     item.classList.toggle("active");
   });
 }
+/* ===============================
+   NOTIFY ME FUNCTIONALITY
+================================ */
+function initNotifyMe(){
+  const notifyMe = document.getElementById("js-notify-me");
+  const overlay = document.getElementById("notify-me-overlay");
+  notifyMe.classList.remove("hide");
 
+  function closeNotifyMe() {
+    notifyMe.classList.add("hide");
+  }
+
+  overlay.addEventListener("click", closeNotifyMe);
+}
