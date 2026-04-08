@@ -4,13 +4,23 @@
   assign ss = section.settings
   assign first_class = 'hero-slideshow hero-outer-wrap ' | append: ss.color_control | append: ' ' | append: ss.custom_class
 %}
-
+{% stylesheet %}
+    .hero-slideshow .sidebar-image .sidebar-image-wrapper .image-overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--overlay-color);
+      opacity: var(--overlay-opacity);
+      pointer-events: none;
+  }
+{% endstylesheet %}
 <div
   id="shopify-section-{{ section.id }}"
   class=" {{ first_class }}"
 >
   <header class="reverse-nav full-screen-slideshow sidebar-slideshow js-animate-on-load">
-
     {% if ss.sidebar_image != blank %}
       <div class="sidebar-image">
         <div class="sidebar-image-wrapper">
@@ -21,20 +31,25 @@
             height="{{ ss.sidebar_image.height }}"
             loading="lazy"
           >
+          <span
+            class="image-overlay"
+            style="
+              --overlay-color: {{ section.settings.overlay_color }};
+              --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+            "
+          ></span>
         </div>
       </div>
     {% endif %}
 
     <div class="swiper swiper-container-hero myswiper-{{ section.id }}">
       <div class="swiper-wrapper">
-
         {% for block in section.blocks %}
           <div
             class="swiper-slide {{ block.settings.custom_class }}"
             style="background-color: {{ block.settings.background_color }};"
             {{ block.shopify_attributes }}
           >
-
             {% if block.type == 'image_slide' and block.settings.image != blank %}
               <div class="media-wrapper">
                 <picture>
@@ -56,7 +71,6 @@
             {% endif %}
 
             {% if block.type == 'video_slide' %}
-
               {% liquid
                 assign render_video = blank
                 assign render_external = blank
@@ -82,10 +96,12 @@
                   %}
                 </div>
               {% endif %}
-
             {% endif %}
 
-            <span class="overlay-bg" style=" background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity }};"></span>
+            <span
+              class="overlay-bg"
+              style=" background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity }};"
+            ></span>
 
             <div class="text-content text-content--{{ block.settings.vertical_alignment }}-{{ block.settings.horizontal_alignment }} m-color-{{ block.settings.text_color_scheme }} {{ block.settings.custom_class }}">
               <div class="inner-content">
@@ -111,10 +127,8 @@
                 {% endif %}
               </div>
             </div>
-
           </div>
         {% endfor %}
-
       </div>
     </div>
 
@@ -134,82 +148,80 @@
         <span class="inner-text h5" style="color: {{ ss.nav_color }}">Next</span>
       </button>
     </div>
-
   </header>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const effect = '{{ ss.slide_effect }}';
+  document.addEventListener('DOMContentLoaded', function () {
+    const effect = '{{ ss.slide_effect }}';
 
-  /* =========================
-     YOUTUBE CONTROL HELPERS
-  ========================== */
+    /* =========================
+       YOUTUBE CONTROL HELPERS
+    ========================== */
 
-  function pauseAllYouTube() {
-    document.querySelectorAll('.myswiper-{{ section.id }} iframe').forEach(function(iframe) {
+    function pauseAllYouTube() {
+      document.querySelectorAll('.myswiper-{{ section.id }} iframe').forEach(function(iframe) {
+        iframe.contentWindow.postMessage(
+          '{"event":"command","func":"pauseVideo","args":""}',
+          '*'
+        );
+      });
+    }
+
+    function playActiveYouTube(swiperInstance) {
+      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+      if (!activeSlide) return;
+
+      const iframe = activeSlide.querySelector('iframe');
+      if (!iframe) return;
+
       iframe.contentWindow.postMessage(
-        '{"event":"command","func":"pauseVideo","args":""}',
+        '{"event":"command","func":"playVideo","args":""}',
         '*'
       );
-    });
-  }
-
-  function playActiveYouTube(swiperInstance) {
-    const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
-    if (!activeSlide) return;
-
-    const iframe = activeSlide.querySelector('iframe');
-    if (!iframe) return;
-
-    iframe.contentWindow.postMessage(
-      '{"event":"command","func":"playVideo","args":""}',
-      '*'
-    );
-  }
-
-  /* =========================
-     INIT SWIPER
-  ========================== */
-
-  const swiper = new Swiper('.myswiper-{{ section.id }}', {
-    loop: true,
-    effect: effect,
-
-    {% if ss.slide_effect == 'fade' %}
-    fadeEffect: {
-      crossFade: true
-    },
-    {% endif %}
-
-    navigation: {
-      nextEl: '.js-next-{{ section.id }}',
-      prevEl: '.js-prev-{{ section.id }}'
-    },
-
-    {% if ss.enable_autoplay %}
-    autoplay: {
-      delay: {{ ss.autoplay_speed | times: 1000 }},
-      disableOnInteraction: false
-    },
-    {% endif %}
-
-    on: {
-      init: function () {
-        playActiveYouTube(this);
-      },
-      slideChangeTransitionStart: function () {
-        pauseAllYouTube();
-      },
-      slideChangeTransitionEnd: function () {
-        playActiveYouTube(this);
-      }
     }
+
+    /* =========================
+       INIT SWIPER
+    ========================== */
+
+    const swiper = new Swiper('.myswiper-{{ section.id }}', {
+      loop: true,
+      effect: effect,
+
+      {% if ss.slide_effect == 'fade' %}
+      fadeEffect: {
+        crossFade: true
+      },
+      {% endif %}
+
+      navigation: {
+        nextEl: '.js-next-{{ section.id }}',
+        prevEl: '.js-prev-{{ section.id }}'
+      },
+
+      {% if ss.enable_autoplay %}
+      autoplay: {
+        delay: {{ ss.autoplay_speed | times: 1000 }},
+        disableOnInteraction: false
+      },
+      {% endif %}
+
+      on: {
+        init: function () {
+          playActiveYouTube(this);
+        },
+        slideChangeTransitionStart: function () {
+          pauseAllYouTube();
+        },
+        slideChangeTransitionEnd: function () {
+          playActiveYouTube(this);
+        }
+      }
+    });
+
   });
-
-});
 </script>
-
 
 {% schema %}
 {
@@ -218,9 +230,33 @@ document.addEventListener('DOMContentLoaded', function () {
   "max_blocks": 10,
   "settings": [
     {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
       "type": "image_picker",
       "id": "sidebar_image",
       "label": "Sidebar Image (Desktop)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Slider Control"
     },
     {
       "type": "select",
@@ -353,7 +389,6 @@ document.addEventListener('DOMContentLoaded', function () {
       "type": "video_slide",
       "name": "Video Slide",
       "settings": [
-
         { "type": "color_scheme", "id": "text_color_scheme", "label": "Text color scheme" },
 
         {
@@ -475,10 +510,7 @@ document.addEventListener('DOMContentLoaded', function () {
   "presets": [
     {
       "name": "Hero Slideshow",
-      "blocks": [
-        { "type": "image_slide" },
-        { "type": "video_slide" }
-      ]
+      "blocks": [{ "type": "image_slide" }, { "type": "video_slide" }]
     }
   ]
 }
