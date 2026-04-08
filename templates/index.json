@@ -247,14 +247,14 @@
           "name": "Video",
           "settings": {
             "source_type": "hosted",
-            "video": "shopify://files/videos/la mykonos.mp4",
+            "video": "shopify://files/videos/0106.mp4",
             "external_video_url": "",
             "aspect_ratio": "adapt-to-video",
             "custom_height": 400,
             "autoplay": true,
             "loop": false,
             "muted": true,
-            "controls": true
+            "controls": false
           },
           "blocks": {}
         }
