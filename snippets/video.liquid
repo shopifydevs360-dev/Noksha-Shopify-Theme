@@ -30,7 +30,6 @@
     style="{{ wrapper_style }}"
   {% endif %}
 >
-
   {% if video != blank %}
 
     {% liquid
@@ -42,63 +41,97 @@
     %}
 
     <video
+      class="video__element"
       {% if poster_image %}poster="{{ poster_image }}"{% endif %}
       {% if is_autoplay %}autoplay{% endif %}
       {% if loop %}loop{% endif %}
       {% if muted %}muted{% endif %}
       {% if controls %}controls{% endif %}
       playsinline
+      preload="auto"
+      webkit-playsinline
     >
       {% for source in video.sources %}
         <source src="{{ source.url }}" type="{{ source.mime_type }}">
       {% endfor %}
     </video>
-{% elsif external_video_url != blank %}
 
-  {% assign autoplay_param = '' %}
-  {% if is_autoplay %}
-    {% assign autoplay_param = '&autoplay=1&mute=1' %}
-  {% endif %}
+  {% elsif external_video_url != blank %}
 
-  {%- comment -%}
-    ---------------------------
-    YOUTUBE
-    ---------------------------
-  {%- endcomment -%}
-  {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
+    {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
 
-    {% if external_video_url contains 'youtu.be' %}
-      {% assign video_id = external_video_url | split: 'youtu.be/' | last | split: '?' | first %}
-    {% else %}
-      {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
+      {% if external_video_url contains 'youtu.be' %}
+        {% assign video_id = external_video_url | split: 'youtu.be/' | last | split: '?' | first %}
+      {% else %}
+        {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
+      {% endif %}
+
+      <iframe
+        class="video__iframe"
+        src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1&rel=0&enablejsapi=1{% if is_autoplay %}&autoplay=1&mute=1{% endif %}{% if loop %}&loop=1&playlist={{ video_id }}{% endif %}"
+        frameborder="0"
+        allow="autoplay; encrypted-media; fullscreen"
+        allowfullscreen
+      ></iframe>
+
+    {% elsif external_video_url contains 'vimeo.com' %}
+
+      {% assign video_id = external_video_url | split: '/' | last | split: '?' | first %}
+
+      <iframe
+        class="video__iframe"
+        src="https://player.vimeo.com/video/{{ video_id }}?title=0&byline=0&portrait=0{% if is_autoplay %}&autoplay=1&muted=1{% endif %}{% if loop %}&loop=1{% endif %}"
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+      ></iframe>
+
     {% endif %}
 
-    <iframe
-      src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1&rel=0&enablejsapi=1{{ autoplay_param }}"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen
-    ></iframe>
-
-  {%- comment -%}
-    ---------------------------
-    VIMEO
-    ---------------------------
-  {%- endcomment -%}
-  {% elsif external_video_url contains 'vimeo.com' %}
-
-    {% assign video_id = external_video_url | split: '/' | last %}
-
-    <iframe
-      src="https://player.vimeo.com/video/{{ video_id }}?title=0&byline=0&portrait=0{% if is_autoplay %}&autoplay=1&muted=1{% endif %}"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen
-    ></iframe>
-
   {% endif %}
-
-  {% endif %}
-
 </div>
 
+<script>
+  (function () {
+    function initAutoplayVideos(scope) {
+      var container = scope || document;
+      var videos = container.querySelectorAll('.video video[autoplay]');
+
+      videos.forEach(function(video) {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('autoplay', '');
+
+        var tryPlay = function () {
+          var playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(function(error) {
+              console.log('Video autoplay failed:', error);
+            });
+          }
+        };
+
+        if (video.readyState >= 2) {
+          tryPlay();
+        } else {
+          video.addEventListener('loadeddata', tryPlay, { once: true });
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initAutoplayVideos(document);
+    });
+
+    document.addEventListener('shopify:section:load', function(event) {
+      initAutoplayVideos(event.target);
+    });
+
+    document.addEventListener('shopify:block:select', function(event) {
+      initAutoplayVideos(event.target);
+    });
+  })();
+</script>
