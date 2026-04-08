@@ -252,9 +252,9 @@
             "aspect_ratio": "adapt-to-video",
             "custom_height": 400,
             "autoplay": true,
-            "loop": false,
+            "loop": true,
             "muted": true,
-            "controls": false
+            "controls": true
           },
           "blocks": {}
         }
