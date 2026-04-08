@@ -82,6 +82,8 @@
       "name": "Hero Slideshow",
       "settings": {
         "sidebar_image": "shopify://shop_images/background_image.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 20,
         "slide_effect": "fade",
         "enable_autoplay": false,
         "autoplay_speed": 3,
@@ -236,6 +238,51 @@
       "settings": {
         "heading_text": "<p>Meet the base you'll build every outfit on.</p>"
       }
+    },
+    "custom_section_bNbjQ6": {
+      "type": "custom-section",
+      "blocks": {
+        "video_N6Wz4w": {
+          "type": "video",
+          "name": "Video",
+          "settings": {
+            "source_type": "hosted",
+            "video": "shopify://files/videos/la mykonos.mp4",
+            "external_video_url": "",
+            "aspect_ratio": "adapt-to-video",
+            "custom_height": 400,
+            "autoplay": true,
+            "loop": false,
+            "muted": true,
+            "controls": true
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "video_N6Wz4w"
+      ],
+      "name": "Custom Section",
+      "settings": {
+        "container_width": "container",
+        "enable_sidebar_space": true,
+        "height_type": "content",
+        "height_desktop": 800,
+        "height_tablet": 600,
+        "height_mobile": 500,
+        "background_type": "none",
+        "overlay_enable": false,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #ffffff, #000000)",
+        "custom_section_color_scheme": "",
+        "padding_y": 60,
+        "padding_x": 30,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
@@ -244,6 +291,7 @@
     "collection_tab_HFCJgQ",
     "image_overlay_grid_Gz6VEw",
     "article_wrapper_tkFWde",
-    "home_intro_LaEWrV"
+    "home_intro_LaEWrV",
+    "custom_section_bNbjQ6"
   ]
 }
