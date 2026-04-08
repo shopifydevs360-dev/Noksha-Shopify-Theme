@@ -17,14 +17,12 @@
 {% enddoc %}
 {% liquid
   assign wrapper_style = style | default: ''
-  assign is_autoplay = false
+  assign is_autoplay = autoplay | default: false
 
-  if autoplay == true or autoplay == 'true'
-    assign is_autoplay = true
+  if is_autoplay
     assign muted = true
   endif
 %}
-
 
 <div
   class="video {{ class }}"
