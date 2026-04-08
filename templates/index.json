@@ -246,9 +246,9 @@
           "type": "video",
           "name": "Video",
           "settings": {
-            "source_type": "hosted",
+            "source_type": "external",
             "video": "shopify://files/videos/0106.mp4",
-            "external_video_url": "",
+            "external_video_url": "https://youtu.be/EK8IdWyztLo?si=2W3C0gvI9zJyrw1U",
             "aspect_ratio": "adapt-to-video",
             "custom_height": 400,
             "autoplay": true,
