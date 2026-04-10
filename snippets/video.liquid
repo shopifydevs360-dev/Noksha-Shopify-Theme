@@ -1,20 +1,26 @@
 {% doc %}
   Responsive Video Snippet
 
-  @param {video} [video] - Shopify hosted video object
-  @param {string} [external_video_url] - YouTube or Vimeo URL
+  @param {video} [video] - Desktop Shopify hosted video object
+  @param {video} [mobile_video] - Mobile Shopify hosted video object
+  @param {string} [external_video_url] - Desktop YouTube or Vimeo URL
+  @param {string} [mobile_external_video_url] - Mobile YouTube or Vimeo URL
   @param {string} [class] - Custom wrapper class
   @param {string} [style] - Inline wrapper style
-  @param {string} [custom_thumbnail] - Thumbnail Image
+  @param {string} [custom_thumbnail] - Desktop thumbnail image
+  @param {string} [mobile_custom_thumbnail] - Mobile thumbnail image
   @param {boolean} [autoplay]
   @param {boolean} [loop]
   @param {boolean} [muted]
   @param {boolean} [controls]
 
   @example
-  {% render 'video', video: section.settings.video %}
-  {% render 'video', external_video_url: block.settings.video_url %}
+  {% render 'video',
+    video: section.settings.video,
+    mobile_video: section.settings.mobile_video
+  %}
 {% enddoc %}
+
 {% liquid
   assign wrapper_style = style | default: ''
   assign is_autoplay = autoplay | default: false
@@ -24,71 +30,192 @@
   endif
 %}
 
+<style>
+  .video--desktop {
+    display: block;
+  }
+
+  .video--mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 767px) {
+    .video--desktop {
+      display: none;
+    }
+
+    .video--mobile {
+      display: block;
+    }
+  }
+
+  .video__element,
+  .video__iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
 <div
   class="video {{ class }}"
   {% if wrapper_style != blank %}
     style="{{ wrapper_style }}"
   {% endif %}
 >
-  {% if video != blank %}
+  {%- comment -%} Desktop video {%- endcomment -%}
+  <div class="video--desktop">
+    {% if video != blank %}
 
-    {% liquid
-      if custom_thumbnail != blank
-        assign poster_image = custom_thumbnail | image_url: width: 2000
-      else
-        assign poster_image = video.preview_image | image_url: width: 2000
-      endif
-    %}
+      {% liquid
+        if custom_thumbnail != blank
+          assign poster_image = custom_thumbnail | image_url: width: 2000
+        else
+          assign poster_image = video.preview_image | image_url: width: 2000
+        endif
+      %}
 
-    <video
-      class="video__element"
-      {% if poster_image %}poster="{{ poster_image }}"{% endif %}
-      {% if is_autoplay %}autoplay{% endif %}
-      {% if loop %}loop{% endif %}
-      {% if muted %}muted{% endif %}
-      {% if controls %}controls{% endif %}
-      playsinline
-      preload="auto"
-      webkit-playsinline
-    >
-      {% for source in video.sources %}
-        <source src="{{ source.url }}" type="{{ source.mime_type }}">
-      {% endfor %}
-    </video>
+      <video
+        class="video__element"
+        {% if poster_image %}poster="{{ poster_image }}"{% endif %}
+        {% if is_autoplay %}autoplay{% endif %}
+        {% if loop %}loop{% endif %}
+        {% if muted %}muted{% endif %}
+        {% if controls %}controls{% endif %}
+        playsinline
+        preload="auto"
+        webkit-playsinline
+      >
+        {% for source in video.sources %}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {% endfor %}
+      </video>
 
-  {% elsif external_video_url != blank %}
+    {% elsif external_video_url != blank %}
 
-    {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
+      {% if external_video_url contains 'youtube.com' or external_video_url contains 'youtu.be' %}
 
-      {% if external_video_url contains 'youtu.be' %}
-        {% assign video_id = external_video_url | split: 'youtu.be/' | last | split: '?' | first %}
-      {% else %}
-        {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
+        {% if external_video_url contains 'youtu.be' %}
+          {% assign video_id = external_video_url | split: 'youtu.be/' | last | split: '?' | first %}
+        {% else %}
+          {% assign video_id = external_video_url | split: 'v=' | last | split: '&' | first %}
+        {% endif %}
+
+        <iframe
+          class="video__iframe"
+          src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1&rel=0&enablejsapi=1{% if is_autoplay %}&autoplay=1&mute=1{% endif %}{% if loop %}&loop=1&playlist={{ video_id }}{% endif %}"
+          frameborder="0"
+          allow="autoplay; encrypted-media; fullscreen"
+          allowfullscreen
+        ></iframe>
+
+      {% elsif external_video_url contains 'vimeo.com' %}
+
+        {% assign video_id = external_video_url | split: '/' | last | split: '?' | first %}
+
+        <iframe
+          class="video__iframe"
+          src="https://player.vimeo.com/video/{{ video_id }}?title=0&byline=0&portrait=0{% if is_autoplay %}&autoplay=1&muted=1{% endif %}{% if loop %}&loop=1{% endif %}"
+          frameborder="0"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+        ></iframe>
+
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {%- comment -%} Mobile video {%- endcomment -%}
+  <div class="video--mobile">
+    {% if mobile_video != blank %}
+
+      {% liquid
+        if mobile_custom_thumbnail != blank
+          assign mobile_poster_image = mobile_custom_thumbnail | image_url: width: 1200
+        else
+          assign mobile_poster_image = mobile_video.preview_image | image_url: width: 1200
+        endif
+      %}
+
+      <video
+        class="video__element"
+        {% if mobile_poster_image %}poster="{{ mobile_poster_image }}"{% endif %}
+        {% if is_autoplay %}autoplay{% endif %}
+        {% if loop %}loop{% endif %}
+        {% if muted %}muted{% endif %}
+        {% if controls %}controls{% endif %}
+        playsinline
+        preload="auto"
+        webkit-playsinline
+      >
+        {% for source in mobile_video.sources %}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {% endfor %}
+      </video>
+
+    {% elsif mobile_external_video_url != blank %}
+
+      {% if mobile_external_video_url contains 'youtube.com' or mobile_external_video_url contains 'youtu.be' %}
+
+        {% if mobile_external_video_url contains 'youtu.be' %}
+          {% assign mobile_video_id = mobile_external_video_url | split: 'youtu.be/' | last | split: '?' | first %}
+        {% else %}
+          {% assign mobile_video_id = mobile_external_video_url | split: 'v=' | last | split: '&' | first %}
+        {% endif %}
+
+        <iframe
+          class="video__iframe"
+          src="https://www.youtube.com/embed/{{ mobile_video_id }}?playsinline=1&rel=0&enablejsapi=1{% if is_autoplay %}&autoplay=1&mute=1{% endif %}{% if loop %}&loop=1&playlist={{ mobile_video_id }}{% endif %}"
+          frameborder="0"
+          allow="autoplay; encrypted-media; fullscreen"
+          allowfullscreen
+        ></iframe>
+
+      {% elsif mobile_external_video_url contains 'vimeo.com' %}
+
+        {% assign mobile_video_id = mobile_external_video_url | split: '/' | last | split: '?' | first %}
+
+        <iframe
+          class="video__iframe"
+          src="https://player.vimeo.com/video/{{ mobile_video_id }}?title=0&byline=0&portrait=0{% if is_autoplay %}&autoplay=1&muted=1{% endif %}{% if loop %}&loop=1{% endif %}"
+          frameborder="0"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+        ></iframe>
+
       {% endif %}
 
-      <iframe
-        class="video__iframe"
-        src="https://www.youtube.com/embed/{{ video_id }}?playsinline=1&rel=0&enablejsapi=1{% if is_autoplay %}&autoplay=1&mute=1{% endif %}{% if loop %}&loop=1&playlist={{ video_id }}{% endif %}"
-        frameborder="0"
-        allow="autoplay; encrypted-media; fullscreen"
-        allowfullscreen
-      ></iframe>
+    {% else %}
+      {%- comment -%} Fallback to desktop video on mobile if no mobile video is set {%- endcomment -%}
+      {% if video != blank %}
 
-    {% elsif external_video_url contains 'vimeo.com' %}
+        {% liquid
+          if custom_thumbnail != blank
+            assign fallback_poster_image = custom_thumbnail | image_url: width: 1200
+          else
+            assign fallback_poster_image = video.preview_image | image_url: width: 1200
+          endif
+        %}
 
-      {% assign video_id = external_video_url | split: '/' | last | split: '?' | first %}
+        <video
+          class="video__element"
+          {% if fallback_poster_image %}poster="{{ fallback_poster_image }}"{% endif %}
+          {% if is_autoplay %}autoplay{% endif %}
+          {% if loop %}loop{% endif %}
+          {% if muted %}muted{% endif %}
+          {% if controls %}controls{% endif %}
+          playsinline
+          preload="auto"
+          webkit-playsinline
+        >
+          {% for source in video.sources %}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {% endfor %}
+        </video>
 
-      <iframe
-        class="video__iframe"
-        src="https://player.vimeo.com/video/{{ video_id }}?title=0&byline=0&portrait=0{% if is_autoplay %}&autoplay=1&muted=1{% endif %}{% if loop %}&loop=1{% endif %}"
-        frameborder="0"
-        allow="autoplay; fullscreen"
-        allowfullscreen
-      ></iframe>
-
+      {% endif %}
     {% endif %}
-
-  {% endif %}
+  </div>
 </div>
 
 <script>
