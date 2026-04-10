@@ -77,6 +77,7 @@
 
                 if block.settings.source_type == 'hosted'
                   assign render_video = block.settings.video
+                  assign mobile_render_video = block.settings.mobile_video
                 elsif block.settings.source_type == 'external'
                   assign render_external = block.settings.external_video_url
                 endif
@@ -86,6 +87,7 @@
                 <div class="media-wrapper">
                   {% render 'video',
                     video: render_video,
+                    mobile_video: mobile_render_video,
                     external_video_url: render_external,
                     class: 'cropped-video-wrapper adapt-video-height',
                     autoplay: block.settings.autoplay,
@@ -406,6 +408,12 @@
           "type": "video",
           "id": "video",
           "label": "Shopify hosted video",
+          "visible_if": "{{ block.settings.source_type == 'hosted' }}"
+        },
+        {
+          "type": "video",
+          "id": "mobile_video",
+          "label": "Mobile video",
           "visible_if": "{{ block.settings.source_type == 'hosted' }}"
         },
 
