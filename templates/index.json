@@ -20,7 +20,7 @@
             "video": "shopify://files/videos/1009.mp4",
             "external_video_url": "https://youtu.be/s_7xadbFcKI?si=0h8KwO4E2rwHTRmj",
             "autoplay": true,
-            "loop": false,
+            "loop": true,
             "muted": true,
             "controls": false,
             "subheading": "",
