@@ -92,24 +92,26 @@
                 </span>
               </a>
             {% when 'wishlist_drawer' %}
-              <!-- Wishlist -->
-              <a
-                href="#"
-                class="js-open-section nav-icon-text-wrap color-control"
-                data-trigger-section="wishlist-drawer"
-                aria-label="Wishlist"
-              >
-                <span class="js-open-icon-text" data-open-item="wishlist-drawer-open-item">
-                  <span class="icon">
-                    {%- render 'theme-icon', icon: 'wishlist' -%}
-                    <span class="wishlist-count icon-count" data-wishlist-count>0</span>
+              {% if settings.enable_wishlist %}
+                <!-- Wishlist -->
+                <a
+                  href="#"
+                  class="js-open-section nav-icon-text-wrap color-control"
+                  data-trigger-section="wishlist-drawer"
+                  aria-label="Wishlist"
+                >
+                  <span class="js-open-icon-text" data-open-item="wishlist-drawer-open-item">
+                    <span class="icon">
+                      {%- render 'theme-icon', icon: 'wishlist' -%}
+                      <span class="wishlist-count icon-count" data-wishlist-count>0</span>
+                    </span>
+                    <strong class="text">Wishlist (<span class="wishlist-count" data-wishlist-count>0</span>)</strong>
                   </span>
-                  <strong class="text">Wishlist (<span class="wishlist-count" data-wishlist-count>0</span>)</strong>
-                </span>
-                <span class="js-close-icon-text hide" data-close-item="wishlist-drawer-close-item">
-                  <strong class="text">Close</strong>
-                </span>
-              </a>
+                  <span class="js-close-icon-text hide" data-close-item="wishlist-drawer-close-item">
+                    <strong class="text">Close</strong>
+                  </span>
+                </a>
+              {% endif %}
           {% endcase %}
         {% endfor %}
       </nav>
@@ -286,7 +288,6 @@
       {% if settings.enable_wishlist %}
         {% render 'wishlist-drawer' %}
       {% endif %}
-      
   {% endcase %}
 {% endfor %}
 <script src="{{ 'sidebar.js' | asset_url }}" defer="defer"></script>
