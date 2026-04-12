@@ -91,6 +91,18 @@
                   <strong class="text">Close</strong>
                 </span>
               </a>
+            {% when 'wishlist_link' %}
+              
+              <!-- Wishlist -->
+              <a href="/pages/wishlist" class="nav-icon-text-wrap color-control" aria-label="Wishlist">
+                <span class="js-open-icon-text">
+                  <span class="icon">
+                    {%- render 'theme-icon', icon: 'wishlist' -%}
+                    <span class="wishlist-count" data-wishlist-count>0</span>
+                  </span>
+                  <strong class="text">Wishlist</strong>
+                </span>
+              </a>
           {% endcase %}
         {% endfor %}
       </nav>
@@ -237,12 +249,9 @@
             {% when 'wishlist_link' %}
               <!-- Wishlist -->
               <a href="/pages/wishlist" class="nav-icon-text-wrap color-control" aria-label="Wishlist">
-                <span class="js-open-icon-text">
-                  <span class="icon">
-                    {%- render 'theme-icon', icon: 'wishlist' -%}
-                    <span class="wishlist-count" data-wishlist-count>0</span>
-                  </span>
-                  <strong class="text">Wishlist</strong>
+                <span class="icon">
+                  {%- render 'theme-icon', icon: 'wishlist' -%}
+                  <span class="wishlist-count" data-wishlist-count>0</span>
                 </span>
               </a>
           {% endcase %}
