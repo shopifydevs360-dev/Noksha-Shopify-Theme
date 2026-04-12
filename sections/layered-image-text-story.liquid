@@ -1,0 +1,391 @@
+{% render 'section-base-style' %}
+
+{%- liquid
+  assign classes = 'layered-image-story section-x-padding'
+  assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
+  assign classes = classes | append: ' ' | append: section.settings.color_control
+  assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign classes = classes | append: ' ' | append: section.settings.custom_class | default: ''
+-%}
+
+{% stylesheet %}
+  .layered-image-story {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .layered-image-story__inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 6rem);
+  }
+
+  .layered-image-story__media {
+    position: relative;
+    min-width: 0;
+  }
+
+  .layered-image-story__main-image {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .layered-image-story__main-image .cropped-image-wrapper,
+  .layered-image-story__secondary-image .cropped-image-wrapper {
+    overflow: hidden;
+  }
+
+  .layered-image-story__secondary-image {
+    position: absolute;
+    right: -8%;
+    bottom: -10%;
+    width: min(42%, 20rem);
+    z-index: 2;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  }
+
+  .rtl .layered-image-story__secondary-image {
+    right: auto;
+    left: -8%;
+  }
+
+  .layered-image-story__content {
+    max-width: 38rem;
+  }
+
+  .layered-image-story__eyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .layered-image-story__heading {
+    margin: 0 0 1.4rem;
+  }
+
+  .layered-image-story__text {
+    margin-bottom: 1.8rem;
+    max-width: 34rem;
+  }
+
+  .layered-image-story__button {
+    width: fit-content;
+  }
+
+  .layered-image-story__button .icon {
+    margin-left: 1.25rem;
+    margin-bottom: -2px;
+    transition: transform 0.3s ease;
+  }
+
+  .rtl .layered-image-story__button .icon {
+    margin-left: 0;
+    margin-right: 1.25rem;
+  }
+
+  .layered-image-story__button:hover .icon {
+    transform: translateX(4px);
+  }
+
+  .rtl .layered-image-story__button:hover .icon {
+    transform: translateX(-4px);
+  }
+
+  @media (max-width: 991px) {
+    .layered-image-story__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .layered-image-story__media {
+      order: 1;
+    }
+
+    .layered-image-story__content {
+      order: 2;
+      max-width: 100%;
+    }
+
+    .layered-image-story__secondary-image {
+      position: relative;
+      right: auto;
+      left: auto;
+      bottom: auto;
+      width: 58%;
+      margin-top: -4rem;
+      margin-left: auto;
+    }
+
+    .rtl .layered-image-story__secondary-image {
+      margin-left: 0;
+      margin-right: auto;
+    }
+  }
+{% endstylesheet %}
+
+<section
+  class="{{ classes }}"
+  data-layered-story
+  data-section-id="{{ section.id }}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="layered-image-story__inner">
+      <div class="layered-image-story__media">
+        <div class="layered-image-story__main-image" data-story-main>
+          {% render 'image',
+            image: section.settings.main_image,
+            class: 'cropped-image-wrapper cropped-image--portrait',
+            img_alt: section.settings.heading
+          %}
+        </div>
+
+        {% if section.settings.secondary_image != blank %}
+          <div class="layered-image-story__secondary-image" data-story-secondary>
+            {% render 'image',
+              image: section.settings.secondary_image,
+              class: 'cropped-image-wrapper cropped-image--portrait',
+              img_alt: section.settings.heading
+            %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="layered-image-story__content">
+        {% if section.settings.eyebrow != blank %}
+          <span class="layered-image-story__eyebrow h6" data-story-text>
+            {{ section.settings.eyebrow }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="layered-image-story__heading {{ section.settings.heading_size }}" data-story-text>
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="layered-image-story__text rte" data-story-text>
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="btn btn-arrow layered-image-story__button" data-story-text>
+            <span>{{ section.settings.button_label }}</span>
+            <span class="icon">
+              {% render 'theme-icon', icon: 'right-arrow' %}
+            </span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', initLayeredImageStory);
+  document.addEventListener('shopify:section:load', initLayeredImageStory);
+
+  function initLayeredImageStory() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('[data-layered-story][data-section-id="{{ section.id }}"]').forEach((section) => {
+      if (section.dataset.storyInit === 'true') return;
+      section.dataset.storyInit = 'true';
+
+      const mainImage = section.querySelector('[data-story-main]');
+      const secondaryImage = section.querySelector('[data-story-secondary]');
+      const textItems = section.querySelectorAll('[data-story-text]');
+
+      if (mainImage) {
+        gsap.set(mainImage, {
+          opacity: 0,
+          y: 40
+        });
+      }
+
+      if (secondaryImage) {
+        gsap.set(secondaryImage, {
+          opacity: 0,
+          y: 50,
+          x: 20
+        });
+      }
+
+      if (textItems.length) {
+        gsap.set(textItems, {
+          opacity: 0,
+          y: 24
+        });
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 82%',
+          once: true
+        }
+      });
+
+      if (mainImage) {
+        tl.to(mainImage, {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: 'power3.out'
+        });
+      }
+
+      if (secondaryImage) {
+        tl.to(secondaryImage, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration: 0.75,
+          ease: 'power3.out'
+        }, '-=0.45');
+      }
+
+      if (textItems.length) {
+        tl.to(textItems, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.12
+        }, '-=0.45');
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Layered Image Story",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Crafted for timeless living"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Tell a short story about the collection, your craftsmanship, or the design philosophy behind the season.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Explore more"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image",
+      "label": "Secondary image"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Dynamic option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Layered Image Story"
+    }
+  ]
+}
+{% endschema %}
