@@ -151,7 +151,7 @@
           "settings": {
             "image": "shopify://shop_images/YOUMIBEAUTYSHampooBestinDubai.jpg",
             "aspect_ratio": "cropped-image--square",
-            "hover_effect_action": "no-effect",
+            "hover_effect_action": "is-hover-zoom-in",
             "title": "MAXI DRESSES",
             "cta_text": "SHOP NOW",
             "link": "",
@@ -164,7 +164,7 @@
           "settings": {
             "image": "shopify://shop_images/youmi_beauty_clip_in_hair_extensions_best_in_Dubai.jpg",
             "aspect_ratio": "cropped-image--square",
-            "hover_effect_action": "no-effect",
+            "hover_effect_action": "is-hover-zoom-in",
             "title": "CO-ORDS",
             "cta_text": "SHOP NOW",
             "link": "",
@@ -177,7 +177,7 @@
           "settings": {
             "image": "shopify://shop_images/2023-12-2214-35-25_C_S4.jpg",
             "aspect_ratio": "cropped-image--square",
-            "hover_effect_action": "no-effect",
+            "hover_effect_action": "is-hover-zoom-in",
             "title": "ABAYAS",
             "cta_text": "SHOP NOW",
             "link": "",
