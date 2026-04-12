@@ -156,7 +156,8 @@
       "name": "Layered Image Story",
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_type": "extended",
+        "container_type": "full-width",
+        "enable_sidebar_space": true,
         "eyebrow": "Our Story",
         "heading": "Crafted for timeless living",
         "heading_size": "h2",
