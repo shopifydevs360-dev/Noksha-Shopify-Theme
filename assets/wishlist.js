@@ -230,12 +230,14 @@ function getWishlistProductImage(product, item) {
 function renderWishlistDrawerCard(product) {
   const imageMarkup = product.image
     ? `
-      <img
+    <div class="product-card__image cropped-image-wrapper cropped-image--portrait">
+          <img
         src="${escapeHtml(product.image)}"
         alt="${escapeHtml(product.title)}"
         class="wishlist-drawer__card-image"
         loading="lazy"
       >
+    </div>
     `
     : '';
 
