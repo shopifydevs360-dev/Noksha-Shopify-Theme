@@ -278,7 +278,9 @@ body.disable-scrollbars {
     font-size: 0.7em;
     width: max-content;
 }
-
+.icon-wishlist{
+    width: 1.8rem;
+}
 
 /* ==================
  Drawer Common Style
