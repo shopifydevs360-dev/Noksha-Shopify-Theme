@@ -93,13 +93,21 @@
               </a>
             {% when 'wishlist_link' %}
               <!-- Wishlist -->
-              <a href="/pages/wishlist" class="nav-icon-text-wrap color-control" aria-label="Wishlist">
-                <span class="js-open-icon-text">
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="wishlist-drawer"
+                aria-label="Site bag"
+              >
+                <span class="js-open-icon-text" data-open-item="wishlist-drawer-open-item">
                   <span class="icon">
                     {%- render 'theme-icon', icon: 'wishlist' -%}
                     <span class="wishlist-count" data-wishlist-count>0</span>
                   </span>
-                  <strong class="text">Wishlist</strong>
+                  <strong class="text">Wishlist (<span class="wishlist-count" data-wishlist-count>0</span>)</strong>
+                </span>
+                <span class="js-close-icon-text hide" data-close-item="wishlist-drawer-close-item">
+                  <strong class="text">Close</strong>
                 </span>
               </a>
           {% endcase %}
