@@ -28,6 +28,8 @@
         "text_alignment": "text-left",
         "color_scheme": "",
         "container_width": "container",
+        "grid_columns": 3,
+        "show_two_mobile": true,
         "loading_text": "Loading wishlist...",
         "empty_heading": "Your wishlist is empty",
         "empty_text": "<p>You have not added any products to your wishlist yet.</p>",
