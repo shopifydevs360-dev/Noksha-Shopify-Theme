@@ -55,7 +55,7 @@
       </div>
 
       <div
-        class="wishlist-page__grid cols-4 cols-mobile-2"
+        class="wishlist-page__grid products-grid cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %}cols-mobile-2{% endif %}"
         data-wishlist-items
       ></div>
     </div>
@@ -181,6 +181,25 @@
         { "value": "container-extra-narrow", "label": "Container extra narrow" },
         { "value": "extended", "label": "Extended" }
       ]
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type": "range",
+      "id": "grid_columns",
+      "label": "Columns desktop",
+      "default": 4,
+      "min": 2,
+      "max": 6,
+      "step": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "show_two_mobile",
+      "label": "Show 2 columns on mobile",
+      "default": true
     },
     {
       "type": "header",
