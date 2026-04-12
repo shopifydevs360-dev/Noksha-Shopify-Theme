@@ -229,17 +229,21 @@ function activateSlideMotion(swiperInstance) {
       },
       {% endif %}
 
-      on: {
-        init: function () {
-          playActiveYouTube(this);
-        },
-        slideChangeTransitionStart: function () {
-          pauseAllYouTube();
-        },
-        slideChangeTransitionEnd: function () {
-          playActiveYouTube(this);
-        }
-      }
+on: {
+  init: function () {
+    playActiveYouTube(this);
+    resetSlideMotion(this);
+    activateSlideMotion(this);
+  },
+  slideChangeTransitionStart: function () {
+    pauseAllYouTube();
+    resetSlideMotion(this);
+  },
+  slideChangeTransitionEnd: function () {
+    playActiveYouTube(this);
+    activateSlideMotion(this);
+  }
+}
     });
 
   });
