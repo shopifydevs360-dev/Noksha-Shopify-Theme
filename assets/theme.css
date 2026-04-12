@@ -1070,3 +1070,11 @@ a.cropped-image-wrapper {
 .hero-title {
     margin-bottom: 0.7rem;
 }
+
+
+
+.placeholder-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
