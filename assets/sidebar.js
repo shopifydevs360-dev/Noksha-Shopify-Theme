@@ -1,307 +1,241 @@
-/* ======================================
-   SIDEBAR INITIALIZER
-====================================== */
-(function () {
-  let sidebarScrollBound = false;
-  let colorControlBound = false;
-  let drawerControllerBound = false;
-  let currentSidebarScrollHandler = null;
-  let currentColorControlHandler = null;
+document.addEventListener("DOMContentLoaded", () => {
+  initSidebarScrollBehavior();
+  initHamburgerAnimation();
+  initSidebarDrawers();
+  initColorControlByPosition();
+});
 
-  function initSidebar() {
-    initSidebarScrollBehavior();
-    initHamburgerAnimation();
-    initSidebarDrawers();
-    initColorControlByPosition();
+/* ===============================
+   SIDEBAR: SCROLL STATE
+================================ */
+function initSidebarScrollBehavior() {
+  const sidebar = document.getElementById("js-sidebar");
+  if (!sidebar) return;
+
+  const isIndexTemplate = document.body.classList.contains("template-index");
+
+  // If NOT homepage → always minimal
+  if (!isIndexTemplate) {
+    sidebar.classList.remove("expended");
+    sidebar.classList.add("minimal");
+    return;
   }
 
-  document.addEventListener("DOMContentLoaded", initSidebar);
-  document.addEventListener("shopify:section:load", initSidebar);
-
-  /* ===============================
-     SIDEBAR: SCROLL STATE
-  ================================ */
-  function initSidebarScrollBehavior() {
-    const sidebar = document.getElementById("js-sidebar");
-    if (!sidebar) return;
-
-    const isIndexTemplate = document.body.classList.contains("template-index");
-
-    if (currentSidebarScrollHandler) {
-      window.removeEventListener("scroll", currentSidebarScrollHandler);
-      currentSidebarScrollHandler = null;
-    }
-
-    // If NOT homepage → always minimal
-    if (!isIndexTemplate) {
+  // Homepage behavior → toggle on scroll
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 100) {
       sidebar.classList.remove("expended");
       sidebar.classList.add("minimal");
-      return;
+    } else {
+      sidebar.classList.remove("minimal");
+      sidebar.classList.add("expended");
     }
+  });
+}
 
-    function updateSidebarState() {
-      if (window.scrollY > 100) {
-        sidebar.classList.remove("expended");
-        sidebar.classList.add("minimal");
-      } else {
-        sidebar.classList.remove("minimal");
-        sidebar.classList.add("expended");
-      }
-    }
 
-    updateSidebarState();
-    currentSidebarScrollHandler = updateSidebarState;
-    window.addEventListener("scroll", currentSidebarScrollHandler, { passive: true });
-    sidebarScrollBound = true;
-  }
+/* ===============================
+   HAMBURGER: LOAD ANIMATION
+================================ */
+function initHamburgerAnimation() {
+  const hamburger = document.querySelector(".hamburger");
+  if (!hamburger) return;
 
-  /* ===============================
-     HAMBURGER: LOAD ANIMATION
-  ================================ */
-  function initHamburgerAnimation() {
-    const hamburgers = document.querySelectorAll(".hamburger");
-    if (!hamburgers.length) return;
+  setTimeout(() => {
+    hamburger.classList.add("loaded");
+  }, 200);
+}
 
-    setTimeout(() => {
-      hamburgers.forEach((hamburger) => {
-        hamburger.classList.add("loaded");
-      });
-    }, 200);
-  }
+/* ===============================
+   SIDEBAR DRAWER CONTROLLER
+================================ */
+function initSidebarDrawers() {
+  const triggers = document.querySelectorAll("[data-trigger-section]");
+  const overlay = document.getElementById("js-open-overlay");
+  const expandedArea = document.getElementById("area-expended");
 
-  /* ===============================
-     SIDEBAR DRAWER CONTROLLER
-  ================================ */
-  function initSidebarDrawers() {
-    if (drawerControllerBound) return;
+  let isTransitioning = false;
+  const SWITCH_DELAY = 400;
 
-    document.addEventListener("click", function (e) {
-      const trigger = e.target.closest("[data-trigger-section]");
-      if (!trigger) return;
-
+  triggers.forEach(trigger => {
+    trigger.addEventListener("click", (e) => {
       e.preventDefault();
+      if (isTransitioning) return;
 
-      const overlay = document.getElementById("js-open-overlay");
-      const expandedArea = document.getElementById("area-expended");
       const sectionName = trigger.dataset.triggerSection;
 
-      if (!sectionName) return;
+      const drawer = document.querySelector(
+        `[data-open-section="${sectionName}"]`
+      );
 
-      const drawer = document.querySelector(`[data-open-section="${sectionName}"]`);
-      const isDrawerOpen = drawer && drawer.classList.contains(`${sectionName}-open`);
+      const isDrawerOpen = drawer?.classList.contains(`${sectionName}-open`);
       const hasOpenDrawer = document.querySelector("[data-open-section].is-open");
 
-      const SWITCH_DELAY = 400;
-
-      if (document.body.classList.contains("sidebar-switching")) return;
-
-      // Close same drawer
+      // ✅ Close ONLY if drawer itself is open
       if (isDrawerOpen) {
         closeAllDrawers(overlay, expandedArea);
         return;
       }
 
-      // Switch drawer
+      // Switch drawers
       if (hasOpenDrawer) {
-        document.body.classList.add("sidebar-switching");
+        isTransitioning = true;
         closeAllDrawers(overlay, expandedArea);
 
-        window.setTimeout(() => {
+        setTimeout(() => {
           openDrawer(sectionName, overlay, expandedArea);
           toggleTriggerText(sectionName);
           setActiveTrigger(trigger);
-          document.body.classList.remove("sidebar-switching");
+          isTransitioning = false;
         }, SWITCH_DELAY);
-
-        return;
-      }
-
-      // Open fresh drawer
-      openDrawer(sectionName, overlay, expandedArea);
-      toggleTriggerText(sectionName);
-      setActiveTrigger(trigger);
-    });
-
-    document.addEventListener("click", function (e) {
-      const overlay = e.target.closest("#js-open-overlay");
-      if (!overlay) return;
-
-      if (!document.body.classList.contains("sidebar-switching")) {
-        const expandedArea = document.getElementById("area-expended");
-        closeAllDrawers(overlay, expandedArea);
+      } else {
+        openDrawer(sectionName, overlay, expandedArea);
+        toggleTriggerText(sectionName);
+        setActiveTrigger(trigger);
       }
     });
+  });
 
-    drawerControllerBound = true;
-  }
-
-  /* ===============================
-     OPEN DRAWER
-  ================================ */
-  function openDrawer(sectionName, overlay, expandedArea) {
-    const drawer = document.querySelector(`[data-open-section="${sectionName}"]`);
-    if (!drawer) return;
-
-    drawer.classList.add(`${sectionName}-open", "is-open`);
-    drawer.classList.add(`${sectionName}-open`);
-    drawer.classList.add("is-open");
-
-    if (overlay) {
-      overlay.classList.remove("hide");
+  overlay?.addEventListener("click", () => {
+    if (!isTransitioning) {
+      closeAllDrawers(overlay, expandedArea);
     }
+  });
+}
 
-    if (expandedArea) {
-      expandedArea.classList.add("expended-area-active");
-    }
+/* ===============================
+   OPEN DRAWER
+================================ */
+function openDrawer(sectionName, overlay, expandedArea) {
+  const drawer = document.querySelector(
+    `[data-open-section="${sectionName}"]`
+  );
+  if (!drawer) return;
 
-    addDrawerBodyState();
-  }
+  drawer.classList.add(`${sectionName}-open`, "is-open");
+  overlay.classList.remove("hide");
+  expandedArea.classList.add("expended-area-active");
 
-  /* ===============================
-     CLOSE ALL DRAWERS
-  ================================ */
-  function closeAllDrawers(overlay, expandedArea) {
-    document.querySelectorAll("[data-open-section]").forEach((drawer) => {
-      const sectionName = drawer.dataset.openSection;
-      if (!sectionName) return;
+  addDrawerBodyState();
+}
 
-      drawer.classList.remove(`${sectionName}-open`);
-      drawer.classList.remove("is-open");
-    });
+/* ===============================
+   CLOSE ALL DRAWERS
+================================ */
+function closeAllDrawers(overlay, expandedArea) {
+  document.querySelectorAll("[data-open-section]").forEach(drawer => {
+    const sectionName = drawer.dataset.openSection;
+    drawer.classList.remove(`${sectionName}-open`, "is-open");
+  });
 
-    document.querySelectorAll("[data-trigger-section]").forEach((trigger) => {
-      trigger.classList.remove("is-active");
-    });
+  document.querySelectorAll("[data-trigger-section]").forEach(trigger => {
+    trigger.classList.remove("is-active");
+  });
 
-    document.querySelectorAll("[data-open-item]").forEach((el) => {
-      el.classList.remove("hide");
-    });
+  document.querySelectorAll("[data-open-item]").forEach(el => {
+    el.classList.remove("hide");
+  });
 
-    document.querySelectorAll("[data-close-item]").forEach((el) => {
-      el.classList.add("hide");
-    });
+  document.querySelectorAll("[data-close-item]").forEach(el => {
+    el.classList.add("hide");
+  });
 
-    if (overlay) {
-      overlay.classList.add("hide");
-    }
+  overlay.classList.add("hide");
+  expandedArea.classList.remove("expended-area-active");
 
-    if (expandedArea) {
-      expandedArea.classList.remove("expended-area-active");
-    }
+  removeDrawerBodyState();
+}
 
-    removeDrawerBodyState();
-  }
+/* ===============================
+   TRIGGER STATE
+================================ */
+function setActiveTrigger(activeTrigger) {
+  document.querySelectorAll("[data-trigger-section]").forEach(trigger => {
+    trigger.classList.remove("is-active");
+  });
+  activeTrigger.classList.add("is-active");
+}
 
-  /* ===============================
-     TRIGGER STATE
-  ================================ */
-  function setActiveTrigger(activeTrigger) {
-    document.querySelectorAll("[data-trigger-section]").forEach((trigger) => {
-      trigger.classList.remove("is-active");
-    });
+/* ===============================
+   TOGGLE OPEN / CLOSE TEXT
+================================ */
+function toggleTriggerText(sectionName) {
+  const scope = document.querySelectorAll(
+    `[data-trigger-section="${sectionName}"]`
+  );
 
-    if (activeTrigger) {
-      activeTrigger.classList.add("is-active");
-    }
-  }
+  // Reset ALL
+  document.querySelectorAll("[data-open-item]").forEach(el => {
+    el.classList.remove("hide");
+  });
 
-  /* ===============================
-     TOGGLE OPEN / CLOSE TEXT
-  ================================ */
-  function toggleTriggerText(sectionName) {
-    const scope = document.querySelectorAll(`[data-trigger-section="${sectionName}"]`);
+  document.querySelectorAll("[data-close-item]").forEach(el => {
+    el.classList.add("hide");
+  });
 
-    document.querySelectorAll("[data-open-item]").forEach((el) => {
-      el.classList.remove("hide");
-    });
+  // Toggle ONLY within this section
+  scope.forEach(trigger => {
+    trigger
+      .querySelector(`[data-open-item="${sectionName}-open-item"]`)
+      ?.classList.add("hide");
 
-    document.querySelectorAll("[data-close-item]").forEach((el) => {
-      el.classList.add("hide");
-    });
+    trigger
+      .querySelector(`[data-close-item="${sectionName}-close-item"]`)
+      ?.classList.remove("hide");
+  });
+}
 
-    scope.forEach((trigger) => {
-      const openItem = trigger.querySelector(`[data-open-item="${sectionName}-open-item"]`);
-      const closeItem = trigger.querySelector(`[data-close-item="${sectionName}-close-item"]`);
 
-      if (openItem) {
-        openItem.classList.add("hide");
-      }
+/* ===============================
+   BODY STATE HELPERS
+================================ */
+function addDrawerBodyState() {
+  document.body.classList.add("drawer-flyout", "disable-scrollbars");
+}
 
-      if (closeItem) {
-        closeItem.classList.remove("hide");
-      }
-    });
-  }
+function removeDrawerBodyState() {
+  document.body.classList.remove("drawer-flyout", "disable-scrollbars");
+}
 
-  /* ===============================
-     BODY STATE HELPERS
-  ================================ */
-  function addDrawerBodyState() {
-    document.body.classList.add("drawer-flyout", "disable-scrollbars");
-  }
 
-  function removeDrawerBodyState() {
-    document.body.classList.remove("drawer-flyout", "disable-scrollbars");
-  }
+/* ===============================
+   COLOR CONTROL (PER ELEMENT)
+================================ */
+function initColorControlByPosition() {
+  const controls = document.querySelectorAll(".color-control");
+  const sections = document.querySelectorAll(".section-dark, .section-light");
 
-  /* ===============================
-     COLOR CONTROL (PER ELEMENT)
-  ================================ */
-  function initColorControlByPosition() {
-    const controls = document.querySelectorAll(".color-control");
-    const sections = document.querySelectorAll(".section-dark, .section-light");
+  if (!controls.length || !sections.length) return;
 
-    if (!controls.length || !sections.length) return;
+  function updateColors() {
+    controls.forEach(control => {
+      const rect = control.getBoundingClientRect();
+      const controlY = rect.top + rect.height / 2;
 
-    if (currentColorControlHandler) {
-      window.removeEventListener("scroll", currentColorControlHandler);
-      window.removeEventListener("resize", currentColorControlHandler);
-      currentColorControlHandler = null;
-    }
+      let matchedSection = null;
 
-    let ticking = false;
-
-    function updateColors() {
-      controls.forEach((control) => {
-        const rect = control.getBoundingClientRect();
-        const controlY = rect.top + rect.height / 2;
-
-        let matchedSection = null;
-
-        sections.forEach((section) => {
-          const sRect = section.getBoundingClientRect();
-          if (controlY >= sRect.top && controlY <= sRect.bottom) {
-            matchedSection = section;
-          }
-        });
-
-        control.classList.remove("color-light", "color-dark");
-
-        if (!matchedSection) return;
-
-        if (matchedSection.classList.contains("section-dark")) {
-          control.classList.add("color-light");
-        } else if (matchedSection.classList.contains("section-light")) {
-          control.classList.add("color-dark");
+      sections.forEach(section => {
+        const sRect = section.getBoundingClientRect();
+        if (controlY >= sRect.top && controlY <= sRect.bottom) {
+          matchedSection = section;
         }
       });
 
-      ticking = false;
-    }
+      // Reset
+      control.classList.remove("color-light", "color-dark");
 
-    function requestUpdate() {
-      if (!ticking) {
-        window.requestAnimationFrame(updateColors);
-        ticking = true;
+      if (!matchedSection) return;
+
+      if (matchedSection.classList.contains("section-dark")) {
+        control.classList.add("color-light");
+      } else if (matchedSection.classList.contains("section-light")) {
+        control.classList.add("color-dark");
       }
-    }
-
-    updateColors();
-    currentColorControlHandler = requestUpdate;
-
-    window.addEventListener("scroll", currentColorControlHandler, { passive: true });
-    window.addEventListener("resize", currentColorControlHandler);
-
-    colorControlBound = true;
+    });
   }
-})();
+
+  // Run on load + scroll
+  updateColors();
+  window.addEventListener("scroll", updateColors);
+  window.addEventListener("resize", updateColors);
+}
