@@ -26,7 +26,7 @@
         "description": "<p>Save your favorite products here and come back to them anytime.</p>",
         "heading_size": "h2",
         "text_alignment": "text-left",
-        "color_scheme": "",
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "container_width": "container",
         "grid_columns": 3,
         "show_two_mobile": true,
