@@ -253,14 +253,6 @@
                   {%- render 'theme-icon', icon: 'close' -%}
                 </span>
               </a>
-            {% when 'wishlist_drawer' %}
-              <!-- Wishlist -->
-              <a href="/pages/wishlist" class="nav-icon-text-wrap color-control" aria-label="Wishlist">
-                <span class="icon">
-                  {%- render 'theme-icon', icon: 'wishlist' -%}
-                  <span class="wishlist-count" data-wishlist-count>0</span>
-                </span>
-              </a>
           {% endcase %}
         {% endfor %}
       </nav>
