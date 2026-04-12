@@ -183,26 +183,6 @@
       );
     }
 
-
-    function resetSlideMotion(swiperInstance) {
-  swiperInstance.slides.forEach(function(slide) {
-    const media = slide.querySelector('.media-wrapper[data-motion]');
-    if (media) {
-      media.classList.remove('is-motion-active');
-    }
-  });
-}
-
-function activateSlideMotion(swiperInstance) {
-  const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
-  if (!activeSlide) return;
-
-  const media = activeSlide.querySelector('.media-wrapper[data-motion]');
-  if (!media) return;
-
-  media.offsetHeight;
-  media.classList.add('is-motion-active');
-}
     /* =========================
        INIT SWIPER
     ========================== */
@@ -229,21 +209,17 @@ function activateSlideMotion(swiperInstance) {
       },
       {% endif %}
 
-on: {
-  init: function () {
-    playActiveYouTube(this);
-    resetSlideMotion(this);
-    activateSlideMotion(this);
-  },
-  slideChangeTransitionStart: function () {
-    pauseAllYouTube();
-    resetSlideMotion(this);
-  },
-  slideChangeTransitionEnd: function () {
-    playActiveYouTube(this);
-    activateSlideMotion(this);
-  }
-}
+      on: {
+        init: function () {
+          playActiveYouTube(this);
+        },
+        slideChangeTransitionStart: function () {
+          pauseAllYouTube();
+        },
+        slideChangeTransitionEnd: function () {
+          playActiveYouTube(this);
+        }
+      }
     });
 
   });
