@@ -1,34 +1,58 @@
-<div class="cart-item" data-key="{{ item.key }}" data-product="{{ item.product.id }}" data-variant="{{ item.variant.id }}" data-quantity="{{ item.quantity }}">
-
-    <div class="cart-item-image">
-    <a href="{{ item.url }}">
-        {{ item.image | image_url: width: 200 | image_tag }}
+<div
+  class="cart-item"
+  data-key="{{ item.key }}"
+  data-product="{{ item.product.id }}"
+  data-variant="{{ item.variant.id }}"
+  data-quantity="{{ item.quantity }}"
+>
+  <div class="cart-item-image">
+    <a href="{{ item.url }}" aria-label="{{ item.product_title | escape }}">
+      {{
+        item.image
+        | image_url: width: 200
+        | image_tag:
+          width: 200,
+          loading: 'lazy',
+          decoding: 'async',
+          alt: item.product_title
+      }}
     </a>
-    </div>
+  </div>
 
-    <div class="cart-item-info">
+  <div class="cart-item-info">
     <div class="info-left">
-        <a href="{{ item.url }}" class="cart-item-title">
-        {{ item.product.title }}
-        </a>
-        {% if item.variant.title != 'Default Title' %}
+      <a href="{{ item.url }}" class="cart-item-title">
+        {{ item.product_title }}
+      </a>
+
+      {% if item.variant.title != 'Default Title' %}
         <p class="cart-item-variant">{{ item.variant.title }}</p>
-        {% endif %}
-        <div class="cart-item-qty">
-        <button type="button" class="qty-btn qty-minus">−</button>
-        <input type="number" name="updates[]" value="{{ item.quantity }}" min="1">
-        <button type="button" class="qty-btn qty-plus">+</button>
-        </div>
+      {% endif %}
+
+      <div class="cart-item-qty">
+        <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">
+          −
+        </button>
+        <input
+          type="number"
+          name="updates[]"
+          value="{{ item.quantity }}"
+          min="1"
+          aria-label="Quantity for {{ item.product_title | escape }}"
+        >
+        <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">
+          +
+        </button>
+      </div>
     </div>
 
     <div class="info-right">
-        <p class="cart-item-price">
+      <p class="cart-item-price">
         {{ item.final_line_price | money }}
-        </p>
-        <button type="button" class="cart-item-remove">
+      </p>
+      <button type="button" class="cart-item-remove" aria-label="Remove {{ item.product_title | escape }}">
         Remove
-        </button>
+      </button>
     </div>
-    </div>
-
+  </div>
 </div>
