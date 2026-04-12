@@ -73,12 +73,17 @@
         "bag_drawer_czpN4Y": {
           "type": "bag_drawer",
           "settings": {}
+        },
+        "wishlist_drawer_UiMkAk": {
+          "type": "wishlist_drawer",
+          "settings": {}
         }
       },
       "block_order": [
         "search_drawer_BWxUax",
         "account_drawer_TazcYX",
-        "bag_drawer_czpN4Y"
+        "bag_drawer_czpN4Y",
+        "wishlist_drawer_UiMkAk"
       ],
       "name": "Sidebar",
       "settings": {
