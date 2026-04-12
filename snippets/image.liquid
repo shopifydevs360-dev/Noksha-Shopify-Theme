@@ -61,7 +61,9 @@
 %}
 
 <{{ wrapper }}
+  {% if image != blank %}
   class="image {{ class }}"
+  {% endif %}
   {% if url %}
     href="{{ url }}"
   {% endif %}
