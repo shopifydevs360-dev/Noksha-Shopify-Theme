@@ -430,7 +430,6 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
 }
 
 
-
 /* =====================================
    HERO IMAGE MOTION EFFECTS
 ===================================== */
@@ -448,44 +447,81 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
   height: 100%;
   object-fit: cover;
   display: block;
-  transform: scale(1);
   will-change: transform;
-}
-
-/* Reset animation by default */
-.hero-slideshow .swiper-slide .media-wrapper img {
+  transform: scale(1);
   animation: none;
 }
 
-/* Zoom In */
+/* -----------------------------
+   Base states by motion type
+------------------------------ */
+
+/* No motion */
+.hero-slideshow .swiper-slide.motion-none .media-wrapper img {
+  transform: scale(1);
+}
+
+/* Zoom in starts normal */
+.hero-slideshow .swiper-slide.motion-zoom_in .media-wrapper img {
+  transform: scale(1);
+}
+
+/* Zoom out starts already zoomed */
+.hero-slideshow .swiper-slide.motion-zoom_out .media-wrapper img {
+  transform: scale(1.15);
+}
+
+/* Pan left starts from right side */
+.hero-slideshow .swiper-slide.motion-pan_left .media-wrapper img {
+  transform: scale(1.1) translateX(5%);
+}
+
+/* Pan right starts from left side */
+.hero-slideshow .swiper-slide.motion-pan_right .media-wrapper img {
+  transform: scale(1.1) translateX(-5%);
+}
+
+/* Pan up starts from bottom */
+.hero-slideshow .swiper-slide.motion-pan_up .media-wrapper img {
+  transform: scale(1.1) translateY(5%);
+}
+
+/* Pan down starts from top */
+.hero-slideshow .swiper-slide.motion-pan_down .media-wrapper img {
+  transform: scale(1.1) translateY(-5%);
+}
+
+/* -----------------------------
+   Active animation states
+------------------------------ */
+
 .hero-slideshow .swiper-slide.is-motion-active.motion-zoom_in .media-wrapper img {
-  animation: heroZoomIn 6s ease-out forwards;
+  animation: heroZoomIn 6s ease-out both;
 }
 
-/* Zoom Out */
 .hero-slideshow .swiper-slide.is-motion-active.motion-zoom_out .media-wrapper img {
-  animation: heroZoomOut 6s ease-out forwards;
+  animation: heroZoomOut 6s ease-out both;
 }
 
-/* Pan Left */
 .hero-slideshow .swiper-slide.is-motion-active.motion-pan_left .media-wrapper img {
-  animation: heroPanLeft 6s ease-out forwards;
+  animation: heroPanLeft 6s ease-out both;
 }
 
-/* Pan Right */
 .hero-slideshow .swiper-slide.is-motion-active.motion-pan_right .media-wrapper img {
-  animation: heroPanRight 6s ease-out forwards;
+  animation: heroPanRight 6s ease-out both;
 }
 
-/* Pan Up */
 .hero-slideshow .swiper-slide.is-motion-active.motion-pan_up .media-wrapper img {
-  animation: heroPanUp 6s ease-out forwards;
+  animation: heroPanUp 6s ease-out both;
 }
 
-/* Pan Down */
 .hero-slideshow .swiper-slide.is-motion-active.motion-pan_down .media-wrapper img {
-  animation: heroPanDown 6s ease-out forwards;
+  animation: heroPanDown 6s ease-out both;
 }
+
+/* -----------------------------
+   Keyframes
+------------------------------ */
 
 @keyframes heroZoomIn {
   from { transform: scale(1); }
