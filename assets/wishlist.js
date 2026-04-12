@@ -2,7 +2,6 @@
    WISHLIST FUNCTIONALITY
 ====================================== */
 const WISHLIST_STORAGE_KEY = 'theme-wishlist-items';
-const WISHLIST_PRODUCT_CARD_SECTION_ID = 'wishlist-product-card';
 
 document.addEventListener('DOMContentLoaded', () => {
   initWishlist();
@@ -96,24 +95,6 @@ function toggleWishlistItem(button) {
   );
 }
 
-function removeWishlistItemById(productId) {
-  if (!productId) return;
-
-  const filteredItems = getWishlistItems().filter(
-    (item) => String(item.id) !== String(productId)
-  );
-
-  saveWishlistItems(filteredItems);
-  syncWishlistUI(document);
-  renderWishlistPage();
-
-  document.dispatchEvent(
-    new CustomEvent('wishlist:updated', {
-      detail: { items: filteredItems }
-    })
-  );
-}
-
 function syncWishlistUI(scope = document) {
   updateWishlistButtons(scope);
   updateWishlistCount();
@@ -192,23 +173,23 @@ function renderWishlistPage() {
     return;
   }
 
-  Promise.all(wishlistItems.map((item) => fetchWishlistProductCard(item)))
-    .then((cards) => {
-      const validCards = cards.filter((card) => card && card.trim() !== '');
+  Promise.all(wishlistItems.map((item) => fetchWishlistProduct(item)))
+    .then((products) => {
+      const validProducts = products.filter(Boolean);
 
       if (loadingElement) {
         loadingElement.classList.add('hide');
       }
 
-      if (!validCards.length) {
+      if (!validProducts.length) {
         if (emptyElement) {
           emptyElement.classList.remove('hide');
         }
         return;
       }
 
-      validCards.forEach((cardHtml) => {
-        itemsContainer.insertAdjacentHTML('beforeend', cardHtml);
+      validProducts.forEach((product) => {
+        itemsContainer.insertAdjacentHTML('beforeend', renderWishlistItem(product));
       });
 
       syncWishlistUI(itemsContainer);
@@ -226,37 +207,119 @@ function renderWishlistPage() {
     });
 }
 
-function fetchWishlistProductCard(item) {
-  if (!item || !item.handle) return Promise.resolve('');
+function fetchWishlistProduct(item) {
+  if (!item || !item.handle) return Promise.resolve(null);
 
-  const url = `/products/${encodeURIComponent(item.handle)}?section_id=${encodeURIComponent(
-    WISHLIST_PRODUCT_CARD_SECTION_ID
-  )}`;
-
-  return fetch(url)
+  return fetch(`/products/${encodeURIComponent(item.handle)}.js`)
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`Failed to load wishlist product card for handle: ${item.handle}`);
+        throw new Error(`Failed to load wishlist product: ${item.handle}`);
       }
-      return response.text();
+      return response.json();
     })
-    .then((html) => extractSectionInnerHtml(html))
+    .then((product) => {
+      return {
+        id: product.id || item.id,
+        handle: product.handle || item.handle,
+        title: product.title || item.title || '',
+        url: product.url || item.url || '#',
+        price: formatMoney(product.price),
+        image: getProductImage(product, item),
+        available: product.available
+      };
+    })
     .catch((error) => {
       console.warn(error);
-      return '';
+      return null;
     });
 }
 
-function extractSectionInnerHtml(html) {
-  if (!html) return '';
+function getProductImage(product, item) {
+  if (product && product.featured_image) {
+    if (typeof product.featured_image === 'string') {
+      return product.featured_image;
+    }
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+    if (product.featured_image.src) {
+      return product.featured_image.src;
+    }
 
-  const sectionRoot =
-    doc.querySelector(`#shopify-section-${WISHLIST_PRODUCT_CARD_SECTION_ID}`) ||
-    doc.querySelector('.shopify-section') ||
-    doc.body;
+    if (product.featured_image.url) {
+      return product.featured_image.url;
+    }
+  }
 
-  return sectionRoot ? sectionRoot.innerHTML.trim() : '';
+  return item.image || '';
+}
+
+function renderWishlistItem(product) {
+  const imageMarkup = product.image
+    ? `<img
+         src="${escapeHtml(product.image)}"
+         alt="${escapeHtml(product.title)}"
+         class="wishlist-page__item-image"
+         loading="lazy"
+       >`
+    : '';
+
+  return `
+    <div class="wishlist-page__item" data-product-id="${escapeHtml(String(product.id))}">
+      <button
+        type="button"
+        class="wishlist-page__item-wishlist is-active"
+        aria-label="Remove ${escapeHtml(product.title)} from wishlist"
+        aria-pressed="true"
+        data-wishlist-toggle
+        data-product-id="${escapeHtml(String(product.id))}"
+        data-product-handle="${escapeHtml(product.handle)}"
+        data-product-url="${escapeHtml(product.url)}"
+        data-product-title="${escapeHtml(product.title)}"
+        data-product-price=""
+        data-product-image="${escapeHtml(product.image || '')}"
+      >
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s-6.716-4.35-9.193-8.296C.94 9.73 2.06 5.5 6.09 4.56A5.43 5.43 0 0 1 12 6.09a5.43 5.43 0 0 1 5.91-1.53c4.03.94 5.15 5.17 3.283 8.144C18.716 16.65 12 21 12 21Z"></path>
+          </svg>
+        </span>
+      </button>
+
+      <a href="${escapeHtml(product.url)}" class="wishlist-page__item-image-link" aria-label="${escapeHtml(product.title)}">
+        ${imageMarkup}
+      </a>
+
+      <h3 class="wishlist-page__item-title">
+        <a href="${escapeHtml(product.url)}">${escapeHtml(product.title)}</a>
+      </h3>
+
+      <div class="wishlist-page__item-price">
+        ${escapeHtml(product.price)}
+      </div>
+    </div>
+  `;
+}
+
+function formatMoney(cents) {
+  if (typeof cents !== 'number') return '';
+
+  const activeCurrency =
+    window.Shopify &&
+    window.Shopify.currency &&
+    window.Shopify.currency.active
+      ? window.Shopify.currency.active
+      : 'USD';
+
+  return new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: activeCurrency
+  }).format(cents / 100);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
