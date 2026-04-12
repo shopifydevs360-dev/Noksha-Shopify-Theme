@@ -35,6 +35,7 @@
           "type": "image_slide",
           "settings": {
             "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+            "image": "shopify://shop_images/Youmi00708.jpg",
             "subheading": "",
             "sub_heading_font_size": "h4",
             "use_custom_font": "",
@@ -53,7 +54,7 @@
           "type": "image_slide",
           "settings": {
             "text_color_scheme": "",
-            "image": "shopify://shop_images/Youmi00708.jpg",
+            "image": "shopify://shop_images/Youmi01693.jpg",
             "subheading": "",
             "sub_heading_font_size": "h4",
             "use_custom_font": "",
