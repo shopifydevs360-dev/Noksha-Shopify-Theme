@@ -151,6 +151,26 @@
         "color_control": "section-light"
       }
     },
+    "layered_image_text_story_pFPCCy": {
+      "type": "layered-image-text-story",
+      "name": "Layered Image Story",
+      "settings": {
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "container_type": "container",
+        "eyebrow": "Our Story",
+        "heading": "Crafted for timeless living",
+        "heading_size": "h2",
+        "text": "<p>Tell a short story about the collection, your craftsmanship, or the design philosophy behind the season.</p>",
+        "button_label": "Explore more",
+        "button_link": "",
+        "main_image": "shopify://shop_images/Youmi00708.jpg",
+        "secondary_image": "shopify://shop_images/Youmi00917.jpg",
+        "padding_top": 48,
+        "padding_bottom": 140,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "image_overlay_grid_Gz6VEw": {
       "type": "image-overlay-grid",
       "blocks": {
@@ -221,26 +241,6 @@
         "columns": 2,
         "padding_top": 0,
         "padding_bottom": 0,
-        "custom_class": "",
-        "color_control": "section-light"
-      }
-    },
-    "layered_image_text_story_pFPCCy": {
-      "type": "layered-image-text-story",
-      "name": "Layered Image Story",
-      "settings": {
-        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_type": "container",
-        "eyebrow": "Our Story",
-        "heading": "Crafted for timeless living",
-        "heading_size": "h2",
-        "text": "<p>Tell a short story about the collection, your craftsmanship, or the design philosophy behind the season.</p>",
-        "button_label": "Explore more",
-        "button_link": "",
-        "main_image": "shopify://shop_images/Youmi00708.jpg",
-        "secondary_image": "shopify://shop_images/Youmi00917.jpg",
-        "padding_top": 48,
-        "padding_bottom": 140,
         "custom_class": "",
         "color_control": "section-light"
       }
@@ -317,8 +317,8 @@
     "hero_slideshow_DY9JwJ",
     "collection_tab_jigG9e",
     "collection_tab_HFCJgQ",
-    "image_overlay_grid_Gz6VEw",
     "layered_image_text_story_pFPCCy",
+    "image_overlay_grid_Gz6VEw",
     "image_overlay_grid_Ez7ym8",
     "article_wrapper_tkFWde",
     "home_intro_LaEWrV"
