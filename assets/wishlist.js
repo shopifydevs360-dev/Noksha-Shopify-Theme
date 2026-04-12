@@ -29,19 +29,10 @@ function bindWishlistEvents() {
 
   document.addEventListener('click', function (event) {
     const toggleButton = event.target.closest('[data-wishlist-toggle]');
-    if (toggleButton) {
-      event.preventDefault();
-      toggleWishlistItem(toggleButton);
-      return;
-    }
+    if (!toggleButton) return;
 
-    const removeButton = event.target.closest('[data-wishlist-remove]');
-    if (removeButton) {
-      event.preventDefault();
-      const productId = removeButton.dataset.productId;
-      removeWishlistItemById(productId);
-      renderWishlistPage();
-    }
+    event.preventDefault();
+    toggleWishlistItem(toggleButton);
   });
 }
 
@@ -114,6 +105,7 @@ function removeWishlistItemById(productId) {
 
   saveWishlistItems(filteredItems);
   syncWishlistUI(document);
+  renderWishlistPage();
 
   document.dispatchEvent(
     new CustomEvent('wishlist:updated', {
@@ -178,7 +170,6 @@ function renderWishlistPage() {
   if (!itemsContainer) return;
 
   const wishlistItems = getWishlistItems();
-
   itemsContainer.innerHTML = '';
 
   if (loadingElement) {
@@ -190,8 +181,14 @@ function renderWishlistPage() {
   }
 
   if (!wishlistItems.length) {
-    if (loadingElement) loadingElement.classList.add('hide');
-    if (emptyElement) emptyElement.classList.remove('hide');
+    if (loadingElement) {
+      loadingElement.classList.add('hide');
+    }
+
+    if (emptyElement) {
+      emptyElement.classList.remove('hide');
+    }
+
     return;
   }
 
@@ -204,7 +201,9 @@ function renderWishlistPage() {
       }
 
       if (!validCards.length) {
-        if (emptyElement) emptyElement.classList.remove('hide');
+        if (emptyElement) {
+          emptyElement.classList.remove('hide');
+        }
         return;
       }
 
@@ -213,13 +212,17 @@ function renderWishlistPage() {
       });
 
       syncWishlistUI(itemsContainer);
-      appendWishlistRemoveButtons(itemsContainer);
     })
     .catch((error) => {
       console.warn('Failed to render wishlist page:', error);
 
-      if (loadingElement) loadingElement.classList.add('hide');
-      if (emptyElement) emptyElement.classList.remove('hide');
+      if (loadingElement) {
+        loadingElement.classList.add('hide');
+      }
+
+      if (emptyElement) {
+        emptyElement.classList.remove('hide');
+      }
     });
 }
 
@@ -256,48 +259,4 @@ function extractSectionInnerHtml(html) {
     doc.body;
 
   return sectionRoot ? sectionRoot.innerHTML.trim() : '';
-}
-
-function appendWishlistRemoveButtons(scope) {
-  const productCards = scope.querySelectorAll('.product-card');
-
-  productCards.forEach((card) => {
-    const existingAction = card.querySelector('[data-wishlist-remove]');
-    if (existingAction) return;
-
-    const wishlistToggle = card.querySelector('[data-wishlist-toggle]');
-    if (!wishlistToggle) return;
-
-    const productId = wishlistToggle.dataset.productId;
-    if (!productId) return;
-
-    let infoArea = card.querySelector('.product-card-info');
-    if (!infoArea) {
-      infoArea = card;
-    }
-
-    const actionWrapper = document.createElement('div');
-    actionWrapper.className = 'wishlist-page__card-actions';
-    actionWrapper.innerHTML = `
-      <button
-        type="button"
-        class="btn btn--underline wishlist-page__remove-btn"
-        data-wishlist-remove
-        data-product-id="${escapeHtml(productId)}"
-      >
-        Remove
-      </button>
-    `;
-
-    infoArea.appendChild(actionWrapper);
-  });
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
 }
