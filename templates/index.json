@@ -168,7 +168,7 @@
             "title": "CO-ORDS",
             "cta_text": "SHOP NOW",
             "link": "",
-            "button_type": "hover-underline",
+            "button_type": "btn--primary",
             "image_background_color": "#f3f3f4"
           }
         },
