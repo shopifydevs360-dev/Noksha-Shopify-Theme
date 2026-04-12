@@ -1,15 +1,22 @@
-<div id="js-wishlist-drawer" class="shopify-section-wishlist noksha-drawer m-color-{{ section.settings.sidebar_color_scheme }}" data-open-section="wishlist-drawer">
-    <div class="inner-section drawer-space">
-        <div class="container">
-            <h4 class="title">Your Wishlist</h4>
-        </div>
+<div
+  id="js-wishlist-drawer"
+  class="shopify-section-wishlist noksha-drawer m-color-{{ section.settings.sidebar_color_scheme }}"
+  data-open-section="wishlist-drawer"
+>
+  <div class="inner-section drawer-space">
+    <div class="container">
+      <h4 class="title">Your Wishlist</h4>
+      <div class="wishlist-drawer__items" data-wishlist-drawer-items></div>
+      <div class="wishlist-drawer__empty hide" data-wishlist-drawer-empty>
+        <p>Your wishlist is empty.</p>
+      </div>
     </div>
+  </div>
 </div>
 
-
 {% stylesheet %}
-  .shopify-section-wishlist {
-  max-width: 70rem;
-  background: #f0eee8;
-}
+    .shopify-section-wishlist {
+    max-width: 70rem;
+    background: #f0eee8;
+  }
 {% endstylesheet %}
