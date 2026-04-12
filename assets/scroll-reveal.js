@@ -46,34 +46,89 @@
 // });
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-  gsap.registerPlugin(ScrollTrigger);
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-  document.querySelectorAll('.js-product-scroll-reveal').forEach((grid) => {
-    const cards = grid.querySelectorAll('.product-card');
-    if (!cards.length) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    gsap.set(cards, {
-      opacity: 0,
-      x: 80
-    });
+    const section = document.querySelector('.main-product-list[data-section-id="{{ section.id }}"]');
+    if (!section) return;
 
-    ScrollTrigger.create({
-      trigger: grid,
-      start: 'top 85%',
-      once: true,
-      onEnter: function () {
-        gsap.to(cards, {
-          opacity: 1,
-          x: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.12,
-          clearProps: 'transform,opacity'
-        });
+    const grid = section.querySelector('#productsContainer.js-product-scroll-reveal');
+    if (!grid) return;
+
+    let currentTrigger = null;
+    let observer = null;
+
+    function getCards() {
+      return Array.from(grid.querySelectorAll('.product-card'));
+    }
+
+    function killExistingTrigger() {
+      if (currentTrigger) {
+        currentTrigger.kill();
+        currentTrigger = null;
       }
-    });
+    }
+
+    function resetCards(cards) {
+      if (!cards.length) return;
+
+      gsap.killTweensOf(cards);
+      gsap.set(cards, {
+        opacity: 0,
+        x: 80
+      });
+    }
+
+    function animateCards(cards) {
+      if (!cards.length) return;
+
+      gsap.killTweensOf(cards);
+
+      gsap.to(cards, {
+        opacity: 1,
+        x: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.12,
+        clearProps: 'transform,opacity'
+      });
+    }
+
+    function initScrollReveal() {
+      const cards = getCards();
+      if (!cards.length) return;
+
+      killExistingTrigger();
+      resetCards(cards);
+
+      currentTrigger = ScrollTrigger.create({
+        trigger: grid,
+        start: 'top 85%',
+        once: true,
+        onEnter: function () {
+          animateCards(cards);
+        }
+      });
+
+      ScrollTrigger.refresh();
+    }
+
+    function watchGridChanges() {
+      if (observer) observer.disconnect();
+
+      observer = new MutationObserver(function () {
+        initScrollReveal();
+      });
+
+      observer.observe(grid, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    initScrollReveal();
+    watchGridChanges();
   });
-});
