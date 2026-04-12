@@ -2,6 +2,7 @@
    WISHLIST FUNCTIONALITY
 ====================================== */
 const WISHLIST_STORAGE_KEY = 'theme-wishlist-items';
+const WISHLIST_PRODUCT_CARD_SECTION_ID = 'wishlist-product-card';
 
 document.addEventListener('DOMContentLoaded', () => {
   initWishlist();
@@ -194,24 +195,25 @@ function renderWishlistPage() {
     return;
   }
 
-  Promise.all(wishlistItems.map((item) => fetchWishlistProduct(item)))
-    .then((products) => {
-      const validProducts = products.filter(Boolean);
+  Promise.all(wishlistItems.map((item) => fetchWishlistProductCard(item)))
+    .then((cards) => {
+      const validCards = cards.filter((card) => card && card.trim() !== '');
 
       if (loadingElement) {
         loadingElement.classList.add('hide');
       }
 
-      if (!validProducts.length) {
+      if (!validCards.length) {
         if (emptyElement) emptyElement.classList.remove('hide');
         return;
       }
 
-      validProducts.forEach((product) => {
-        itemsContainer.insertAdjacentHTML('beforeend', renderWishlistProductCard(product));
+      validCards.forEach((cardHtml) => {
+        itemsContainer.insertAdjacentHTML('beforeend', cardHtml);
       });
 
       syncWishlistUI(itemsContainer);
+      appendWishlistRemoveButtons(itemsContainer);
     })
     .catch((error) => {
       console.warn('Failed to render wishlist page:', error);
@@ -221,94 +223,74 @@ function renderWishlistPage() {
     });
 }
 
-function fetchWishlistProduct(item) {
-  if (!item || !item.handle) return Promise.resolve(null);
+function fetchWishlistProductCard(item) {
+  if (!item || !item.handle) return Promise.resolve('');
 
-  return fetch(`/products/${item.handle}.js`)
+  const url = `/products/${encodeURIComponent(item.handle)}?section_id=${encodeURIComponent(
+    WISHLIST_PRODUCT_CARD_SECTION_ID
+  )}`;
+
+  return fetch(url)
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`Failed to load product: ${item.handle}`);
+        throw new Error(`Failed to load wishlist product card for handle: ${item.handle}`);
       }
-      return response.json();
+      return response.text();
     })
-    .then((product) => {
-      return {
-        id: item.id || product.id,
-        handle: product.handle,
-        title: product.title,
-        url: product.url,
-        price: formatMoney(product.price),
-        image: product.featured_image || item.image || '',
-        available: product.available
-      };
-    })
-    .catch(() => null);
+    .then((html) => extractSectionInnerHtml(html))
+    .catch((error) => {
+      console.warn(error);
+      return '';
+    });
 }
 
-function renderWishlistProductCard(product) {
-  const imageMarkup = product.image
-    ? `
-      <img
-        src="${escapeHtml(product.image)}"
-        alt="${escapeHtml(product.title)}"
-        class="product-card__image"
-        loading="lazy"
+function extractSectionInnerHtml(html) {
+  if (!html) return '';
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+
+  const sectionRoot =
+    doc.querySelector(`#shopify-section-${WISHLIST_PRODUCT_CARD_SECTION_ID}`) ||
+    doc.querySelector('.shopify-section') ||
+    doc.body;
+
+  return sectionRoot ? sectionRoot.innerHTML.trim() : '';
+}
+
+function appendWishlistRemoveButtons(scope) {
+  const productCards = scope.querySelectorAll('.product-card');
+
+  productCards.forEach((card) => {
+    const existingAction = card.querySelector('[data-wishlist-remove]');
+    if (existingAction) return;
+
+    const wishlistToggle = card.querySelector('[data-wishlist-toggle]');
+    if (!wishlistToggle) return;
+
+    const productId = wishlistToggle.dataset.productId;
+    if (!productId) return;
+
+    let infoArea = card.querySelector('.product-card-info');
+    if (!infoArea) {
+      infoArea = card;
+    }
+
+    const actionWrapper = document.createElement('div');
+    actionWrapper.className = 'wishlist-page__card-actions';
+    actionWrapper.innerHTML = `
+      <button
+        type="button"
+        class="btn btn--underline wishlist-page__remove-btn"
+        data-wishlist-remove
+        data-product-id="${escapeHtml(productId)}"
       >
-    `
-    : '';
+        Remove
+      </button>
+    `;
 
-  return `
-    <div class="product-card" data-product-id="${escapeHtml(String(product.id))}">
-      <div class="image-wrap">
-        <button
-          type="button"
-          class="product-card__wishlist-btn is-active"
-          aria-label="Remove ${escapeHtml(product.title)} from wishlist"
-          aria-pressed="true"
-          data-wishlist-toggle
-          data-product-id="${escapeHtml(String(product.id))}"
-          data-product-handle="${escapeHtml(product.handle)}"
-          data-product-url="${escapeHtml(product.url)}"
-          data-product-title="${escapeHtml(product.title)}"
-          data-product-price=""
-          data-product-image="${escapeHtml(product.image || '')}"
-        >
-          <span class="icon icon-wishlist" aria-hidden="true">♥</span>
-        </button>
-
-        <a href="${escapeHtml(product.url)}" aria-label="${escapeHtml(product.title)}">
-          <div class="cropped-image-wrapper cropped-image--square is-hover-zoom-out">
-            ${imageMarkup}
-          </div>
-        </a>
-      </div>
-
-      <div class="product-card-info">
-        <div class="split-aligner">
-          <span class="title">
-            <a href="${escapeHtml(product.url)}">${escapeHtml(product.title)}</a>
-          </span>
-          <p class="price">${escapeHtml(product.price)}</p>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function formatMoney(cents) {
-  if (typeof cents !== 'number') return '';
-
-  const activeCurrency =
-    window.Shopify &&
-    window.Shopify.currency &&
-    window.Shopify.currency.active
-      ? window.Shopify.currency.active
-      : 'USD';
-
-  return new Intl.NumberFormat(undefined, {
-    style: 'currency',
-    currency: activeCurrency
-  }).format(cents / 100);
+    infoArea.appendChild(actionWrapper);
+  });
 }
 
 function escapeHtml(value) {
