@@ -172,6 +172,47 @@
         "color_control": "section-light"
       }
     },
+    "shop_the_look_VCTH6r": {
+      "type": "shop-the-look",
+      "blocks": {
+        "product_hotspot_fgJHpi": {
+          "type": "product_hotspot",
+          "settings": {
+            "product": "",
+            "top_position": 40,
+            "left_position": 50
+          }
+        },
+        "product_hotspot_zP9xxH": {
+          "type": "product_hotspot",
+          "settings": {
+            "product": "",
+            "top_position": 40,
+            "left_position": 50
+          }
+        }
+      },
+      "block_order": [
+        "product_hotspot_fgJHpi",
+        "product_hotspot_zP9xxH"
+      ],
+      "name": "Shop the Look",
+      "settings": {
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "container_type": "container",
+        "eyebrow": "Shop the look",
+        "heading": "Curated for effortless dressing",
+        "heading_size": "h2",
+        "text": "<p>Highlight a complete look and guide customers to the exact products featured in the image.</p>",
+        "button_label": "Explore collection",
+        "button_link": "",
+        "look_image": "shopify://shop_images/1_8189109b-4ace-41c8-9a5e-f50a344b4a40.png",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "image_overlay_grid_Gz6VEw": {
       "type": "image-overlay-grid",
       "blocks": {
@@ -319,6 +360,7 @@
     "collection_tab_jigG9e",
     "collection_tab_HFCJgQ",
     "layered_image_text_story_pFPCCy",
+    "shop_the_look_VCTH6r",
     "image_overlay_grid_Gz6VEw",
     "image_overlay_grid_Ez7ym8",
     "article_wrapper_tkFWde",
