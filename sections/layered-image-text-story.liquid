@@ -175,7 +175,7 @@
   data-layered-story
   data-section-id="{{ section.id }}"
 >
-  <div class="{{ section.settings.container_type }}">
+  <div class="{{ section.settings.container_type }} {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
     <div class="layered-image-story__inner">
       <div class="layered-image-story__media">
         <div class="layered-image-story__main-image" data-story-main>
