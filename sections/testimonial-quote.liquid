@@ -1,0 +1,349 @@
+{% render 'section-base-style' %}
+
+{%- liquid
+  assign classes = 'testimonial-quote section-x-padding'
+  assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
+  assign classes = classes | append: ' ' | append: section.settings.color_control
+  assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign classes = classes | append: ' ' | append: section.settings.custom_class | default: ''
+-%}
+
+{% stylesheet %}
+  .testimonial-quote {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .testimonial-quote__inner {
+    position: relative;
+    min-height: clamp(24rem, 42vh, 38rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+  }
+
+  .testimonial-quote__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .testimonial-quote__background .cropped-image-wrapper {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .testimonial-quote__background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .testimonial-quote__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .testimonial-quote__content {
+    position: relative;
+    z-index: 2;
+    max-width: min(60rem, 100%);
+  }
+
+  .testimonial-quote__icon {
+    margin: 0 auto 1.25rem;
+    opacity: 0.8;
+    width: fit-content;
+    line-height: 1;
+  }
+
+  .testimonial-quote__quote {
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  .testimonial-quote__author-wrap {
+    margin-top: 1.6rem;
+  }
+
+  .testimonial-quote__author {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .testimonial-quote__role {
+    margin-top: 0.35rem;
+    opacity: 0.8;
+  }
+
+  .testimonial-quote--no-image .testimonial-quote__inner {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  @media (max-width: 767px) {
+    .testimonial-quote__inner {
+      min-height: 20rem;
+      padding: 3rem 1.25rem;
+    }
+
+    .testimonial-quote__author-wrap {
+      margin-top: 1.2rem;
+    }
+  }
+{% endstylesheet %}
+
+<section
+  class="{{ classes }} {% if section.settings.background_image == blank %}testimonial-quote--no-image{% endif %}"
+  data-testimonial-quote
+  data-section-id="{{ section.id }}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="testimonial-quote__inner">
+      {% if section.settings.background_image != blank %}
+        <div class="testimonial-quote__background" data-quote-bg>
+          {% render 'image',
+            image: section.settings.background_image,
+            class: 'cropped-image-wrapper cropped-image--wide',
+            img_alt: section.settings.author_name
+          %}
+        </div>
+
+        <span
+          class="testimonial-quote__overlay"
+          style="
+            background: {{ section.settings.overlay_color }};
+            opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+          "
+        ></span>
+      {% endif %}
+
+      <div class="testimonial-quote__content">
+        {% if section.settings.show_quote_icon %}
+          <div class="testimonial-quote__icon h3" data-quote-item>
+            “
+          </div>
+        {% endif %}
+
+        {% if section.settings.quote != blank %}
+          <blockquote class="testimonial-quote__quote {{ section.settings.quote_size }}" data-quote-item>
+            {{ section.settings.quote }}
+          </blockquote>
+        {% endif %}
+
+        {% if section.settings.author_name != blank or section.settings.author_role != blank %}
+          <div class="testimonial-quote__author-wrap" data-quote-item>
+            {% if section.settings.author_name != blank %}
+              <p class="testimonial-quote__author">
+                {{ section.settings.author_name }}
+              </p>
+            {% endif %}
+
+            {% if section.settings.author_role != blank %}
+              <div class="testimonial-quote__role">
+                {{ section.settings.author_role }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', initTestimonialQuote);
+  document.addEventListener('shopify:section:load', initTestimonialQuote);
+
+  function initTestimonialQuote() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('[data-testimonial-quote][data-section-id="{{ section.id }}"]').forEach((section) => {
+      if (section.dataset.quoteInit === 'true') return;
+      section.dataset.quoteInit = 'true';
+
+      const background = section.querySelector('[data-quote-bg]');
+      const items = section.querySelectorAll('[data-quote-item]');
+
+      if (background) {
+        gsap.set(background, {
+          opacity: 0,
+          scale: 1.06
+        });
+      }
+
+      if (items.length) {
+        gsap.set(items, {
+          opacity: 0,
+          y: 24
+        });
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 82%',
+          once: true
+        }
+      });
+
+      if (background) {
+        tl.to(background, {
+          opacity: 1,
+          scale: 1,
+          duration: 1.1,
+          ease: 'power3.out'
+        });
+      }
+
+      if (items.length) {
+        tl.to(items, {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.14
+        }, background ? '-=0.55' : '0');
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Testimonial Quote",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quote_icon",
+      "label": "Show quote mark",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "A thoughtful product quote or customer line can add a quiet, premium pause between stronger editorial sections."
+    },
+    {
+      "type": "select",
+      "id": "quote_size",
+      "label": "Quote size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author name",
+      "default": "Sophia Laurent"
+    },
+    {
+      "type": "text",
+      "id": "author_role",
+      "label": "Author role",
+      "default": "Creative Director"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#F5EEE7"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 35,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Dynamic option"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Quote"
+    }
+  ]
+}
+{% endschema %}
