@@ -1,47 +1,57 @@
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
 {% stylesheet %}
-    /* Main Collection Layout */
+  /* Main Collection Layout */
   .collection-wrapper {
-      display: flex;
-      gap: 30px;
-      margin: 1rem 0 4rem 0;
+    display: flex;
+    gap: 30px;
+    margin: 1rem 0 4rem 0;
   }
-  .main-product-list .collection-header{
+
+  .main-product-list .collection-header {
     padding-top: 5.2rem;
   }
+
   .main-product-list .inner-warpper {
-      display: flex;
-      gap: 2rem;
-      width: 100%;
-  }
-  .main-product-list .product-list {
-      width: 100%;
-  }
-  .main-product-list .pagination-loader {
-      padding: 2rem 0;
-      text-align: center;
+    display: flex;
+    gap: 2rem;
+    width: 100%;
   }
 
+  .main-product-list .product-list {
+    width: 100%;
+  }
+
+  .main-product-list .pagination-loader {
+    padding: 2rem 0;
+    text-align: center;
+  }
 
   .main-product-list .pagination-ui--loadmore {
-      text-align: right;
-      margin-top: 0.5rem;
+    text-align: right;
+    margin-top: 0.5rem;
   }
-  .main-product-list .pagination-ui--loadmore .load-more-btn{
-      background: rgb(var(--color-heading));
-      color: rgb(var(--color-background));
-      padding: 0.8rem 2rem;
-      font-size: .8em;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      border: 1px solid rgb(var(--color-heading));
+
+  .main-product-list .pagination-ui--loadmore .load-more-btn {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    padding: 0.8rem 2rem;
+    font-size: .8em;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: 1px solid rgb(var(--color-heading));
   }
-  .main-product-list .pagination-ui--loadmore .load-more-btn:hover{
-      background: transparent;
-      color: rgb(var(--color-heading));
+
+  .main-product-list .pagination-ui--loadmore .load-more-btn:hover {
+    background: transparent;
+    color: rgb(var(--color-heading));
   }
-  
+
+  /* Scroll reveal initial state */
+  .main-product-list .js-product-scroll-reveal .product-card {
+    will-change: transform, opacity;
+  }
 {% endstylesheet %}
+
 <div
   class="main-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
   data-section-id="{{ section.id }}"
@@ -65,6 +75,7 @@
         {% endif %}
       </div>
     </div>
+
     {% comment %} Filter Result {% endcomment %}
     <div class="filter-result sidebar-space">
       <div class="filter-result-header">
@@ -83,10 +94,10 @@
         {% comment %} Active filters will be injected here via JS {% endcomment %}
       </div>
     </div>
+
     <div class="collection-wrapper sidebar-space">
       <main class="inner-warpper">
         <div class="product-list">
-          <!-- Products -->
           {% paginate collection.products by section.settings.products_per_page %}
             {% if collection.products_count > 0 %}
               <div
@@ -113,13 +124,11 @@
             {% endif %}
           {% endpaginate %}
 
-          <!-- Pagination UI -->
           {% if section.settings.enable_pagination %}
             <div id="paginationWrapper" class="custom-pagination">
               {% if section.settings.pagination_type == 'load_more_button' %}
                 <div class="pagination-ui pagination-ui--loadmore">
                   <button type="button" id="loadMoreBtn" class="load-more-btn">Load More</button>
-
                   <div class="pagination-loader" data-loader hidden>Loading...</div>
                 </div>
               {% elsif section.settings.pagination_type == 'infinity_loading' %}
@@ -131,7 +140,6 @@
           {% endif %}
         </div>
 
-        <!-- Filters -->
         <div class="product-filter">
           <div class="filter-actions-bar">
             <button type="button" class="filter-toggle-btn" data-action="filter">
@@ -156,7 +164,9 @@
     </div>
   </div>
 </div>
+
 <script src="{{ 'product-filter.js' | asset_url }}" defer></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -169,24 +179,29 @@
     const grid = section.querySelector('#productsContainer.js-product-scroll-reveal');
     if (!grid) return;
 
-    let currentTrigger = null;
+    let sectionHasEntered = false;
     let observer = null;
+    let scrollTriggerInstance = null;
 
-    function getCards() {
+    function getAllCards() {
       return Array.from(grid.querySelectorAll('.product-card'));
     }
 
-    function killExistingTrigger() {
-      if (currentTrigger) {
-        currentTrigger.kill();
-        currentTrigger = null;
-      }
+    function getFreshCards() {
+      return getAllCards().filter((card) => !card.dataset.revealReady && !card.dataset.revealed);
     }
 
-    function resetCards(cards) {
+    function markCardsReady(cards) {
+      cards.forEach((card) => {
+        card.dataset.revealReady = 'true';
+      });
+    }
+
+    function hideFreshCards(cards) {
       if (!cards.length) return;
 
-      gsap.killTweensOf(cards);
+      markCardsReady(cards);
+
       gsap.set(cards, {
         opacity: 0,
         x: 80
@@ -195,6 +210,11 @@
 
     function animateCards(cards) {
       if (!cards.length) return;
+
+      cards.forEach((card) => {
+        card.dataset.revealReady = 'true';
+        card.dataset.revealed = 'true';
+      });
 
       gsap.killTweensOf(cards);
 
@@ -208,30 +228,67 @@
       });
     }
 
-    function initScrollReveal() {
-      const cards = getCards();
+    function prepareInitialCards() {
+      const cards = getAllCards().filter((card) => !card.dataset.revealed);
       if (!cards.length) return;
+      hideFreshCards(cards);
+    }
 
-      killExistingTrigger();
-      resetCards(cards);
+    function revealOnEnter() {
+      sectionHasEntered = true;
+      const cards = getAllCards().filter((card) => !card.dataset.revealed);
+      animateCards(cards);
+    }
 
-      currentTrigger = ScrollTrigger.create({
+    function initScrollTrigger() {
+      if (scrollTriggerInstance) {
+        scrollTriggerInstance.kill();
+      }
+
+      scrollTriggerInstance = ScrollTrigger.create({
         trigger: grid,
         start: 'top 85%',
         once: true,
         onEnter: function () {
-          animateCards(cards);
+          revealOnEnter();
         }
       });
 
       ScrollTrigger.refresh();
     }
 
+    function handleGridMutation() {
+      const freshCards = getFreshCards();
+      if (!freshCards.length) return;
+
+      if (sectionHasEntered) {
+        hideFreshCards(freshCards);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            animateCards(freshCards);
+          });
+        });
+      } else {
+        hideFreshCards(freshCards);
+        ScrollTrigger.refresh();
+      }
+    }
+
     function watchGridChanges() {
       if (observer) observer.disconnect();
 
-      observer = new MutationObserver(function () {
-        initScrollReveal();
+      observer = new MutationObserver(function (mutations) {
+        let hasRelevantChange = false;
+
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList' && (mutation.addedNodes.length || mutation.removedNodes.length)) {
+            hasRelevantChange = true;
+          }
+        });
+
+        if (hasRelevantChange) {
+          handleGridMutation();
+        }
       });
 
       observer.observe(grid, {
@@ -240,10 +297,12 @@
       });
     }
 
-    initScrollReveal();
+    prepareInitialCards();
+    initScrollTrigger();
     watchGridChanges();
   });
 </script>
+
 {% schema %}
 {
   "name": "Collection Product List",
@@ -389,7 +448,6 @@
         }
       ]
     },
-
     {
       "type": "tag-filter",
       "name": "Tag Filter",
