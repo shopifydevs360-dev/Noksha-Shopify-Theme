@@ -152,9 +152,9 @@
             "image": "shopify://shop_images/YOUMIBEAUTYSHampooBestinDubai.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
-            "title": "MAXI DRESSES",
+            "title": "HAIR CARE",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "https://youmibeauty.com/collections/hair-care",
             "button_type": "btn--animation",
             "image_background_color": "#f3f3f4"
           }
@@ -165,9 +165,9 @@
             "image": "shopify://shop_images/youmi_beauty_clip_in_hair_extensions_best_in_Dubai.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
-            "title": "CO-ORDS",
+            "title": "CLIP IN EXTENSIONS",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "https://youmibeauty.com/collections/hair-clip-in-extensions",
             "button_type": "btn--primary",
             "image_background_color": "#f3f3f4"
           }
@@ -178,9 +178,9 @@
             "image": "shopify://shop_images/2023-12-2214-35-25_C_S4.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "is-hover-zoom-in",
-            "title": "ABAYAS",
+            "title": "HAIR TOOLS",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "https://youmibeauty.com/collections/hair-tools",
             "button_type": "btn--animation",
             "image_background_color": "#f3f3f4"
           }
@@ -191,9 +191,9 @@
             "image": "shopify://shop_images/2601647542867.jpg",
             "aspect_ratio": "cropped-image--square",
             "hover_effect_action": "no-effect",
-            "title": "HIJABS",
+            "title": "TAPE IN EXTENSIONS",
             "cta_text": "SHOP NOW",
-            "link": "",
+            "link": "https://youmibeauty.com/collections/tape-in-extension",
             "button_type": "btn--animation",
             "image_background_color": "#f3f3f4"
           }
