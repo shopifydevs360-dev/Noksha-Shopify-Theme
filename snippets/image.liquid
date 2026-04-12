@@ -104,7 +104,9 @@
           height: height
     }}
   {% endif %}
-{% else %}
-{%- render 'theme-icon', icon: 'default-image' -%}
+
 {% endif %}
 </{{ wrapper }}>
+{% if image = blank %}
+  {%- render 'theme-icon', icon: 'default-image' -%}
+  {% endif %}
