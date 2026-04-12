@@ -24,6 +24,13 @@
   .layered-image-story__media {
     position: relative;
     min-width: 0;
+    padding-right: 10%;
+    padding-bottom: 8%;
+  }
+
+  .rtl .layered-image-story__media {
+    padding-right: 0;
+    padding-left: 10%;
   }
 
   .layered-image-story__main-image {
@@ -33,22 +40,37 @@
   }
 
   .layered-image-story__main-image .cropped-image-wrapper,
-  .layered-image-story__secondary-image .cropped-image-wrapper {
+  .layered-image-story__secondary-image .cropped-image-wrapper,
+  .layered-image-story__third-image .cropped-image-wrapper {
     overflow: hidden;
   }
 
   .layered-image-story__secondary-image {
     position: absolute;
-    right: -8%;
-    bottom: -10%;
+    right: -2%;
+    bottom: -2%;
     width: min(42%, 20rem);
-    z-index: 2;
+    z-index: 3;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  }
+
+  .layered-image-story__third-image {
+    position: absolute;
+    top: 10%;
+    right: 18%;
+    width: min(28%, 13rem);
+    z-index: 2;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
   }
 
   .rtl .layered-image-story__secondary-image {
     right: auto;
-    left: -8%;
+    left: -2%;
+  }
+
+  .rtl .layered-image-story__third-image {
+    right: auto;
+    left: 18%;
   }
 
   .layered-image-story__content {
@@ -103,6 +125,12 @@
 
     .layered-image-story__media {
       order: 1;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+
+    .rtl .layered-image-story__media {
+      padding-left: 0;
     }
 
     .layered-image-story__content {
@@ -120,9 +148,24 @@
       margin-left: auto;
     }
 
+    .layered-image-story__third-image {
+      position: relative;
+      top: auto;
+      right: auto;
+      left: auto;
+      width: 40%;
+      margin-top: 1rem;
+      margin-left: 8%;
+    }
+
     .rtl .layered-image-story__secondary-image {
       margin-left: 0;
       margin-right: auto;
+    }
+
+    .rtl .layered-image-story__third-image {
+      margin-left: 0;
+      margin-right: 8%;
     }
   }
 {% endstylesheet %}
@@ -142,6 +185,16 @@
             img_alt: section.settings.heading
           %}
         </div>
+
+        {% if section.settings.third_image != blank %}
+          <div class="layered-image-story__third-image" data-story-third>
+            {% render 'image',
+              image: section.settings.third_image,
+              class: 'cropped-image-wrapper cropped-image--portrait',
+              img_alt: section.settings.heading
+            %}
+          </div>
+        {% endif %}
 
         {% if section.settings.secondary_image != blank %}
           <div class="layered-image-story__secondary-image" data-story-secondary>
@@ -186,7 +239,7 @@
   </div>
 </section>
 
-<script>
+{% javascript %}
   document.addEventListener('DOMContentLoaded', initLayeredImageStory);
   document.addEventListener('shopify:section:load', initLayeredImageStory);
 
@@ -201,6 +254,7 @@
 
       const mainImage = section.querySelector('[data-story-main]');
       const secondaryImage = section.querySelector('[data-story-secondary]');
+      const thirdImage = section.querySelector('[data-story-third]');
       const textItems = section.querySelectorAll('[data-story-text]');
 
       if (mainImage) {
@@ -215,6 +269,14 @@
           opacity: 0,
           y: 50,
           x: 20
+        });
+      }
+
+      if (thirdImage) {
+        gsap.set(thirdImage, {
+          opacity: 0,
+          y: -30,
+          x: 16
         });
       }
 
@@ -242,6 +304,16 @@
         });
       }
 
+      if (thirdImage) {
+        tl.to(thirdImage, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration: 0.65,
+          ease: 'power3.out'
+        }, '-=0.45');
+      }
+
       if (secondaryImage) {
         tl.to(secondaryImage, {
           opacity: 1,
@@ -263,7 +335,7 @@
       }
     });
   }
-</script>
+{% endjavascript %}
 
 {% schema %}
 {
@@ -337,6 +409,11 @@
       "type": "image_picker",
       "id": "secondary_image",
       "label": "Secondary image"
+    },
+    {
+      "type": "image_picker",
+      "id": "third_image",
+      "label": "Third image"
     },
     {
       "type": "header",
