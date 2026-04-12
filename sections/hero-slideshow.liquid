@@ -160,7 +160,6 @@
     /* =========================
        YOUTUBE CONTROL HELPERS
     ========================== */
-
     function pauseAllYouTube() {
       document.querySelectorAll('.myswiper-{{ section.id }} iframe').forEach(function(iframe) {
         iframe.contentWindow.postMessage(
@@ -184,9 +183,37 @@
     }
 
     /* =========================
+       IMAGE MOTION HELPERS
+    ========================== */
+    function resetSlideMotion(swiperInstance) {
+      swiperInstance.slides.forEach(function(slide) {
+        const media = slide.querySelector('.media-wrapper[data-motion]');
+        if (!media) return;
+
+        media.classList.remove('is-motion-active');
+      });
+    }
+
+    function activateSlideMotion(swiperInstance) {
+      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+      if (!activeSlide) return;
+
+      const media = activeSlide.querySelector('.media-wrapper[data-motion]');
+      if (!media) return;
+
+      const motionType = media.getAttribute('data-motion');
+      if (!motionType || motionType === 'none') return;
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          media.classList.add('is-motion-active');
+        });
+      });
+    }
+
+    /* =========================
        INIT SWIPER
     ========================== */
-
     const swiper = new Swiper('.myswiper-{{ section.id }}', {
       loop: true,
       effect: effect,
@@ -212,19 +239,21 @@
       on: {
         init: function () {
           playActiveYouTube(this);
+          resetSlideMotion(this);
+          activateSlideMotion(this);
         },
         slideChangeTransitionStart: function () {
           pauseAllYouTube();
+          resetSlideMotion(this);
         },
         slideChangeTransitionEnd: function () {
           playActiveYouTube(this);
+          activateSlideMotion(this);
         }
       }
     });
-
   });
 </script>
-
 {% schema %}
 {
   "name": "Hero Slideshow",
