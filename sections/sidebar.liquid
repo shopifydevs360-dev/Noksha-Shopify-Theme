@@ -1,180 +1,265 @@
 {{ 'sidebar.css' | asset_url | stylesheet_tag: preload: true }}
 <div class="navigation">
-  <!--============================
-        Sidebar Panel
-  =============================-->
-  <div id="js-sidebar" class="m-sidebar hide-tablet hide-mobile hide-tablet-landscape expended m-color-{{ section.settings.sidebar_color_scheme }}">
+  <!--
+    ============================
+          Sidebar Panel
+    =============================
+  -->
+  <div
+    id="js-sidebar"
+    class="m-sidebar hide-tablet hide-mobile hide-tablet-landscape expended m-color-{{ section.settings.sidebar_color_scheme }}"
+  >
     <div id="area-expended" class="m-sidebar__content">
-
       <!-- Logo -->
       <div class="m-sidebar__logo">
-          {% render 'logo' %}
+        {% render 'logo' %}
       </div>
-      <!--   HAMBURGER   -->
-        <button type="button" class="hamburger color-control" aria-label="Open nav menu" data-trigger-section="nav-drawer">
-            <div>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-        </button>
+      <!-- HAMBURGER -->
+      <button
+        type="button"
+        class="hamburger color-control"
+        aria-label="Open nav menu"
+        data-trigger-section="nav-drawer"
+      >
+        <div>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
       <!-- Navigation -->
       <nav class="m-sidebar__nav">
         {% for block in section.blocks %}
-        {% case block.type %}
-        {% when 'search_drawer' %}
-        <!-- Search -->
-        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
-            data-trigger-section="search-drawer" aria-label="Site search">
-            <span class="js-open-icon-text" data-open-item="search-drawer-open-item">
-                <span class="icon">
+          {% case block.type %}
+            {% when 'search_drawer' %}
+              <!-- Search -->
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="search-drawer"
+                aria-label="Site search"
+              >
+                <span class="js-open-icon-text" data-open-item="search-drawer-open-item">
+                  <span class="icon">
                     <!-- icon search -->
-                  {%- render 'theme-icon', icon: 'search' -%}
+                    {%- render 'theme-icon', icon: 'search' -%}
+                  </span>
+                  <strong class="text">Search</strong>
                 </span>
-                <strong class="text">Search</strong>
-            </span>
-            <span class="js-close-icon-text hide" data-close-item="search-drawer-close-item">
-                <strong class="text">Close</strong>
-            </span>
-        </a>
-        {% when 'account_drawer' %}
-        <!-- ACCOUNT LINKS -->
-        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
-            data-trigger-section="account-drawer" aria-label="Site account">
-            <span class="js-open-icon-text" data-open-item="account-drawer-open-item">
-                <span class="icon">
+                <span class="js-close-icon-text hide" data-close-item="search-drawer-close-item">
+                  <strong class="text">Close</strong>
+                </span>
+              </a>
+            {% when 'account_drawer' %}
+              <!-- ACCOUNT LINKS -->
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="account-drawer"
+                aria-label="Site account"
+              >
+                <span class="js-open-icon-text" data-open-item="account-drawer-open-item">
+                  <span class="icon">
                     <!-- icon account -->
-                  {%- render 'theme-icon', icon: 'account' -%}
+                    {%- render 'theme-icon', icon: 'account' -%}
+                  </span>
+                  <strong class="text">Account</strong>
                 </span>
-                <strong class="text">Account</strong>
-            </span>
-            <span class="js-close-icon-text hide" data-close-item="account-drawer-close-item">
-                <strong class="text">Close</strong>
-            </span>
-        </a>
-        {% when 'bag_drawer' %}
-        <!-- Bag -->
-        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
-            data-trigger-section="bag-drawer" aria-label="Site bag">
-            <span class="js-open-icon-text" data-open-item="bag-drawer-open-item">
-                <span class="icon">
+                <span class="js-close-icon-text hide" data-close-item="account-drawer-close-item">
+                  <strong class="text">Close</strong>
+                </span>
+              </a>
+            {% when 'bag_drawer' %}
+              <!-- Bag -->
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="bag-drawer"
+                aria-label="Site bag"
+              >
+                <span class="js-open-icon-text" data-open-item="bag-drawer-open-item">
+                  <span class="icon">
                     <!-- icon bag -->
-                  {%- render 'theme-icon', icon: 'bag' -%}
-                  <span class="cart-count cart-count-icon">{{ cart.item_count }}</span>
+                    {%- render 'theme-icon', icon: 'bag' -%}
+                    <span class="cart-count cart-count-icon">{{ cart.item_count }}</span>
+                  </span>
+                  <strong class="text"
+                    >Bag (<span class="cart-count">{{ cart.item_count }}</span>)</strong
+                  >
                 </span>
-                <strong class="text">Bag (<span class="cart-count">{{ cart.item_count }}</span>)</strong>
-            </span>
-            <span class="js-close-icon-text hide" data-close-item="bag-drawer-close-item">
-                <strong class="text">Close</strong>
-            </span>
-        </a>
-        {% endcase %}
+                <span class="js-close-icon-text hide" data-close-item="bag-drawer-close-item">
+                  <strong class="text">Close</strong>
+                </span>
+              </a>
+          {% endcase %}
         {% endfor %}
       </nav>
       <div class="sidebar-footer">
         <div class="social-icons">
           <ul class="social-icons-list">
             {% if settings.social_facebook_link != blank %}
-            <li><a href="{{ settings.social_facebook_link }}" class="color-control" aria-label="Facebook">{%- render 'theme-icon', icon: 'facebook' -%}</a></li>
+              <li>
+                <a href="{{ settings.social_facebook_link }}" class="color-control" aria-label="Facebook">
+                  {%- render 'theme-icon', icon: 'facebook' -%}
+                </a>
+              </li>
             {% endif %}
             {% if settings.social_twitter_link != blank %}
-            <li><a href="{{ settings.social_twitter_link }}" class="color-control" aria-label="Twitter">{%- render 'theme-icon', icon: 'twitter' -%}</a></li>
+              <li>
+                <a href="{{ settings.social_twitter_link }}" class="color-control" aria-label="Twitter">
+                  {%- render 'theme-icon', icon: 'twitter' -%}
+                </a>
+              </li>
             {% endif %}
             {% if settings.social_instagram_link != blank %}
-            <li><a href="{{ settings.social_instagram_link }}" class="color-control" aria-label="Instagram">{%- render 'theme-icon', icon: 'instagram' -%}</a></li>
+              <li>
+                <a href="{{ settings.social_instagram_link }}" class="color-control" aria-label="Instagram">
+                  {%- render 'theme-icon', icon: 'instagram' -%}
+                </a>
+              </li>
             {% endif %}
             {% if settings.social_linkedin_link != blank %}
-            <li><a href="{{ settings.social_linkedin_link }}" class="color-control" aria-label="Pinterest">{%- render 'theme-icon', icon: 'pinterest' -%}</a></li>
+              <li>
+                <a href="{{ settings.social_linkedin_link }}" class="color-control" aria-label="Pinterest">
+                  {%- render 'theme-icon', icon: 'pinterest' -%}
+                </a>
+              </li>
             {% endif %}
             {% if settings.social_youtube_link != blank %}
-            <li><a href="{{ settings.social_youtube_link }}" class="color-control" aria-label="YouTube">{%- render 'theme-icon', icon: 'youtube' -%}</a></li>
+              <li>
+                <a href="{{ settings.social_youtube_link }}" class="color-control" aria-label="YouTube">
+                  {%- render 'theme-icon', icon: 'youtube' -%}
+                </a>
+              </li>
             {% endif %}
-            {% if settings.social_tiktok_link != blank%}
-            <li><a href="{{ settings.social_tiktok_link }}" class="color-control" aria-label="TikTok">{%- render 'theme-icon', icon: 'tiktok' -%}</a></li>
+            {% if settings.social_tiktok_link != blank %}
+              <li>
+                <a href="{{ settings.social_tiktok_link }}" class="color-control" aria-label="TikTok">
+                  {%- render 'theme-icon', icon: 'tiktok' -%}
+                </a>
+              </li>
             {% endif %}
             {% if settings.social_whatsapp_link != blank %}
-            <li><a href="{{ settings.social_whatsapp_link }}" class="color-control" aria-label="WhatsApp">{%- render 'theme-icon', icon: 'whatsapp' -%}</a></li>
+              <li>
+                <a href="{{ settings.social_whatsapp_link }}" class="color-control" aria-label="WhatsApp">
+                  {%- render 'theme-icon', icon: 'whatsapp' -%}
+                </a>
+              </li>
             {% endif %}
             {% if settings.social_pinterest_link != blank %}
-            <li><a href="{{ settings.social_pinterest_link }}" class="color-control" aria-label="Pinterest">{%- render 'theme-icon', icon: 'pinterest' -%}</a></li>
+              <li>
+                <a href="{{ settings.social_pinterest_link }}" class="color-control" aria-label="Pinterest">
+                  {%- render 'theme-icon', icon: 'pinterest' -%}
+                </a>
+              </li>
             {% endif %}
           </ul>
         </div>
         <div class="copyright">
-        <p class="color-control">&copy; {{ 'now' | date: '%Y' }} {{ section.settings.brand_text }}</p> 
+          <p class="color-control">
+            &copy; {{ 'now' | date: '%Y' }}
+            {{ section.settings.brand_text }}
+          </p>
         </div>
       </div>
-
-
     </div>
   </div>
-  <!--============================
-            Mobile Header
-  =============================-->
+  <!--
+    ============================
+              Mobile Header
+    =============================
+  -->
   <div class="m-mobile-header hide-desktop hide-large-screens">
     <div class="m-mobile-header__content">
-
       <!-- Logo -->
       <div class="m-mobile-header__logo">
-          {% render 'logo' %}
+        {% render 'logo' %}
       </div>
       <!-- Navigation -->
       <nav class="m-mobile-header__nav">
         <!-- Search -->
         {% for block in section.blocks %}
-        {% case block.type %}
-        {% when 'search_drawer' %}
-        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
-            data-trigger-section="search-drawer" aria-label="Site search">
-            <span class="js-open-icon-text" data-open-item="search-drawer-open-item">
-                <span class="icon">
+          {% case block.type %}
+            {% when 'search_drawer' %}
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="search-drawer"
+                aria-label="Site search"
+              >
+                <span class="js-open-icon-text" data-open-item="search-drawer-open-item">
+                  <span class="icon">
                     <!-- icon search -->
-                  {%- render 'theme-icon', icon: 'search' -%}
+                    {%- render 'theme-icon', icon: 'search' -%}
+                  </span>
                 </span>
-            </span>
-            <span class="js-close-icon-text hide" data-close-item="search-drawer-close-item">
-              {%- render 'theme-icon', icon: 'close' -%}
-            </span>
-        </a>
-        {% when 'account_drawer' %}
-        <!-- ACCOUNT LINKS -->
-        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
-            data-trigger-section="account-drawer" aria-label="Site account">
-            <span class="js-open-icon-text" data-open-item="account-drawer-open-item">
-                <span class="icon">
+                <span class="js-close-icon-text hide" data-close-item="search-drawer-close-item">
+                  {%- render 'theme-icon', icon: 'close' -%}
+                </span>
+              </a>
+            {% when 'account_drawer' %}
+              <!-- ACCOUNT LINKS -->
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="account-drawer"
+                aria-label="Site account"
+              >
+                <span class="js-open-icon-text" data-open-item="account-drawer-open-item">
+                  <span class="icon">
                     <!-- icon account -->
-                  {%- render 'theme-icon', icon: 'account' -%}
+                    {%- render 'theme-icon', icon: 'account' -%}
+                  </span>
                 </span>
-            </span>
-            <span class="js-close-icon-text hide" data-close-item="account-drawer-close-item">
-              {%- render 'theme-icon', icon: 'close' -%}
-            </span>
-        </a>
-        {% when 'bag_drawer' %}
-        <!-- Bag -->
-        <a href="#" class="js-open-section nav-icon-text-wrap color-control"
-            data-trigger-section="bag-drawer" aria-label="Site bag">
-            <span class="js-open-icon-text" data-open-item="bag-drawer-open-item">
-                <span class="icon">
+                <span class="js-close-icon-text hide" data-close-item="account-drawer-close-item">
+                  {%- render 'theme-icon', icon: 'close' -%}
+                </span>
+              </a>
+            {% when 'bag_drawer' %}
+              <!-- Bag -->
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="bag-drawer"
+                aria-label="Site bag"
+              >
+                <span class="js-open-icon-text" data-open-item="bag-drawer-open-item">
+                  <span class="icon">
                     <!-- icon bag -->
-                  {%- render 'theme-icon', icon: 'bag' -%}
-                  <span class="cart-count cart-count-icon">{{ cart.item_count }}</span>
+                    {%- render 'theme-icon', icon: 'bag' -%}
+                    <span class="cart-count cart-count-icon">{{ cart.item_count }}</span>
+                  </span>
                 </span>
-            </span>
-            <span class="js-close-icon-text hide" data-close-item="bag-drawer-close-item">
-              {%- render 'theme-icon', icon: 'close' -%}
-            </span>
-        </a>
-        {% endcase %}
+                <span class="js-close-icon-text hide" data-close-item="bag-drawer-close-item">
+                  {%- render 'theme-icon', icon: 'close' -%}
+                </span>
+              </a>
+            {% when 'wishlist_link' %}
+              <!-- Wishlist -->
+              <a href="/pages/wishlist" class="nav-icon-text-wrap color-control" aria-label="Wishlist">
+                <span class="js-open-icon-text">
+                  <span class="icon">
+                    {%- render 'theme-icon', icon: 'wishlist' -%}
+                    <span class="wishlist-count" data-wishlist-count>0</span>
+                  </span>
+                  <strong class="text">Wishlist</strong>
+                </span>
+              </a>
+          {% endcase %}
         {% endfor %}
       </nav>
-      <!--   HAMBURGER   -->
-      <button type="button" class="hamburger color-control" aria-label="Open nav menu" data-trigger-section="nav-drawer">
-          <div>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+      <!-- HAMBURGER -->
+      <button
+        type="button"
+        class="hamburger color-control"
+        aria-label="Open nav menu"
+        data-trigger-section="nav-drawer"
+      >
+        <div>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </button>
     </div>
   </div>
@@ -225,7 +310,7 @@
     {
       "type": "link_list",
       "id": "secondary_menu",
-      "label": "Secondary menu" 
+      "label": "Secondary menu"
     }
   ],
   "blocks": [
@@ -247,21 +332,15 @@
       "type": "account_drawer",
       "name": "Account Drawer",
       "limit": 1,
-      "settings": [
-
-      ]
+      "settings": []
     },
     {
       "type": "bag_drawer",
       "name": "Bag Drawer",
       "limit": 1,
-      "settings": [
-
-      ]
+      "settings": []
     }
   ],
-  "presets": [
-    { "name": "Sidebar" }
-  ]
+  "presets": [{ "name": "Sidebar" }]
 }
 {% endschema %}
