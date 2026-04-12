@@ -15,13 +15,20 @@
 </div>
 
 {% stylesheet %}
-    .shopify-section-wishlist {
+    .shopify-section-wishlist{
     max-width: 70rem;
     background: #f0eee8;
   }
-  /* ===============================
-   WISHLIST DRAWER
-================================ */
+
+    .shopify-section-wishlist .container{
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 80vh;
+    padding: 0 1rem;
+    min-width: fit-content;
+}
+
+
 
 .wishlist-drawer__items {
     display: grid;
