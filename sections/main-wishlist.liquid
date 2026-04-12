@@ -28,17 +28,11 @@
         </div>
       {% endif %}
 
-      <div
-        class="wishlist-page__loading"
-        data-wishlist-loading
-      >
+      <div class="wishlist-page__loading" data-wishlist-loading>
         {{ section.settings.loading_text }}
       </div>
 
-      <div
-        class="wishlist-page__empty hide {{ section.settings.text_alignment }}"
-        data-wishlist-empty
-      >
+      <div class="wishlist-page__empty hide {{ section.settings.text_alignment }}" data-wishlist-empty>
         {% if section.settings.empty_heading != blank %}
           <h2 class="wishlist-page__empty-title h3">
             {{ section.settings.empty_heading }}
@@ -53,10 +47,7 @@
 
         {% if section.settings.empty_button_label != blank and section.settings.empty_button_link != blank %}
           <div class="wishlist-page__empty-actions">
-            <a
-              href="{{ section.settings.empty_button_link }}"
-              class="btn btn--primary"
-            >
+            <a href="{{ section.settings.empty_button_link }}" class="btn btn--primary">
               {{ section.settings.empty_button_label }}
             </a>
           </div>
@@ -126,56 +117,6 @@
 
   .wishlist-page__grid {
     --grid-gap: 1.5rem;
-  }
-
-  .wishlist-page__item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-
-  .wishlist-page__item-image {
-    display: block;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .wishlist-page__item-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .wishlist-page__item-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-
-  .wishlist-page__item-title a {
-    color: rgb(var(--color-heading));
-    text-transform: uppercase;
-  }
-
-  .wishlist-page__item-price {
-    color: rgb(var(--color-price-regular));
-  }
-
-  .wishlist-page__item-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
-  }
-
-  .wishlist-page__remove {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .wishlist-page__status {
-    margin-top: 1rem;
-    font-size: 0.95em;
   }
 
   @media (max-width: 991px) {
