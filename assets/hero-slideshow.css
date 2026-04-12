@@ -428,3 +428,76 @@ body.has-promo-bar .hero-slideshow .sidebar-slideshow {
   right: 0;
   transform: translate(100%);
 }
+
+
+/* =====================================
+   IMAGE MOTION EFFECTS
+===================================== */
+
+.hero-slideshow .media-wrapper img {
+  transform: scale(1);
+  transition: transform 6s ease-out;
+  will-change: transform;
+}
+
+/* ======================
+   ZOOM IN
+====================== */
+.hero-slideshow .swiper-slide-active .media-wrapper[data-motion="zoom_in"] img {
+  transform: scale(1.15);
+}
+
+/* ======================
+   ZOOM OUT
+====================== */
+.hero-slideshow .media-wrapper[data-motion="zoom_out"] img {
+  transform: scale(1.15);
+}
+
+.hero-slideshow .swiper-slide-active .media-wrapper[data-motion="zoom_out"] img {
+  transform: scale(1);
+}
+
+/* ======================
+   PAN LEFT
+====================== */
+.hero-slideshow .media-wrapper[data-motion="pan_left"] img {
+  transform: scale(1.1) translateX(5%);
+}
+
+.hero-slideshow .swiper-slide-active .media-wrapper[data-motion="pan_left"] img {
+  transform: scale(1.1) translateX(-5%);
+}
+
+/* ======================
+   PAN RIGHT
+====================== */
+.hero-slideshow .media-wrapper[data-motion="pan_right"] img {
+  transform: scale(1.1) translateX(-5%);
+}
+
+.hero-slideshow .swiper-slide-active .media-wrapper[data-motion="pan_right"] img {
+  transform: scale(1.1) translateX(5%);
+}
+
+/* ======================
+   PAN UP
+====================== */
+.hero-slideshow .media-wrapper[data-motion="pan_up"] img {
+  transform: scale(1.1) translateY(5%);
+}
+
+.hero-slideshow .swiper-slide-active .media-wrapper[data-motion="pan_up"] img {
+  transform: scale(1.1) translateY(-5%);
+}
+
+/* ======================
+   PAN DOWN
+====================== */
+.hero-slideshow .media-wrapper[data-motion="pan_down"] img {
+  transform: scale(1.1) translateY(-5%);
+}
+
+.hero-slideshow .swiper-slide-active .media-wrapper[data-motion="pan_down"] img {
+  transform: scale(1.1) translateY(5%);
+}
