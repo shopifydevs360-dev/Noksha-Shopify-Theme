@@ -44,3 +44,36 @@
 //     });
 //   });
 // });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.querySelectorAll('.js-product-scroll-reveal').forEach((grid) => {
+    const cards = grid.querySelectorAll('.product-card');
+    if (!cards.length) return;
+
+    gsap.set(cards, {
+      opacity: 0,
+      x: 80
+    });
+
+    ScrollTrigger.create({
+      trigger: grid,
+      start: 'top 85%',
+      once: true,
+      onEnter: function () {
+        gsap.to(cards, {
+          opacity: 1,
+          x: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          stagger: 0.12,
+          clearProps: 'transform,opacity'
+        });
+      }
+    });
+  });
+});
