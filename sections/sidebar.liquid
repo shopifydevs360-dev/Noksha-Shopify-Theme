@@ -283,7 +283,10 @@
     {% when 'bag_drawer' %}
       {% render 'bag-drawer' %}
     {% when 'wishlist_drawer' %}
-      {% render 'wishlist-drawer' %}
+      {% if settings.enable_wishlist %}
+        {% render 'wishlist-drawer' %}
+      {% endif %}
+      
   {% endcase %}
 {% endfor %}
 <script src="{{ 'sidebar.js' | asset_url }}" defer="defer"></script>
