@@ -1,7 +1,10 @@
 {% render 'section-base-style' %}
 
 {%- liquid
-  assign classes = 'layered-image-story section-x-padding'
+  assign classes = 'layered-image-story'
+  unless section.settings.container_type == "full-width"
+    assign classes = classes | append: ' section-x-padding'
+endunless
   assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
   assign classes = classes | append: ' ' | append: section.settings.color_control
   assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
