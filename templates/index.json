@@ -37,7 +37,7 @@
           "settings": {
             "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
             "image": "shopify://shop_images/Youmi00708.jpg",
-            "image_motion_effect": "none",
+            "image_motion_effect": "zoom_in",
             "subheading": "",
             "sub_heading_font_size": "h4",
             "use_custom_font": "",
@@ -57,7 +57,7 @@
           "settings": {
             "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
             "image": "shopify://shop_images/Youmi01693.jpg",
-            "image_motion_effect": "none",
+            "image_motion_effect": "zoom_in",
             "subheading": "",
             "sub_heading_font_size": "h4",
             "use_custom_font": "",
