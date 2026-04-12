@@ -105,13 +105,6 @@
     }}
   {% endif %}
 {% else %}
-  <img
-    src="{{ 'default-image.svg' | asset_url }}"
-    alt="{{ img_alt | default: 'Default image' }}"
-    loading="{{ loading }}"
-    fetchpriority="{{ fetchpriority }}"
-    width="{{ width }}"
-    height="{{ height }}"
-  >
+{%- render 'theme-icon', icon: 'default-image' -%}
 {% endif %}
 </{{ wrapper }}>
