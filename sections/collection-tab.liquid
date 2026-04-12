@@ -92,6 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const shopNowBtn = section.querySelector('.js-shop-now-btn');
 
   const hasGSAP = typeof gsap !== 'undefined';
+  const hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
+
+  if (hasGSAP && hasScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  let sectionInView = false;
 
   /* ---------------- FILTER TABS SWIPER ---------------- */
   new Swiper(section.querySelector('.swiper-container-filter'), {
@@ -120,6 +127,26 @@ document.addEventListener('DOMContentLoaded', () => {
       .filter((slide) => slide.style.display === 'block')
       .map((slide) => slide.querySelector('.product-card'))
       .filter(Boolean);
+  }
+
+  /* ---------------- RESET CARDS ---------------- */
+  function resetVisibleCards() {
+    const cards = getVisibleCards();
+    if (!cards.length) return;
+
+    if (!hasGSAP) {
+      cards.forEach((card) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translate3d(120px,0,0)';
+      });
+      return;
+    }
+
+    gsap.killTweensOf(cards);
+    gsap.set(cards, {
+      opacity: 0,
+      x: 120
+    });
   }
 
   /* ---------------- GSAP ANIMATION ---------------- */
@@ -153,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------------- TAB ACTIVATION ---------------- */
-  function activateTab(filter, tab) {
+  function activateTab(filter, tab, shouldAnimate = false) {
     section.querySelectorAll('.related-product-caps').forEach((el) => {
       el.classList.remove('active');
     });
@@ -179,21 +206,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        animateVisibleCards();
+        if (shouldAnimate) {
+          animateVisibleCards();
+        } else {
+          resetVisibleCards();
+        }
       });
     });
   }
 
   /* ---------------- INIT FIRST TAB ---------------- */
   if (tabs.length) {
-    activateTab(tabs[0].dataset.filter, tabs[0]);
+    activateTab(tabs[0].dataset.filter, tabs[0], false);
+  }
+
+  /* ---------------- SCROLL TRIGGER ---------------- */
+  if (hasGSAP && hasScrollTrigger) {
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        sectionInView = true;
+        animateVisibleCards();
+      }
+    });
+  } else {
+    sectionInView = true;
+    animateVisibleCards();
   }
 
   /* ---------------- TAB CLICK EVENTS ---------------- */
   tabs.forEach((tab) => {
     tab.addEventListener('click', (e) => {
       e.preventDefault();
-      activateTab(tab.dataset.filter, tab);
+      activateTab(tab.dataset.filter, tab, sectionInView);
     });
   });
 });
