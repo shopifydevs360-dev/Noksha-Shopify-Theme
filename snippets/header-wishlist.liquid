@@ -1,3 +1,11 @@
-<a href="/pages/wishlist" class="header__icon header__wishlist hide-mobile" aria-label="Wishlist">
-    <span class="icon icon-wishlist" aria-hidden="true">{%- render 'theme-icon', icon: 'wishlist' -%}</span>
+<a
+  href="/pages/wishlist"
+  class="header__icon header__wishlist hide-mobile"
+  aria-label="Wishlist"
+  data-wishlist-link
+>
+  <span class="icon icon-wishlist" aria-hidden="true">
+    {%- render 'theme-icon', icon: 'wishlist' -%}
+  </span>
+  <span class="header__wishlist-count hide" data-wishlist-count aria-hidden="true">0</span>
 </a>
