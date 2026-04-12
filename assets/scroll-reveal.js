@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   gsap.registerPlugin(ScrollTrigger);
 
   const animations = [
-    { selector: '.reveal-up', y: 60, x: 0, opacity: 0 },
+    { selector: '.reveal-up', y: 100, x: 0, opacity: 0 },
     { selector: '.reveal-down', y: -60, x: 0, opacity: 0 },
     { selector: '.reveal-left', x: 60, y: 0, opacity: 0 },
     { selector: '.reveal-right', x: -60, y: 0, opacity: 0 },
