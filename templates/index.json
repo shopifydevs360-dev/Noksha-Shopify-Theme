@@ -12,35 +12,11 @@
     "hero_slideshow_DY9JwJ": {
       "type": "hero-slideshow",
       "blocks": {
-        "video_slide_KCpTbh": {
-          "type": "video_slide",
-          "settings": {
-            "text_color_scheme": "",
-            "source_type": "hosted",
-            "video": "shopify://files/videos/1009.mp4",
-            "external_video_url": "https://youtu.be/s_7xadbFcKI?si=0h8KwO4E2rwHTRmj",
-            "autoplay": true,
-            "loop": true,
-            "muted": true,
-            "controls": false,
-            "subheading": "",
-            "sub_heading_font_size": "h4",
-            "use_custom_font": "",
-            "heading": "",
-            "heading_size": "hd-2",
-            "cta_text": "",
-            "link": "",
-            "background_color": "#f3e3d3",
-            "overlay_opacity": 0,
-            "horizontal_alignment": "left",
-            "vertical_alignment": "bottom",
-            "custom_class": ""
-          }
-        },
         "image_slide_da8geD": {
           "type": "image_slide",
           "settings": {
             "text_color_scheme": "default",
+            "image": "shopify://shop_images/Youmi0088_3_Option_1_6c0415b2-8e81-4b71-a529-83991434b087.jpg",
             "subheading": "MODEST SILHOUETTES FOR WORKOUTS",
             "sub_heading_font_size": "h4",
             "use_custom_font": "",
@@ -58,11 +34,11 @@
         "image_slide_xNDwjP": {
           "type": "image_slide",
           "settings": {
-            "text_color_scheme": "default",
-            "subheading": "PREMIUM HIJABS FOR DAILY WEAR",
+            "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+            "subheading": "",
             "sub_heading_font_size": "h4",
             "use_custom_font": "",
-            "heading": "NEW IN HIJAB",
+            "heading": "YB Rituals",
             "heading_size": "hd-2",
             "cta_text": "SHOP NOW",
             "link": "shopify://collections/all",
@@ -75,7 +51,6 @@
         }
       },
       "block_order": [
-        "video_slide_KCpTbh",
         "image_slide_da8geD",
         "image_slide_xNDwjP"
       ],
