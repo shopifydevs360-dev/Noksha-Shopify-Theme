@@ -17,9 +17,31 @@
         "custom_class": "",
         "color_control": "section-light"
       }
+    },
+    "main_wishlist_xzMNnc": {
+      "type": "main-wishlist",
+      "name": "Main wishlist",
+      "settings": {
+        "heading": "My Wishlist",
+        "description": "<p>Save your favorite products here and come back to them anytime.</p>",
+        "heading_size": "h2",
+        "text_alignment": "text-left",
+        "color_scheme": "",
+        "container_width": "container",
+        "loading_text": "Loading wishlist...",
+        "empty_heading": "Your wishlist is empty",
+        "empty_text": "<p>You have not added any products to your wishlist yet.</p>",
+        "empty_button_label": "Continue shopping",
+        "empty_button_link": "",
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "main_wishlist_xzMNnc"
   ]
 }
