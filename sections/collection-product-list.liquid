@@ -1,6 +1,46 @@
-{{ 'collection-product-list.css' | asset_url | stylesheet_tag }}
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
+{% stylesheet %}
+  /* Main Collection Layout */
+.collection-wrapper {
+    display: flex;
+    gap: 30px;
+    margin: 1rem 0 4rem 0;
+}
+.main-product-list .collection-header{
+  padding-top: 5.2rem;
+}
+.main-product-list .inner-warpper {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+}
+.main-product-list .product-list {
+    width: 100%;
+}
+.main-product-list .pagination-loader {
+    padding: 2rem 0;
+    text-align: center;
+}
 
+
+.main-product-list .pagination-ui--loadmore {
+    text-align: right;
+    margin-top: 0.5rem;
+}
+.main-product-list .pagination-ui--loadmore .load-more-btn{
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    padding: 0.8rem 2rem;
+    font-size: .8em;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: 1px solid rgb(var(--color-heading));
+}
+.main-product-list .pagination-ui--loadmore .load-more-btn:hover{
+    background: transparent;
+    color: rgb(var(--color-heading));
+}
+{% endstylesheet %}
 <div
   class="main-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
   data-section-id="{{ section.id }}"
