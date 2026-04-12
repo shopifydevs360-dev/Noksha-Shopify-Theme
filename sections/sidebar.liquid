@@ -290,6 +290,8 @@
       {% render 'account-drawer' %}
     {% when 'bag_drawer' %}
       {% render 'bag-drawer' %}
+    {% when 'wishlist_drawer' %}
+      {% render 'wishlist-drawer' %}
   {% endcase %}
 {% endfor %}
 <script src="{{ 'sidebar.js' | asset_url }}" defer="defer"></script>
@@ -357,8 +359,8 @@
       "settings": []
     },
     {
-      "type": "wishlist_link",
-      "name": "Wishlist Link",
+      "type": "wishlist_drawer",
+      "name": "Wishlist",
       "limit": 1,
       "settings": []
     }
