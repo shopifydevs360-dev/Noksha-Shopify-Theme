@@ -44,7 +44,10 @@
 
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-card.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+    {% if settings.enable_wishlist %}
+      <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+    {% endif %}
+    
 
     {{ content_for_header }}
   </head>
