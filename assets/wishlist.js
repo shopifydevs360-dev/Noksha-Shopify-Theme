@@ -154,3 +154,110 @@ function removeWishlistItemById(productId) {
     })
   );
 }
+
+/* ===============================
+   WISHLIST PAGE RENDER
+================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  renderWishlistPage();
+});
+
+function renderWishlistPage() {
+  const wishlistPage = document.querySelector("[data-wishlist-page]");
+  if (!wishlistPage) return;
+
+  const container = wishlistPage.querySelector("[data-wishlist-items]");
+  const loading = wishlistPage.querySelector("[data-wishlist-loading]");
+  const empty = wishlistPage.querySelector("[data-wishlist-empty]");
+
+  const items = getWishlistItems();
+
+  // Empty state
+  if (!items.length) {
+    if (loading) loading.classList.add("hide");
+    if (empty) empty.classList.remove("hide");
+    return;
+  }
+
+  // Fetch and render products
+  Promise.all(
+    items.map((item) =>
+      fetch(`/products/${item.handle}.js`)
+        .then((res) => res.json())
+        .catch(() => null)
+    )
+  ).then((products) => {
+    if (loading) loading.classList.add("hide");
+
+    products.forEach((product, index) => {
+      if (!product) return;
+
+      const item = items[index];
+
+      const productHTML = `
+        <div class="wishlist-page__item">
+          <a href="${product.url}" class="wishlist-page__item-image">
+            <img src="${product.featured_image}" alt="${product.title}">
+          </a>
+
+          <div class="wishlist-page__item-content">
+            <h3 class="wishlist-page__item-title">
+              <a href="${product.url}">${product.title}</a>
+            </h3>
+
+            <div class="wishlist-page__item-price">
+              ${formatMoney(product.price)}
+            </div>
+
+            <div class="wishlist-page__item-actions">
+              <button
+                class="btn wishlist-page__remove"
+                data-wishlist-remove
+                data-product-id="${item.id}"
+              >
+                Remove
+              </button>
+
+              <a href="${product.url}" class="btn btn--primary">
+                View product
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.insertAdjacentHTML("beforeend", productHTML);
+    });
+  });
+}
+
+/* ===============================
+   REMOVE FROM WISHLIST (PAGE)
+================================ */
+document.addEventListener("click", function (e) {
+  const removeBtn = e.target.closest("[data-wishlist-remove]");
+  if (!removeBtn) return;
+
+  const productId = removeBtn.dataset.productId;
+  removeWishlistItemById(productId);
+
+  // Remove from DOM
+  const item = removeBtn.closest(".wishlist-page__item");
+  if (item) item.remove();
+
+  // If empty after removal
+  const remaining = getWishlistItems();
+  if (!remaining.length) {
+    const page = document.querySelector("[data-wishlist-page]");
+    if (!page) return;
+
+    page.querySelector("[data-wishlist-empty]").classList.remove("hide");
+  }
+});
+
+/* ===============================
+   MONEY FORMAT (simple)
+================================ */
+function formatMoney(cents) {
+  return (cents / 100).toFixed(2);
+}
