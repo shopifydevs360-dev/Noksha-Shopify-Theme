@@ -4,7 +4,7 @@
   assign classes = 'layered-image-story'
   unless section.settings.container_type == "full-width"
     assign classes = classes | append: ' section-x-padding'
-endunless
+  endunless
   assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
   assign classes = classes | append: ' ' | append: section.settings.color_control
   assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
@@ -22,6 +22,7 @@ endunless
     grid-template-columns: 1.1fr 0.9fr;
     align-items: center;
     gap: clamp(2rem, 5vw, 6rem);
+    min-height: 100vh;
   }
 
   .layered-image-story__media {
@@ -29,6 +30,7 @@ endunless
     min-width: 0;
     padding-right: 10%;
     padding-bottom: 8%;
+    will-change: transform;
   }
 
   .rtl .layered-image-story__media {
@@ -40,6 +42,7 @@ endunless
     width: 100%;
     position: relative;
     z-index: 1;
+    will-change: transform, opacity;
   }
 
   .layered-image-story__main-image .cropped-image-wrapper,
@@ -55,16 +58,18 @@ endunless
     width: min(42%, 20rem);
     z-index: 3;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+    will-change: transform, opacity;
   }
 
-.layered-image-story__third-image {
+  .layered-image-story__third-image {
     position: absolute;
     top: 8%;
     right: -85%;
-    width: min(28%,13rem);
+    width: min(28%, 13rem);
     z-index: 2;
-    box-shadow: 0 14px 36px #0000001a;
-}
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
+    will-change: transform, opacity;
+  }
 
   .rtl .layered-image-story__secondary-image {
     right: auto;
@@ -78,6 +83,7 @@ endunless
 
   .layered-image-story__content {
     max-width: 38rem;
+    will-change: transform;
   }
 
   .layered-image-story__eyebrow {
@@ -124,6 +130,7 @@ endunless
     .layered-image-story__inner {
       grid-template-columns: 1fr;
       gap: 2rem;
+      min-height: auto;
     }
 
     .layered-image-story__media {
@@ -180,7 +187,7 @@ endunless
 >
   <div class="{{ section.settings.container_type }} {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
     <div class="layered-image-story__inner">
-      <div class="layered-image-story__media">
+      <div class="layered-image-story__media" data-story-media>
         <div class="layered-image-story__main-image" data-story-main>
           {% render 'image',
             image: section.settings.main_image,
@@ -210,7 +217,7 @@ endunless
         {% endif %}
       </div>
 
-      <div class="layered-image-story__content">
+      <div class="layered-image-story__content" data-story-content>
         {% if section.settings.eyebrow != blank %}
           <span class="layered-image-story__eyebrow h6" data-story-text>
             {{ section.settings.eyebrow }}
@@ -255,87 +262,183 @@ endunless
       if (section.dataset.storyInit === 'true') return;
       section.dataset.storyInit = 'true';
 
-      const mainImage = section.querySelector('[data-story-main]');
-      const secondaryImage = section.querySelector('[data-story-secondary]');
-      const thirdImage = section.querySelector('[data-story-third]');
-      const textItems = section.querySelectorAll('[data-story-text]');
+      const mm = gsap.matchMedia();
 
-      if (mainImage) {
+      mm.add('(min-width: 992px)', () => {
+        const inner = section.querySelector('.layered-image-story__inner');
+        const mediaWrap = section.querySelector('[data-story-media]');
+        const mainImage = section.querySelector('[data-story-main]');
+        const secondaryImage = section.querySelector('[data-story-secondary]');
+        const thirdImage = section.querySelector('[data-story-third]');
+        const content = section.querySelector('[data-story-content]');
+        const textItems = section.querySelectorAll('[data-story-text]');
+
         gsap.set(mainImage, {
           opacity: 0,
-          y: 40
+          y: 80,
+          scale: 1.12
         });
-      }
 
-      if (secondaryImage) {
-        gsap.set(secondaryImage, {
-          opacity: 0,
-          y: 50,
-          x: 20
-        });
-      }
+        if (secondaryImage) {
+          gsap.set(secondaryImage, {
+            opacity: 0,
+            y: 120,
+            x: 40,
+            rotate: 2
+          });
+        }
 
-      if (thirdImage) {
-        gsap.set(thirdImage, {
-          opacity: 0,
-          y: -30,
-          x: 16
-        });
-      }
+        if (thirdImage) {
+          gsap.set(thirdImage, {
+            opacity: 0,
+            y: -80,
+            x: 50,
+            rotate: -3
+          });
+        }
 
-      if (textItems.length) {
         gsap.set(textItems, {
           opacity: 0,
-          y: 24
+          y: 40,
+          x: -30
         });
-      }
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 82%',
-          once: true
-        }
-      });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=140%',
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1
+          }
+        });
 
-      if (mainImage) {
         tl.to(mainImage, {
           opacity: 1,
-          y: 0,
-          duration: 0.85,
-          ease: 'power3.out'
-        });
-      }
+          y: -40,
+          scale: 1,
+          ease: 'none'
+        }, 0);
 
-      if (thirdImage) {
-        tl.to(thirdImage, {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          duration: 0.65,
-          ease: 'power3.out'
-        }, '-=0.45');
-      }
+        if (thirdImage) {
+          tl.to(thirdImage, {
+            opacity: 1,
+            x: 0,
+            y: 20,
+            rotate: 0,
+            ease: 'none'
+          }, 0.05);
+        }
 
-      if (secondaryImage) {
-        tl.to(secondaryImage, {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          duration: 0.75,
-          ease: 'power3.out'
-        }, '-=0.45');
-      }
+        if (secondaryImage) {
+          tl.to(secondaryImage, {
+            opacity: 1,
+            x: 0,
+            y: -10,
+            rotate: 0,
+            ease: 'none'
+          }, 0.1);
+        }
 
-      if (textItems.length) {
         tl.to(textItems, {
           opacity: 1,
+          x: 0,
           y: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          stagger: 0.12
-        }, '-=0.45');
-      }
+          stagger: 0.08,
+          ease: 'none'
+        }, 0.18);
+
+        tl.to(mediaWrap, {
+          y: -25,
+          ease: 'none'
+        }, 0.25);
+
+        tl.to(content, {
+          y: -10,
+          ease: 'none'
+        }, 0.25);
+      });
+
+      mm.add('(max-width: 991px)', () => {
+        const mainImage = section.querySelector('[data-story-main]');
+        const secondaryImage = section.querySelector('[data-story-secondary]');
+        const thirdImage = section.querySelector('[data-story-third]');
+        const textItems = section.querySelectorAll('[data-story-text]');
+
+        if (mainImage) {
+          gsap.set(mainImage, {
+            opacity: 0,
+            y: 40
+          });
+        }
+
+        if (secondaryImage) {
+          gsap.set(secondaryImage, {
+            opacity: 0,
+            y: 50
+          });
+        }
+
+        if (thirdImage) {
+          gsap.set(thirdImage, {
+            opacity: 0,
+            y: 40
+          });
+        }
+
+        if (textItems.length) {
+          gsap.set(textItems, {
+            opacity: 0,
+            y: 24
+          });
+        }
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 85%',
+            once: true
+          }
+        });
+
+        if (mainImage) {
+          tl.to(mainImage, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out'
+          });
+        }
+
+        if (thirdImage) {
+          tl.to(thirdImage, {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            ease: 'power3.out'
+          }, '-=0.45');
+        }
+
+        if (secondaryImage) {
+          tl.to(secondaryImage, {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            ease: 'power3.out'
+          }, '-=0.4');
+        }
+
+        if (textItems.length) {
+          tl.to(textItems, {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            ease: 'power3.out',
+            stagger: 0.1
+          }, '-=0.35');
+        }
+      });
     });
   }
 </script>
@@ -365,10 +468,10 @@ endunless
       "default": "container"
     },
     {
-        "type": "checkbox",
-        "id": "enable_sidebar_space",
-        "label": "Enable Sidebar Space",
-        "default":false
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable Sidebar Space",
+      "default": false
     },
     {
       "type": "text",
