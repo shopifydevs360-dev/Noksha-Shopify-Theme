@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('shopify:section:load', () => {
   syncWishlistUI(document);
   renderWishlistDrawer();
-  renderWishlistPage();
 });
 
 document.addEventListener('shopify:block:select', () => {
@@ -21,7 +20,6 @@ function initWishlist() {
   bindWishlistEvents();
   syncWishlistUI(document);
   renderWishlistDrawer();
-  renderWishlistPage();
 }
 
 function bindWishlistEvents() {
@@ -89,7 +87,6 @@ function toggleWishlistItem(button) {
   saveWishlistItems(items);
   syncWishlistUI(document);
   renderWishlistDrawer();
-  renderWishlistPage();
 
   document.dispatchEvent(
     new CustomEvent('wishlist:updated', {
@@ -187,77 +184,6 @@ function renderWishlistDrawer() {
     });
 }
 
-/* ======================================
-   WISHLIST PAGE RENDER
-====================================== */
-function renderWishlistPage() {
-  const wishlistPage = document.querySelector('[data-wishlist-page]');
-  if (!wishlistPage) return;
-
-  const loadingElement = wishlistPage.querySelector('[data-wishlist-loading]');
-  const emptyElement = wishlistPage.querySelector('[data-wishlist-empty]');
-  const itemsContainer = wishlistPage.querySelector('[data-wishlist-items]');
-
-  if (!itemsContainer) return;
-
-  const wishlistItems = getWishlistItems();
-  itemsContainer.innerHTML = '';
-
-  if (loadingElement) {
-    loadingElement.classList.remove('hide');
-  }
-
-  if (emptyElement) {
-    emptyElement.classList.add('hide');
-  }
-
-  if (!wishlistItems.length) {
-    if (loadingElement) {
-      loadingElement.classList.add('hide');
-    }
-
-    if (emptyElement) {
-      emptyElement.classList.remove('hide');
-    }
-
-    return;
-  }
-
-  Promise.all(wishlistItems.map((item) => fetchWishlistProduct(item)))
-    .then((products) => {
-      const validProducts = products.filter(Boolean);
-
-      if (loadingElement) {
-        loadingElement.classList.add('hide');
-      }
-
-      if (!validProducts.length) {
-        if (emptyElement) {
-          emptyElement.classList.remove('hide');
-        }
-        return;
-      }
-
-      validProducts.forEach((product) => {
-        itemsContainer.insertAdjacentHTML('beforeend', renderWishlistPageCard(product));
-      });
-    })
-    .catch((error) => {
-      console.warn('Failed to render wishlist page:', error);
-
-      if (loadingElement) {
-        loadingElement.classList.add('hide');
-      }
-
-      if (emptyElement) {
-        emptyElement.classList.remove('hide');
-      }
-    });
-}
-
-/* ======================================
-   PRODUCT FETCH
-====================================== */
 function fetchWishlistProduct(item) {
   if (!item || !item.handle) return Promise.resolve(null);
 
@@ -271,7 +197,6 @@ function fetchWishlistProduct(item) {
     .then((product) => {
       return {
         id: product.id || item.id,
-        handle: product.handle || item.handle,
         title: product.title || item.title || '',
         url: product.url || item.url || '#',
         price: formatMoney(product.price),
@@ -305,8 +230,8 @@ function getWishlistProductImage(product, item) {
 function renderWishlistDrawerCard(product) {
   const imageMarkup = product.image
     ? `
-    <div class="product-card__image cropped-image-wrapper cropped-image--portrait">
-      <img
+    <div>
+          <img
         src="${escapeHtml(product.image)}"
         alt="${escapeHtml(product.title)}"
         class="wishlist-drawer__card-image"
@@ -331,55 +256,6 @@ function renderWishlistDrawerCard(product) {
       </h5>
 
       <div class="wishlist-drawer__card-price">
-        ${escapeHtml(product.price)}
-      </div>
-    </div>
-  `;
-}
-
-function renderWishlistPageCard(product) {
-  const imageMarkup = product.image
-    ? `
-      <img
-        src="${escapeHtml(product.image)}"
-        alt="${escapeHtml(product.title)}"
-        class="wishlist-page__item-image"
-        loading="lazy"
-      >
-    `
-    : '';
-
-  return `
-    <div class="wishlist-page__item" data-product-id="${escapeHtml(String(product.id))}">
-      <button
-        type="button"
-        class="wishlist-page__item-wishlist is-active"
-        aria-label="Remove ${escapeHtml(product.title)} from wishlist"
-        aria-pressed="true"
-        data-wishlist-toggle
-        data-product-id="${escapeHtml(String(product.id))}"
-        data-product-handle="${escapeHtml(product.handle)}"
-        data-product-url="${escapeHtml(product.url)}"
-        data-product-title="${escapeHtml(product.title)}"
-        data-product-price=""
-        data-product-image="${escapeHtml(product.image || '')}"
-      >
-        <span aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 21s-6.716-4.35-9.193-8.296C.94 9.73 2.06 5.5 6.09 4.56A5.43 5.43 0 0 1 12 6.09a5.43 5.43 0 0 1 5.91-1.53c4.03.94 5.15 5.17 3.283 8.144C18.716 16.65 12 21 12 21Z"></path>
-          </svg>
-        </span>
-      </button>
-
-      <a href="${escapeHtml(product.url)}" class="wishlist-page__item-image-link" aria-label="${escapeHtml(product.title)}">
-        ${imageMarkup}
-      </a>
-
-      <h3 class="wishlist-page__item-title">
-        <a href="${escapeHtml(product.url)}">${escapeHtml(product.title)}</a>
-      </h3>
-
-      <div class="wishlist-page__item-price">
         ${escapeHtml(product.price)}
       </div>
     </div>
