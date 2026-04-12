@@ -1,45 +1,45 @@
 {{ 'products-filter.css' | asset_url | stylesheet_tag }}
 {% stylesheet %}
-  /* Main Collection Layout */
-.collection-wrapper {
-    display: flex;
-    gap: 30px;
-    margin: 1rem 0 4rem 0;
-}
-.main-product-list .collection-header{
-  padding-top: 5.2rem;
-}
-.main-product-list .inner-warpper {
-    display: flex;
-    gap: 2rem;
-    width: 100%;
-}
-.main-product-list .product-list {
-    width: 100%;
-}
-.main-product-list .pagination-loader {
-    padding: 2rem 0;
-    text-align: center;
-}
+    /* Main Collection Layout */
+  .collection-wrapper {
+      display: flex;
+      gap: 30px;
+      margin: 1rem 0 4rem 0;
+  }
+  .main-product-list .collection-header{
+    padding-top: 5.2rem;
+  }
+  .main-product-list .inner-warpper {
+      display: flex;
+      gap: 2rem;
+      width: 100%;
+  }
+  .main-product-list .product-list {
+      width: 100%;
+  }
+  .main-product-list .pagination-loader {
+      padding: 2rem 0;
+      text-align: center;
+  }
 
 
-.main-product-list .pagination-ui--loadmore {
-    text-align: right;
-    margin-top: 0.5rem;
-}
-.main-product-list .pagination-ui--loadmore .load-more-btn{
-    background: rgb(var(--color-heading));
-    color: rgb(var(--color-background));
-    padding: 0.8rem 2rem;
-    font-size: .8em;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    border: 1px solid rgb(var(--color-heading));
-}
-.main-product-list .pagination-ui--loadmore .load-more-btn:hover{
-    background: transparent;
-    color: rgb(var(--color-heading));
-}
+  .main-product-list .pagination-ui--loadmore {
+      text-align: right;
+      margin-top: 0.5rem;
+  }
+  .main-product-list .pagination-ui--loadmore .load-more-btn{
+      background: rgb(var(--color-heading));
+      color: rgb(var(--color-background));
+      padding: 0.8rem 2rem;
+      font-size: .8em;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border: 1px solid rgb(var(--color-heading));
+  }
+  .main-product-list .pagination-ui--loadmore .load-more-btn:hover{
+      background: transparent;
+      color: rgb(var(--color-heading));
+  }
 {% endstylesheet %}
 <div
   class="main-product-list m-color-{{ section.settings.product_color_scheme }} {{ section.settings.color_control }} {{ section.settings.custom_class }}"
@@ -48,9 +48,8 @@
   data-pagination-type="{{ section.settings.pagination_type }}"
   data-products-per-page="{{ section.settings.products_per_page }}"
 >
-
   <div class="{{ section.settings.container_type }}">
-    <div class="collection-header sidebar-space"> 
+    <div class="collection-header sidebar-space">
       <div class="collection-info">
         <h2 class="collection-title">{{ collection.title }}</h2>
         {% if collection.description != blank %}
@@ -61,90 +60,74 @@
       </div>
       <div class="collection-image">
         {% if collection.image %}
-            {% render 'image',
-              image: collection.image,
-              img_alt: collection.title
-            %}
+          {% render 'image', image: collection.image, img_alt: collection.title %}
         {% endif %}
       </div>
     </div>
-{% comment %} Filter Result {% endcomment %}
-<div class="filter-result sidebar-space">
-  <div class="filter-result-header">
-    <span class="filter-result-count" data-filter-result-count>
-      {{ collection.products_count }} Products showing
-    </span>
-    {% if collection.products_count > 0 %}
-    <button type="button" class="filter-clear-all hide" data-clear-all-filters>
-      Clear All
-      <span class="clear-icon">{%- render 'theme-icon', icon: 'close' -%}</span>
-    </button>
-    {% endif %}
-  </div>
-  
-  <div class="active-filters" data-active-filters>
-    {% comment %} Active filters will be injected here via JS {% endcomment %}
-  </div>
-</div>
+    {% comment %} Filter Result {% endcomment %}
+    <div class="filter-result sidebar-space">
+      <div class="filter-result-header">
+        <span class="filter-result-count" data-filter-result-count>
+          {{ collection.products_count }} Products showing
+        </span>
+        {% if collection.products_count > 0 %}
+          <button type="button" class="filter-clear-all hide" data-clear-all-filters>
+            Clear All
+            <span class="clear-icon">{%- render 'theme-icon', icon: 'close' -%}</span>
+          </button>
+        {% endif %}
+      </div>
+
+      <div class="active-filters" data-active-filters>
+        {% comment %} Active filters will be injected here via JS {% endcomment %}
+      </div>
+    </div>
     <div class="collection-wrapper sidebar-space">
       <main class="inner-warpper">
-        
         <div class="product-list">
-
           <!-- Products -->
-        {% paginate collection.products by section.settings.products_per_page %}
-
-          {% if collection.products_count > 0 %}
-            <div
-              class="products-grid cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %}"
-              id="productsContainer"
-              data-total-products="{{ collection.products_count }}"
-              data-total-pages="{{ paginate.pages }}"
-              data-current-page="{{ paginate.current_page }}"
-            >
-              {% for product in collection.products %}
-                {% render 'product-card', product: product %}
-              {% endfor %}
-            </div>
-          {% else %}
-            <div class="collection-empty-state" id="productsContainer">
-              <p>No products found.</p>
-            </div>
-          {% endif %}
+          {% paginate collection.products by section.settings.products_per_page %}
+            {% if collection.products_count > 0 %}
+              <div
+                class="products-grid cols-{{ section.settings.grid_columns }} {% if section.settings.show_two_mobile %} cols-mobile-2{% endif %} js-product-scroll-reveal"
+                id="productsContainer"
+                data-total-products="{{ collection.products_count }}"
+                data-total-pages="{{ paginate.pages }}"
+                data-current-page="{{ paginate.current_page }}"
+              >
+                {% for product in collection.products %}
+                  {% render 'product-card', product: product %}
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="collection-empty-state" id="productsContainer">
+                <p>No products found.</p>
+              </div>
+            {% endif %}
 
             {% if section.settings.pagination_type == 'pagination_by_number' %}
               <div class="pagination-wrapper">
                 <div class="pagination-inner">{{ paginate | default_pagination }}</div>
               </div>
             {% endif %}
+          {% endpaginate %}
 
-        {% endpaginate %}
+          <!-- Pagination UI -->
+          {% if section.settings.enable_pagination %}
+            <div id="paginationWrapper" class="custom-pagination">
+              {% if section.settings.pagination_type == 'load_more_button' %}
+                <div class="pagination-ui pagination-ui--loadmore">
+                  <button type="button" id="loadMoreBtn" class="load-more-btn">Load More</button>
 
-
-        <!-- Pagination UI -->
-        {% if section.settings.enable_pagination %}
-          <div id="paginationWrapper" class="custom-pagination">
-            {% if section.settings.pagination_type == 'load_more_button' %}
-              <div class="pagination-ui pagination-ui--loadmore">
-                <button type="button" id="loadMoreBtn" class="load-more-btn">
-                  Load More
-                </button>
-
-                <div class="pagination-loader" data-loader hidden>
-                  Loading...
+                  <div class="pagination-loader" data-loader hidden>Loading...</div>
                 </div>
-              </div>
-            {% elsif section.settings.pagination_type == 'infinity_loading' %}
-              <div class="pagination-ui pagination-ui--infinity">
-                <div class="pagination-loader" data-loader hidden>
-                  Loading...
+              {% elsif section.settings.pagination_type == 'infinity_loading' %}
+                <div class="pagination-ui pagination-ui--infinity">
+                  <div class="pagination-loader" data-loader hidden>Loading...</div>
                 </div>
-              </div>
-            {% endif %}
-
-          </div>
-        {% endif %}
-
+              {% endif %}
+            </div>
+          {% endif %}
         </div>
 
         <!-- Filters -->
@@ -155,19 +138,20 @@
               <span class="icon">{%- render 'theme-icon', icon: 'filter-toggle' -%}</span>
             </button>
 
-            <button type="button" class="filter-toggle-btn hide-tablet hide-mobile hide-tablet-landscape" data-action="sort">
+            <button
+              type="button"
+              class="filter-toggle-btn hide-tablet hide-mobile hide-tablet-landscape"
+              data-action="sort"
+            >
               <span class="label">Sort</span>
               <span class="icon">{%- render 'theme-icon', icon: 'sort' -%}</span>
-            
             </button>
           </div>
           <div class="inner-filter">
             {% render 'product-filter', section: section, collection: collection %}
           </div>
         </div>
-
       </main>
-
     </div>
   </div>
 </div>
@@ -293,31 +277,31 @@
       "name": "Vendor Filter",
       "limit": 1
     },
-{
-  "type": "color-filter",
-  "name": "Color Filter",
-  "limit": 1,
-  "settings": [
     {
-      "type": "text",
-      "id": "filter_title",
-      "label": "Title",
-      "default": "Color"
+      "type": "color-filter",
+      "name": "Color Filter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Title",
+          "default": "Color"
+        },
+        {
+          "type": "text",
+          "id": "allow_colors",
+          "label": "Custom Colors (Allow)",
+          "info": "Comma separated values. If filled, only these colors will show."
+        },
+        {
+          "type": "text",
+          "id": "disallow_colors",
+          "label": "Disallow Colors",
+          "info": "Comma separated values. These colors will be hidden."
+        }
+      ]
     },
-    {
-      "type": "text",
-      "id": "allow_colors",
-      "label": "Custom Colors (Allow)",
-      "info": "Comma separated values. If filled, only these colors will show."
-    },
-    {
-      "type": "text",
-      "id": "disallow_colors",
-      "label": "Disallow Colors",
-      "info": "Comma separated values. These colors will be hidden."
-    }
-  ]
-},
 
     {
       "type": "tag-filter",
