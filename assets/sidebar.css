@@ -281,7 +281,21 @@ body.disable-scrollbars {
 .icon-wishlist{
     width: 1.8rem;
 }
-
+.icon-count.wishlist-count {
+    position: absolute;
+    background: darkblue;
+    height: 20px;
+    width: 20px;
+    color: #fff;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    top: -16px;
+    right: -6px;
+    border-radius: 100px;
+    font-size: 0.8em;
+}
 /* ==================
  Drawer Common Style
  ===================*/
