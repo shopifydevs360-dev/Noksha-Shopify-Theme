@@ -15,12 +15,12 @@
         "image_slide_da8geD": {
           "type": "image_slide",
           "settings": {
-            "text_color_scheme": "default",
+            "text_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
             "image": "shopify://shop_images/Youmi0088_3_Option_1_6c0415b2-8e81-4b71-a529-83991434b087.jpg",
-            "subheading": "MODEST SILHOUETTES FOR WORKOUTS",
+            "subheading": "",
             "sub_heading_font_size": "h4",
             "use_custom_font": "",
-            "heading": "ACTIVEWEAR SET",
+            "heading": "YB Rituals",
             "heading_size": "hd-2",
             "cta_text": "SHOP NOW",
             "link": "shopify://collections/all",
