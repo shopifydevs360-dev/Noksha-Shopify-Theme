@@ -296,6 +296,7 @@ body.disable-scrollbars {
  .noksha-drawer.bag-drawer-open,
  .noksha-drawer.account-drawer-open,
  .noksha-drawer.search-drawer-open,
+ .noksha-drawer.wishlist-drawer-open,
  .noksha-drawer.nav-drawer-open
   {
   transform: translateX(0);
@@ -310,6 +311,7 @@ body.disable-scrollbars {
 .rtl .noksha-drawer.bag-drawer-open,
 .rtl .noksha-drawer.account-drawer-open,
 .rtl .noksha-drawer.search-drawer-open,
+.rtl .noksha-drawer.wishlist-drawer-open,
 .rtl .noksha-drawer.nav-drawer-open {
   transform: translateX(0);
 }
