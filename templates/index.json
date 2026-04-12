@@ -100,10 +100,18 @@
             "tab_label": "Best Seller",
             "collection": "best-sellers"
           }
+        },
+        "tab_YJjBxG": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Best Seller",
+            "collection": "eye-lashes"
+          }
         }
       },
       "block_order": [
-        "tab_Nq43z7"
+        "tab_Nq43z7",
+        "tab_YJjBxG"
       ],
       "name": "Product Tabs Carousel",
       "settings": {
