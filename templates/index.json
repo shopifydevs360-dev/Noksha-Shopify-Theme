@@ -156,7 +156,7 @@
       "name": "Layered Image Story",
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_type": "container",
+        "container_type": "extended",
         "eyebrow": "Our Story",
         "heading": "Crafted for timeless living",
         "heading_size": "h2",
@@ -178,7 +178,7 @@
         "product_hotspot_fgJHpi": {
           "type": "product_hotspot",
           "settings": {
-            "product": "",
+            "product": "3d-silk-lashes",
             "top_position": 40,
             "left_position": 50
           }
