@@ -412,20 +412,11 @@
             "background_image": "shopify://shop_images/Youmi0088_3_Option_1_1b8ec3ca-d0c6-4404-9414-bc10f6033ac3.jpg",
             "product_image": "shopify://shop_images/Youmi00917.jpg"
           }
-        },
-        "quote_GJHwL4": {
-          "type": "quote",
-          "settings": {
-            "quote": "\"Minimal, elegant, and easy to explore. It feels more like an editorial story than a store.\"",
-            "author": "Layla Noor",
-            "role": "Returning customer"
-          }
         }
       },
       "block_order": [
         "quote_yVMRdw",
-        "quote_UriGQe",
-        "quote_GJHwL4"
+        "quote_UriGQe"
       ],
       "name": "Testimonial quote slider",
       "settings": {
