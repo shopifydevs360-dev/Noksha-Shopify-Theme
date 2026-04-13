@@ -37,7 +37,8 @@
         "add_to_cart_form_8aMLxd": {
           "type": "add_to_cart_form",
           "settings": {
-            "cart_behavior": "ajax_drawer"
+            "cart_behavior": "ajax_drawer",
+            "quantity_style": "buttons"
           }
         },
         "addon_buttons_HDrn66": {
