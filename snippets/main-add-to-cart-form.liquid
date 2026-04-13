@@ -1,35 +1,53 @@
 <div class="product-block product-form-wrapper" {{ block.shopify_attributes }}>
   {% form 'product', product, class: 'product-form' %}
-        {% assign current_variant = product.selected_or_first_available_variant %}
+    {% assign current_variant = product.selected_or_first_available_variant %}
+
     <!-- REQUIRED VARIANT ID (CRITICAL) -->
-    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+
     <!-- VARIANTS -->
     <div class="variant-selector">
       {% render 'product-variant-picker', product: product %}
     </div>
+
     <div class="qty-cart-btn-wrap">
       <!-- QUANTITY -->
-      <div class="quantity-dropdown" data-qty-dropdown>
-        <button type="button" class="qty-toggle" data-qty-toggle>
-          Qty 1
-        </button>
+      {% if block.settings.quantity_selector_type == 'buttons' %}
+        <div class="quantity-buttons" data-quantity-wrapper>
+          <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
 
-        <ul class="qty-list">
-          {% assign quantities = "1,2,3,4,5,6" | split: "," %}
-          {% for qty in quantities %}
-            <li
-              class="qty-item {% if forloop.first %}is-selected{% endif %}"
-              data-qty="{{ qty }}"
-            >
-              Qty {{ qty }}
-            </li>
-          {% endfor %}
-        </ul>
+          <input
+            type="number"
+            name="quantity"
+            value="1"
+            min="1"
+            class="qty-input"
+            aria-label="Quantity"
+          >
 
-        <!-- Hidden input for Shopify -->
-        <input type="hidden" name="quantity" value="1">
-      </div>
+          <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+        </div>
+      {% else %}
+        <div class="quantity-dropdown" data-qty-dropdown>
+          <button type="button" class="qty-toggle" data-qty-toggle>
+            Qty 1
+          </button>
 
+          <ul class="qty-list">
+            {% assign quantities = "1,2,3,4,5,6" | split: "," %}
+            {% for qty in quantities %}
+              <li
+                class="qty-item {% if forloop.first %}is-selected{% endif %}"
+                data-qty="{{ qty }}"
+              >
+                Qty {{ qty }}
+              </li>
+            {% endfor %}
+          </ul>
+
+          <input type="hidden" name="quantity" value="1">
+        </div>
+      {% endif %}
 
       <!-- ADD TO CART -->
       <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
@@ -58,7 +76,7 @@
         Buy it now
       </button>
 
-      <button 
+      <button
         onclick="initNotifyMe()"
         type="button"
         class="btn-notify {% if current_variant.available %}hide{% endif %}"
@@ -69,12 +87,8 @@
     </div>
 
   {% endform %}
-
 </div>
+
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
 </script>
-
-
-
-
