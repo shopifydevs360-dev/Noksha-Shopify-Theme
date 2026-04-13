@@ -70,43 +70,24 @@
   overflow: hidden;
   background: rgba(var(--color-background-secondary), 1);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-  aspect-ratio: 4 / 5;
 }
 
 .editorial-depth-stack__image,
+.editorial-depth-stack__image img,
 .editorial-depth-stack__card .image {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.editorial-depth-stack__image {
-  position: absolute;
-  inset: 0;
-}
-
-.editorial-depth-stack__image picture,
-.editorial-depth-stack__image > img,
-.editorial-depth-stack__card .image picture {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.editorial-depth-stack__image picture img,
-.editorial-depth-stack__image > img,
 .editorial-depth-stack__card .image img {
-  display: block;
   width: 100%;
-  height: 100%;
-  min-height: 100%;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
-  object-position: center center;
 }
 
 .editorial-depth-stack__placeholder {
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 5;
   background: rgba(var(--color-background-secondary), 1);
 }
 
@@ -181,7 +162,6 @@
 [data-depth-card] {
   opacity: 0;
 }
-
 @media (min-width: 992px) {
   .editorial-depth-stack__inner {
     grid-template-columns: minmax(20rem, 0.88fr) minmax(28rem, 1.12fr);
@@ -234,13 +214,12 @@
     min-height: auto;
   }
 
-  .editorial-depth-stack__media-stage {
-    min-height: auto;
-    display: grid;
-    gap: 1rem;
-    padding: 0;
-  }
-
+.editorial-depth-stack__media-stage {
+  min-height: auto;
+  display: grid;
+  gap: 1rem;
+  padding: 0;
+}
   .editorial-depth-stack__card {
     position: relative;
     inset: auto;
@@ -269,9 +248,8 @@
   }
 }
 {% endstylesheet %}
-
 {% javascript %}
-(function () {
+ (function () {
   const SECTION_SELECTOR = '[data-editorial-depth-stack]';
 
   function killSectionTriggers(section) {
@@ -403,8 +381,7 @@
           toRotate = 2.25;
         }
 
-        gsap.fromTo(
-          card,
+        gsap.fromTo(card,
           {
             y: fromY,
             x: fromX,
@@ -427,29 +404,22 @@
 
       if (enableParallax) {
         mediaImages.forEach((img, index) => {
-          const fromScale = index === 0 ? 1.14 : index === 1 ? 1.18 : 1.2;
-          const toScale = index === 0 ? 1.22 : index === 1 ? 1.24 : 1.26;
-          const yPercentFrom = index === 0 ? -4 : index === 1 ? -8 : -10;
-          const yPercentTo = index === 0 ? 8 : index === 1 ? 10 : 12;
+          const yPercentTo = index === 0 ? 10 : index === 1 ? 18 : 24;
 
-          gsap.set(img, {
-            scale: fromScale,
-            yPercent: yPercentFrom,
-            transformOrigin: 'center center',
-            force3D: true
-          });
-
-          gsap.to(img, {
-            yPercent: yPercentTo,
-            scale: toScale,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.2
+          gsap.fromTo(img,
+            { yPercent: -6, scale: 1.04 },
+            {
+              yPercent: yPercentTo,
+              scale: 1.08,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.2
+              }
             }
-          });
+          );
         });
       }
 
@@ -462,13 +432,8 @@
         clearProps: 'transform'
       });
 
-      gsap.set(mediaImages, {
-        clearProps: 'all'
-      });
-
       splitItems.forEach((item, index) => {
-        gsap.fromTo(
-          item,
+        gsap.fromTo(item,
           { autoAlpha: 0, y: 18 },
           {
             autoAlpha: 1,
@@ -486,8 +451,7 @@
       });
 
       fadeItems.forEach((item) => {
-        gsap.fromTo(
-          item,
+        gsap.fromTo(item,
           { autoAlpha: 0, y: 16 },
           {
             autoAlpha: 1,
@@ -504,8 +468,7 @@
       });
 
       depthCards.forEach((card, index) => {
-        gsap.fromTo(
-          card,
+        gsap.fromTo(card,
           {
             autoAlpha: 0,
             y: 24
@@ -548,7 +511,6 @@
   });
 })();
 {% endjavascript %}
-
 {% render 'section-base-style' %}
 
 {%- liquid
@@ -657,6 +619,7 @@
     </div>
   </div>
 </section>
+
 
 {% schema %}
 {
