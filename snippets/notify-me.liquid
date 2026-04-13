@@ -1,40 +1,176 @@
-<div id="js-notify-me" class="notify-me hide m-color-{{ settings.notify_me_color }}">
-  <div class="inner-notify-me">
+<div id="js-notify-me" class="notify-me hide m-color-{{ settings.notify_me_color }}" aria-hidden="true">
+  <div id="notify-me-overlay" class="notify-me__overlay"></div>
 
-    {% form 'customer', class: 'footer__form' %}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <input type="email" name="contact[email]" placeholder="Email address" required>
+  <div
+    class="notify-me__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="NotifyMeTitle"
+  >
+    <button
+      type="button"
+      class="notify-me__close"
+      aria-label="Close notify me popup"
+      onclick="document.getElementById('js-notify-me').classList.add('hide')"
+    >
+      ×
+    </button>
 
-      {% if block.settings.text != blank %}
-        <div class="newsletter__text">{{ block.settings.text }}</div>
-      {% endif %}
+    <div class="notify-me__content">
+      <p class="notify-me__eyebrow">Back in stock</p>
+      <h3 id="NotifyMeTitle" class="notify-me__title">Notify me when available</h3>
+      <p class="notify-me__text">
+        Enter your email address and we will let you know when this product becomes available again.
+      </p>
 
-      <button type="submit" class="newsletter__submit">
-        Subscribe
-      </button>
-    {% endform %}
-{% comment %} Send {% endcomment %}
+      {% form 'customer', class: 'notify-me__form' %}
+        <input type="hidden" name="contact[tags]" value="notify-me">
+
+        <div class="notify-me__field-group">
+          <input
+            type="email"
+            name="contact[email]"
+            class="notify-me__input"
+            placeholder="Email address"
+            required
+            autocorrect="off"
+            autocapitalize="off"
+          >
+
+          <button type="submit" class="notify-me__submit btn btn--primary">
+            Subscribe
+          </button>
+        </div>
+
+        {% if form.posted_successfully? %}
+          <p class="notify-me__message notify-me__message--success">
+            Thanks. We’ll notify you when it’s back.
+          </p>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="notify-me__message notify-me__message--error">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+      {% endform %}
+    </div>
   </div>
-<div id="notify-me-overlay"></div>
 </div>
+
 {% stylesheet %}
-.notify-me .inner-notify-me{
+  .notify-me {
     position: fixed;
-    bottom: 50%;
-    right: 50%; 
-    padding: 15px 25px;
+    inset: 0;
     z-index: 1000;
-    transform: translateX(50%);
+  }
+
+  .notify-me.hide {
+    display: none;
+  }
+
+  .notify-me__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--color-overlay), calc(var(--color-overlay-opacity) / 100));
+  }
+
+  .notify-me__dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(92vw, 560px);
+    transform: translate(-50%, -50%);
     background: rgb(var(--color-background));
-}
-#notify-me-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--color-overlay);
-    opacity: var(--color-overlay-opacity);
-    z-index: 999;
-}
+    color: rgb(var(--color-text));
+    padding: 32px;
+    z-index: 1001;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.16);
+  }
+
+  .notify-me__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 28px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .notify-me__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .notify-me__eyebrow {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  .notify-me__title {
+    margin: 0;
+  }
+
+  .notify-me__text {
+    margin: 0 0 6px;
+    max-width: 42ch;
+  }
+
+  .notify-me__form {
+    margin-top: 8px;
+  }
+
+  .notify-me__field-group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .notify-me__input {
+    min-height: 52px;
+    padding: 0 16px;
+  }
+
+  .notify-me__submit {
+    min-height: 52px;
+    white-space: nowrap;
+    padding-inline: 24px;
+  }
+
+  .notify-me__message {
+    margin-top: 12px;
+    font-size: 14px;
+  }
+
+  .notify-me__message--success {
+    color: rgb(var(--color-heading));
+  }
+
+  .notify-me__message--error {
+    color: #b42318;
+  }
+
+  @media (max-width: 767px) {
+    .notify-me__dialog {
+      width: min(94vw, 560px);
+      padding: 24px 18px;
+    }
+
+    .notify-me__field-group {
+      grid-template-columns: 1fr;
+    }
+
+    .notify-me__submit {
+      width: 100%;
+    }
+  }
 {% endstylesheet %}
