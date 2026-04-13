@@ -100,18 +100,10 @@
             "tab_label": "Best Seller",
             "collection": "best-sellers"
           }
-        },
-        "tab_YJjBxG": {
-          "type": "tab",
-          "settings": {
-            "tab_label": "Best Seller",
-            "collection": "eye-lashes"
-          }
         }
       },
       "block_order": [
-        "tab_Nq43z7",
-        "tab_YJjBxG"
+        "tab_Nq43z7"
       ],
       "name": "Product Tabs Carousel",
       "settings": {
@@ -198,7 +190,7 @@
         "text": "<p>Highlight a complete look and guide customers to the exact products featured in the image.</p>",
         "button_label": "Explore collection",
         "button_link": "",
-        "look_image": "shopify://shop_images/5_71151e7f-bdeb-4d82-9b21-8b3e895e1f95.png",
+        "look_image": "shopify://shop_images/Youmi0088_3_Option2.jpg",
         "padding_top": 48,
         "padding_bottom": 48,
         "custom_class": "",
