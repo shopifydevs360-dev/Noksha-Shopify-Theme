@@ -1,0 +1,608 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+{% render 'section-base-style' %}
+
+{%- liquid
+  assign classes = 'testimonial-slider'
+  unless section.settings.container_width == 'full-width'
+    assign classes = classes | append: ' section-x-padding'
+  endunless
+  assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
+  assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign classes = classes | append: ' ' | append: section.settings.custom_class
+  assign classes = classes | append: ' ' | append: section.settings.color_control
+-%}
+
+{% stylesheet %}
+  .testimonial-slider {
+    position: relative;
+    overflow: hidden;
+    background: rgb(var(--color-background));
+  }
+
+  .testimonial-slider__header {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .testimonial-slider__eyebrow {
+    margin: 0;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: rgb(var(--color-subtext));
+    opacity: 0.85;
+  }
+
+  .testimonial-slider__heading {
+    margin: 0;
+    max-width: 14ch;
+  }
+
+  .testimonial-slider__text {
+    max-width: 42rem;
+  }
+
+  .testimonial-slider__text p {
+    color: rgb(var(--color-text));
+    opacity: 0.9;
+  }
+
+  .testimonial-slider__slider-wrap {
+    position: relative;
+  }
+
+  .testimonial-slider__slider {
+    overflow: hidden;
+  }
+
+  .testimonial-slider__track {
+    align-items: stretch;
+  }
+
+  .testimonial-slider__slide {
+    height: auto;
+  }
+
+  .testimonial-slider__card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.4rem;
+    background: rgba(var(--color-background-secondary), 1);
+    border: 1px solid rgba(var(--color-border), 0.6);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+  }
+
+  .testimonial-slider__stars {
+    display: inline-flex;
+    gap: 0.3rem;
+    line-height: 1;
+    color: rgb(var(--color-heading));
+    font-size: 1rem;
+  }
+
+  .testimonial-slider__quote {
+    margin: 0;
+    color: rgb(var(--color-heading));
+    line-height: 1.45;
+  }
+
+  .testimonial-slider__footer {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .testimonial-slider__avatar {
+    flex: 0 0 auto;
+    width: 3.25rem;
+    height: 3.25rem;
+    overflow: hidden;
+    border-radius: 50%;
+    background: rgba(var(--color-border), 0.18);
+  }
+
+  .testimonial-slider__avatar img,
+  .testimonial-slider__avatar .image,
+  .testimonial-slider__avatar picture {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .testimonial-slider__avatar img {
+    object-fit: cover;
+  }
+
+  .testimonial-slider__meta {
+    display: grid;
+    gap: 0.18rem;
+  }
+
+  .testimonial-slider__name {
+    margin: 0;
+    color: rgb(var(--color-heading));
+  }
+
+  .testimonial-slider__role {
+    margin: 0;
+    color: rgb(var(--color-subtext));
+    font-size: 0.92rem;
+  }
+
+  .testimonial-slider__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .testimonial-slider__arrows {
+    display: inline-flex;
+    gap: 0.75rem;
+  }
+
+  .testimonial-slider__arrow {
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid rgba(var(--color-border), 0.8);
+    background: transparent;
+    color: rgb(var(--color-heading));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+  }
+
+  .testimonial-slider__arrow:hover {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+  }
+
+  .testimonial-slider__arrow.swiper-button-disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .testimonial-slider__pagination {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.45rem;
+  }
+
+  .testimonial-slider__pagination .swiper-pagination-bullet {
+    margin: 0 !important;
+    width: 0.55rem;
+    height: 0.55rem;
+    opacity: 1;
+    background: rgba(var(--color-border), 0.9);
+  }
+
+  .testimonial-slider__pagination .swiper-pagination-bullet-active {
+    background: rgb(var(--color-heading));
+  }
+
+  @media (min-width: 992px) {
+    .testimonial-slider__header {
+      grid-template-columns: minmax(18rem, 0.75fr) minmax(20rem, 1fr);
+      align-items: end;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .testimonial-slider__heading {
+      max-width: 12ch;
+    }
+
+    .testimonial-slider__card {
+      padding: 1.75rem;
+      gap: 1.75rem;
+    }
+
+    .testimonial-slider__quote {
+      font-size: 1.22rem;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .testimonial-slider__nav {
+      margin-top: 1.2rem;
+    }
+
+    .testimonial-slider__arrow {
+      width: 2.7rem;
+      height: 2.7rem;
+    }
+
+    .testimonial-slider__card {
+      padding: 1.15rem;
+    }
+  }
+{% endstylesheet %}
+
+<section
+  class="{{ classes }}"
+  id="TestimonialSlider-{{ section.id }}"
+  data-testimonial-slider
+  data-section-id="{{ section.id }}"
+  {{ section.shopify_attributes }}
+>
+  <div class="{{ section.settings.container_width }}">
+    <div class="{% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
+      {% if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank %}
+        <div class="testimonial-slider__header">
+          <div>
+            {% if section.settings.eyebrow != blank %}
+              <p class="testimonial-slider__eyebrow">{{ section.settings.eyebrow }}</p>
+            {% endif %}
+
+            {% if section.settings.heading != blank %}
+              <h2 class="testimonial-slider__heading {{ section.settings.heading_size }}">
+                {{ section.settings.heading }}
+              </h2>
+            {% endif %}
+          </div>
+
+          {% if section.settings.text != blank %}
+            <div class="testimonial-slider__text rte">
+              {{ section.settings.text }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="testimonial-slider__slider-wrap">
+        <div
+          class="testimonial-slider__slider swiper"
+          data-testimonial-swiper
+          data-autoplay="{{ section.settings.enable_autoplay }}"
+          data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+        >
+          <div class="testimonial-slider__track swiper-wrapper">
+            {% for block in section.blocks %}
+              <div class="testimonial-slider__slide swiper-slide" {{ block.shopify_attributes }}>
+                <article class="testimonial-slider__card border-radius-style-two">
+                  <div>
+                    {% if block.settings.show_stars %}
+                      <div class="testimonial-slider__stars" aria-label="5 star rating">
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                      </div>
+                    {% endif %}
+
+                    {% if block.settings.quote != blank %}
+                      <blockquote class="testimonial-slider__quote {{ block.settings.quote_size }}">
+                        {{ block.settings.quote }}
+                      </blockquote>
+                    {% endif %}
+                  </div>
+
+                  <div class="testimonial-slider__footer">
+                    {% if block.settings.avatar != blank %}
+                      <div class="testimonial-slider__avatar">
+                        {% render 'image',
+                          image: block.settings.avatar,
+                          class: '',
+                          img_alt: block.settings.name,
+                          loading: 'lazy',
+                          fetchpriority: 'low'
+                        %}
+                      </div>
+                    {% endif %}
+
+                    <div class="testimonial-slider__meta">
+                      {% if block.settings.name != blank %}
+                        <h3 class="testimonial-slider__name h6">{{ block.settings.name }}</h3>
+                      {% endif %}
+
+                      {% if block.settings.role != blank %}
+                        <p class="testimonial-slider__role">{{ block.settings.role }}</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </article>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="testimonial-slider__nav">
+          <div class="testimonial-slider__arrows">
+            <button
+              type="button"
+              class="testimonial-slider__arrow testimonial-slider__arrow--prev"
+              aria-label="Previous testimonial"
+              data-testimonial-prev
+            >
+              &#8592;
+            </button>
+            <button
+              type="button"
+              class="testimonial-slider__arrow testimonial-slider__arrow--next"
+              aria-label="Next testimonial"
+              data-testimonial-next
+            >
+              &#8594;
+            </button>
+          </div>
+
+          <div class="testimonial-slider__pagination" data-testimonial-pagination></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+<script>
+  (function () {
+    function initTestimonialSlider(sectionScope) {
+      if (typeof Swiper === 'undefined') return;
+
+      const sections = sectionScope.querySelectorAll('[data-testimonial-slider]');
+
+      sections.forEach((section) => {
+        const slider = section.querySelector('[data-testimonial-swiper]');
+        if (!slider) return;
+
+        if (slider.swiper) {
+          slider.swiper.destroy(true, true);
+        }
+
+        const autoplayEnabled = slider.dataset.autoplay === 'true';
+        const autoplaySpeed = parseInt(slider.dataset.autoplaySpeed || '5000', 10);
+
+        new Swiper(slider, {
+          slidesPerView: 1,
+          spaceBetween: 16,
+          speed: 800,
+          loop: section.querySelectorAll('.swiper-slide').length > 1,
+          watchOverflow: true,
+          grabCursor: true,
+          autoplay: autoplayEnabled
+            ? {
+                delay: autoplaySpeed,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+              }
+            : false,
+          pagination: {
+            el: section.querySelector('[data-testimonial-pagination]'),
+            clickable: true
+          },
+          navigation: {
+            nextEl: section.querySelector('[data-testimonial-next]'),
+            prevEl: section.querySelector('[data-testimonial-prev]')
+          },
+          breakpoints: {
+            768: {
+              slidesPerView: 1.2,
+              spaceBetween: 20
+            },
+            992: {
+              slidesPerView: 2,
+              spaceBetween: 24
+            }
+          }
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initTestimonialSlider(document);
+    });
+
+    document.addEventListener('shopify:section:load', function (event) {
+      initTestimonialSlider(event.target);
+    });
+
+    document.addEventListener('shopify:section:reorder', function () {
+      initTestimonialSlider(document);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Testimonial slider",
+  "tag": "section",
+  "class": "shopify-section-testimonial-slider",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable sidebar space",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Testimonials"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What clients are saying"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Add real customer feedback to build trust with a clean editorial slider.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay speed",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_stars",
+          "label": "Show stars",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined."
+        },
+        {
+          "type": "select",
+          "id": "quote_size",
+          "label": "Quote size",
+          "options": [
+            { "value": "h5", "label": "Large" },
+            { "value": "h6", "label": "Medium" },
+            { "value": "", "label": "Default" }
+          ],
+          "default": "h5"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Client name"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role / location",
+          "default": "Verified customer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial slider",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Sophia Rahman",
+            "role": "Verified customer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Ariana Malik",
+            "role": "Returning customer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Nadia Karim",
+            "role": "Dubai"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
