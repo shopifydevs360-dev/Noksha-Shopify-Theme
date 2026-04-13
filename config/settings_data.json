@@ -106,7 +106,7 @@
           "form_field_label": "#222222",
           "tooltip": "#222222",
           "tooltip_label": "#ffffff",
-          "border": "#c68b2f",
+          "border": "#222222",
           "additional_color_1": "#a9776c",
           "additional_color_2": "#daab6e"
         }
@@ -169,7 +169,7 @@
           "form_field_label": "#222222",
           "tooltip": "#222222",
           "tooltip_label": "#ffffff",
-          "border": "#c68b2f",
+          "border": "#222222",
           "additional_color_1": "#bbbbbb",
           "additional_color_2": "#228b22"
         }
