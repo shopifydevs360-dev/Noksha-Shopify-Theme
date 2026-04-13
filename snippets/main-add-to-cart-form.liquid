@@ -12,42 +12,7 @@
 
     <div class="qty-cart-btn-wrap">
       <!-- QUANTITY -->
-      {% if block.settings.quantity_selector_type == 'buttons' %}
-        <div class="quantity-buttons" data-quantity-wrapper>
-          <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
 
-          <input
-            type="number"
-            name="quantity"
-            value="1"
-            min="1"
-            class="qty-input"
-            aria-label="Quantity"
-          >
-
-          <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
-        </div>
-      {% else %}
-        <div class="quantity-dropdown" data-qty-dropdown>
-          <button type="button" class="qty-toggle" data-qty-toggle>
-            Qty 1
-          </button>
-
-          <ul class="qty-list">
-            {% assign quantities = "1,2,3,4,5,6" | split: "," %}
-            {% for qty in quantities %}
-              <li
-                class="qty-item {% if forloop.first %}is-selected{% endif %}"
-                data-qty="{{ qty }}"
-              >
-                Qty {{ qty }}
-              </li>
-            {% endfor %}
-          </ul>
-
-          <input type="hidden" name="quantity" value="1">
-        </div>
-      {% endif %}
 
       <!-- ADD TO CART -->
       <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
