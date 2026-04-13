@@ -12,7 +12,9 @@
 
     <div class="qty-cart-btn-wrap">
       <!-- QUANTITY -->
-      {% if block.settings.quantity_selector_type == 'buttons' %}
+      {% assign quantity_selector_type = block.settings.quantity_selector_type | default: 'dropdown' %}
+
+      {% if quantity_selector_type == 'buttons' %}
         <div class="quantity-buttons" data-quantity-wrapper>
           <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
 
@@ -29,12 +31,10 @@
         </div>
       {% else %}
         <div class="quantity-dropdown" data-qty-dropdown>
-          <button type="button" class="qty-toggle" data-qty-toggle>
-            Qty 1
-          </button>
+          <button type="button" class="qty-toggle" data-qty-toggle>Qty 1</button>
 
           <ul class="qty-list">
-            {% assign quantities = "1,2,3,4,5,6" | split: "," %}
+            {% assign quantities = '1,2,3,4,5,6' | split: ',' %}
             {% for qty in quantities %}
               <li
                 class="qty-item {% if forloop.first %}is-selected{% endif %}"
@@ -55,7 +55,9 @@
           type="submit"
           class="btn-add-to-cart"
           data-role="add-to-cart"
-          {% unless current_variant.available %}disabled{% endunless %}
+          {% unless current_variant.available %}
+            disabled
+          {% endunless %}
         >
           {% if current_variant.available %}
             Add to cart
@@ -85,7 +87,6 @@
         Notify me when available
       </button>
     </div>
-
   {% endform %}
 </div>
 
