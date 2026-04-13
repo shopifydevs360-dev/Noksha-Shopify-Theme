@@ -266,7 +266,38 @@ function initQuantityDropdown() {
   });
 }
 
+/* =================================
+   QUANTITY BUTTONS (PLUS / MINUS)
+================================= */
+function initQuantityButtons() {
+  document.addEventListener('click', (e) => {
+    const minusBtn = e.target.closest('.qty-minus');
+    const plusBtn = e.target.closest('.qty-plus');
 
+    if (!minusBtn && !plusBtn) return;
+
+    const wrapper = e.target.closest('[data-quantity-wrapper]');
+    if (!wrapper) return;
+
+    const input = wrapper.querySelector('input[name="quantity"]');
+    if (!input) return;
+
+    let value = parseInt(input.value, 10) || 1;
+
+    if (minusBtn) {
+      value = Math.max(1, value - 1);
+    }
+
+    if (plusBtn) {
+      value += 1;
+    }
+
+    input.value = value;
+
+    // Trigger change for consistency with other logic
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+}
 /* =================================
    Variant Label update
 ================================= */
