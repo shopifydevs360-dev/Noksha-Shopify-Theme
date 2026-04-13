@@ -1,5 +1,195 @@
+{% stylesheet %}
+  css_styles
+{% endstylesheet %}
 {% javascript %}
-  
+  (function () {
+  const SECTION_SELECTOR = '[data-editorial-depth-stack]';
+
+  function initEditorialDepthStack(section) {
+    if (!section || section.dataset.initialized === 'true') return;
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const desktopBreakpoint = parseInt(section.dataset.desktopBreakpoint || '991', 10);
+    const enablePin = section.dataset.enablePin === 'true';
+    const enableParallax = section.dataset.enableParallax === 'true';
+
+    const content = section.querySelector('[data-editorial-content]');
+    const media = section.querySelector('[data-editorial-media]');
+    const splitItems = section.querySelectorAll('[data-split-reveal]');
+    const fadeItems = section.querySelectorAll('[data-fade-reveal]');
+    const depthCards = section.querySelectorAll('[data-depth-card]');
+
+    const sectionId = section.dataset.sectionId || '';
+    const mm = gsap.matchMedia();
+
+    section.dataset.initialized = 'true';
+
+    mm.add(`(min-width: ${desktopBreakpoint + 1}px)`, () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top+=10%',
+          end: 'bottom bottom-=10%',
+          scrub: 1.1
+        }
+      });
+
+      splitItems.forEach((item, index) => {
+        tl.fromTo(
+          item,
+          { autoAlpha: 0, y: 28 },
+          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+          index * 0.08
+        );
+      });
+
+      fadeItems.forEach((item, index) => {
+        tl.fromTo(
+          item,
+          { autoAlpha: 0, y: 24 },
+          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+          0.2 + index * 0.08
+        );
+      });
+
+      depthCards.forEach((card, index) => {
+        const strength = parseInt(card.dataset.depth || '40', 10);
+        const fromY = index === 0 ? 40 : strength;
+        const toY = index === 0 ? -20 : strength * -0.7;
+        const fromRotate = index === 1 ? 2.5 : index === 2 ? -2.5 : 0;
+        const toRotate = index === 1 ? -1.5 : index === 2 ? 1.5 : 0;
+
+        gsap.fromTo(
+          card,
+          {
+            autoAlpha: 0,
+            y: fromY,
+            rotate: fromRotate,
+            scale: 0.96
+          },
+          {
+            autoAlpha: 1,
+            y: toY,
+            rotate: toRotate,
+            scale: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              end: 'bottom 15%',
+              scrub: 1.2
+            }
+          }
+        );
+      });
+
+      if (enablePin && content && media) {
+        ScrollTrigger.create({
+          id: `editorial-pin-${sectionId}`,
+          trigger: section,
+          start: 'top top+=8%',
+          end: 'bottom bottom-=8%',
+          pin: content,
+          pinSpacing: false,
+          anticipatePin: 1
+        });
+      }
+
+      if (enableParallax) {
+        const images = section.querySelectorAll('.editorial-depth-stack__card .image img');
+        images.forEach((img, index) => {
+          const shift = index === 0 ? 18 : index === 1 ? 32 : 48;
+
+          gsap.fromTo(
+            img,
+            { yPercent: -6 },
+            {
+              yPercent: shift,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.2
+              }
+            }
+          );
+        });
+      }
+
+      return () => {
+        ScrollTrigger.getAll().forEach((trigger) => {
+          if (
+            trigger.vars &&
+            trigger.vars.trigger === section
+          ) {
+            trigger.kill();
+          }
+        });
+      };
+    });
+
+    mm.add(`(max-width: ${desktopBreakpoint}px)`, () => {
+      gsap.set([...splitItems, ...fadeItems, ...depthCards], { autoAlpha: 1, clearProps: 'transform' });
+
+      splitItems.forEach((item, index) => {
+        gsap.fromTo(
+          item,
+          { autoAlpha: 0, y: 18 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.55,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 92%',
+              once: true
+            },
+            delay: index * 0.04
+          }
+        );
+      });
+
+      fadeItems.forEach((item) => {
+        gsap.fromTo(
+          item,
+          { autoAlpha: 0, y: 18 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.55,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 92%',
+              once: true
+            }
+          }
+        );
+      });
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  function initAllEditorialDepthStacks(scope) {
+    const container = scope || document;
+    const sections = container.querySelectorAll(SECTION_SELECTOR);
+    sections.forEach(initEditorialDepthStack);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initAllEditorialDepthStacks(document);
+  });
+
+  document.addEventListener('shopify:section:load', function (event) {
+    initAllEditorialDepthStacks(event.target);
+  });
+})();
 {% endjavascript %}
 {% render 'section-base-style' %}
 
