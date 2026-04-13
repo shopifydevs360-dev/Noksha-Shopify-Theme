@@ -197,6 +197,7 @@
         "layer_Rmyjtx": {
           "type": "layer",
           "settings": {
+            "image": "shopify://shop_images/Youmi01693.jpg",
             "subtitle": "Look 01",
             "title": "Soft tailoring",
             "link_label": "Shop this",
@@ -207,6 +208,7 @@
         "layer_dUACfp": {
           "type": "layer",
           "settings": {
+            "image": "shopify://shop_images/Youmi00496.jpg",
             "subtitle": "Look 02",
             "title": "Layered neutrals",
             "link_label": "Shop this",
@@ -217,6 +219,7 @@
         "layer_Y6XWdi": {
           "type": "layer",
           "settings": {
+            "image": "shopify://shop_images/Youmi00344_f34ab0a8-e6b5-4db6-930e-0f63a339b120.jpg",
             "subtitle": "Look 03",
             "title": "Quiet statement",
             "link_label": "Shop this",
