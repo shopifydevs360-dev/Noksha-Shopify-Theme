@@ -1,0 +1,302 @@
+{{ 'editorial-depth-stack.css' | asset_url | stylesheet_tag }}
+{% render 'section-base-style' %}
+
+{%- liquid
+  assign outer_classes = 'editorial-depth-stack'
+  assign outer_classes = outer_classes | append: ' section-' | append: section.id | append: '-padding'
+  assign outer_classes = outer_classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign outer_classes = outer_classes | append: ' ' | append: section.settings.custom_class
+
+  assign inner_classes = section.settings.container_width
+-%}
+
+<section
+  class="{{ outer_classes }}"
+  id="EditorialDepthStack-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-editorial-depth-stack
+  data-enable-pin="{{ section.settings.enable_pin }}"
+  data-enable-parallax="{{ section.settings.enable_parallax }}"
+  data-desktop-breakpoint="991"
+  {{ section.shopify_attributes }}
+>
+  <div class="{{ inner_classes }}">
+    <div class="sidebar-space">
+      <div class="editorial-depth-stack__inner">
+        <div class="editorial-depth-stack__content" data-editorial-content>
+          {% if section.settings.eyebrow != blank %}
+            <p class="editorial-depth-stack__eyebrow" data-split-reveal>
+              {{ section.settings.eyebrow }}
+            </p>
+          {% endif %}
+
+          {% if section.settings.heading != blank %}
+            <h2 class="editorial-depth-stack__heading {{ section.settings.heading_size }}" data-split-reveal>
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.text != blank %}
+            <div class="editorial-depth-stack__text rte" data-fade-reveal>
+              {{ section.settings.text }}
+            </div>
+          {% endif %}
+
+          {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+            <div class="editorial-depth-stack__actions" data-fade-reveal>
+              <a href="{{ section.settings.button_link }}" class="btn btn--primary">
+                {{ section.settings.button_label }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="editorial-depth-stack__media" data-editorial-media>
+          <div class="editorial-depth-stack__media-stage">
+            {% assign block_count = 0 %}
+            {% for block in section.blocks %}
+              {% assign block_count = block_count | plus: 1 %}
+              {%- liquid
+                assign image = block.settings.image
+                assign mobile_image = block.settings.mobile_image
+                assign card_link = block.settings.link
+              -%}
+
+              <article
+                class="editorial-depth-stack__card editorial-depth-stack__card--{{ forloop.index }}"
+                data-depth-card
+                data-depth="{{ block.settings.depth_strength }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="editorial-depth-stack__card-media border-radius-style-two">
+                  {% if image != blank %}
+                    {% render 'image',
+                      image: image,
+                      mobile_image: mobile_image,
+                      class: 'editorial-depth-stack__image',
+                      img_alt: block.settings.title,
+                      loading: 'lazy',
+                      fetchpriority: 'low'
+                    %}
+                  {% else %}
+                    <div class="editorial-depth-stack__placeholder"></div>
+                  {% endif %}
+                </div>
+
+                <div class="editorial-depth-stack__card-overlay">
+                  {% if block.settings.subtitle != blank %}
+                    <p class="editorial-depth-stack__card-subtitle">{{ block.settings.subtitle }}</p>
+                  {% endif %}
+
+                  {% if block.settings.title != blank %}
+                    <h3 class="editorial-depth-stack__card-title h5">{{ block.settings.title }}</h3>
+                  {% endif %}
+
+                  {% if block.settings.link_label != blank and card_link != blank %}
+                    <a href="{{ card_link }}" class="editorial-depth-stack__card-link">
+                      <span class="hover-underline">{{ block.settings.link_label }}</span>
+                    </a>
+                  {% endif %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'editorial-depth-stack.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Editorial depth stack",
+  "tag": "section",
+  "class": "shopify-section-editorial-depth-stack",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Editorial motion"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A layered scroll composition with depth, movement, and premium pacing."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Use this section to create an elevated campaign story. The content stays calm while the layered images shift with scroll for a more immersive editorial feel.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Explore now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_pin",
+      "label": "Enable desktop pinning",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_parallax",
+      "label": "Enable layered parallax",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "layer",
+      "name": "Layer card",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Layer title"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Shop this"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "range",
+          "id": "depth_strength",
+          "label": "Depth strength",
+          "min": 10,
+          "max": 120,
+          "step": 2,
+          "default": 40,
+          "unit": "px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial depth stack",
+      "blocks": [
+        {
+          "type": "layer",
+          "settings": {
+            "subtitle": "Look 01",
+            "title": "Soft tailoring"
+          }
+        },
+        {
+          "type": "layer",
+          "settings": {
+            "subtitle": "Look 02",
+            "title": "Layered neutrals",
+            "depth_strength": 70
+          }
+        },
+        {
+          "type": "layer",
+          "settings": {
+            "subtitle": "Look 03",
+            "title": "Quiet statement",
+            "depth_strength": 100
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
