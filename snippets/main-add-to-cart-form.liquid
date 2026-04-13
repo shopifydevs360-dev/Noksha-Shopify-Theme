@@ -12,7 +12,24 @@
 
     <div class="qty-cart-btn-wrap">
       <!-- QUANTITY -->
+      {% if block.settings.quantity_selector_type == 'buttons' %}
+        <div class="quantity-buttons" data-quantity-wrapper>
+          <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
 
+          <input
+            type="number"
+            name="quantity"
+            value="1"
+            min="1"
+            class="qty-input"
+            aria-label="Quantity"
+          >
+
+          <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+        </div>
+      {% else %}
+
+      {% endif %}
 
       <!-- ADD TO CART -->
       <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
