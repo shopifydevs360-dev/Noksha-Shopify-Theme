@@ -244,97 +244,115 @@
 }
 {% endstylesheet %}
 {% javascript %}
- (function () {
+(function () {
   const SECTION_SELECTOR = '[data-editorial-depth-stack]';
 
-  function killSectionTriggers(section) {
+  function killSectionAnimations(section) {
     ScrollTrigger.getAll().forEach((trigger) => {
-      if (trigger.vars && trigger.vars.trigger && section.contains(trigger.vars.trigger)) {
+      const triggerEl = trigger.vars && trigger.vars.trigger;
+      const pinEl = trigger.vars && trigger.vars.pin;
+
+      if (
+        (triggerEl instanceof Element && section.contains(triggerEl)) ||
+        (pinEl instanceof Element && section.contains(pinEl))
+      ) {
         trigger.kill();
       }
     });
+
+    const animated = section.querySelectorAll('[data-split-reveal], [data-fade-reveal], [data-depth-card], .editorial-depth-stack__card .image img');
+    animated.forEach((el) => gsap.killTweensOf(el));
   }
 
   function initEditorialDepthStack(section) {
-    if (!section) return;
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    if (!section || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    if (section._editorialDepthStackMatchMedia) {
-      section._editorialDepthStackMatchMedia.revert();
+    if (section._editorialDepthMM) {
+      section._editorialDepthMM.revert();
     }
 
-    killSectionTriggers(section);
+    killSectionAnimations(section);
 
     const desktopBreakpoint = parseInt(section.dataset.desktopBreakpoint || '991', 10);
     const enablePin = section.dataset.enablePin === 'true';
     const enableParallax = section.dataset.enableParallax === 'true';
 
     const content = section.querySelector('[data-editorial-content]');
+    const media = section.querySelector('[data-editorial-media]');
+    const stage = section.querySelector('.editorial-depth-stack__media-stage');
     const splitItems = section.querySelectorAll('[data-split-reveal]');
     const fadeItems = section.querySelectorAll('[data-fade-reveal]');
     const depthCards = section.querySelectorAll('[data-depth-card]');
     const mediaImages = section.querySelectorAll('.editorial-depth-stack__card .image img');
 
     const mm = gsap.matchMedia();
-    section._editorialDepthStackMatchMedia = mm;
+    section._editorialDepthMM = mm;
 
     mm.add(`(min-width: ${desktopBreakpoint + 1}px)`, () => {
-      gsap.set(splitItems, { autoAlpha: 0, y: 28 });
-      gsap.set(fadeItems, { autoAlpha: 0, y: 24 });
+      gsap.set(splitItems, { autoAlpha: 0, y: 24 });
+      gsap.set(fadeItems, { autoAlpha: 0, y: 20 });
 
       depthCards.forEach((card, index) => {
-        const initialRotate = index === 1 ? 2 : index === 2 ? -2 : 0;
         gsap.set(card, {
           autoAlpha: 0,
-          y: 40,
+          y: index === 0 ? 20 : 36,
           x: 0,
-          rotate: initialRotate,
-          scale: 0.96
+          rotate: index === 1 ? 1.5 : index === 2 ? -1.5 : 0,
+          scale: 0.985
         });
       });
 
-      const introTimeline = gsap.timeline({
+      const introTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top 75%',
+          start: 'top 76%',
           once: true
         }
       });
 
-      introTimeline.to(splitItems, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.7,
-        stagger: 0.08,
-        ease: 'power3.out'
-      });
-
-      introTimeline.to(fadeItems, {
+      introTl.to(splitItems, {
         autoAlpha: 1,
         y: 0,
         duration: 0.65,
+        stagger: 0.07,
+        ease: 'power3.out'
+      });
+
+      introTl.to(fadeItems, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.06,
+        ease: 'power3.out'
+      }, '-=0.3');
+
+      introTl.to(depthCards, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.75,
         stagger: 0.08,
         ease: 'power3.out'
       }, '-=0.35');
 
-      introTimeline.to(depthCards, {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out'
-      }, '-=0.4');
+      const getScrollDistance = () => {
+        const mediaHeight = media ? media.offsetHeight : 0;
+        const stageHeight = stage ? stage.offsetHeight : 0;
+        const contentHeight = content ? content.offsetHeight : 0;
+        const base = Math.max(mediaHeight, stageHeight) - contentHeight;
+        return Math.max(base, window.innerHeight * 0.35);
+      };
 
-      if (enablePin && content) {
+      if (enablePin && content && media) {
         ScrollTrigger.create({
           trigger: section,
-          start: 'top top+=8%',
-          end: 'bottom bottom-=8%',
+          start: 'top top+=90',
+          end: () => `+=${getScrollDistance()}`,
           pin: content,
-          pinSpacing: false,
+          pinSpacing: true,
+          invalidateOnRefresh: true,
           anticipatePin: 1
         });
       }
@@ -351,29 +369,25 @@
 
         if (index === 0) {
           fromY = 0;
-          toY = -18;
+          toY = -10;
           fromX = 0;
-          toX = -8;
+          toX = -6;
           fromRotate = 0;
-          toRotate = -1;
-        }
-
-        if (index === 1) {
-          fromY = strength * 0.35;
-          toY = strength * -0.95;
-          fromX = 18;
-          toX = -26;
-          fromRotate = 2;
-          toRotate = -2.5;
-        }
-
-        if (index === 2) {
-          fromY = strength * 0.55;
-          toY = strength * -1.15;
-          fromX = -12;
-          toX = 18;
-          fromRotate = -2;
-          toRotate = 2.25;
+          toRotate = -0.6;
+        } else if (index === 1) {
+          fromY = strength * 0.18;
+          toY = strength * -0.42;
+          fromX = 10;
+          toX = -16;
+          fromRotate = 1.2;
+          toRotate = -1.4;
+        } else if (index === 2) {
+          fromY = strength * 0.28;
+          toY = strength * -0.52;
+          fromX = -8;
+          toX = 12;
+          fromRotate = -1.2;
+          toRotate = 1.2;
         }
 
         gsap.fromTo(card,
@@ -389,9 +403,10 @@
             ease: 'none',
             scrollTrigger: {
               trigger: section,
-              start: 'top bottom-=5%',
-              end: 'bottom top+=5%',
-              scrub: 1.15
+              start: 'top bottom-=10%',
+              end: 'bottom top+=10%',
+              scrub: 0.9,
+              invalidateOnRefresh: true
             }
           }
         );
@@ -399,19 +414,20 @@
 
       if (enableParallax) {
         mediaImages.forEach((img, index) => {
-          const yPercentTo = index === 0 ? 10 : index === 1 ? 18 : 24;
+          const yTo = index === 0 ? 8 : index === 1 ? 14 : 18;
 
           gsap.fromTo(img,
-            { yPercent: -6, scale: 1.04 },
+            { yPercent: -3, scale: 1.02 },
             {
-              yPercent: yPercentTo,
-              scale: 1.08,
+              yPercent: yTo,
+              scale: 1.05,
               ease: 'none',
               scrollTrigger: {
                 trigger: section,
                 start: 'top bottom',
                 end: 'bottom top',
-                scrub: 1.2
+                scrub: 1,
+                invalidateOnRefresh: true
               }
             }
           );
@@ -433,7 +449,7 @@
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.55,
+            duration: 0.5,
             ease: 'power2.out',
             delay: index * 0.04,
             scrollTrigger: {
@@ -464,19 +480,16 @@
 
       depthCards.forEach((card, index) => {
         gsap.fromTo(card,
-          {
-            autoAlpha: 0,
-            y: 24
-          },
+          { autoAlpha: 0, y: 20 },
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.6,
+            duration: 0.55,
             ease: 'power2.out',
-            delay: index * 0.06,
+            delay: index * 0.05,
             scrollTrigger: {
               trigger: card,
-              start: 'top 92%',
+              start: 'top 94%',
               once: true
             }
           }
@@ -489,8 +502,7 @@
 
   function initAllEditorialDepthStacks(scope) {
     const root = scope || document;
-    const sections = root.querySelectorAll(SECTION_SELECTOR);
-    sections.forEach(initEditorialDepthStack);
+    root.querySelectorAll(SECTION_SELECTOR).forEach(initEditorialDepthStack);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
