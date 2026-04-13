@@ -1,551 +1,419 @@
-{% stylesheet %}
-.editorial-depth-stack {
-  position: relative;
-  overflow: hidden;
-  background: rgb(var(--color-background));
-}
-
-.editorial-depth-stack__inner {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
-  align-items: start;
-}
-
-.editorial-depth-stack__content {
-  max-width: 42rem;
-  position: relative;
-  z-index: 2;
-}
-
-.editorial-depth-stack__eyebrow {
-  margin-bottom: 1rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  color: rgb(var(--color-subtext));
-  opacity: 0.8;
-}
-
-.editorial-depth-stack__heading {
-  max-width: 14ch;
-  margin-bottom: 1.2rem;
-}
-
-.editorial-depth-stack__text {
-  max-width: 38rem;
-}
-
-.editorial-depth-stack__text p {
-  color: rgb(var(--color-text));
-  opacity: 0.9;
-}
-
-.editorial-depth-stack__actions {
-  margin-top: 1.75rem;
-}
-
-.editorial-depth-stack__media {
-  position: relative;
-  min-height: 32rem;
-}
-
-.editorial-depth-stack__media-stage {
-  position: relative;
-  min-height: clamp(34rem, 72vw, 54rem);
-  padding-top: 1rem;
-  padding-right: clamp(1rem, 4vw, 4rem);
-  padding-bottom: 1rem;
-  padding-left: clamp(1rem, 2vw, 2rem);
-}
-
-.editorial-depth-stack__card {
-  position: absolute;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-}
-
-.editorial-depth-stack__card-media {
-  position: relative;
-  overflow: hidden;
-  background: rgba(var(--color-background-secondary), 1);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10);
-}
-
-.editorial-depth-stack__image,
-.editorial-depth-stack__image img,
-.editorial-depth-stack__card .image {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.editorial-depth-stack__card .image img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-}
-
-.editorial-depth-stack__placeholder {
-  aspect-ratio: 4 / 5;
-  background: rgba(var(--color-background-secondary), 1);
-}
-
-.editorial-depth-stack__card-overlay {
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  max-width: calc(100% - 2rem);
-  padding: 1rem 1rem 0.25rem;
-  backdrop-filter: blur(10px);
-  background: rgba(var(--color-background), 0.72);
-  border-radius: 1rem;
-}
-
-.editorial-depth-stack__card-subtitle {
-  margin-bottom: 0.35rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgb(var(--color-subtext));
-}
-
-.editorial-depth-stack__card-title {
-  margin-bottom: 0.45rem;
-}
-
-.editorial-depth-stack__card-link {
-  display: inline-flex;
-  width: fit-content;
-}
-
-.editorial-depth-stack__card--1 {
-  top: 0;
-  left: 0;
-  width: min(68%, 34rem);
-  z-index: 1;
-}
-
-.editorial-depth-stack__card--2 {
-  top: 9%;
-  right: 0;
-  width: min(42%, 22rem);
-  z-index: 2;
-}
-
-.editorial-depth-stack__card--3 {
-  top: 50%;
-  left: 14%;
-  width: min(50%, 25rem);
-  z-index: 3;
-}
-
-[data-split-reveal],
-[data-fade-reveal],
-[data-depth-card] {
-  opacity: 0;
-}
-
-@media (min-width: 992px) {
-  .editorial-depth-stack__inner {
-    grid-template-columns: minmax(20rem, 0.9fr) minmax(28rem, 1.1fr);
-    gap: clamp(2rem, 4vw, 5rem);
-    min-height: 120vh;
-  }
-
-  .editorial-depth-stack__content {
-    position: sticky;
-    top: 12rem;
-    align-self: start;
-    padding-top: 4rem;
-  }
-
-  .editorial-depth-stack__media {
-    min-height: 120vh;
-  }
-
-  .editorial-depth-stack__media-stage {
-    min-height: 120vh;
-  }
-}
-
-@media (max-width: 991px) {
-  .editorial-depth-stack__content {
-    max-width: 100%;
-  }
-
-  .editorial-depth-stack__media {
-    min-height: auto;
-  }
-
-  .editorial-depth-stack__media-stage {
-    min-height: auto;
-    display: grid;
-    gap: 1rem;
-    padding: 0;
-  }
-
-  .editorial-depth-stack__card {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    opacity: 1;
-    transform: none !important;
-  }
-
-  .editorial-depth-stack__card-overlay {
-    left: 0.85rem;
-    right: 0.85rem;
-    bottom: 0.85rem;
-    max-width: none;
-  }
-
-  [data-split-reveal],
-  [data-fade-reveal],
-  [data-depth-card] {
-    opacity: 1;
-  }
-}
-{% endstylesheet %}
-
-{% javascript %}
-  (function () {
-  const SECTION_SELECTOR = '[data-editorial-depth-stack]';
-
-  function initEditorialDepthStack(section) {
-    if (!section || section.dataset.initialized === 'true') return;
-
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const desktopBreakpoint = parseInt(section.dataset.desktopBreakpoint || '991', 10);
-    const enablePin = section.dataset.enablePin === 'true';
-    const enableParallax = section.dataset.enableParallax === 'true';
-
-    const content = section.querySelector('[data-editorial-content]');
-    const media = section.querySelector('[data-editorial-media]');
-    const splitItems = section.querySelectorAll('[data-split-reveal]');
-    const fadeItems = section.querySelectorAll('[data-fade-reveal]');
-    const depthCards = section.querySelectorAll('[data-depth-card]');
-
-    const sectionId = section.dataset.sectionId || '';
-    const mm = gsap.matchMedia();
-
-    section.dataset.initialized = 'true';
-
-    mm.add(`(min-width: ${desktopBreakpoint + 1}px)`, () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top+=10%',
-          end: 'bottom bottom-=10%',
-          scrub: 1.1
-        }
-      });
-
-      splitItems.forEach((item, index) => {
-        tl.fromTo(
-          item,
-          { autoAlpha: 0, y: 28 },
-          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          index * 0.08
-        );
-      });
-
-      fadeItems.forEach((item, index) => {
-        tl.fromTo(
-          item,
-          { autoAlpha: 0, y: 24 },
-          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          0.2 + index * 0.08
-        );
-      });
-
-      depthCards.forEach((card, index) => {
-        const strength = parseInt(card.dataset.depth || '40', 10);
-        const fromY = index === 0 ? 40 : strength;
-        const toY = index === 0 ? -20 : strength * -0.7;
-        const fromRotate = index === 1 ? 2.5 : index === 2 ? -2.5 : 0;
-        const toRotate = index === 1 ? -1.5 : index === 2 ? 1.5 : 0;
-
-        gsap.fromTo(
-          card,
-          {
-            autoAlpha: 0,
-            y: fromY,
-            rotate: fromRotate,
-            scale: 0.96
-          },
-          {
-            autoAlpha: 1,
-            y: toY,
-            rotate: toRotate,
-            scale: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              end: 'bottom 15%',
-              scrub: 1.2
-            }
-          }
-        );
-      });
-
-      if (enablePin && content && media) {
-        ScrollTrigger.create({
-          id: `editorial-pin-${sectionId}`,
-          trigger: section,
-          start: 'top top+=8%',
-          end: 'bottom bottom-=8%',
-          pin: content,
-          pinSpacing: false,
-          anticipatePin: 1
-        });
-      }
-
-      if (enableParallax) {
-        const images = section.querySelectorAll('.editorial-depth-stack__card .image img');
-        images.forEach((img, index) => {
-          const shift = index === 0 ? 18 : index === 1 ? 32 : 48;
-
-          gsap.fromTo(
-            img,
-            { yPercent: -6 },
-            {
-              yPercent: shift,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1.2
-              }
-            }
-          );
-        });
-      }
-
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => {
-          if (
-            trigger.vars &&
-            trigger.vars.trigger === section
-          ) {
-            trigger.kill();
-          }
-        });
-      };
-    });
-
-    mm.add(`(max-width: ${desktopBreakpoint}px)`, () => {
-      gsap.set([...splitItems, ...fadeItems, ...depthCards], { autoAlpha: 1, clearProps: 'transform' });
-
-      splitItems.forEach((item, index) => {
-        gsap.fromTo(
-          item,
-          { autoAlpha: 0, y: 18 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.55,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: item,
-              start: 'top 92%',
-              once: true
-            },
-            delay: index * 0.04
-          }
-        );
-      });
-
-      fadeItems.forEach((item) => {
-        gsap.fromTo(
-          item,
-          { autoAlpha: 0, y: 18 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.55,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: item,
-              start: 'top 92%',
-              once: true
-            }
-          }
-        );
-      });
-    });
-
-    ScrollTrigger.refresh();
-  }
-
-  function initAllEditorialDepthStacks(scope) {
-    const container = scope || document;
-    const sections = container.querySelectorAll(SECTION_SELECTOR);
-    sections.forEach(initEditorialDepthStack);
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    initAllEditorialDepthStacks(document);
-  });
-
-  document.addEventListener('shopify:section:load', function (event) {
-    initAllEditorialDepthStacks(event.target);
-  });
-})();
-{% endjavascript %}
 {% render 'section-base-style' %}
 
 {%- liquid
-  assign outer_classes = 'editorial-depth-stack'
-  assign outer_classes = outer_classes | append: ' section-' | append: section.id | append: '-padding'
-  assign outer_classes = outer_classes | append: ' m-color-' | append: section.settings.color_scheme
-  assign outer_classes = outer_classes | append: ' ' | append: section.settings.custom_class
-  assign outer_classes = outer_classes | append: ' ' | append: section.settings.color_control
-
-  assign inner_classes = section.settings.container_width
+  assign classes = 'shop-the-look section-x-padding'
+  assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
+  assign classes = classes | append: ' ' | append: section.settings.color_control
+  assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign classes = classes | append: ' ' | append: section.settings.custom_class | default: ''
 -%}
 
+{% stylesheet %}
+  .shop-the-look {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shop-the-look__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: center;
+  }
+
+  .shop-the-look__media {
+    position: relative;
+  }
+
+  .shop-the-look__image {
+    position: relative;
+  }
+
+  .shop-the-look__image .cropped-image-wrapper {
+    overflow: hidden;
+  }
+
+  .shop-the-look__content {
+    max-width: 34rem;
+  }
+
+  .shop-the-look__eyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .shop-the-look__heading {
+    margin: 0 0 1.2rem;
+  }
+
+  .shop-the-look__text {
+    margin-bottom: 1.8rem;
+    max-width: 32rem;
+  }
+
+  .shop-the-look__products {
+    margin: 0 0 2rem;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .shop-the-look__product {
+    border-top: 1px solid rgb(var(--color-border));
+    padding-top: 0.9rem;
+  }
+
+  .shop-the-look__product:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .shop-the-look__product-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .shop-the-look__product-thumb {
+    width: 4.5rem;
+    min-width: 4.5rem;
+  }
+
+  .shop-the-look__product-thumb .cropped-image-wrapper {
+    overflow: hidden;
+  }
+
+  .shop-the-look__product-title {
+    margin: 0;
+    color: rgb(var(--color-heading));
+    line-height: 1.3;
+  }
+
+  .shop-the-look__product-price {
+    color: rgb(var(--color-price-regular));
+    white-space: nowrap;
+  }
+
+  .shop-the-look__button .icon {
+    margin-left: 1.25rem;
+    margin-bottom: -2px;
+    transition: transform 0.3s ease;
+  }
+
+  .rtl .shop-the-look__button .icon {
+    margin-left: 0;
+    margin-right: 1.25rem;
+  }
+
+  .shop-the-look__button:hover .icon {
+    transform: translateX(4px);
+  }
+
+  .rtl .shop-the-look__button:hover .icon {
+    transform: translateX(-4px);
+  }
+
+  /* Hotspots */
+  .shop-the-look__hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+
+  .shop-the-look__hotspot-button {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-heading));
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.25s ease;
+  }
+
+  .shop-the-look__hotspot-button::before,
+  .shop-the-look__hotspot-button::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+
+  .shop-the-look__hotspot-button::before {
+    width: 0.7rem;
+    height: 1px;
+  }
+
+  .shop-the-look__hotspot-button::after {
+    width: 1px;
+    height: 0.7rem;
+  }
+
+  .shop-the-look__hotspot-button:hover {
+    transform: scale(1.08);
+  }
+
+  .shop-the-look__hotspot-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    animation: shopTheLookPulse 2.4s ease-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes shopTheLookPulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .shop-the-look__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .shop-the-look__content {
+      max-width: 100%;
+    }
+
+    .shop-the-look__product-link {
+      grid-template-columns: 4rem 1fr;
+    }
+
+    .shop-the-look__product-price {
+      grid-column: 2;
+    }
+  }
+{% endstylesheet %}
+
 <section
-  class="{{ outer_classes }}"
-  id="EditorialDepthStack-{{ section.id }}"
+  class="{{ classes }}"
+  data-shop-the-look
   data-section-id="{{ section.id }}"
-  data-editorial-depth-stack
-  data-enable-pin="{{ section.settings.enable_pin }}"
-  data-enable-parallax="{{ section.settings.enable_parallax }}"
-  data-desktop-breakpoint="991"
-  {{ section.shopify_attributes }}
 >
-  <div class="{{ inner_classes }}">
-    <div class="sidebar-space">
-      <div class="editorial-depth-stack__inner">
-        <div class="editorial-depth-stack__content" data-editorial-content>
-          {% if section.settings.eyebrow != blank %}
-            <p class="editorial-depth-stack__eyebrow" data-split-reveal>
-              {{ section.settings.eyebrow }}
-            </p>
-          {% endif %}
+  <div class="{{ section.settings.container_type }}">
+    <div class="shop-the-look__inner">
+      <div class="shop-the-look__media" data-look-media>
+        <div class="shop-the-look__image">
+          {% render 'image',
+            image: section.settings.look_image,
+            class: 'cropped-image-wrapper cropped-image--portrait-tall',
+            img_alt: section.settings.heading
+          %}
 
-          {% if section.settings.heading != blank %}
-            <h2 class="editorial-depth-stack__heading {{ section.settings.heading_size }}" data-split-reveal>
-              {{ section.settings.heading }}
-            </h2>
-          {% endif %}
-
-          {% if section.settings.text != blank %}
-            <div class="editorial-depth-stack__text rte" data-fade-reveal>
-              {{ section.settings.text }}
-            </div>
-          {% endif %}
-
-          {% if section.settings.button_label != blank and section.settings.button_link != blank %}
-            <div class="editorial-depth-stack__actions" data-fade-reveal>
-              <a href="{{ section.settings.button_link }}" class="btn btn--primary">
-                {{ section.settings.button_label }}
-              </a>
-            </div>
-          {% endif %}
-        </div>
-
-        <div class="editorial-depth-stack__media" data-editorial-media>
-          <div class="editorial-depth-stack__media-stage">
-            {% for block in section.blocks %}
-              {%- liquid
-                assign image = block.settings.image
-                assign mobile_image = block.settings.mobile_image
-                assign card_link = block.settings.link
-              -%}
-
-              <article
-                class="editorial-depth-stack__card editorial-depth-stack__card--{{ forloop.index }}"
-                data-depth-card
-                data-depth="{{ block.settings.depth_strength }}"
+          {% for block in section.blocks %}
+            {% assign product = all_products[block.settings.product] %}
+            {% if product != blank %}
+              <div
+                class="shop-the-look__hotspot"
+                style="top: {{ block.settings.top_position }}%; left: {{ block.settings.left_position }}%;"
                 {{ block.shopify_attributes }}
               >
-                <div class="editorial-depth-stack__card-media border-radius-style-two">
-                  {% if image != blank %}
-                    {% render 'image',
-                      image: image,
-                      mobile_image: mobile_image,
-                      class: 'editorial-depth-stack__image',
-                      img_alt: block.settings.title,
-                      loading: 'lazy',
-                      fetchpriority: 'low'
-                    %}
-                  {% else %}
-                    <div class="editorial-depth-stack__placeholder"></div>
-                  {% endif %}
-                </div>
+                <a
+                  href="{{ product.url }}"
+                  class="shop-the-look__hotspot-button"
+                  aria-label="{{ product.title }}"
+                >
+                  <span class="shop-the-look__hotspot-pulse"></span>
+                </a>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
 
-                {% if block.settings.subtitle != blank or block.settings.title != blank or block.settings.link_label != blank %}
-                  <div class="editorial-depth-stack__card-overlay">
-                    {% if block.settings.subtitle != blank %}
-                      <p class="editorial-depth-stack__card-subtitle">{{ block.settings.subtitle }}</p>
-                    {% endif %}
+      <div class="shop-the-look__content">
+        {% if section.settings.eyebrow != blank %}
+          <span class="shop-the-look__eyebrow h6" data-look-text>
+            {{ section.settings.eyebrow }}
+          </span>
+        {% endif %}
 
-                    {% if block.settings.title != blank %}
-                      <h3 class="editorial-depth-stack__card-title h5">{{ block.settings.title }}</h3>
-                    {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="shop-the-look__heading {{ section.settings.heading_size }}" data-look-text>
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
 
-                    {% if block.settings.link_label != blank and card_link != blank %}
-                      <a href="{{ card_link }}" class="editorial-depth-stack__card-link">
-                        <span class="hover-underline">{{ block.settings.link_label }}</span>
-                      </a>
+        {% if section.settings.text != blank %}
+          <div class="shop-the-look__text rte" data-look-text>
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {% assign has_products = false %}
+        <ul class="shop-the-look__products">
+          {% for block in section.blocks %}
+            {% assign product = all_products[block.settings.product] %}
+            {% if product != blank %}
+              {% assign has_products = true %}
+              <li class="shop-the-look__product" data-look-text {{ block.shopify_attributes }}>
+                <a href="{{ product.url }}" class="shop-the-look__product-link">
+                  <div class="shop-the-look__product-thumb">
+                    {% if product.featured_image %}
+                      {% render 'image',
+                        image: product.featured_image,
+                        class: 'cropped-image-wrapper cropped-image--square',
+                        img_alt: product.title
+                      %}
                     {% endif %}
                   </div>
-                {% endif %}
-              </article>
-            {% endfor %}
-          </div>
-        </div>
+
+                  <div class="shop-the-look__product-info">
+                    <p class="shop-the-look__product-title">{{ product.title }}</p>
+                  </div>
+
+                  <div class="shop-the-look__product-price">
+                    {{ product.price | money }}
+                  </div>
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="btn btn-arrow shop-the-look__button" data-look-text>
+            <span>{{ section.settings.button_label }}</span>
+            <span class="icon">
+              {% render 'theme-icon', icon: 'right-arrow' %}
+            </span>
+          </a>
+        {% endif %}
       </div>
     </div>
   </div>
 </section>
 
+<script>
+  document.addEventListener('DOMContentLoaded', initShopTheLook);
+  document.addEventListener('shopify:section:load', initShopTheLook);
 
+  function initShopTheLook() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('[data-shop-the-look][data-section-id="{{ section.id }}"]').forEach((section) => {
+      if (section.dataset.lookInit === 'true') return;
+      section.dataset.lookInit = 'true';
+
+      const media = section.querySelector('[data-look-media]');
+      const textItems = section.querySelectorAll('[data-look-text]');
+      const hotspots = section.querySelectorAll('.shop-the-look__hotspot');
+
+      if (media) {
+        gsap.set(media, {
+          opacity: 0,
+          y: 40
+        });
+      }
+
+      if (textItems.length) {
+        gsap.set(textItems, {
+          opacity: 0,
+          y: 24
+        });
+      }
+
+      if (hotspots.length) {
+        gsap.set(hotspots, {
+          opacity: 0,
+          scale: 0.8
+        });
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 82%',
+          once: true
+        }
+      });
+
+      if (media) {
+        tl.to(media, {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: 'power3.out'
+        });
+      }
+
+      if (textItems.length) {
+        tl.to(textItems, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.12
+        }, '-=0.45');
+      }
+
+      if (hotspots.length) {
+        tl.to(hotspots, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: 'back.out(1.6)',
+          stagger: 0.08
+        }, '-=0.35');
+      }
+    });
+  }
+</script>
 
 {% schema %}
 {
-  "name": "Editorial depth stack",
-  "tag": "section",
-  "class": "shopify-section-editorial-depth-stack",
+  "name": "Shop the Look",
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme"
+      "label": "Color scheme",
+      "default": "background-1"
     },
     {
       "type": "select",
-      "id": "container_width",
-      "label": "Container width",
+      "id": "container_type",
+      "label": "Container type",
       "options": [
         { "value": "container", "label": "Container" },
         { "value": "container-fluid", "label": "Container fluid" },
         { "value": "container-narrow", "label": "Container narrow" },
         { "value": "container-extra-narrow", "label": "Container extra narrow" },
-        { "value": "extended", "label": "Extended" },
-        { "value": "full-width", "label": "Full width" }
+        { "value": "extended", "label": "Extended" }
       ],
-      "default": "container-fluid"
+      "default": "container"
     },
     {
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Editorial motion"
+      "default": "Shop the look"
     },
     {
-      "type": "inline_richtext",
+      "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "A layered scroll composition with depth, movement, and premium pacing."
+      "default": "Curated for effortless dressing"
     },
     {
       "type": "select",
@@ -562,13 +430,13 @@
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Use this section to create an elevated campaign story. The content stays calm while the layered images shift with scroll for a more immersive editorial feel.</p>"
+      "default": "<p>Highlight a complete look and guide customers to the exact products featured in the image.</p>"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "Explore now"
+      "default": "Explore collection"
     },
     {
       "type": "url",
@@ -576,16 +444,37 @@
       "label": "Button link"
     },
     {
-      "type": "checkbox",
-      "id": "enable_pin",
-      "label": "Enable desktop pinning",
-      "default": true
+      "type": "image_picker",
+      "id": "look_image",
+      "label": "Look image"
     },
     {
-      "type": "checkbox",
-      "id": "enable_parallax",
-      "label": "Enable layered parallax",
-      "default": true
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Dynamic option"
     },
     {
       "type": "text",
@@ -601,111 +490,48 @@
         { "value": "section-light", "label": "Light" }
       ],
       "default": "section-light"
-    },
-    {
-      "type": "header",
-      "content": "Section padding"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 80
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 80
     }
   ],
   "blocks": [
     {
-      "type": "layer",
-      "name": "Layer card",
-      "limit": 3,
+      "type": "product_hotspot",
+      "name": "Product hotspot",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Desktop image"
-        },
-        {
-          "type": "image_picker",
-          "id": "mobile_image",
-          "label": "Mobile image"
-        },
-        {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Subtitle",
-          "default": "Collection"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Layer title"
-        },
-        {
-          "type": "text",
-          "id": "link_label",
-          "label": "Link label",
-          "default": "Shop this"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
+          "type": "product",
+          "id": "product",
+          "label": "Product"
         },
         {
           "type": "range",
-          "id": "depth_strength",
-          "label": "Depth strength",
-          "min": 10,
-          "max": 120,
-          "step": 2,
-          "default": 40,
-          "unit": "px"
+          "id": "top_position",
+          "label": "Top position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "left_position",
+          "label": "Left position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
         }
       ]
     }
   ],
+  "max_blocks": 4,
   "presets": [
     {
-      "name": "Editorial depth stack",
+      "name": "Shop the Look",
       "blocks": [
-        {
-          "type": "layer",
-          "settings": {
-            "subtitle": "Look 01",
-            "title": "Soft tailoring"
-          }
-        },
-        {
-          "type": "layer",
-          "settings": {
-            "subtitle": "Look 02",
-            "title": "Layered neutrals",
-            "depth_strength": 70
-          }
-        },
-        {
-          "type": "layer",
-          "settings": {
-            "subtitle": "Look 03",
-            "title": "Quiet statement",
-            "depth_strength": 100
-          }
-        }
+        { "type": "product_hotspot" },
+        { "type": "product_hotspot" }
       ]
     }
   ]
