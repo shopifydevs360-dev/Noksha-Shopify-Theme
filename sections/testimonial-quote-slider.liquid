@@ -1,0 +1,724 @@
+{% stylesheet %}
+.testimonial-quote-slider {
+  position: relative;
+  overflow: hidden;
+  background: rgb(var(--color-background));
+}
+
+.testimonial-quote-slider__inner {
+  position: relative;
+}
+
+.testimonial-quote-slider__slider {
+  position: relative;
+  border-radius: var(--border-radius-style-two, 12px);
+  overflow: hidden;
+}
+
+.testimonial-quote-slider__swiper {
+  overflow: hidden;
+}
+
+.testimonial-quote-slider__slide {
+  position: relative;
+  min-height: clamp(32rem, 56vw, 48rem);
+  display: flex;
+  align-items: stretch;
+  isolation: isolate;
+  overflow: hidden;
+  background: rgba(var(--color-background-secondary), 1);
+}
+
+.testimonial-quote-slider__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.testimonial-quote-slider__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, var(--testimonial-overlay-opacity, 0.22)) 0%,
+    rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.55)) 38%,
+    rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.15)) 100%
+  );
+  pointer-events: none;
+}
+
+.testimonial-quote-slider__bg .image,
+.testimonial-quote-slider__bg .image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.testimonial-quote-slider__bg .image img {
+  object-fit: cover;
+}
+
+.testimonial-quote-slider__texture {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.22;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(var(--color-additional-1), 0.12), transparent 28%),
+    radial-gradient(circle at 82% 30%, rgba(var(--color-additional-2), 0.10), transparent 26%),
+    linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+}
+
+.testimonial-quote-slider__content-wrap {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-quote-slider__content {
+  width: min(100%, var(--testimonial-content-width, 52rem));
+  padding: clamp(2rem, 4vw, 5rem);
+}
+
+.testimonial-quote-slider__eyebrow {
+  margin-bottom: 1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: rgb(var(--color-subtext));
+}
+
+.testimonial-quote-slider__quote {
+  margin: 0;
+  max-width: 11ch;
+  font-family: var(--font-heading-family, sans-serif);
+  font-size: clamp(2.2rem, 5vw, 5.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: rgb(var(--color-heading));
+}
+
+.testimonial-quote-slider__meta {
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.testimonial-quote-slider__author {
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--color-heading));
+}
+
+.testimonial-quote-slider__role {
+  color: rgb(var(--color-subtext));
+  font-size: 1rem;
+}
+
+.testimonial-quote-slider__foreground {
+  position: absolute;
+  bottom: 0;
+  right: var(--testimonial-foreground-right, 7%);
+  z-index: 2;
+  width: min(var(--testimonial-foreground-width, 26rem), 30%);
+  pointer-events: none;
+}
+
+.testimonial-quote-slider__foreground .image,
+.testimonial-quote-slider__foreground .image img {
+  width: 100%;
+  display: block;
+}
+
+.testimonial-quote-slider__foreground .image img {
+  height: auto;
+  object-fit: contain;
+}
+
+.testimonial-quote-slider__footer {
+  position: relative;
+  z-index: 4;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.testimonial-quote-slider__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.testimonial-quote-slider__nav-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: rgb(var(--color-heading));
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.testimonial-quote-slider__nav-button:hover {
+  opacity: 1;
+}
+
+.testimonial-quote-slider__nav-button.swiper-button-disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.testimonial-quote-slider__nav-separator {
+  width: 2rem;
+  height: 1px;
+  background: rgba(var(--color-border), 1);
+}
+
+.testimonial-quote-slider__counter {
+  font-size: 0.95rem;
+  color: rgb(var(--color-subtext));
+  letter-spacing: 0.08em;
+}
+
+[data-quote-animate] {
+  opacity: 0;
+}
+
+.testimonial-quote-slider .swiper-slide-active [data-quote-animate] {
+  opacity: 1;
+}
+
+@media (max-width: 991px) {
+  .testimonial-quote-slider__slide {
+    min-height: 34rem;
+  }
+
+  .testimonial-quote-slider__bg::after {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.10)) 0%,
+      rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.48)) 100%
+    );
+  }
+
+  .testimonial-quote-slider__content-wrap {
+    align-items: flex-end;
+  }
+
+  .testimonial-quote-slider__content {
+    width: 100%;
+    padding: 1.5rem 1.25rem 1.5rem;
+  }
+
+  .testimonial-quote-slider__quote {
+    max-width: 100%;
+    font-size: clamp(1.8rem, 9vw, 3.4rem);
+    line-height: 1.02;
+  }
+
+  .testimonial-quote-slider__foreground {
+    width: min(var(--testimonial-foreground-width-mobile, 12rem), 42%);
+    right: 1rem;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+(function () {
+  const SECTION_SELECTOR = '[data-testimonial-quote-slider]';
+
+  function animateActiveSlide(section) {
+    const activeSlide = section.querySelector('.swiper-slide-active');
+    if (!activeSlide) return;
+
+    const items = activeSlide.querySelectorAll('[data-quote-animate]');
+    if (!items.length) return;
+
+    if (typeof gsap === 'undefined') {
+      items.forEach(function (item) {
+        item.style.opacity = '1';
+        item.style.transform = 'none';
+      });
+      return;
+    }
+
+    gsap.killTweensOf(items);
+    gsap.set(items, { autoAlpha: 0, y: 24 });
+    gsap.to(items, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.7,
+      stagger: 0.08,
+      ease: 'power3.out'
+    });
+  }
+
+  function initTestimonialQuoteSlider(section) {
+    if (!section) return;
+    if (section.dataset.initialized === 'true') return;
+    if (typeof Swiper === 'undefined') return;
+
+    const swiperElement = section.querySelector('.testimonial-quote-slider__swiper');
+    if (!swiperElement) return;
+
+    const effect = section.dataset.effect || 'slide';
+    const autoplayEnabled = section.dataset.autoplay === 'true';
+    const loopEnabled = section.dataset.loop === 'true';
+    const speed = parseInt(section.dataset.speed || '700', 10);
+    const autoplayDelay = parseInt(section.dataset.autoplayDelay || '5000', 10);
+
+    const swiper = new Swiper(swiperElement, {
+      slidesPerView: 1,
+      loop: loopEnabled,
+      speed: speed,
+      effect: effect,
+      allowTouchMove: true,
+      autoHeight: false,
+      watchOverflow: true,
+      fadeEffect: {
+        crossFade: true
+      },
+      autoplay: autoplayEnabled
+        ? {
+            delay: autoplayDelay,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          }
+        : false,
+      navigation: {
+        nextEl: section.querySelector('[data-slider-next]'),
+        prevEl: section.querySelector('[data-slider-prev]')
+      },
+      on: {
+        init: function () {
+          updateCounter(section, this);
+          animateActiveSlide(section);
+        },
+        slideChangeTransitionStart: function () {
+          updateCounter(section, this);
+        },
+        slideChangeTransitionEnd: function () {
+          animateActiveSlide(section);
+        }
+      }
+    });
+
+    section._testimonialQuoteSwiper = swiper;
+    section.dataset.initialized = 'true';
+  }
+
+  function updateCounter(section, swiper) {
+    const current = section.querySelector('[data-slider-current]');
+    const total = section.querySelector('[data-slider-total]');
+    if (!current || !total || !swiper) return;
+
+    const realIndex = swiper.realIndex + 1;
+    const totalSlides = swiper.slides.length - (swiper.loopedSlides * 2);
+    const safeTotal = totalSlides > 0 ? totalSlides : swiper.slides.length;
+
+    current.textContent = String(realIndex).padStart(2, '0');
+    total.textContent = String(safeTotal).padStart(2, '0');
+  }
+
+  function initAllTestimonialQuoteSliders(scope) {
+    const root = scope || document;
+    const sections = root.querySelectorAll(SECTION_SELECTOR);
+    sections.forEach(initTestimonialQuoteSlider);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initAllTestimonialQuoteSliders(document);
+  });
+
+  document.addEventListener('shopify:section:load', function (event) {
+    initAllTestimonialQuoteSliders(event.target);
+  });
+})();
+{% endjavascript %}
+
+{% render 'section-base-style' %}
+
+{%- liquid
+  assign classes = 'testimonial-quote-slider'
+  assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
+  assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign classes = classes | append: ' ' | append: section.settings.custom_class
+  assign classes = classes | append: ' ' | append: section.settings.color_control
+-%}
+
+<section
+  class="{{ classes }}"
+  id="TestimonialQuoteSlider-{{ section.id }}"
+  data-testimonial-quote-slider
+  data-effect="{{ section.settings.slider_effect }}"
+  data-autoplay="{{ section.settings.enable_autoplay }}"
+  data-loop="{{ section.settings.enable_loop }}"
+  data-speed="{{ section.settings.transition_speed }}"
+  data-autoplay-delay="{{ section.settings.autoplay_delay | times: 1000 }}"
+  style="
+    --testimonial-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --testimonial-content-width: {{ section.settings.content_width }}rem;
+    --testimonial-foreground-width: {{ section.settings.foreground_width }}rem;
+    --testimonial-foreground-width-mobile: {{ section.settings.foreground_width_mobile }}rem;
+    --testimonial-foreground-right: {{ section.settings.foreground_right_offset }}%;
+  "
+  {{ section.shopify_attributes }}
+>
+  <div class="{{ section.settings.container_width }}">
+    <div class="sidebar-space">
+      <div class="testimonial-quote-slider__inner">
+        <div class="testimonial-quote-slider__slider">
+          <div class="swiper testimonial-quote-slider__swiper">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                <article
+                  class="swiper-slide testimonial-quote-slider__slide"
+                  {{ block.shopify_attributes }}
+                >
+                  {% if block.settings.background_image != blank %}
+                    <div class="testimonial-quote-slider__bg">
+                      {% render 'image',
+                        image: block.settings.background_image,
+                        mobile_image: block.settings.mobile_background_image,
+                        class: 'testimonial-quote-slider__bg-image',
+                        img_alt: block.settings.author,
+                        loading: 'lazy',
+                        fetchpriority: 'low'
+                      %}
+                    </div>
+                  {% endif %}
+
+                  {% if section.settings.show_texture %}
+                    <div class="testimonial-quote-slider__texture"></div>
+                  {% endif %}
+
+                  {% if block.settings.product_image != blank %}
+                    <div class="testimonial-quote-slider__foreground">
+                      {% render 'image',
+                        image: block.settings.product_image,
+                        mobile_image: block.settings.mobile_product_image,
+                        class: 'testimonial-quote-slider__product-image',
+                        img_alt: block.settings.author,
+                        loading: 'lazy',
+                        fetchpriority: 'low'
+                      %}
+                    </div>
+                  {% endif %}
+
+                  <div class="testimonial-quote-slider__content-wrap">
+                    <div class="testimonial-quote-slider__content">
+                      {% if section.settings.eyebrow != blank %}
+                        <p class="testimonial-quote-slider__eyebrow" data-quote-animate>
+                          {{ section.settings.eyebrow }}
+                        </p>
+                      {% endif %}
+
+                      {% if block.settings.quote != blank %}
+                        <blockquote class="testimonial-quote-slider__quote" data-quote-animate>
+                          {{ block.settings.quote }}
+                        </blockquote>
+                      {% endif %}
+
+                      <div class="testimonial-quote-slider__meta">
+                        {% if block.settings.author != blank %}
+                          <div class="testimonial-quote-slider__author" data-quote-animate>
+                            {{ block.settings.author }}
+                          </div>
+                        {% endif %}
+
+                        {% if block.settings.role != blank %}
+                          <div class="testimonial-quote-slider__role" data-quote-animate>
+                            {{ block.settings.role }}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="testimonial-quote-slider__footer" data-quote-animate>
+                        <div class="testimonial-quote-slider__nav">
+                          <button
+                            type="button"
+                            class="testimonial-quote-slider__nav-button"
+                            data-slider-prev
+                            aria-label="Previous testimonial"
+                          >
+                            Prev
+                          </button>
+
+                          <span class="testimonial-quote-slider__nav-separator"></span>
+
+                          <button
+                            type="button"
+                            class="testimonial-quote-slider__nav-button"
+                            data-slider-next
+                            aria-label="Next testimonial"
+                          >
+                            Next
+                          </button>
+                        </div>
+
+                        <div class="testimonial-quote-slider__counter">
+                          <span data-slider-current>01</span> /
+                          <span data-slider-total>{{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonial quote slider",
+  "tag": "section",
+  "class": "shopify-section-testimonial-quote-slider",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "extended", "label": "Extended" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Client voices"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_texture",
+      "label": "Show soft texture overlay",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "slider_effect",
+      "label": "Slider effect",
+      "options": [
+        { "value": "slide", "label": "Slide" },
+        { "value": "fade", "label": "Fade" }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Autoplay delay",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable loop",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition speed",
+      "min": 300,
+      "max": 1500,
+      "step": 50,
+      "unit": "ms",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content width",
+      "min": 32,
+      "max": 70,
+      "step": 1,
+      "unit": "rem",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "foreground_width",
+      "label": "Product image width desktop",
+      "min": 12,
+      "max": 34,
+      "step": 1,
+      "unit": "rem",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "foreground_width_mobile",
+      "label": "Product image width mobile",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "rem",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "foreground_right_offset",
+      "label": "Product image horizontal position",
+      "min": 0,
+      "max": 18,
+      "step": 1,
+      "unit": "%",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Quote slide",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "\"The design feels premium and calm, which made the products feel even more considered.\""
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Sara Khan"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role / subtitle",
+          "default": "Beauty editor"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_background_image",
+          "label": "Mobile background image"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product / foreground image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_product_image",
+          "label": "Mobile product / foreground image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial quote slider",
+      "blocks": [
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "\"The design feels premium and calm, which made the products feel even more considered.\"",
+            "author": "Sara Khan",
+            "role": "Beauty editor"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "\"A thoughtful, elevated experience from first scroll to final checkout.\"",
+            "author": "Amina Rahman",
+            "role": "Customer"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
