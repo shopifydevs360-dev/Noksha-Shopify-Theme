@@ -390,56 +390,47 @@
         "color_control": "section-light"
       }
     },
-    "testimonial_slider_cfFkrK": {
-      "type": "testimonial-slider",
+    "testimonial_quote_slider_ewzJVP": {
+      "type": "testimonial-quote-slider",
       "blocks": {
-        "testimonial_JLwr8d": {
-          "type": "testimonial",
+        "quote_yVMRdw": {
+          "type": "quote",
           "settings": {
-            "show_stars": true,
-            "quote": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined.",
-            "quote_size": "h5",
-            "name": "Sophia Rahman",
-            "role": "Verified customer"
+            "quote": "\"A thoughtful, elevated experience from first scroll to final checkout.\"",
+            "author": "Amina Rahman",
+            "role": "Customer"
           }
         },
-        "testimonial_hbPXzk": {
-          "type": "testimonial",
+        "quote_UriGQe": {
+          "type": "quote",
           "settings": {
-            "show_stars": true,
-            "quote": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined.",
-            "quote_size": "h5",
-            "name": "Ariana Malik",
+            "quote": "\"The design feels premium and calm, which made the products feel even more considered.\"",
+            "author": "Sara Khan",
+            "role": "Beauty editor"
+          }
+        },
+        "quote_GJHwL4": {
+          "type": "quote",
+          "settings": {
+            "quote": "\"Minimal, elegant, and easy to explore. It feels more like an editorial story than a store.\"",
+            "author": "Layla Noor",
             "role": "Returning customer"
-          }
-        },
-        "testimonial_BMCfLb": {
-          "type": "testimonial",
-          "settings": {
-            "show_stars": true,
-            "quote": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined.",
-            "quote_size": "h5",
-            "name": "Nadia Karim",
-            "role": "Dubai"
           }
         }
       },
       "block_order": [
-        "testimonial_JLwr8d",
-        "testimonial_hbPXzk",
-        "testimonial_BMCfLb"
+        "quote_yVMRdw",
+        "quote_UriGQe",
+        "quote_GJHwL4"
       ],
-      "name": "Testimonial slider",
+      "name": "Testimonial quote slider",
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
         "container_width": "container-fluid",
-        "enable_sidebar_space": true,
-        "eyebrow": "Testimonials",
-        "heading": "What clients are saying",
-        "heading_size": "h2",
-        "text": "<p>Add real customer feedback to build trust with a clean editorial slider.</p>",
-        "enable_autoplay": true,
-        "autoplay_speed": 5,
+        "eyebrow": "Client voices",
+        "show_texture": true,
+        "enable_autoplay": false,
+        "autoplay_delay": 5,
         "custom_class": "",
         "color_control": "section-light",
         "padding_top": 80,
@@ -457,6 +448,6 @@
     "image_overlay_grid_Gz6VEw",
     "image_overlay_grid_Ez7ym8",
     "article_wrapper_tkFWde",
-    "testimonial_slider_cfFkrK"
+    "testimonial_quote_slider_ewzJVP"
   ]
 }
