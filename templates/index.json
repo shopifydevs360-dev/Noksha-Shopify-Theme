@@ -399,7 +399,8 @@
             "quote": "\"A thoughtful, elevated experience from first scroll to final checkout.\"",
             "author": "Amina Rahman",
             "role": "Customer",
-            "background_image": "shopify://shop_images/Youmi00708.jpg"
+            "background_image": "shopify://shop_images/Youmi00708.jpg",
+            "product_image": "shopify://shop_images/Youmi00496.jpg"
           }
         },
         "quote_UriGQe": {
@@ -408,7 +409,8 @@
             "quote": "\"The design feels premium and calm, which made the products feel even more considered.\"",
             "author": "Sara Khan",
             "role": "Beauty editor",
-            "background_image": "shopify://shop_images/Youmi0088_3_Option_1_1b8ec3ca-d0c6-4404-9414-bc10f6033ac3.jpg"
+            "background_image": "shopify://shop_images/Youmi0088_3_Option_1_1b8ec3ca-d0c6-4404-9414-bc10f6033ac3.jpg",
+            "product_image": "shopify://shop_images/Youmi00917.jpg"
           }
         },
         "quote_GJHwL4": {
@@ -431,8 +433,16 @@
         "container_width": "container-fluid",
         "eyebrow": "Client voices",
         "show_texture": true,
+        "slider_effect": "fade",
         "enable_autoplay": false,
         "autoplay_delay": 5,
+        "enable_loop": true,
+        "transition_speed": 800,
+        "overlay_opacity": 20,
+        "content_width": 52,
+        "foreground_width": 26,
+        "foreground_width_mobile": 12,
+        "foreground_right_offset": 7,
         "custom_class": "",
         "color_control": "section-light",
         "padding_top": 80,
