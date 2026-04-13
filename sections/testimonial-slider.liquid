@@ -87,7 +87,7 @@
 
   .testimonial-editorial-slider__media {
     position: relative;
-    min-height: 24rem;
+    min-height: 20rem;
     overflow: hidden;
     background: rgba(var(--color-border), 0.15);
   }
@@ -257,6 +257,21 @@
     transform: scale(1.15);
   }
 
+  @media (min-width: 768px) {
+    .testimonial-editorial-slider__card {
+      grid-template-columns: minmax(16rem, 0.92fr) minmax(18rem, 1.08fr);
+    }
+
+    .testimonial-editorial-slider__media {
+      min-height: 100%;
+    }
+
+    .testimonial-editorial-slider__content {
+      padding: 1.6rem;
+      gap: 1.55rem;
+    }
+  }
+
   @media (min-width: 992px) {
     .testimonial-editorial-slider__header {
       grid-template-columns: minmax(18rem, 0.72fr) minmax(20rem, 1fr);
@@ -266,27 +281,17 @@
     }
 
     .testimonial-editorial-slider__content {
-      padding: 1.5rem;
+      padding: 1.8rem;
     }
 
     .testimonial-editorial-slider__quote {
-      font-size: 1.08rem;
-    }
-
-    .testimonial-editorial-slider__media {
-      min-height: 26rem;
-    }
-  }
-
-  @media (min-width: 1321px) {
-    .testimonial-editorial-slider__media {
-      min-height: 28rem;
+      font-size: 1.2rem;
     }
   }
 
   @media (max-width: 767px) {
     .testimonial-editorial-slider__media {
-      min-height: 18rem;
+      min-height: 16rem;
     }
 
     .testimonial-editorial-slider__content {
@@ -346,7 +351,7 @@
                     {% if block.settings.image != blank %}
                       {% render 'image',
                         image: block.settings.image,
-                        class: 'cropped-image-wrapper cropped-image--portrait',
+                        class: 'cropped-image-wrapper adapt-image-height',
                         img_alt: block.settings.name,
                         loading: 'lazy',
                         fetchpriority: 'low'
@@ -354,7 +359,7 @@
                     {% else %}
                       {% render 'image',
                         image: block.settings.avatar,
-                        class: 'cropped-image-wrapper cropped-image--portrait',
+                        class: 'cropped-image-wrapper adapt-image-height',
                         img_alt: block.settings.name,
                         loading: 'lazy',
                         fetchpriority: 'low'
@@ -459,7 +464,7 @@
         const autoplaySpeed = parseInt(slider.dataset.autoplaySpeed || '5000', 10);
 
         new Swiper(slider, {
-          slidesPerView: 1.1,
+          slidesPerView: 1,
           spaceBetween: 16,
           speed: 900,
           loop: section.querySelectorAll('.swiper-slide').length > 1,
@@ -482,15 +487,11 @@
           },
           breakpoints: {
             768: {
-              slidesPerView: 2,
+              slidesPerView: 1,
               spaceBetween: 20
             },
             992: {
-              slidesPerView: 2.2,
-              spaceBetween: 24
-            },
-            1321: {
-              slidesPerView: 3,
+              slidesPerView: 1.15,
               spaceBetween: 24
             }
           }
@@ -553,7 +554,7 @@
       "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
-      "default": "What clients are saying"
+      "default": "Stories from our clients"
     },
     {
       "type": "select",
@@ -570,7 +571,7 @@
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Add real customer feedback to build trust with a clean editorial slider.</p>"
+      "default": "<p>Create a more luxurious testimonial presentation with larger visuals, elegant spacing, and premium editorial balance.</p>"
     },
     {
       "type": "checkbox",
@@ -644,7 +645,7 @@
           "type": "textarea",
           "id": "quote",
           "label": "Quote",
-          "default": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined."
+          "default": "Everything feels beautifully considered, from the packaging to the product quality. It genuinely feels premium."
         },
         {
           "type": "select",
