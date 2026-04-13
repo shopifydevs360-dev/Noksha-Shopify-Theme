@@ -209,93 +209,92 @@
 }
 {% endstylesheet %}
 {% javascript %}
-  (function () {
+ (function () {
   const SECTION_SELECTOR = '[data-editorial-depth-stack]';
 
-  function initEditorialDepthStack(section) {
-    if (!section || section.dataset.initialized === 'true') return;
+  function killSectionTriggers(section) {
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.vars && trigger.vars.trigger && section.contains(trigger.vars.trigger)) {
+        trigger.kill();
+      }
+    });
+  }
 
+  function initEditorialDepthStack(section) {
+    if (!section) return;
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
     gsap.registerPlugin(ScrollTrigger);
+
+    if (section._editorialDepthStackMatchMedia) {
+      section._editorialDepthStackMatchMedia.revert();
+    }
+
+    killSectionTriggers(section);
 
     const desktopBreakpoint = parseInt(section.dataset.desktopBreakpoint || '991', 10);
     const enablePin = section.dataset.enablePin === 'true';
     const enableParallax = section.dataset.enableParallax === 'true';
 
     const content = section.querySelector('[data-editorial-content]');
-    const media = section.querySelector('[data-editorial-media]');
     const splitItems = section.querySelectorAll('[data-split-reveal]');
     const fadeItems = section.querySelectorAll('[data-fade-reveal]');
     const depthCards = section.querySelectorAll('[data-depth-card]');
+    const mediaImages = section.querySelectorAll('.editorial-depth-stack__card .image img');
 
-    const sectionId = section.dataset.sectionId || '';
     const mm = gsap.matchMedia();
-
-    section.dataset.initialized = 'true';
+    section._editorialDepthStackMatchMedia = mm;
 
     mm.add(`(min-width: ${desktopBreakpoint + 1}px)`, () => {
-      const tl = gsap.timeline({
+      gsap.set(splitItems, { autoAlpha: 0, y: 28 });
+      gsap.set(fadeItems, { autoAlpha: 0, y: 24 });
+
+      depthCards.forEach((card, index) => {
+        const initialRotate = index === 1 ? 2 : index === 2 ? -2 : 0;
+        gsap.set(card, {
+          autoAlpha: 0,
+          y: 40,
+          x: 0,
+          rotate: initialRotate,
+          scale: 0.96
+        });
+      });
+
+      const introTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top top+=10%',
-          end: 'bottom bottom-=10%',
-          scrub: 1.1
+          start: 'top 75%',
+          once: true
         }
       });
 
-      splitItems.forEach((item, index) => {
-        tl.fromTo(
-          item,
-          { autoAlpha: 0, y: 28 },
-          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          index * 0.08
-        );
+      introTimeline.to(splitItems, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.08,
+        ease: 'power3.out'
       });
 
-      fadeItems.forEach((item, index) => {
-        tl.fromTo(
-          item,
-          { autoAlpha: 0, y: 24 },
-          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          0.2 + index * 0.08
-        );
-      });
+      introTimeline.to(fadeItems, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.65,
+        stagger: 0.08,
+        ease: 'power3.out'
+      }, '-=0.35');
 
-      depthCards.forEach((card, index) => {
-        const strength = parseInt(card.dataset.depth || '40', 10);
-        const fromY = index === 0 ? 40 : strength;
-        const toY = index === 0 ? -20 : strength * -0.7;
-        const fromRotate = index === 1 ? 2.5 : index === 2 ? -2.5 : 0;
-        const toRotate = index === 1 ? -1.5 : index === 2 ? 1.5 : 0;
+      introTimeline.to(depthCards, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out'
+      }, '-=0.4');
 
-        gsap.fromTo(
-          card,
-          {
-            autoAlpha: 0,
-            y: fromY,
-            rotate: fromRotate,
-            scale: 0.96
-          },
-          {
-            autoAlpha: 1,
-            y: toY,
-            rotate: toRotate,
-            scale: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              end: 'bottom 15%',
-              scrub: 1.2
-            }
-          }
-        );
-      });
-
-      if (enablePin && content && media) {
+      if (enablePin && content) {
         ScrollTrigger.create({
-          id: `editorial-pin-${sectionId}`,
           trigger: section,
           start: 'top top+=8%',
           end: 'bottom bottom-=8%',
@@ -305,16 +304,73 @@
         });
       }
 
-      if (enableParallax) {
-        const images = section.querySelectorAll('.editorial-depth-stack__card .image img');
-        images.forEach((img, index) => {
-          const shift = index === 0 ? 18 : index === 1 ? 32 : 48;
+      depthCards.forEach((card, index) => {
+        const strength = parseInt(card.dataset.depth || '40', 10);
 
-          gsap.fromTo(
-            img,
-            { yPercent: -6 },
+        let fromY = 0;
+        let toY = 0;
+        let fromX = 0;
+        let toX = 0;
+        let fromRotate = 0;
+        let toRotate = 0;
+
+        if (index === 0) {
+          fromY = 0;
+          toY = -18;
+          fromX = 0;
+          toX = -8;
+          fromRotate = 0;
+          toRotate = -1;
+        }
+
+        if (index === 1) {
+          fromY = strength * 0.35;
+          toY = strength * -0.95;
+          fromX = 18;
+          toX = -26;
+          fromRotate = 2;
+          toRotate = -2.5;
+        }
+
+        if (index === 2) {
+          fromY = strength * 0.55;
+          toY = strength * -1.15;
+          fromX = -12;
+          toX = 18;
+          fromRotate = -2;
+          toRotate = 2.25;
+        }
+
+        gsap.fromTo(card,
+          {
+            y: fromY,
+            x: fromX,
+            rotate: fromRotate
+          },
+          {
+            y: toY,
+            x: toX,
+            rotate: toRotate,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom-=5%',
+              end: 'bottom top+=5%',
+              scrub: 1.15
+            }
+          }
+        );
+      });
+
+      if (enableParallax) {
+        mediaImages.forEach((img, index) => {
+          const yPercentTo = index === 0 ? 10 : index === 1 ? 18 : 24;
+
+          gsap.fromTo(img,
+            { yPercent: -6, scale: 1.04 },
             {
-              yPercent: shift,
+              yPercent: yPercentTo,
+              scale: 1.08,
               ease: 'none',
               scrollTrigger: {
                 trigger: section,
@@ -327,48 +383,40 @@
         });
       }
 
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => {
-          if (
-            trigger.vars &&
-            trigger.vars.trigger === section
-          ) {
-            trigger.kill();
-          }
-        });
-      };
+      ScrollTrigger.refresh();
     });
 
     mm.add(`(max-width: ${desktopBreakpoint}px)`, () => {
-      gsap.set([...splitItems, ...fadeItems, ...depthCards], { autoAlpha: 1, clearProps: 'transform' });
+      gsap.set([...splitItems, ...fadeItems, ...depthCards], {
+        autoAlpha: 1,
+        clearProps: 'transform'
+      });
 
       splitItems.forEach((item, index) => {
-        gsap.fromTo(
-          item,
+        gsap.fromTo(item,
           { autoAlpha: 0, y: 18 },
           {
             autoAlpha: 1,
             y: 0,
             duration: 0.55,
             ease: 'power2.out',
+            delay: index * 0.04,
             scrollTrigger: {
               trigger: item,
               start: 'top 92%',
               once: true
-            },
-            delay: index * 0.04
+            }
           }
         );
       });
 
       fadeItems.forEach((item) => {
-        gsap.fromTo(
-          item,
-          { autoAlpha: 0, y: 18 },
+        gsap.fromTo(item,
+          { autoAlpha: 0, y: 16 },
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.55,
+            duration: 0.5,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: item,
@@ -378,14 +426,35 @@
           }
         );
       });
-    });
 
-    ScrollTrigger.refresh();
+      depthCards.forEach((card, index) => {
+        gsap.fromTo(card,
+          {
+            autoAlpha: 0,
+            y: 24
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            delay: index * 0.06,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 92%',
+              once: true
+            }
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
+    });
   }
 
   function initAllEditorialDepthStacks(scope) {
-    const container = scope || document;
-    const sections = container.querySelectorAll(SECTION_SELECTOR);
+    const root = scope || document;
+    const sections = root.querySelectorAll(SECTION_SELECTOR);
     sections.forEach(initEditorialDepthStack);
   }
 
@@ -395,6 +464,10 @@
 
   document.addEventListener('shopify:section:load', function (event) {
     initAllEditorialDepthStacks(event.target);
+  });
+
+  document.addEventListener('shopify:section:reorder', function () {
+    initAllEditorialDepthStacks(document);
   });
 })();
 {% endjavascript %}
