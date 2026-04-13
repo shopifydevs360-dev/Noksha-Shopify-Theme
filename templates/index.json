@@ -332,6 +332,65 @@
         "color_control": "section-light"
       }
     },
+    "editorial_depth_stack_BckPAV": {
+      "type": "editorial-depth-stack",
+      "blocks": {
+        "layer_iXXXrK": {
+          "type": "layer",
+          "settings": {
+            "image": "shopify://shop_images/Youmi01693.jpg",
+            "subtitle": "Look 01",
+            "title": "Soft tailoring",
+            "link_label": "Shop this",
+            "link": "",
+            "depth_strength": 40
+          }
+        },
+        "layer_rD9jhc": {
+          "type": "layer",
+          "settings": {
+            "image": "shopify://shop_images/Youmi00917.jpg",
+            "subtitle": "Look 02",
+            "title": "Layered neutrals",
+            "link_label": "Shop this",
+            "link": "",
+            "depth_strength": 70
+          }
+        },
+        "layer_KKqTd3": {
+          "type": "layer",
+          "settings": {
+            "image": "shopify://shop_images/Youmi01010.jpg",
+            "subtitle": "Look 03",
+            "title": "Quiet statement",
+            "link_label": "Shop this",
+            "link": "",
+            "depth_strength": 100
+          }
+        }
+      },
+      "block_order": [
+        "layer_iXXXrK",
+        "layer_rD9jhc",
+        "layer_KKqTd3"
+      ],
+      "name": "Editorial depth stack",
+      "settings": {
+        "color_scheme": "",
+        "container_width": "container-fluid",
+        "eyebrow": "Editorial motion",
+        "heading": "A layered scroll composition with depth, movement, and premium pacing.",
+        "heading_size": "h2",
+        "text": "<p>Use this section to create an elevated campaign story. The content stays calm while the layered images shift with scroll for a more immersive editorial feel.</p>",
+        "button_label": "Explore now",
+        "button_link": "",
+        "enable_pin": true,
+        "enable_parallax": true,
+        "custom_class": "",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
     "article_wrapper_tkFWde": {
       "type": "article-wrapper",
       "name": "Articles Wrapper",
@@ -364,6 +423,7 @@
     "shop_the_look_VCTH6r",
     "image_overlay_grid_Gz6VEw",
     "image_overlay_grid_Ez7ym8",
+    "editorial_depth_stack_BckPAV",
     "article_wrapper_tkFWde",
     "home_intro_LaEWrV"
   ]
