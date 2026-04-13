@@ -64,6 +64,7 @@
     width: min(28%, 13rem);
     z-index: 2;
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
+    will-change: transform;
   }
 
   .rtl .layered-image-story__secondary-image {
@@ -316,7 +317,8 @@
           gsap.set(thirdImage, {
             opacity: 0,
             y: -30,
-            x: 16
+            x: 16,
+            rotate: -1.5
           });
         }
 
@@ -329,7 +331,7 @@
 
         if (secondaryInner) {
           gsap.set(secondaryInner, {
-            scale: 0.94,
+            scale: 0.9,
             transformOrigin: 'center center',
             force3D: true
           });
@@ -337,7 +339,8 @@
 
         if (thirdInner) {
           gsap.set(thirdInner, {
-            yPercent: 0,
+            yPercent: -4,
+            scale: 1.03,
             force3D: true
           });
         }
@@ -364,7 +367,8 @@
             opacity: 1,
             x: 0,
             y: 0,
-            duration: 0.65,
+            rotate: 0,
+            duration: 0.7,
             ease: 'power3.out'
           }, '-=0.45');
         }
@@ -390,65 +394,70 @@
         }
 
         if (secondaryInner) {
-          gsap.to(secondaryInner, {
-            scale: 1.12,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 80%',
-              end: 'bottom top',
-              scrub: 1.2
+          gsap.fromTo(secondaryInner,
+            {
+              scale: 0.9
+            },
+            {
+              scale: 1.26,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                end: 'bottom top',
+                scrub: 1.1
+              }
             }
-          });
+          );
         }
 
         if (thirdImage) {
-          gsap.to(thirdImage, {
-            yPercent: -8,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.8
+          gsap.fromTo(thirdImage,
+            {
+              y: 10,
+              rotate: -1.5
+            },
+            {
+              y: -70,
+              rotate: 1.5,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.6
+              }
             }
-          });
+          );
         }
 
         if (thirdInner) {
-          gsap.to(thirdInner, {
-            yPercent: 6,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 2.2
+          gsap.fromTo(thirdInner,
+            {
+              yPercent: -6,
+              scale: 1.03
+            },
+            {
+              yPercent: 10,
+              scale: 1.09,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 2
+              }
             }
-          });
+          );
         }
       });
 
       mm.add('(max-width: 991px)', () => {
-        if (mainImage) {
-          gsap.set(mainImage, { clearProps: 'all' });
-        }
-
-        if (secondaryImage) {
-          gsap.set(secondaryImage, { clearProps: 'all' });
-        }
-
-        if (thirdImage) {
-          gsap.set(thirdImage, { clearProps: 'all' });
-        }
-
-        if (secondaryInner) {
-          gsap.set(secondaryInner, { clearProps: 'all' });
-        }
-
-        if (thirdInner) {
-          gsap.set(thirdInner, { clearProps: 'all' });
-        }
+        if (mainImage) gsap.set(mainImage, { clearProps: 'all' });
+        if (secondaryImage) gsap.set(secondaryImage, { clearProps: 'all' });
+        if (thirdImage) gsap.set(thirdImage, { clearProps: 'all' });
+        if (secondaryInner) gsap.set(secondaryInner, { clearProps: 'all' });
+        if (thirdInner) gsap.set(thirdInner, { clearProps: 'all' });
 
         if (textItems.length) {
           gsap.set(textItems, {
