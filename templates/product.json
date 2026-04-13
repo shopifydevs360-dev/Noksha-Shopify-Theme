@@ -34,13 +34,6 @@
             "price_font_size": "h5"
           }
         },
-        "description_Th49Tf": {
-          "type": "description",
-          "settings": {
-            "heading": "",
-            "text_size": "h4"
-          }
-        },
         "add_to_cart_form_8aMLxd": {
           "type": "add_to_cart_form",
           "settings": {
@@ -57,6 +50,13 @@
             "size_guide_page": "terms-conditions",
             "show_social_share": true,
             "show_track_order": false
+          }
+        },
+        "description_Th49Tf": {
+          "type": "description",
+          "settings": {
+            "heading": "",
+            "text_size": "h4"
           }
         },
         "accordion_GJhgHM": {
@@ -102,7 +102,6 @@
           "type": "icon_list_item",
           "settings": {
             "theme_icon": "phone",
-            "custom_icon": "shopify://shop_images/telephone.png",
             "text": "Here for You — Customer Care Support",
             "link": "shopify://pages/contact"
           }
@@ -128,9 +127,9 @@
         "breadcrumb_6V9nX7",
         "empty_space_BGkTxy",
         "title_price_YnB7D8",
-        "description_Th49Tf",
         "add_to_cart_form_8aMLxd",
         "addon_buttons_HDrn66",
+        "description_Th49Tf",
         "accordion_GJhgHM",
         "accordion_EA3PW7",
         "product_meta_iat8W8",
