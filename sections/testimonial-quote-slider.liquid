@@ -22,9 +22,6 @@
   position: relative;
   min-height: var(--testimonial-slide-height, 760px);
   height: var(--testimonial-slide-height, 760px);
-  display: flex;
-  align-items: stretch;
-  isolation: isolate;
   overflow: hidden;
   background: rgba(var(--color-background-secondary), 1);
 }
@@ -42,10 +39,11 @@
   background:
     linear-gradient(
       90deg,
-      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 1.2)) 0%,
-      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.9)) 26%,
-      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.45)) 52%,
-      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.08)) 100%
+      rgba(255,255,255,calc(var(--testimonial-overlay-opacity, 0.22) * 1.35)) 0%,
+      rgba(255,255,255,calc(var(--testimonial-overlay-opacity, 0.22) * 1.1)) 22%,
+      rgba(255,255,255,calc(var(--testimonial-overlay-opacity, 0.22) * 0.72)) 42%,
+      rgba(255,255,255,calc(var(--testimonial-overlay-opacity, 0.22) * 0.2)) 70%,
+      rgba(255,255,255,0.02) 100%
     );
   pointer-events: none;
 }
@@ -55,10 +53,6 @@
 .testimonial-quote-slider__bg img {
   width: 100%;
   height: 100%;
-  display: block;
-}
-
-.testimonial-quote-slider__bg picture {
   display: block;
 }
 
@@ -78,30 +72,38 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.12;
   background:
-    radial-gradient(circle at 20% 18%, rgba(var(--color-additional-1), 0.08), transparent 28%),
-    radial-gradient(circle at 82% 34%, rgba(var(--color-additional-2), 0.06), transparent 24%),
-    linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+    radial-gradient(circle at 18% 20%, rgba(var(--color-additional-1), 0.10), transparent 28%),
+    radial-gradient(circle at 82% 26%, rgba(var(--color-additional-2), 0.08), transparent 24%);
+}
+
+.testimonial-quote-slider__layout {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 34%);
+  align-items: end;
 }
 
 .testimonial-quote-slider__content-wrap {
   position: relative;
-  z-index: 3;
-  width: 100%;
+  z-index: 4;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: end;
+  padding: clamp(2rem, 4vw, 4rem);
 }
 
 .testimonial-quote-slider__content {
-  width: min(100%, var(--testimonial-content-width, 52rem));
-  padding: clamp(2rem, 4vw, 5rem);
+  width: min(100%, var(--testimonial-content-width, 36rem));
+  padding: clamp(1.4rem, 2vw, 2rem) 0;
 }
 
 .testimonial-quote-slider__eyebrow {
   margin-bottom: 1rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 0.78rem;
   color: rgb(var(--color-subtext));
@@ -109,16 +111,16 @@
 
 .testimonial-quote-slider__quote {
   margin: 0;
-  max-width: 11ch;
+  max-width: 9.5ch;
   font-family: var(--font-heading-family, sans-serif);
-  font-size: clamp(2.5rem, 5vw, 5.5rem);
-  line-height: 0.98;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.25rem, 4.6vw, 5rem);
+  line-height: 0.97;
+  letter-spacing: -0.035em;
   color: rgb(var(--color-heading));
 }
 
 .testimonial-quote-slider__meta {
-  margin-top: 1.75rem;
+  margin-top: 1.5rem;
   display: grid;
   gap: 0.35rem;
 }
@@ -135,17 +137,71 @@
   font-size: 1rem;
 }
 
-.testimonial-quote-slider__foreground {
-  position: absolute;
-  right: var(--testimonial-foreground-right, 7%);
-  bottom: 0;
-  z-index: 2;
-  width: min(var(--testimonial-foreground-width, 26rem), 30%);
-  max-height: 92%;
+.testimonial-quote-slider__footer {
+  margin-top: 2rem;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.testimonial-quote-slider__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.testimonial-quote-slider__nav-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: rgb(var(--color-heading));
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.68;
+  transition: opacity .25s ease;
+}
+
+.testimonial-quote-slider__nav-button:hover {
+  opacity: 1;
+}
+
+.testimonial-quote-slider__nav-button.swiper-button-disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.testimonial-quote-slider__nav-separator {
+  width: 2rem;
+  height: 1px;
+  background: rgba(var(--color-border), 1);
+}
+
+.testimonial-quote-slider__counter {
+  font-size: 0.95rem;
+  color: rgb(var(--color-subtext));
+  letter-spacing: 0.08em;
+}
+
+.testimonial-quote-slider__visual {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  align-items: end;
   justify-content: center;
-  pointer-events: none;
+  padding: 0 clamp(1rem, 2vw, 2rem) 0 0;
+}
+
+.testimonial-quote-slider__foreground {
+  position: relative;
+  width: min(var(--testimonial-foreground-width, 22rem), 100%);
+  max-height: 88%;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  filter: drop-shadow(0 18px 35px rgba(0, 0, 0, 0.08));
 }
 
 .testimonial-quote-slider__foreground .image,
@@ -161,55 +217,6 @@
   max-height: 100%;
   object-fit: contain;
   object-position: bottom center;
-}
-
-.testimonial-quote-slider__footer {
-  position: relative;
-  z-index: 4;
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.testimonial-quote-slider__nav {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.testimonial-quote-slider__nav-button {
-  background: transparent;
-  border: none;
-  padding: 0;
-  color: rgb(var(--color-heading));
-  font-size: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.65;
-  transition: opacity .25s ease, transform .25s ease;
-}
-
-.testimonial-quote-slider__nav-button:hover {
-  opacity: 1;
-}
-
-.testimonial-quote-slider__nav-button.swiper-button-disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.testimonial-quote-slider__nav-separator {
-  width: 2rem;
-  height: 1px;
-  background: rgba(var(--color-border), 1);
-}
-
-.testimonial-quote-slider__counter {
-  font-size: 0.95rem;
-  color: rgb(var(--color-subtext));
-  letter-spacing: 0.08em;
 }
 
 [data-quote-animate] {
@@ -230,30 +237,45 @@
     background:
       linear-gradient(
         180deg,
-        rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.18)) 0%,
-        rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.55)) 100%
+        rgba(255,255,255,calc(var(--testimonial-overlay-opacity, 0.22) * 0.22)) 0%,
+        rgba(255,255,255,calc(var(--testimonial-overlay-opacity, 0.22) * 0.78)) 70%,
+        rgba(255,255,255,calc(var(--testimonial-overlay-opacity, 0.22) * 1.1)) 100%
       );
   }
 
+  .testimonial-quote-slider__layout {
+    grid-template-columns: 1fr;
+  }
+
   .testimonial-quote-slider__content-wrap {
-    align-items: flex-end;
+    align-items: end;
+    padding: 1.25rem;
   }
 
   .testimonial-quote-slider__content {
     width: 100%;
-    padding: 1.5rem 1.25rem 1.5rem;
+    padding: 0;
   }
 
   .testimonial-quote-slider__quote {
     max-width: 100%;
-    font-size: clamp(1.9rem, 9vw, 3.5rem);
-    line-height: 1.02;
+    font-size: clamp(1.9rem, 8.6vw, 3.4rem);
+    line-height: 1.01;
+  }
+
+  .testimonial-quote-slider__visual {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0;
+    width: 42%;
+    height: auto;
+    padding: 0;
+    pointer-events: none;
   }
 
   .testimonial-quote-slider__foreground {
-    right: 1rem;
-    width: min(var(--testimonial-foreground-width-mobile, 12rem), 42%);
-    max-height: 72%;
+    width: min(var(--testimonial-foreground-width-mobile, 11rem), 100%);
+    max-height: 60%;
   }
 }
 {% endstylesheet %}
@@ -278,7 +300,7 @@
     }
 
     gsap.killTweensOf(items);
-    gsap.set(items, { autoAlpha: 0, y: 24 });
+    gsap.set(items, { autoAlpha: 0, y: 22 });
     gsap.to(items, {
       autoAlpha: 1,
       y: 0,
@@ -313,10 +335,10 @@
     const swiperElement = section.querySelector('.testimonial-quote-slider__swiper');
     if (!swiperElement) return;
 
-    const effect = section.dataset.effect || 'slide';
+    const effect = section.dataset.effect || 'fade';
     const autoplayEnabled = section.dataset.autoplay === 'true';
     const loopEnabled = section.dataset.loop === 'true';
-    const speed = parseInt(section.dataset.speed || '700', 10);
+    const speed = parseInt(section.dataset.speed || '800', 10);
     const autoplayDelay = parseInt(section.dataset.autoplayDelay || '5000', 10);
 
     const swiper = new Swiper(swiperElement, {
@@ -399,7 +421,6 @@
     --testimonial-content-width: {{ section.settings.content_width }}rem;
     --testimonial-foreground-width: {{ section.settings.foreground_width }}rem;
     --testimonial-foreground-width-mobile: {{ section.settings.foreground_width_mobile }}rem;
-    --testimonial-foreground-right: {{ section.settings.foreground_right_offset }}%;
     --testimonial-slide-height: {{ section.settings.slide_height_desktop }}px;
     --testimonial-slide-height-mobile: {{ section.settings.slide_height_mobile }}px;
   "
@@ -412,10 +433,7 @@
           <div class="swiper testimonial-quote-slider__swiper">
             <div class="swiper-wrapper">
               {% for block in section.blocks %}
-                <article
-                  class="swiper-slide testimonial-quote-slider__slide"
-                  {{ block.shopify_attributes }}
-                >
+                <article class="swiper-slide testimonial-quote-slider__slide" {{ block.shopify_attributes }}>
                   {% if block.settings.background_image != blank %}
                     <div class="testimonial-quote-slider__bg">
                       {% render 'image',
@@ -433,75 +451,77 @@
                     <div class="testimonial-quote-slider__texture"></div>
                   {% endif %}
 
-                  {% if block.settings.product_image != blank %}
-                    <div class="testimonial-quote-slider__foreground">
-                      {% render 'image',
-                        image: block.settings.product_image,
-                        mobile_image: block.settings.mobile_product_image,
-                        class: 'testimonial-quote-slider__product-image',
-                        img_alt: block.settings.author,
-                        loading: 'lazy',
-                        fetchpriority: 'low'
-                      %}
+                  <div class="testimonial-quote-slider__layout">
+                    <div class="testimonial-quote-slider__content-wrap">
+                      <div class="testimonial-quote-slider__content">
+                        {% if section.settings.eyebrow != blank %}
+                          <p class="testimonial-quote-slider__eyebrow" data-quote-animate>
+                            {{ section.settings.eyebrow }}
+                          </p>
+                        {% endif %}
+
+                        {% if block.settings.quote != blank %}
+                          <blockquote class="testimonial-quote-slider__quote" data-quote-animate>
+                            {{ block.settings.quote }}
+                          </blockquote>
+                        {% endif %}
+
+                        <div class="testimonial-quote-slider__meta">
+                          {% if block.settings.author != blank %}
+                            <div class="testimonial-quote-slider__author" data-quote-animate>
+                              {{ block.settings.author }}
+                            </div>
+                          {% endif %}
+
+                          {% if block.settings.role != blank %}
+                            <div class="testimonial-quote-slider__role" data-quote-animate>
+                              {{ block.settings.role }}
+                            </div>
+                          {% endif %}
+                        </div>
+
+                        <div class="testimonial-quote-slider__footer" data-quote-animate>
+                          <div class="testimonial-quote-slider__nav">
+                            <button
+                              type="button"
+                              class="testimonial-quote-slider__nav-button"
+                              data-slider-prev
+                              aria-label="Previous testimonial"
+                            >
+                              Prev
+                            </button>
+                            <span class="testimonial-quote-slider__nav-separator"></span>
+                            <button
+                              type="button"
+                              class="testimonial-quote-slider__nav-button"
+                              data-slider-next
+                              aria-label="Next testimonial"
+                            >
+                              Next
+                            </button>
+                          </div>
+
+                          <div class="testimonial-quote-slider__counter">
+                            <span data-slider-current>01</span> /
+                            <span data-slider-total>{{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  {% endif %}
 
-                  <div class="testimonial-quote-slider__content-wrap">
-                    <div class="testimonial-quote-slider__content">
-                      {% if section.settings.eyebrow != blank %}
-                        <p class="testimonial-quote-slider__eyebrow" data-quote-animate>
-                          {{ section.settings.eyebrow }}
-                        </p>
-                      {% endif %}
-
-                      {% if block.settings.quote != blank %}
-                        <blockquote class="testimonial-quote-slider__quote" data-quote-animate>
-                          {{ block.settings.quote }}
-                        </blockquote>
-                      {% endif %}
-
-                      <div class="testimonial-quote-slider__meta">
-                        {% if block.settings.author != blank %}
-                          <div class="testimonial-quote-slider__author" data-quote-animate>
-                            {{ block.settings.author }}
-                          </div>
-                        {% endif %}
-
-                        {% if block.settings.role != blank %}
-                          <div class="testimonial-quote-slider__role" data-quote-animate>
-                            {{ block.settings.role }}
-                          </div>
-                        {% endif %}
-                      </div>
-
-                      <div class="testimonial-quote-slider__footer" data-quote-animate>
-                        <div class="testimonial-quote-slider__nav">
-                          <button
-                            type="button"
-                            class="testimonial-quote-slider__nav-button"
-                            data-slider-prev
-                            aria-label="Previous testimonial"
-                          >
-                            Prev
-                          </button>
-
-                          <span class="testimonial-quote-slider__nav-separator"></span>
-
-                          <button
-                            type="button"
-                            class="testimonial-quote-slider__nav-button"
-                            data-slider-next
-                            aria-label="Next testimonial"
-                          >
-                            Next
-                          </button>
+                    <div class="testimonial-quote-slider__visual">
+                      {% if block.settings.product_image != blank %}
+                        <div class="testimonial-quote-slider__foreground" data-quote-animate>
+                          {% render 'image',
+                            image: block.settings.product_image,
+                            mobile_image: block.settings.mobile_product_image,
+                            class: 'testimonial-quote-slider__product-image',
+                            img_alt: block.settings.author,
+                            loading: 'lazy',
+                            fetchpriority: 'low'
+                          %}
                         </div>
-
-                        <div class="testimonial-quote-slider__counter">
-                          <span data-slider-current>01</span> /
-                          <span data-slider-total>{{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span>
-                        </div>
-                      </div>
+                      {% endif %}
                     </div>
                   </div>
                 </article>
@@ -607,21 +627,21 @@
       "type": "range",
       "id": "content_width",
       "label": "Content width",
-      "min": 32,
-      "max": 70,
+      "min": 24,
+      "max": 50,
       "step": 1,
       "unit": "rem",
-      "default": 52
+      "default": 36
     },
     {
       "type": "range",
       "id": "foreground_width",
       "label": "Product image width desktop",
-      "min": 12,
-      "max": 34,
+      "min": 10,
+      "max": 28,
       "step": 1,
       "unit": "rem",
-      "default": 24
+      "default": 22
     },
     {
       "type": "range",
@@ -631,17 +651,7 @@
       "max": 18,
       "step": 1,
       "unit": "rem",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "foreground_right_offset",
-      "label": "Product image horizontal position",
-      "min": 0,
-      "max": 18,
-      "step": 1,
-      "unit": "%",
-      "default": 7
+      "default": 11
     },
     {
       "type": "range",
