@@ -375,67 +375,6 @@
         "color_control": "section-light"
       }
     },
-    "editorial_depth_stack_BckPAV": {
-      "type": "editorial-depth-stack",
-      "blocks": {
-        "layer_iXXXrK": {
-          "type": "layer",
-          "settings": {
-            "image": "shopify://shop_images/Youmi0088_3_Option2.jpg",
-            "subtitle": "Look 01",
-            "title": "Soft tailoring",
-            "link_label": "Shop this",
-            "link": "",
-            "depth_strength": 40
-          }
-        },
-        "layer_rD9jhc": {
-          "type": "layer",
-          "settings": {
-            "image": "shopify://shop_images/Youmi00917.jpg",
-            "subtitle": "Look 02",
-            "title": "Layered neutrals",
-            "link_label": "Shop this",
-            "link": "",
-            "depth_strength": 70
-          }
-        },
-        "layer_KKqTd3": {
-          "type": "layer",
-          "settings": {
-            "image": "shopify://shop_images/Youmi01010.jpg",
-            "subtitle": "Look 03",
-            "title": "Quiet statement",
-            "link_label": "Shop this",
-            "link": "",
-            "depth_strength": 100
-          }
-        }
-      },
-      "block_order": [
-        "layer_iXXXrK",
-        "layer_rD9jhc",
-        "layer_KKqTd3"
-      ],
-      "disabled": true,
-      "name": "Editorial depth stack",
-      "settings": {
-        "color_scheme": "",
-        "container_width": "container-fluid",
-        "eyebrow": "Editorial motion",
-        "heading": "A layered scroll composition with depth, movement, and premium pacing.",
-        "heading_size": "h2",
-        "text": "<p>Use this section to create an elevated campaign story. The content stays calm while the layered images shift with scroll for a more immersive editorial feel.</p>",
-        "button_label": "Explore now",
-        "button_link": "",
-        "enable_pin": true,
-        "enable_parallax": true,
-        "custom_class": "dark",
-        "color_control": "section-light",
-        "padding_top": 80,
-        "padding_bottom": 160
-      }
-    },
     "article_wrapper_tkFWde": {
       "type": "article-wrapper",
       "name": "Articles Wrapper",
@@ -451,12 +390,60 @@
         "color_control": "section-light"
       }
     },
-    "home_intro_LaEWrV": {
-      "type": "home-intro",
-      "disabled": true,
-      "name": "Hero Intro",
+    "testimonial_slider_cfFkrK": {
+      "type": "testimonial-slider",
+      "blocks": {
+        "testimonial_JLwr8d": {
+          "type": "testimonial",
+          "settings": {
+            "show_stars": true,
+            "quote": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined.",
+            "quote_size": "h5",
+            "name": "Sophia Rahman",
+            "role": "Verified customer"
+          }
+        },
+        "testimonial_hbPXzk": {
+          "type": "testimonial",
+          "settings": {
+            "show_stars": true,
+            "quote": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined.",
+            "quote_size": "h5",
+            "name": "Ariana Malik",
+            "role": "Returning customer"
+          }
+        },
+        "testimonial_BMCfLb": {
+          "type": "testimonial",
+          "settings": {
+            "show_stars": true,
+            "quote": "Beautiful product quality and a very premium shopping experience. Everything feels thoughtful and refined.",
+            "quote_size": "h5",
+            "name": "Nadia Karim",
+            "role": "Dubai"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_JLwr8d",
+        "testimonial_hbPXzk",
+        "testimonial_BMCfLb"
+      ],
+      "name": "Testimonial slider",
       "settings": {
-        "heading_text": "<p>Meet the base you'll build every outfit on.</p>"
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "container_width": "container-fluid",
+        "enable_sidebar_space": true,
+        "eyebrow": "Testimonials",
+        "heading": "What clients are saying",
+        "heading_size": "h2",
+        "text": "<p>Add real customer feedback to build trust with a clean editorial slider.</p>",
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "custom_class": "",
+        "color_control": "section-light",
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     }
   },
@@ -469,8 +456,7 @@
     "editorial_depth_stack_WbF3wA",
     "image_overlay_grid_Gz6VEw",
     "image_overlay_grid_Ez7ym8",
-    "editorial_depth_stack_BckPAV",
     "article_wrapper_tkFWde",
-    "home_intro_LaEWrV"
+    "testimonial_slider_cfFkrK"
   ]
 }
