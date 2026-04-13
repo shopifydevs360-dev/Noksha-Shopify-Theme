@@ -185,7 +185,7 @@
   .editorial-depth-stack__inner {
     grid-template-columns: minmax(20rem, 0.88fr) minmax(28rem, 1.12fr);
     gap: clamp(2rem, 4vw, 5rem);
-    align-items: stretch;
+    align-items: start;
   }
 
   .editorial-depth-stack__content {
@@ -193,7 +193,7 @@
     top: 7rem;
     align-self: start;
     padding-top: 1.5rem;
-    padding-bottom: 3rem;
+    padding-bottom: 2rem;
   }
 
   .editorial-depth-stack__heading {
@@ -295,8 +295,10 @@
     killSectionTriggers(section);
 
     const desktopBreakpoint = parseInt(section.dataset.desktopBreakpoint || '991', 10);
+    const enablePin = section.dataset.enablePin === 'true';
     const enableParallax = section.dataset.enableParallax === 'true';
 
+    const content = section.querySelector('[data-editorial-content]');
     const splitItems = section.querySelectorAll('[data-split-reveal]');
     const fadeItems = section.querySelectorAll('[data-fade-reveal]');
     const depthCards = section.querySelectorAll('[data-depth-card]');
@@ -354,6 +356,17 @@
         stagger: 0.1,
         ease: 'power3.out'
       }, '-=0.4');
+
+      if (enablePin && content) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top+=8%',
+          end: 'bottom bottom-=8%',
+          pin: content,
+          pinSpacing: false,
+          anticipatePin: 1
+        });
+      }
 
       depthCards.forEach((card, index) => {
         const strength = parseInt(card.dataset.depth || '40', 10);
