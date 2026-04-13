@@ -28,7 +28,25 @@
           <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
         </div>
       {% else %}
+        <div class="quantity-dropdown" data-qty-dropdown>
+          <button type="button" class="qty-toggle" data-qty-toggle>
+            Qty 1
+          </button>
 
+          <ul class="qty-list">
+            {% assign quantities = "1,2,3,4,5,6" | split: "," %}
+            {% for qty in quantities %}
+              <li
+                class="qty-item {% if forloop.first %}is-selected{% endif %}"
+                data-qty="{{ qty }}"
+              >
+                Qty {{ qty }}
+              </li>
+            {% endfor %}
+          </ul>
+
+          <input type="hidden" name="quantity" value="1">
+        </div>
       {% endif %}
 
       <!-- ADD TO CART -->
