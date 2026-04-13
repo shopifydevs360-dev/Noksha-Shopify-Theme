@@ -398,7 +398,8 @@
           "settings": {
             "quote": "\"A thoughtful, elevated experience from first scroll to final checkout.\"",
             "author": "Amina Rahman",
-            "role": "Customer"
+            "role": "Customer",
+            "background_image": "shopify://shop_images/Youmi00708.jpg"
           }
         },
         "quote_UriGQe": {
@@ -406,7 +407,8 @@
           "settings": {
             "quote": "\"The design feels premium and calm, which made the products feel even more considered.\"",
             "author": "Sara Khan",
-            "role": "Beauty editor"
+            "role": "Beauty editor",
+            "background_image": "shopify://shop_images/Youmi0088_3_Option_1_1b8ec3ca-d0c6-4404-9414-bc10f6033ac3.jpg"
           }
         },
         "quote_GJHwL4": {
