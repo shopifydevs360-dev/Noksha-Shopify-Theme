@@ -55,7 +55,7 @@
     "enable_newsletter": false,
     "enable_notify_me": true,
     "notify_me_color": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-    "sold_out_badge_bg": "#9e9e9e",
+    "sold_out_badge_bg": "#1a1a1a",
     "sold_out_badge_text_color": "#ffffff",
     "custom_badge_bg": "#ffffff",
     "custom_badge_text_color": "#c68b2f",
