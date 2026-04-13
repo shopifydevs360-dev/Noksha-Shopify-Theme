@@ -4,7 +4,7 @@
   assign classes = 'layered-image-story'
   unless section.settings.container_type == "full-width"
     assign classes = classes | append: ' section-x-padding'
-endunless
+  endunless
   assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
   assign classes = classes | append: ' ' | append: section.settings.color_control
   assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
@@ -57,14 +57,14 @@ endunless
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
   }
 
-.layered-image-story__third-image {
+  .layered-image-story__third-image {
     position: absolute;
     top: 8%;
     right: -85%;
-    width: min(28%,13rem);
+    width: min(28%, 13rem);
     z-index: 2;
-    box-shadow: 0 14px 36px #0000001a;
-}
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
+  }
 
   .rtl .layered-image-story__secondary-image {
     right: auto;
@@ -74,6 +74,29 @@ endunless
   .rtl .layered-image-story__third-image {
     right: auto;
     left: 18%;
+  }
+
+  .layered-image-story__media-anim {
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .layered-image-story__media-anim .image,
+  .layered-image-story__media-anim .cropped-image-wrapper,
+  .layered-image-story__media-anim picture,
+  .layered-image-story__media-anim img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .layered-image-story__media-anim img {
+    object-fit: cover;
+    transform: scale(1);
+    will-change: transform;
+    transform-origin: center center;
   }
 
   .layered-image-story__content {
@@ -182,30 +205,36 @@ endunless
     <div class="layered-image-story__inner">
       <div class="layered-image-story__media">
         <div class="layered-image-story__main-image" data-story-main>
-          {% render 'image',
-            image: section.settings.main_image,
-            class: 'cropped-image-wrapper cropped-image--portrait',
-            img_alt: section.settings.heading
-          %}
+          <div class="layered-image-story__media-anim" data-story-main-inner>
+            {% render 'image',
+              image: section.settings.main_image,
+              class: 'cropped-image-wrapper cropped-image--portrait',
+              img_alt: section.settings.heading
+            %}
+          </div>
         </div>
 
         {% if section.settings.third_image != blank %}
           <div class="layered-image-story__third-image" data-story-third>
-            {% render 'image',
-              image: section.settings.third_image,
-              class: 'cropped-image-wrapper cropped-image--portrait',
-              img_alt: section.settings.heading
-            %}
+            <div class="layered-image-story__media-anim" data-story-third-inner>
+              {% render 'image',
+                image: section.settings.third_image,
+                class: 'cropped-image-wrapper cropped-image--portrait',
+                img_alt: section.settings.heading
+              %}
+            </div>
           </div>
         {% endif %}
 
         {% if section.settings.secondary_image != blank %}
           <div class="layered-image-story__secondary-image" data-story-secondary>
-            {% render 'image',
-              image: section.settings.secondary_image,
-              class: 'cropped-image-wrapper cropped-image--portrait',
-              img_alt: section.settings.heading
-            %}
+            <div class="layered-image-story__media-anim" data-story-secondary-inner>
+              {% render 'image',
+                image: section.settings.secondary_image,
+                class: 'cropped-image-wrapper cropped-image--portrait',
+                img_alt: section.settings.heading
+              %}
+            </div>
           </div>
         {% endif %}
       </div>
@@ -245,6 +274,7 @@ endunless
 <script>
   document.addEventListener('DOMContentLoaded', initLayeredImageStory);
   document.addEventListener('shopify:section:load', initLayeredImageStory);
+  document.addEventListener('shopify:section:reorder', initLayeredImageStory);
 
   function initLayeredImageStory() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -252,90 +282,227 @@ endunless
     gsap.registerPlugin(ScrollTrigger);
 
     document.querySelectorAll('[data-layered-story][data-section-id="{{ section.id }}"]').forEach((section) => {
-      if (section.dataset.storyInit === 'true') return;
-      section.dataset.storyInit = 'true';
+      if (section._layeredStoryMM) {
+        section._layeredStoryMM.revert();
+      }
 
       const mainImage = section.querySelector('[data-story-main]');
       const secondaryImage = section.querySelector('[data-story-secondary]');
       const thirdImage = section.querySelector('[data-story-third]');
+      const secondaryInner = section.querySelector('[data-story-secondary-inner]');
+      const thirdInner = section.querySelector('[data-story-third-inner]');
       const textItems = section.querySelectorAll('[data-story-text]');
 
-      if (mainImage) {
-        gsap.set(mainImage, {
-          opacity: 0,
-          y: 40
-        });
-      }
+      const mm = gsap.matchMedia();
+      section._layeredStoryMM = mm;
 
-      if (secondaryImage) {
-        gsap.set(secondaryImage, {
-          opacity: 0,
-          y: 50,
-          x: 20
-        });
-      }
+      mm.add('(min-width: 992px)', () => {
+        if (mainImage) {
+          gsap.set(mainImage, {
+            opacity: 0,
+            y: 40
+          });
+        }
 
-      if (thirdImage) {
-        gsap.set(thirdImage, {
-          opacity: 0,
-          y: -30,
-          x: 16
-        });
-      }
+        if (secondaryImage) {
+          gsap.set(secondaryImage, {
+            opacity: 0,
+            y: 50,
+            x: 20
+          });
+        }
 
-      if (textItems.length) {
-        gsap.set(textItems, {
-          opacity: 0,
-          y: 24
-        });
-      }
+        if (thirdImage) {
+          gsap.set(thirdImage, {
+            opacity: 0,
+            y: -30,
+            x: 16
+          });
+        }
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 82%',
-          once: true
+        if (textItems.length) {
+          gsap.set(textItems, {
+            opacity: 0,
+            y: 24
+          });
+        }
+
+        if (secondaryInner) {
+          gsap.set(secondaryInner, {
+            scale: 0.94,
+            transformOrigin: 'center center',
+            force3D: true
+          });
+        }
+
+        if (thirdInner) {
+          gsap.set(thirdInner, {
+            yPercent: 0,
+            force3D: true
+          });
+        }
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 82%',
+            once: true
+          }
+        });
+
+        if (mainImage) {
+          tl.to(mainImage, {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            ease: 'power3.out'
+          });
+        }
+
+        if (thirdImage) {
+          tl.to(thirdImage, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            duration: 0.65,
+            ease: 'power3.out'
+          }, '-=0.45');
+        }
+
+        if (secondaryImage) {
+          tl.to(secondaryImage, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            duration: 0.75,
+            ease: 'power3.out'
+          }, '-=0.45');
+        }
+
+        if (textItems.length) {
+          tl.to(textItems, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            stagger: 0.12
+          }, '-=0.45');
+        }
+
+        if (secondaryInner) {
+          gsap.to(secondaryInner, {
+            scale: 1.12,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+              end: 'bottom top',
+              scrub: 1.2
+            }
+          });
+        }
+
+        if (thirdImage) {
+          gsap.to(thirdImage, {
+            yPercent: -8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.8
+            }
+          });
+        }
+
+        if (thirdInner) {
+          gsap.to(thirdInner, {
+            yPercent: 6,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 2.2
+            }
+          });
         }
       });
 
-      if (mainImage) {
-        tl.to(mainImage, {
-          opacity: 1,
-          y: 0,
-          duration: 0.85,
-          ease: 'power3.out'
+      mm.add('(max-width: 991px)', () => {
+        if (mainImage) {
+          gsap.set(mainImage, { clearProps: 'all' });
+        }
+
+        if (secondaryImage) {
+          gsap.set(secondaryImage, { clearProps: 'all' });
+        }
+
+        if (thirdImage) {
+          gsap.set(thirdImage, { clearProps: 'all' });
+        }
+
+        if (secondaryInner) {
+          gsap.set(secondaryInner, { clearProps: 'all' });
+        }
+
+        if (thirdInner) {
+          gsap.set(thirdInner, { clearProps: 'all' });
+        }
+
+        if (textItems.length) {
+          gsap.set(textItems, {
+            opacity: 1,
+            y: 0,
+            clearProps: 'transform'
+          });
+        }
+
+        const mobileTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 90%',
+            once: true
+          }
         });
-      }
 
-      if (thirdImage) {
-        tl.to(thirdImage, {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          duration: 0.65,
-          ease: 'power3.out'
-        }, '-=0.45');
-      }
+        if (mainImage) {
+          mobileTl.fromTo(mainImage,
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+          );
+        }
 
-      if (secondaryImage) {
-        tl.to(secondaryImage, {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          duration: 0.75,
-          ease: 'power3.out'
-        }, '-=0.45');
-      }
+        if (secondaryImage) {
+          mobileTl.fromTo(secondaryImage,
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' },
+            '-=0.3'
+          );
+        }
 
-      if (textItems.length) {
-        tl.to(textItems, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          stagger: 0.12
-        }, '-=0.45');
-      }
+        if (thirdImage) {
+          mobileTl.fromTo(thirdImage,
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' },
+            '-=0.25'
+          );
+        }
+
+        if (textItems.length) {
+          mobileTl.fromTo(textItems,
+            { opacity: 0, y: 16 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.45,
+              ease: 'power2.out',
+              stagger: 0.08
+            },
+            '-=0.25'
+          );
+        }
+      });
     });
   }
 </script>
@@ -365,10 +532,10 @@ endunless
       "default": "container"
     },
     {
-        "type": "checkbox",
-        "id": "enable_sidebar_space",
-        "label": "Enable Sidebar Space",
-        "default":false
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable Sidebar Space",
+      "default": false
     },
     {
       "type": "text",
