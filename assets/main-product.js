@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initVariantPriceUpdate();
   initMainProductCart();
   initQuantityDropdown();
+  initQuantityButtons(); // NEW
   initVariantButtonState();
   initVariantSelectedLabelUpdate();
 });
