@@ -7,40 +7,38 @@
   assign p_outer_classes = p_outer_classes | append: ' ' | append: section.settings.color_control
 -%}
 <section class="{{ p_outer_classes }}">
-
   <div class="product-layout">
-
-    <!-- =====================
-         LEFT: PRODUCT MEDIA
-    ====================== -->
+    <!--
+      =====================
+           LEFT: PRODUCT MEDIA
+      ======================
+    -->
     <div class="media-warpper">
       {% render 'main-product-media', product: product %}
     </div>
-    <!-- =====================
-         RIGHT: PRODUCT INFO
-    ====================== -->
+    <!--
+      =====================
+           RIGHT: PRODUCT INFO
+      ======================
+    -->
     <div class="product-info">
-
       {% for block in section.blocks %}
         {% case block.type %}
-
-          <!-- TITLE + PRICE -->
+            <!-- TITLE + PRICE -->
           {% when 'title_price' %}
             {% render 'product-title-price', product: product, block: block %}
 
-
-          <!-- REVIEW COUNT -->
+            <!-- REVIEW COUNT -->
           {% when 'review-count' %}
             {% if product.metafields.reviews.count > 0 %}
               {% render 'review-count', product: product, block: block %}
             {% endif %}
 
-          <!-- ADD TO CART FORM -->
+            <!-- ADD TO CART FORM -->
           {% when 'add_to_cart_form' %}
             {% render 'main-add-to-cart-form', product: product, block: block %}
 
-
-          <!-- SHORT DESCRIPTION -->
+            <!-- SHORT DESCRIPTION -->
           {% when 'short_description' %}
             {% if product.metafields.custom.short_description != blank %}
               <div class="product-block short-description" {{ block.shopify_attributes }}>
@@ -49,20 +47,19 @@
               </div>
             {% endif %}
 
-
-          <!-- FULL DESCRIPTION -->
+            <!-- FULL DESCRIPTION -->
           {% when 'description' %}
             <div class="product-block main-description" {{ block.shopify_attributes }}>
               <h3 class="label {{ block.settings.text_size }}">{{ block.settings.heading }}</h3>
               {{ product.description }}
             </div>
 
-          <!-- ACCORDION -->
+            <!-- ACCORDION -->
           {% when 'accordion' %}
             {% render 'product-accordion', block: block %}
           {% when 'product_meta' %}
             {% render 'product-meta', block: block %}
-          <!-- breadcrumb -->  
+            <!-- breadcrumb -->
           {% when 'breadcrumb' %}
             <nav class="product-breadcrumb" {{ block.shopify_attributes }}>
               <a href="{{ routes.root_url }}">Home</a>
@@ -75,9 +72,11 @@
               <span>/</span>
               <span>{{ product.title }}</span>
             </nav>
-          <!-- =====================
-               COLLECTION NAME ONLY
-          ====================== -->
+            <!--
+              =====================
+                   COLLECTION NAME ONLY
+              ======================
+            -->
           {% when 'product_collection' %}
             {% if product.collections.first %}
               <div class="product-collection" {{ block.shopify_attributes }}>
@@ -85,28 +84,36 @@
               </div>
             {% endif %}
 
-          <!-- =====================
-               icon list item
-          ====================== -->
+            <!--
+              =====================
+                   icon list item
+              ======================
+            -->
           {% when 'icon_list_item' %}
             {% render 'icon-list-item', block: block %}
-          <!-- =====================
-               CUSTOM LIQUID
-          ====================== -->
+            <!--
+              =====================
+                   CUSTOM LIQUID
+              ======================
+            -->
           {% when 'custom_liquid' %}
             <div class="product-block custom-liquid" {{ block.shopify_attributes }}>
               {{ block.settings.custom_liquid }}
             </div>
 
-          <!-- =====================
-               Addon buttons
-          ====================== -->
+            <!--
+              =====================
+                   Addon buttons
+              ======================
+            -->
           {% when 'addon_buttons' %}
             {% render 'addon-buttons', block: block %}
 
-          <!-- =====================
-               RICHTEXT
-          ====================== -->
+            <!--
+              =====================
+                   RICHTEXT
+              ======================
+            -->
           {% when 'richtext' %}
             <div class="product-block richtext" {{ block.shopify_attributes }}>
               {{ block.settings.text }}
@@ -120,11 +127,8 @@
             </div>
         {% endcase %}
       {% endfor %}
-
     </div>
-
   </div>
-
 </section>
 <script src="{{ 'main-product.js' | asset_url }}" defer></script>
 <script src="{{ 'product-media.js' | asset_url }}" defer></script>
@@ -165,9 +169,9 @@
     {
       "type": "@app"
     },
-    { 
-      "type": "title_price", 
-      "name": "Title & price", 
+    {
+      "type": "title_price",
+      "name": "Title & price",
       "limit": 1,
       "settings": [
         {
@@ -178,7 +182,7 @@
             { "value": "h1", "label": "h1" },
             { "value": "h2", "label": "h2" },
             { "value": "h3", "label": "h3" },
-            { "value": "h4", "label": "h4" },
+            { "value": "h4", "label": "h4" }
           ],
           "default": "h2"
         },
@@ -192,16 +196,16 @@
             { "value": "h3", "label": "h3" },
             { "value": "h4", "label": "h4" },
             { "value": "h5", "label": "h5" },
-            { "value": "h6", "label": "h6" },
+            { "value": "h6", "label": "h6" }
           ],
           "default": "h3"
-        },
+        }
       ]
     },
     { "type": "review-count", "name": "Reviews count", "limit": 1 },
-    { 
-      "type": "add_to_cart_form", 
-      "name": "Add to cart", 
+    {
+      "type": "add_to_cart_form",
+      "name": "Add to cart",
       "limit": 1,
       "settings": [
         {
@@ -224,9 +228,19 @@
           ],
           "default": "redirect"
         },
+        {
+          "type": "select",
+          "id": "quantity_style",
+          "label": "Quantity selector style",
+          "options": [
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "buttons", "label": "Plus / Minus Buttons" }
+          ],
+          "default": "dropdown"
+        }
       ]
     },
-    { 
+    {
       "type": "short_description",
       "name": "Short description",
       "limit": 1,
@@ -247,13 +261,14 @@
             { "value": "h3", "label": "h3" },
             { "value": "h4", "label": "h4" },
             { "value": "h5", "label": "h5" },
-            { "value": "h6", "label": "h6" },
+            { "value": "h6", "label": "h6" }
           ],
           "default": "h4"
         }
       ]
     },
-    { "type": "description", 
+    {
+      "type": "description",
       "name": "Description",
       "limit": 1,
       "settings": [
@@ -371,7 +386,7 @@
         {
           "type": "url",
           "id": "link",
-          "label": "Link URL",
+          "label": "Link URL"
         }
       ]
     },
@@ -394,25 +409,25 @@
           "type": "checkbox",
           "id": "show_compare",
           "label": "Show add to compare",
-          "default":true
+          "default": true
         },
         {
           "type": "checkbox",
           "id": "show_wishlist",
           "label": "Show add to wishlist",
-          "default":true
+          "default": true
         },
-        {          
+        {
           "type": "checkbox",
           "id": "show_ask_question",
           "label": "Show ask question",
-          "default":false
+          "default": false
         },
         {
           "type": "checkbox",
           "id": "show_size_guide",
           "label": "Show size guide",
-          "default":false
+          "default": false
         },
         {
           "type": "page",
@@ -423,15 +438,14 @@
           "type": "checkbox",
           "id": "show_social_share",
           "label": "Show share buttons",
-          "default":true
+          "default": true
         },
         {
           "type": "checkbox",
           "id": "show_track_order",
           "label": "Show track order",
-          "default":false
-        },
-
+          "default": false
+        }
       ]
     },
     {
