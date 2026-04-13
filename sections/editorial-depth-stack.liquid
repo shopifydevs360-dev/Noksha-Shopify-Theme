@@ -70,24 +70,43 @@
   overflow: hidden;
   background: rgba(var(--color-background-secondary), 1);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 4 / 5;
+}
+
+.editorial-depth-stack__card-media-inner {
+  position: absolute;
+  inset: -9% 0;
+  height: 118%;
+  will-change: transform;
 }
 
 .editorial-depth-stack__image,
-.editorial-depth-stack__image img,
 .editorial-depth-stack__card .image {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.editorial-depth-stack__card .image img {
+.editorial-depth-stack__image,
+.editorial-depth-stack__card .image,
+.editorial-depth-stack__image picture,
+.editorial-depth-stack__card .image picture {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 100%;
+}
+
+.editorial-depth-stack__image img,
+.editorial-depth-stack__card .image img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center center;
 }
 
 .editorial-depth-stack__placeholder {
-  aspect-ratio: 4 / 5;
+  width: 100%;
+  height: 100%;
   background: rgba(var(--color-background-secondary), 1);
 }
 
@@ -121,7 +140,6 @@
   width: fit-content;
 }
 
-/* Better editorial composition */
 .editorial-depth-stack__card--1 {
   top: 0;
   left: 0;
@@ -162,6 +180,7 @@
 [data-depth-card] {
   opacity: 0;
 }
+
 @media (min-width: 992px) {
   .editorial-depth-stack__inner {
     grid-template-columns: minmax(20rem, 0.88fr) minmax(28rem, 1.12fr);
@@ -214,12 +233,13 @@
     min-height: auto;
   }
 
-.editorial-depth-stack__media-stage {
-  min-height: auto;
-  display: grid;
-  gap: 1rem;
-  padding: 0;
-}
+  .editorial-depth-stack__media-stage {
+    min-height: auto;
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+  }
+
   .editorial-depth-stack__card {
     position: relative;
     inset: auto;
@@ -228,10 +248,11 @@
     transform: none !important;
   }
 
-  .editorial-depth-stack__card--1 .editorial-depth-stack__card-overlay,
-  .editorial-depth-stack__card--2 .editorial-depth-stack__card-overlay,
-  .editorial-depth-stack__card--3 .editorial-depth-stack__card-overlay {
-    right: 0.85rem;
+  .editorial-depth-stack__card-media-inner {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    transform: none !important;
   }
 
   .editorial-depth-stack__card-overlay {
@@ -248,8 +269,9 @@
   }
 }
 {% endstylesheet %}
+
 {% javascript %}
- (function () {
+(function () {
   const SECTION_SELECTOR = '[data-editorial-depth-stack]';
 
   function killSectionTriggers(section) {
@@ -280,7 +302,7 @@
     const splitItems = section.querySelectorAll('[data-split-reveal]');
     const fadeItems = section.querySelectorAll('[data-fade-reveal]');
     const depthCards = section.querySelectorAll('[data-depth-card]');
-    const mediaImages = section.querySelectorAll('.editorial-depth-stack__card .image img');
+    const mediaInners = section.querySelectorAll('[data-depth-media-inner]');
 
     const mm = gsap.matchMedia();
     section._editorialDepthStackMatchMedia = mm;
@@ -299,6 +321,8 @@
           scale: 0.96
         });
       });
+
+      gsap.set(mediaInners, { yPercent: 0, force3D: true });
 
       const introTimeline = gsap.timeline({
         scrollTrigger: {
@@ -403,14 +427,24 @@
       });
 
       if (enableParallax) {
-        mediaImages.forEach((img, index) => {
-          const yPercentTo = index === 0 ? 10 : index === 1 ? 18 : 24;
+        mediaInners.forEach((inner, index) => {
+          let fromY = -2;
+          let toY = 6;
 
-          gsap.fromTo(img,
-            { yPercent: -6, scale: 1.04 },
+          if (index === 1) {
+            fromY = -6;
+            toY = 8;
+          }
+
+          if (index === 2) {
+            fromY = -8;
+            toY = 10;
+          }
+
+          gsap.fromTo(inner,
+            { yPercent: fromY },
             {
-              yPercent: yPercentTo,
-              scale: 1.08,
+              yPercent: toY,
               ease: 'none',
               scrollTrigger: {
                 trigger: section,
@@ -430,6 +464,10 @@
       gsap.set([...splitItems, ...fadeItems, ...depthCards], {
         autoAlpha: 1,
         clearProps: 'transform'
+      });
+
+      gsap.set(mediaInners, {
+        clearProps: 'all'
       });
 
       splitItems.forEach((item, index) => {
@@ -511,6 +549,7 @@
   });
 })();
 {% endjavascript %}
+
 {% render 'section-base-style' %}
 
 {%- liquid
@@ -580,18 +619,20 @@
                 {{ block.shopify_attributes }}
               >
                 <div class="editorial-depth-stack__card-media border-radius-style-two">
-                  {% if image != blank %}
-                    {% render 'image',
-                      image: image,
-                      mobile_image: mobile_image,
-                      class: 'editorial-depth-stack__image',
-                      img_alt: block.settings.title,
-                      loading: 'lazy',
-                      fetchpriority: 'low'
-                    %}
-                  {% else %}
-                    <div class="editorial-depth-stack__placeholder"></div>
-                  {% endif %}
+                  <div class="editorial-depth-stack__card-media-inner" data-depth-media-inner>
+                    {% if image != blank %}
+                      {% render 'image',
+                        image: image,
+                        mobile_image: mobile_image,
+                        class: 'editorial-depth-stack__image',
+                        img_alt: block.settings.title,
+                        loading: 'lazy',
+                        fetchpriority: 'low'
+                      %}
+                    {% else %}
+                      <div class="editorial-depth-stack__placeholder"></div>
+                    {% endif %}
+                  </div>
                 </div>
 
                 {% if block.settings.subtitle != blank or block.settings.title != blank or block.settings.link_label != blank %}
@@ -619,7 +660,6 @@
     </div>
   </div>
 </section>
-
 
 {% schema %}
 {
