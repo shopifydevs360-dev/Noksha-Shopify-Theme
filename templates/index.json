@@ -178,19 +178,74 @@
       "name": "Shop the Look",
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_width": "container-fluid",
+        "container_type": "container",
         "eyebrow": "Shop the look",
         "heading": "Curated for effortless dressing",
         "heading_size": "h2",
         "text": "<p>Highlight a complete look and guide customers to the exact products featured in the image.</p>",
         "button_label": "Explore collection",
         "button_link": "",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "editorial_depth_stack_WbF3wA": {
+      "type": "editorial-depth-stack",
+      "blocks": {
+        "layer_Rmyjtx": {
+          "type": "layer",
+          "settings": {
+            "subtitle": "Look 01",
+            "title": "Soft tailoring",
+            "link_label": "Shop this",
+            "link": "",
+            "depth_strength": 40
+          }
+        },
+        "layer_dUACfp": {
+          "type": "layer",
+          "settings": {
+            "subtitle": "Look 02",
+            "title": "Layered neutrals",
+            "link_label": "Shop this",
+            "link": "",
+            "depth_strength": 70
+          }
+        },
+        "layer_Y6XWdi": {
+          "type": "layer",
+          "settings": {
+            "subtitle": "Look 03",
+            "title": "Quiet statement",
+            "link_label": "Shop this",
+            "link": "",
+            "depth_strength": 100
+          }
+        }
+      },
+      "block_order": [
+        "layer_Rmyjtx",
+        "layer_dUACfp",
+        "layer_Y6XWdi"
+      ],
+      "name": "Editorial depth stack",
+      "settings": {
+        "color_scheme": "",
+        "container_width": "container-fluid",
+        "eyebrow": "Editorial motion",
+        "heading": "A layered scroll composition with depth, movement, and premium pacing.",
+        "heading_size": "h2",
+        "text": "<p>Use this section to create an elevated campaign story. The content stays calm while the layered images shift with scroll for a more immersive editorial feel.</p>",
+        "button_label": "Explore now",
+        "button_link": "",
         "enable_pin": true,
         "enable_parallax": true,
         "custom_class": "",
-        "color_control": "section-light",
-        "padding_top": 48,
-        "padding_bottom": 48
+        "color_control": "section-dark",
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     },
     "image_overlay_grid_Gz6VEw": {
@@ -367,6 +422,7 @@
         "enable_pin": true,
         "enable_parallax": true,
         "custom_class": "dark",
+        "color_control": "section-light",
         "padding_top": 80,
         "padding_bottom": 160
       }
@@ -401,6 +457,7 @@
     "collection_tab_HFCJgQ",
     "layered_image_text_story_pFPCCy",
     "shop_the_look_VCTH6r",
+    "editorial_depth_stack_WbF3wA",
     "image_overlay_grid_Gz6VEw",
     "image_overlay_grid_Ez7ym8",
     "editorial_depth_stack_BckPAV",
