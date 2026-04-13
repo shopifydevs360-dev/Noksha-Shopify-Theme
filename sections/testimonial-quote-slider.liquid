@@ -11,7 +11,6 @@
 
 .testimonial-quote-slider__slider {
   position: relative;
-  border-radius: var(--border-radius-style-two, 12px);
   overflow: hidden;
 }
 
@@ -21,7 +20,8 @@
 
 .testimonial-quote-slider__slide {
   position: relative;
-  min-height: clamp(32rem, 56vw, 48rem);
+  min-height: var(--testimonial-slide-height, 760px);
+  height: var(--testimonial-slide-height, 760px);
   display: flex;
   align-items: stretch;
   isolation: isolate;
@@ -39,24 +39,38 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, var(--testimonial-overlay-opacity, 0.22)) 0%,
-    rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.55)) 38%,
-    rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.15)) 100%
-  );
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 1.2)) 0%,
+      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.9)) 26%,
+      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.45)) 52%,
+      rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.08)) 100%
+    );
   pointer-events: none;
 }
 
 .testimonial-quote-slider__bg .image,
-.testimonial-quote-slider__bg .image img {
+.testimonial-quote-slider__bg picture,
+.testimonial-quote-slider__bg img {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.testimonial-quote-slider__bg .image img {
+.testimonial-quote-slider__bg picture {
+  display: block;
+}
+
+.testimonial-quote-slider__bg .image {
+  height: 100%;
+}
+
+.testimonial-quote-slider__bg img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center center;
 }
 
 .testimonial-quote-slider__texture {
@@ -64,10 +78,10 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.22;
+  opacity: 0.16;
   background:
-    radial-gradient(circle at 18% 18%, rgba(var(--color-additional-1), 0.12), transparent 28%),
-    radial-gradient(circle at 82% 30%, rgba(var(--color-additional-2), 0.10), transparent 26%),
+    radial-gradient(circle at 20% 18%, rgba(var(--color-additional-1), 0.08), transparent 28%),
+    radial-gradient(circle at 82% 34%, rgba(var(--color-additional-2), 0.06), transparent 24%),
     linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
 }
 
@@ -75,6 +89,7 @@
   position: relative;
   z-index: 3;
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
 }
@@ -96,7 +111,7 @@
   margin: 0;
   max-width: 11ch;
   font-family: var(--font-heading-family, sans-serif);
-  font-size: clamp(2.2rem, 5vw, 5.25rem);
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
   line-height: 0.98;
   letter-spacing: -0.03em;
   color: rgb(var(--color-heading));
@@ -122,22 +137,30 @@
 
 .testimonial-quote-slider__foreground {
   position: absolute;
-  bottom: 0;
   right: var(--testimonial-foreground-right, 7%);
+  bottom: 0;
   z-index: 2;
   width: min(var(--testimonial-foreground-width, 26rem), 30%);
+  max-height: 92%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   pointer-events: none;
 }
 
 .testimonial-quote-slider__foreground .image,
-.testimonial-quote-slider__foreground .image img {
+.testimonial-quote-slider__foreground picture,
+.testimonial-quote-slider__foreground img {
   width: 100%;
   display: block;
 }
 
-.testimonial-quote-slider__foreground .image img {
+.testimonial-quote-slider__foreground img {
+  width: 100%;
   height: auto;
+  max-height: 100%;
   object-fit: contain;
+  object-position: bottom center;
 }
 
 .testimonial-quote-slider__footer {
@@ -199,15 +222,17 @@
 
 @media (max-width: 991px) {
   .testimonial-quote-slider__slide {
-    min-height: 34rem;
+    min-height: var(--testimonial-slide-height-mobile, 620px);
+    height: var(--testimonial-slide-height-mobile, 620px);
   }
 
   .testimonial-quote-slider__bg::after {
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.10)) 0%,
-      rgba(0, 0, 0, calc(var(--testimonial-overlay-opacity, 0.22) * 0.48)) 100%
-    );
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.18)) 0%,
+        rgba(255, 255, 255, calc(var(--testimonial-overlay-opacity, 0.18) * 0.55)) 100%
+      );
   }
 
   .testimonial-quote-slider__content-wrap {
@@ -221,13 +246,14 @@
 
   .testimonial-quote-slider__quote {
     max-width: 100%;
-    font-size: clamp(1.8rem, 9vw, 3.4rem);
+    font-size: clamp(1.9rem, 9vw, 3.5rem);
     line-height: 1.02;
   }
 
   .testimonial-quote-slider__foreground {
-    width: min(var(--testimonial-foreground-width-mobile, 12rem), 42%);
     right: 1rem;
+    width: min(var(--testimonial-foreground-width-mobile, 12rem), 42%);
+    max-height: 72%;
   }
 }
 {% endstylesheet %}
@@ -262,9 +288,26 @@
     });
   }
 
+  function updateCounter(section, swiper) {
+    const current = section.querySelector('[data-slider-current]');
+    const total = section.querySelector('[data-slider-total]');
+    if (!current || !total || !swiper) return;
+
+    const realIndex = swiper.realIndex + 1;
+    const totalSlides = swiper.slides.length - (swiper.loopedSlides * 2);
+    const safeTotal = totalSlides > 0 ? totalSlides : swiper.slides.length;
+
+    current.textContent = String(realIndex).padStart(2, '0');
+    total.textContent = String(safeTotal).padStart(2, '0');
+  }
+
   function initTestimonialQuoteSlider(section) {
     if (!section) return;
-    if (section.dataset.initialized === 'true') return;
+
+    if (section._testimonialQuoteSwiper && typeof section._testimonialQuoteSwiper.destroy === 'function') {
+      section._testimonialQuoteSwiper.destroy(true, true);
+    }
+
     if (typeof Swiper === 'undefined') return;
 
     const swiperElement = section.querySelector('.testimonial-quote-slider__swiper');
@@ -284,6 +327,8 @@
       allowTouchMove: true,
       autoHeight: false,
       watchOverflow: true,
+      observer: true,
+      observeParents: true,
       fadeEffect: {
         crossFade: true
       },
@@ -313,26 +358,11 @@
     });
 
     section._testimonialQuoteSwiper = swiper;
-    section.dataset.initialized = 'true';
-  }
-
-  function updateCounter(section, swiper) {
-    const current = section.querySelector('[data-slider-current]');
-    const total = section.querySelector('[data-slider-total]');
-    if (!current || !total || !swiper) return;
-
-    const realIndex = swiper.realIndex + 1;
-    const totalSlides = swiper.slides.length - (swiper.loopedSlides * 2);
-    const safeTotal = totalSlides > 0 ? totalSlides : swiper.slides.length;
-
-    current.textContent = String(realIndex).padStart(2, '0');
-    total.textContent = String(safeTotal).padStart(2, '0');
   }
 
   function initAllTestimonialQuoteSliders(scope) {
     const root = scope || document;
-    const sections = root.querySelectorAll(SECTION_SELECTOR);
-    sections.forEach(initTestimonialQuoteSlider);
+    root.querySelectorAll(SECTION_SELECTOR).forEach(initTestimonialQuoteSlider);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -370,6 +400,8 @@
     --testimonial-foreground-width: {{ section.settings.foreground_width }}rem;
     --testimonial-foreground-width-mobile: {{ section.settings.foreground_width_mobile }}rem;
     --testimonial-foreground-right: {{ section.settings.foreground_right_offset }}%;
+    --testimonial-slide-height: {{ section.settings.slide_height_desktop }}px;
+    --testimonial-slide-height-mobile: {{ section.settings.slide_height_mobile }}px;
   "
   {{ section.shopify_attributes }}
 >
@@ -569,7 +601,7 @@
       "max": 70,
       "step": 5,
       "unit": "%",
-      "default": 20
+      "default": 35
     },
     {
       "type": "range",
@@ -589,7 +621,7 @@
       "max": 34,
       "step": 1,
       "unit": "rem",
-      "default": 26
+      "default": 24
     },
     {
       "type": "range",
@@ -610,6 +642,26 @@
       "step": 1,
       "unit": "%",
       "default": 7
+    },
+    {
+      "type": "range",
+      "id": "slide_height_desktop",
+      "label": "Slide height desktop",
+      "min": 500,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 760
+    },
+    {
+      "type": "range",
+      "id": "slide_height_mobile",
+      "label": "Slide height mobile",
+      "min": 420,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 620
     },
     {
       "type": "text",
