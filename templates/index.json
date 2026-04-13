@@ -338,7 +338,7 @@
         "layer_iXXXrK": {
           "type": "layer",
           "settings": {
-            "image": "shopify://shop_images/Youmi01693.jpg",
+            "image": "shopify://shop_images/Youmi0088_3_Option2.jpg",
             "subtitle": "Look 01",
             "title": "Soft tailoring",
             "link_label": "Shop this",
@@ -388,7 +388,7 @@
         "enable_parallax": true,
         "custom_class": "",
         "padding_top": 80,
-        "padding_bottom": 80
+        "padding_bottom": 160
       }
     },
     "article_wrapper_tkFWde": {
