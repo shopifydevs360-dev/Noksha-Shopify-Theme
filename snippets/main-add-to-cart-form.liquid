@@ -106,17 +106,6 @@
     </div>
   {% endform %}
 </div>
-
-
-{% if can_continue %}
-  {% if inv <= 0 %}
-    Pre-order
-  {% else %}
-    Add to cart
-  {% endif %}
-{% else %}
-  Out of stock
-{% endif %}
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
 </script>
