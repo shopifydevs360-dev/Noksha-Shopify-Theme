@@ -191,7 +191,7 @@
         "button_label": "Explore collection",
         "button_link": "",
         "look_image": "shopify://shop_images/Youmi0088_3_Option2.jpg",
-        "aspect_ratio": "cropped-image--portrait",
+        "aspect_ratio": "cropped-image--square",
         "padding_top": 48,
         "padding_bottom": 48,
         "custom_class": "",
