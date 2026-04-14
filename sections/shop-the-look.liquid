@@ -1,7 +1,7 @@
 {% render 'section-base-style' %}
 
 {%- liquid
-  assign classes = 'shop-the-look section-x-padding'
+  assign classes = 'shop-the-look'
   assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
   assign classes = classes | append: ' ' | append: section.settings.color_control
   assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
