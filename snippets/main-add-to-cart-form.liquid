@@ -53,31 +53,31 @@
 
       <!-- ADD TO CART -->
       <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
-        <button
-          type="submit"
-          class="btn-add-to-cart"
-          data-role="add-to-cart"
-          {% unless current_variant.available %}
-            disabled
-          {% endunless %}
-        >
+<button
+  type="submit"
+  class="btn-add-to-cart"
+  data-role="add-to-cart"
 
-        {% if inventory_tracked %}
-          {% if inv <= 0 and can_continue %}
-            Pre-order
-          {% else %}
-            Add to Bag
-          {% endif %}
-        {% else %}
-          Add to Bag
-        {% endif %}
-          {% comment %} {% if current_variant.available %}
-            Add to cart
-          {% else %}
-            Out of stock
-          {% endif %} {% endcomment %}
+  data-text-add="Add to Bag"
+  data-text-preorder="Pre-order"
+  data-text-soldout="Out of stock"
 
-        </button>
+  {% unless current_variant.available %}
+    disabled
+  {% endunless %}
+>
+
+{% if inventory_tracked %}
+  {% if inv <= 0 and can_continue %}
+    Pre-order
+  {% else %}
+    Add to Bag
+  {% endif %}
+{% else %}
+  Add to Bag
+{% endif %}
+
+</button>
       </div>
     </div>
 
@@ -123,4 +123,7 @@
           {% endif %}
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
+</script>
+<script>
+  
 </script>
