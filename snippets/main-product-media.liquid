@@ -3,15 +3,8 @@
     echo 'Product media unavailable'
     break
   endif
-
   assign media_count = product.media.size
-  assign image_media_count = 0
 
-  for media in product.media
-    if media.media_type == 'image'
-      assign image_media_count = image_media_count | plus: 1
-    endif
-  endfor
 -%}
 
 <div class="product-media">
@@ -19,73 +12,61 @@
   <!-- =====================
        MAIN MEDIA
   ====================== -->
-  <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape" id="MainProductMedia">
-    <div class="swiper-wrapper">
+<div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape" id="MainProductMedia">
+  <div class="swiper-wrapper">
 
-      {% assign rendered_media_ids = '' %}
-      {% assign has_variant_media = false %}
+    {% assign rendered_media_ids = '' %}
+    {% assign has_variant_media = false %}
 
-      {% for variant in product.variants %}
-        {% if variant.featured_media and variant.featured_media.media_type == 'image' %}
-          {% assign has_variant_media = true %}
-          {% assign media_id = variant.featured_media.id | append: '' %}
+    {% for variant in product.variants %}
+      {% if variant.featured_media %}
+        {% assign has_variant_media = true %}
+        {% assign media_id = variant.featured_media.id | append: '' %}
 
-          {% unless rendered_media_ids contains media_id %}
-            {% assign rendered_media_ids = rendered_media_ids | append: media_id | append: ',' %}
+        {% unless rendered_media_ids contains media_id %}
+          {% assign rendered_media_ids = rendered_media_ids | append: media_id | append: ',' %}
 
-            <div class="swiper-slide" data-media-id="{{ variant.featured_media.id }}">
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: variant.featured_media,
-                width: variant.featured_media.width,
-                height: variant.featured_media.height,
-                crop: 'center',
-                img_alt: variant.featured_media.alt,
-                style: wrapper_style
-              %}
-            </div>
-          {% endunless %}
-        {% endif %}
-      {% endfor %}
-
-      {%- comment -%}
-        If NO variant images exist → fallback to featured image / first image / default icon
-      {%- endcomment -%}
-      {% unless has_variant_media %}
-        {% assign fallback_media = blank %}
-
-        {% if product.featured_media and product.featured_media.media_type == 'image' %}
-          {% assign fallback_media = product.featured_media %}
-        {% else %}
-          {% for media in product.media %}
-            {% if media.media_type == 'image' %}
-              {% assign fallback_media = media %}
-              {% break %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-
-        <div class="swiper-slide" {% if fallback_media %}data-media-id="{{ fallback_media.id }}"{% endif %}>
-          {% if fallback_media %}
+          <div class="swiper-slide" data-media-id="{{ variant.featured_media.id }}">
             {% render 'image',
               class: 'js-open-lightbox',
-              image: fallback_media,
-              width: fallback_media.width,
-              height: fallback_media.height,
+              image: variant.featured_media,
+              width: variant.featured_media.width,
+              height: variant.featured_media.height,
               crop: 'center',
-              img_alt: fallback_media.alt,
+              img_alt: variant.featured_media.alt,
               style: wrapper_style
             %}
-          {% else %}
-            <div class="product-media__fallback js-open-lightbox">
-              {%- render 'theme-icon', icon: 'default-image' -%}
-            </div>
-          {% endif %}
-        </div>
-      {% endunless %}
+          </div>
 
-    </div>
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+
+    {%- comment -%}
+    If NO variant images exist → fallback to first product image
+    {%- endcomment -%}
+    {% unless has_variant_media %}
+      {% assign fallback_media = product.featured_media | default: product.media.first %}
+      {% if fallback_media and fallback_media.media_type == 'image' %}
+        <div class="swiper-slide" data-media-id="{{ fallback_media.id }}">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: fallback_media,
+            width: fallback_media.width,
+            height: fallback_media.height,
+            crop: 'center',
+            img_alt: fallback_media.alt,
+            style: wrapper_style
+          %}
+        </div>
+      {% endif %}
+    {% endunless %}
+
   </div>
+</div>
+
+
+
 
   <!-- =====================
        VIDEO ROW (IF EXISTS)
@@ -117,87 +98,64 @@
     </div>
   {% endif %}
 
-  <!-- =====================
-       THUMBNAILS
-  ====================== -->
-  {% if image_media_count > 1 %}
-    <div class="product-media__thumbs swiper">
-      <div class="swiper-wrapper">
+{% if media_count > 1 %}
+  <div class="product-media__thumbs swiper">
+    <div class="swiper-wrapper">
 
-        {%- comment -%}
-          Render all images except the first image
-        {%- endcomment -%}
-        {% assign first_image_id = blank %}
-        {% for media in product.media %}
-          {% if media.media_type == 'image' %}
-            {% assign first_image_id = media.id %}
-            {% break %}
-          {% endif %}
-        {% endfor %}
+      {%- comment -%}
+      First pass: render all images EXCEPT the first
+      {%- endcomment -%}
+      {% for media in product.media offset: 1 %}
+        {% if media.media_type == 'image' %}
+          <div class="swiper-slide">
+          {% render 'image',
+            class: 'js-open-lightbox',
+            image: media,
+            crop: 'center',
+            width: media.width,
+            height: media.height,
+            img_alt: media.alt
+          %}
 
-        {% for media in product.media %}
-          {% if media.media_type == 'image' and media.id != first_image_id %}
-            <div class="swiper-slide">
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: media,
-                crop: 'center',
-                width: media.width,
-                height: media.height,
-                img_alt: media.alt
-              %}
-            </div>
-          {% endif %}
-        {% endfor %}
-
-        {%- comment -%}
-          Render first image at the end
-        {%- endcomment -%}
-        {% if first_image_id %}
-          {% for media in product.media %}
-            {% if media.media_type == 'image' and media.id == first_image_id %}
-              <div class="swiper-slide">
-                {% render 'image',
-                  class: 'js-open-lightbox',
-                  image: media,
-                  crop: 'center',
-                  width: media.width,
-                  height: media.height,
-                  img_alt: media.alt,
-                  data_lightbox_index: image_media_count | minus: 1
-                %}
-              </div>
-              {% break %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-
-      </div>
-
-      <div class="swiper-nav-wrapper">
-        <button class="swiper-button-prev" aria-label="Previous slide">
-          <span class="inner-text h5">Previous</span>
-        </button>
-
-        <button class="swiper-button-next" aria-label="Next slide">
-          <span class="line"></span>
-          <span class="inner-text h5">Next</span>
-        </button>
-      </div>
-
-      <div class="swiper-pagination"></div>
-    </div>
-  {% elsif image_media_count == 0 %}
-    <div class="product-media__thumbs swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <div class="product-media__fallback product-media__fallback--thumb">
-            {%- render 'theme-icon', icon: 'default-image' -%}
           </div>
+        {% endif %}
+      {% endfor %}
+
+      {%- comment -%}
+      Second pass: render the FIRST image at the end
+      {%- endcomment -%}
+      {% assign first_media = product.media.first %}
+      {% if first_media.media_type == 'image' %}
+        <div class="swiper-slide">
+        {% render 'image',
+          class: 'js-open-lightbox',
+          image: first_media,
+          crop: 'center',
+          width: first_media.width,
+          height: first_media.height,
+          img_alt: first_media.alt,
+          data_lightbox_index: product.media.size | minus: 1
+        %}
         </div>
-      </div>
+      {% endif %}
+
     </div>
-  {% endif %}
+
+    <div class="swiper-nav-wrapper">
+      <button class="swiper-button-prev" aria-label="Previous slide">
+        <span class="inner-text h5">Previous</span>
+      </button>
+
+      <button class="swiper-button-next" aria-label="Next slide">
+        <span class="line"></span>
+        <span class="inner-text h5">Next</span>
+      </button>
+    </div>
+
+    <div class="swiper-pagination"></div>
+  </div>
+{% endif %}
+
 
 </div>
 
@@ -213,27 +171,19 @@
     <div class="swiper media-lightbox__slider">
       <div class="swiper-wrapper">
 
-        {% if image_media_count > 0 %}
-          {% for media in product.media %}
-            {% if media.media_type == 'image' %}
-              <div class="swiper-slide">
-                {% render 'image',
-                  image: media,
-                  width: media.width,
-                  height: media.height,
-                  img_alt: media.alt,
-                  loading: 'eager'
-                %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        {% else %}
-          <div class="swiper-slide">
-            <div class="product-media__fallback product-media__fallback--lightbox">
-              {%- render 'theme-icon', icon: 'default-image' -%}
+        {% for media in product.media %}
+          {% if media.media_type == 'image' %}
+            <div class="swiper-slide">
+              {% render 'image',
+                image: media,
+                width: media.width,
+                height: media.height,
+                img_alt: media.alt,
+                loading: 'eager'
+              %}
             </div>
-          </div>
-        {% endif %}
+          {% endif %}
+        {% endfor %}
 
       </div>
 
@@ -243,53 +193,3 @@
     </div>
   </div>
 </div>
-
-{% stylesheet %}
-/* Make product layout full height */
-.product-section,
-.product,
-.product__info-wrapper {
-  height: 100%;
-}
-
-/* Make media wrapper stretch */
-.product-media {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Main media should fill */
-.product-media__main {
-  flex: 1;
-  height: 100%;
-}
-
-/* Swiper fix */
-.product-media__main .swiper,
-.product-media__main .swiper-wrapper,
-.product-media__main .swiper-slide {
-  height: 100%;
-}
-
-/* Image inside slide */
-.product-media__main .image,
-.product-media__main img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Fallback icon fix */
-.product-media__fallback {
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-{% endstylesheet %}
