@@ -62,15 +62,15 @@
           {% endunless %}
         >
 
-        {% if inventory_tracked %}
-          {% if inv <= 0 and can_continue %}
-            Pre-order
-          {% else %}
-            Add to Bag
-          {% endif %}
-        {% else %}
-          Add to Bag
-        {% endif %}
+{% if can_continue %}
+  {% if inv <= 0 %}
+    Pre-order
+  {% else %}
+    Add to cart
+  {% endif %}
+{% else %}
+  Out of stock
+{% endif %}
           {% comment %} {% if current_variant.available %}
             Add to cart
           {% else %}
@@ -102,9 +102,7 @@
     </div>
   {% endform %}
 </div>
-{% assign current_variant = product.selected_or_first_available_variant %}
-{% assign inv = current_variant.inventory_quantity %}
-{% assign can_continue = current_variant.available %}
+
 
 {% if can_continue %}
   {% if inv <= 0 %}
