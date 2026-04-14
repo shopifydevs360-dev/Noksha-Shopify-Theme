@@ -161,11 +161,8 @@ function updateWishlistCount() {
   countElements.forEach((element) => {
     element.textContent = count;
 
-    if (count > 0) {
-      element.classList.remove('hide');
-    } else {
-      element.classList.add('hide');
-    }
+    // Always show count (even 0)
+    element.classList.remove('hide');
   });
 }
 
