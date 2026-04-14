@@ -10,12 +10,7 @@
     {% endif %}
 
     {% if block.settings.show_wishlist %}
-      <li class="addon-item">
-        <a href="#add-to-wishlist" class="addon-link btn-wishlist">
-          <span class="addon-icon">{% render 'theme-icon', icon: 'wishlist' %}</span>
-          <span class="addon-text">Wishlist</span>
-        </a>
-      </li>
+
             <button
         type="button"
         class="product-card__wishlist-btn"
@@ -28,9 +23,8 @@
         data-product-price="{{ product.price }}"
         data-product-image="{% if product.featured_image %}{{ product.featured_image | image_url: width: 533 }}{% endif %}"
       >
-        <span class="icon icon-wishlist" aria-hidden="true">
-          {%- render 'theme-icon', icon: 'wishlist' -%}
-        </span>
+          <span class="addon-icon">{% render 'theme-icon', icon: 'wishlist' %}</span>
+          <span class="addon-text">Wishlist</span>
       </button>
     {% endif %}
 
