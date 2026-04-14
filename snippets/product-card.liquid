@@ -104,6 +104,8 @@
           </div>
         {% else %}
           {% assign variant = product.variants.first %}
+          {% assign inv = variant.inventory_quantity %}
+          {% assign can_continue = variant_variant.available %}
           <form method="post" action="{{ routes.cart_add_url }}" class="product-form">
             <input type="hidden" name="id" value="{{ variant.id }}">
 
