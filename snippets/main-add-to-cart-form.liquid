@@ -113,8 +113,9 @@
             {% else %}
             Add to cart
           {% else %}
+                        {% endif %}
               Out of stock
-            {% endif %}
+
           {% endif %}
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
