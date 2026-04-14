@@ -125,5 +125,38 @@
   {{ product.variants | json }}
 </script>
 <script>
-  
+  function toggleStockUI(variantId) {
+  const variant = window.product?.variants?.find(v => v.id == variantId);
+  if (!variant) return;
+
+  const addToCartBtn = document.querySelector('[data-role="add-to-cart"]');
+  const buyNowBtn = document.querySelector('[data-role="buy-now"]');
+  const notifyBtn = document.querySelector('[data-role="notify"]');
+
+  if (!addToCartBtn) return;
+
+  const textAdd = addToCartBtn.dataset.textAdd;
+  const textPreorder = addToCartBtn.dataset.textPreorder;
+  const textSoldout = addToCartBtn.dataset.textSoldout;
+
+  if (variant.available) {
+    addToCartBtn.disabled = false;
+    buyNowBtn?.classList.remove('hide');
+    notifyBtn?.classList.add('hide');
+
+    // Preorder logic
+    if (variant.inventory_management && variant.inventory_quantity <= 0 && variant.inventory_policy === "continue") {
+      addToCartBtn.textContent = textPreorder;
+    } else {
+      addToCartBtn.textContent = textAdd;
+    }
+
+  } else {
+    addToCartBtn.disabled = true;
+    buyNowBtn?.classList.add('hide');
+    notifyBtn?.classList.remove('hide');
+
+    addToCartBtn.textContent = textSoldout;
+  }
+}
 </script>
