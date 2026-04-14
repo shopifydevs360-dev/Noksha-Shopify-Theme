@@ -51,26 +51,7 @@
         </div>
       {% endif %}
 
-      <!-- ADD TO CART -->
-      <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
-        <button
-          type="submit"
-          class="btn-add-to-cart"
-          data-role="add-to-cart"
-          {% unless current_variant.available %}
-            disabled
-          {% endunless %}
-        >
 
-
-          {% comment %} {% if current_variant.available %}
-            Add to cart
-          {% else %}
-            Out of stock
-          {% endif %} {% endcomment %}
-
-        </button>
-      </div>
     </div>
 
     <!-- BUY / NOTIFY -->
