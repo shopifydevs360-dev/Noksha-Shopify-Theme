@@ -1,277 +1,501 @@
-<div class="product-block addon-buttons"{{ block.shopify_attributes }}>
- <ul>
+<div class="product-block addon-buttons" {{ block.shopify_attributes }}>
+  <ul>
     {% if block.settings.show_compare %}
-    <li class="addon-item">
-      <a href="#add-to-compare" class="addon-link btn-compare">
-        <span class="addon-icon">{% render 'theme-icon', icon: 'compare' %}</span>
-        <span class="addon-text">Compare</span>
-      </a>
-    </li>
-    {% endif %}
-    {% if block.settings.show_wishlist %}
-    <li class="addon-item">
-      <a href="#add-to-wishlist" class="addon-link btn-wishlist">
-        <span class="addon-icon">{% render 'theme-icon', icon: 'wishlist' %}</span>
-        <span class="addon-text">Wishlist</span>
+      <li class="addon-item">
+        <a href="#add-to-compare" class="addon-link btn-compare">
+          <span class="addon-icon">{% render 'theme-icon', icon: 'compare' %}</span>
+          <span class="addon-text">Compare</span>
         </a>
-    </li>
+      </li>
     {% endif %}
-    {% if block.settings.show_ask_question %}
-    <li class="addon-item">
-      <a href="#" class="addon-link" data-popup="ask-question">
-        <span class="addon-icon">{% render 'theme-icon', icon: 'question' %}</span>
-        <span class="addon-text">Ask Question</span>
-      </a>
-    </li>
-    {% endif %}
-    {% if block.settings.show_size_guide %}
-    <li class="addon-item">
-      <a href="#" class="addon-link" data-popup="size-guide">
-        <span class="addon-icon">{% render 'theme-icon', icon: 'measure' %}</span>
-        <span class="addon-text">Size Guide</span>
-      </a>
-    </li>
-    {% endif %}
-    {% if block.settings.show_track_order %}
-    <li class="addon-item">
-      <a href="{{ settings.track_order_page_url }}" class="addon-link btn-track-order">
-        <span class="addon-icon">{% render 'theme-icon', icon: 'map' %}</span>
-        <span class="addon-text">Track Order</span>
-      </a>
-    </li>
-    {% endif %}
-    {% if block.settings.show_social_share %}
-    <li class="addon-item">
-      <a href="#" class="addon-link" data-popup="share">
-        <span class="addon-icon">{% render 'theme-icon', icon: 'social-share' %}</span>
-        <span class="addon-text">Share</span>
-      </a>
-    </li>
-    {% endif %}
- </ul>
-</div>
 
+    {% if block.settings.show_wishlist %}
+      <li class="addon-item">
+        <a href="#add-to-wishlist" class="addon-link btn-wishlist">
+          <span class="addon-icon">{% render 'theme-icon', icon: 'wishlist' %}</span>
+          <span class="addon-text">Wishlist</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if block.settings.show_ask_question %}
+      <li class="addon-item">
+        <a href="#" class="addon-link" data-popup="ask-question">
+          <span class="addon-icon">{% render 'theme-icon', icon: 'question' %}</span>
+          <span class="addon-text">Ask Question</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if block.settings.show_size_guide %}
+      <li class="addon-item">
+        <a href="#" class="addon-link" data-popup="size-guide">
+          <span class="addon-icon">{% render 'theme-icon', icon: 'measure' %}</span>
+          <span class="addon-text">Size Guide</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if block.settings.show_track_order %}
+      <li class="addon-item">
+        <a href="{{ settings.track_order_page_url }}" class="addon-link btn-track-order">
+          <span class="addon-icon">{% render 'theme-icon', icon: 'map' %}</span>
+          <span class="addon-text">Track Order</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if block.settings.show_social_share %}
+      <li class="addon-item">
+        <a href="#" class="addon-link" data-popup="share">
+          <span class="addon-icon">{% render 'theme-icon', icon: 'social-share' %}</span>
+          <span class="addon-text">Share</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</div>
 
 <div class="noksha-popup-overlay"></div>
 
 <!-- Ask Question -->
-<!-- Ask Question -->
-<div class="noksha-popup" id="popup-ask-question">
-  <div class="popup-inner ask-contact">
-    <button class="popup-close">&times;</button>
+<div class="noksha-popup" id="popup-ask-question" aria-hidden="true">
+  <div class="popup-inner ask-contact" role="dialog" aria-modal="true" aria-labelledby="AskQuestionTitle">
+    <button class="popup-close" type="button" aria-label="Close popup">&times;</button>
 
-    <!-- Product Info Header -->
-    <div class="ask-product-info">
-      <div class="ask-product-image">
+    <div class="popup-product-head">
+      <div class="popup-product-media">
         {% if product.featured_image %}
-            {% render 'image',
-              image: product.featured_image,
-              width: 50,
-              height: 50,
-              crop: 'center',
-              img_alt: product.title
-            %}
+          {% render 'image',
+            image: product.featured_image,
+            width: 72,
+            height: 72,
+            crop: 'center',
+            img_alt: product.title,
+            class: 'popup-product-image'
+          %}
         {% endif %}
       </div>
 
-      <div class="ask-product-details">
-        <h4 class="ask-product-title">{{ product.title }}</h4>
+      <div class="popup-product-content">
+        <p class="popup-eyebrow">Product inquiry</p>
+        <h3 class="popup-title" id="AskQuestionTitle">Ask a question</h3>
+        <p class="popup-text">
+          Have a question about this product? Send us your message and we’ll get back to you by email.
+        </p>
+        <p class="popup-product-title">{{ product.title }}</p>
       </div>
     </div>
 
-    <h3 class="popup-title">Ask a Question</h3>
-
-    {% form 'contact' %}
-      <!-- Hidden product data -->
+    {% form 'contact', class: 'popup-form' %}
       <input type="hidden" name="contact[Product Name]" value="{{ product.title }}">
-      <!-- User fields -->
-      <div class="field">
-      <label for="yourname">Name</label>
-      <input type="text" name="contact[name]" id="yourname" placeholder="Your Name" required>
-      </div>
-      <div class="field">
-      <label for="youremail">Email</label>
-      <input type="email" name="contact[email]" id="youremail" placeholder="Your Email" required>
-      </div>
-      <div class="field">
-      <label for="yourquestion">Massage</label>
-      <textarea name="contact[Message]" id="yourquestion" placeholder="Your Question" required></textarea>
-      </div>
-      <button class="button" type="submit">Send Question</button>
 
+      <div class="popup-field-grid">
+        <div class="field">
+          <label for="AskQuestionName">Name</label>
+          <input type="text" name="contact[name]" id="AskQuestionName" placeholder="Your name" required>
+        </div>
+
+        <div class="field">
+          <label for="AskQuestionEmail">Email</label>
+          <input type="email" name="contact[email]" id="AskQuestionEmail" placeholder="your@email.com" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="AskQuestionMessage">Message</label>
+        <textarea name="contact[Message]" id="AskQuestionMessage" placeholder="Write your question here" required></textarea>
+      </div>
+
+      <button class="button popup-submit-btn" type="submit">Send Question</button>
     {% endform %}
-
   </div>
 </div>
 
-
 <!-- Size Guide -->
-<div class="noksha-popup" id="popup-size-guide">
-  <div class="popup-inner">
-    <button class="popup-close">&times;</button>
-    <h3 class="popup-title">Size Guide</h3>
+<div class="noksha-popup" id="popup-size-guide" aria-hidden="true">
+  <div class="popup-inner" role="dialog" aria-modal="true" aria-labelledby="SizeGuideTitle">
+    <button class="popup-close" type="button" aria-label="Close popup">&times;</button>
 
-    {% if block.settings.size_guide_page != blank %}
-      {{ pages[block.settings.size_guide_page].content }}
-    {% else %}
-      <p>No size guide page selected.</p>
-    {% endif %}
+    <div class="popup-head">
+      <p class="popup-eyebrow">Helpful information</p>
+      <h3 class="popup-title" id="SizeGuideTitle">Size Guide</h3>
+      <p class="popup-text">
+        Use this guide to choose the most suitable option before placing your order.
+      </p>
+    </div>
+
+    <div class="popup-richtext">
+      {% if block.settings.size_guide_page != blank %}
+        {{ pages[block.settings.size_guide_page].content }}
+      {% else %}
+        <p>No size guide page selected.</p>
+      {% endif %}
+    </div>
   </div>
 </div>
 
 <!-- Share -->
-<div class="noksha-popup" id="popup-share">
-  <div class="popup-inner">
-    <button class="popup-close">&times;</button>
-    <h3 class="popup-title">Share Product</h3>
+<div class="noksha-popup" id="popup-share" aria-hidden="true">
+  <div class="popup-inner" role="dialog" aria-modal="true" aria-labelledby="ShareProductTitle">
+    <button class="popup-close" type="button" aria-label="Close popup">&times;</button>
+
+    <div class="popup-head">
+      <p class="popup-eyebrow">Share this product</p>
+      <h3 class="popup-title" id="ShareProductTitle">Share Product</h3>
+      <p class="popup-text">
+        Share this product with friends or copy the direct link.
+      </p>
+    </div>
 
     <div class="share-links">
-      <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}"><span class="addon-icon">{% render 'theme-icon', icon: 'facebook' %}</span></a>
-      <a target="_blank" href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}"><span class="addon-icon">{% render 'theme-icon', icon: 'twitter' %}</span></a>
-      <a target="_blank" href="https://wa.me/?text={{ shop.url }}{{ product.url }}"><span class="addon-icon">{% render 'theme-icon', icon: 'whatsapp' %}</span></a>
+      <a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}" aria-label="Share on Facebook">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'facebook' %}</span>
+        <span>Facebook</span>
+      </a>
+
+      <a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}" aria-label="Share on Twitter">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'twitter' %}</span>
+        <span>Twitter</span>
+      </a>
+
+      <a target="_blank" rel="noopener" href="https://wa.me/?text={{ shop.url }}{{ product.url }}" aria-label="Share on WhatsApp">
+        <span class="addon-icon">{% render 'theme-icon', icon: 'whatsapp' %}</span>
+        <span>WhatsApp</span>
+      </a>
     </div>
 
     <div class="copy-link">
-      <input type="text" value="{{ shop.url }}{{ product.url }}" id="noksha-share-url" readonly>
-      <button class="button" type="button" id="noksha-copy-btn">Copy</button>
+      <label for="noksha-share-url" class="copy-link__label">Product link</label>
+      <div class="copy-link__row">
+        <input type="text" value="{{ shop.url }}{{ product.url }}" id="noksha-share-url" readonly>
+        <button class="button" type="button" id="noksha-copy-btn">Copy</button>
+      </div>
+      <p class="copy-link__helper">Copy the link and share it anywhere you like.</p>
     </div>
   </div>
 </div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
+    const overlay = document.querySelector('.noksha-popup-overlay');
+    const popups = document.querySelectorAll('.noksha-popup');
 
-  const overlay = document.querySelector('.noksha-popup-overlay');
-  const popups = document.querySelectorAll('.noksha-popup');
-
-  document.querySelectorAll('[data-popup]').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const popup = document.getElementById('popup-' + this.dataset.popup);
-      overlay.classList.add('active');
-      popup.classList.add('active');
-    });
-  });
-
-  document.querySelectorAll('.popup-close, .noksha-popup-overlay').forEach(el => {
-    el.addEventListener('click', function() {
+    function closeAllPopups() {
       overlay.classList.remove('active');
-      popups.forEach(p => p.classList.remove('active'));
-    });
-  });
+      popups.forEach(popup => {
+        popup.classList.remove('active');
+        popup.setAttribute('aria-hidden', 'true');
+      });
+      document.body.classList.remove('noksha-popup-open');
+    }
 
-  const copyBtn = document.getElementById('noksha-copy-btn');
-  if (copyBtn) {
-    copyBtn.addEventListener('click', function() {
-      const input = document.getElementById('noksha-share-url');
-      input.select();
-      document.execCommand('copy');
-      this.innerText = "Copied!";
-      setTimeout(() => this.innerText = "Copy", 2000);
+    document.querySelectorAll('[data-popup]').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const popup = document.getElementById('popup-' + this.dataset.popup);
+        if (!popup) return;
+
+        overlay.classList.add('active');
+        popup.classList.add('active');
+        popup.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('noksha-popup-open');
+      });
     });
+
+    document.querySelectorAll('.popup-close, .noksha-popup-overlay').forEach(el => {
+      el.addEventListener('click', closeAllPopups);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeAllPopups();
+      }
+    });
+
+    const copyBtn = document.getElementById('noksha-copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async function () {
+        const input = document.getElementById('noksha-share-url');
+        if (!input) return;
+
+        try {
+          await navigator.clipboard.writeText(input.value);
+          this.innerText = 'Copied!';
+          setTimeout(() => {
+            this.innerText = 'Copy';
+          }, 2000);
+        } catch (error) {
+          input.select();
+          document.execCommand('copy');
+          this.innerText = 'Copied!';
+          setTimeout(() => {
+            this.innerText = 'Copy';
+          }, 2000);
+        }
+      });
+    }
+  });
+</script>
+
+{% stylesheet %}
+  body.noksha-popup-open {
+    overflow: hidden;
   }
 
-});
-</script>
-{% stylesheet %}
   .noksha-popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: .3s ease;
-  z-index: 999;
-}
+    position: fixed;
+    inset: 0;
+    background: rgba(var(--color-overlay), calc(var(--color-overlay-opacity) / 100));
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 999;
+  }
 
-.noksha-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(.95);
-  background: #fff;
-  width: 90%;
-  max-width: 500px;
-  padding: 30px;
-  border-radius: 10px;
-  opacity: 0;
-  visibility: hidden;
-  transition: .3s ease;
-  z-index: 1000;
-}
+  .noksha-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(92vw, 620px);
+    max-height: calc(100vh - 40px);
+    overflow: auto;
+    transform: translate(-50%, -50%) scale(0.96);
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-text));
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+  }
 
-.noksha-popup.active,
-.noksha-popup-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
+  .noksha-popup.active,
+  .noksha-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
 
-.noksha-popup.active {
-  transform: translate(-50%, -50%) scale(1);
-}
+  .noksha-popup.active {
+    transform: translate(-50%, -50%) scale(1);
+  }
 
-.popup-close {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-.popup-title {
-    font-size: 1em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 2px solid rgb(var(--color-border));
-    padding-bottom: 0.2rem;
-    margin-bottom: 1rem;
-    width: fit-content;
-}
-.ask-product-info {
+  .popup-inner {
+    position: relative;
+    padding: 30px 28px;
+  }
+
+  .popup-close {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid rgb(var(--color-border));
-    padding-bottom: 0.7rem;
-}
-.ask-contact .field {
-    display: flex;
-    flex-direction: column;
-}
-.ask-contact label {
-    font-size: 0.9em;
+    justify-content: center;
+  }
+
+  .popup-head,
+  .popup-product-head {
+    margin-bottom: 22px;
+  }
+
+  .popup-product-head {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+
+  .popup-product-media .image {
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+  }
+
+  .popup-eyebrow {
+    margin: 0 0 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    opacity: 0.7;
+  }
+
+  .popup-title {
+    font-size: 1.1em;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin: 0 0 10px;
+    border-bottom: 1px solid rgb(var(--color-border));
+    padding-bottom: 10px;
+    width: fit-content;
+  }
+
+  .popup-text {
+    margin: 0;
+    line-height: 1.6;
+    max-width: 40ch;
+  }
+
+  .popup-product-title {
+    margin: 10px 0 0;
     font-weight: 600;
-}
-.ask-contact input {
-    padding: .8rem 0;
-    border-bottom: 2px solid rgb(var(--color-border));
+  }
+
+  .popup-form .field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .popup-field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .ask-contact label,
+  .copy-link__label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .ask-contact input,
+  .ask-contact textarea,
+  .copy-link input {
+    width: 100%;
+    border: 1px solid rgb(var(--color-border));
     border-radius: 0;
-    margin-bottom: 1.4rem;
-}
-textarea {
-    height: 8rem;
-    border: 2px solid rgb(var(--color-border));
-    border-radius: 0;
-    margin-top: 0.4rem;
-    margin-bottom: 1.2rem;
-}
-.ask-contact .button,
-.copy-link .button {
+    background: transparent;
+    color: rgb(var(--color-text));
+  }
+
+  .ask-contact input {
+    min-height: 50px;
+    padding: 0 14px;
+  }
+
+  .ask-contact textarea {
+    min-height: 140px;
+    padding: 14px;
+    resize: vertical;
+    margin-top: 0;
+  }
+
+  .popup-form .field + .field {
+    margin-top: 16px;
+  }
+
+  .popup-field-grid + .field {
+    margin-top: 16px;
+  }
+
+  .popup-submit-btn,
+  .copy-link .button {
     background: rgb(var(--color-heading));
     color: rgb(var(--color-background));
-    border: 2px solid rgb(var(--color-heading));
-    padding: 0.8rem 2rem;
+    border: 1px solid rgb(var(--color-heading));
+    padding: 0.9rem 1.8rem;
     font-size: 0.9em;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-bottom: 1rem;
-}
-.ask-contact .button:hover,
-.copy-link .button:hover {
+    letter-spacing: 0.12em;
+    margin-top: 18px;
+  }
+
+  .popup-submit-btn:hover,
+  .copy-link .button:hover {
     background: transparent;
     color: rgb(var(--color-heading));
-}
+  }
+
+  .popup-richtext {
+    line-height: 1.7;
+  }
+
+  .popup-richtext table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .popup-richtext th,
+  .popup-richtext td {
+    border: 1px solid rgb(var(--color-border));
+    padding: 10px 12px;
+    text-align: left;
+  }
+
+  .share-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .share-links a {
+    border: 1px solid rgb(var(--color-border));
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    color: rgb(var(--color-text));
+  }
+
+  .copy-link__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: stretch;
+    margin-top: 8px;
+  }
+
+  .copy-link input {
+    min-height: 52px;
+    padding: 0 14px;
+  }
+
+  .copy-link__helper {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0.65;
+  }
+
+  @media (max-width: 767px) {
+    .noksha-popup {
+      width: min(94vw, 620px);
+      max-height: calc(100vh - 24px);
+    }
+
+    .popup-inner {
+      padding: 24px 18px;
+    }
+
+    .popup-product-head {
+      grid-template-columns: 1fr;
+    }
+
+    .popup-field-grid,
+    .share-links,
+    .copy-link__row {
+      grid-template-columns: 1fr;
+    }
+
+    .share-links a,
+    .copy-link .button,
+    .popup-submit-btn {
+      width: 100%;
+    }
+  }
 {% endstylesheet %}
