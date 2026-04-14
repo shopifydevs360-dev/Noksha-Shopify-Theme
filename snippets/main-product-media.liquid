@@ -13,7 +13,6 @@
        MAIN MEDIA
   ====================== -->
 <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape" id="MainProductMedia">
-   {% if image_media_count > 0 %}
   <div class="swiper-wrapper">
 
     {% assign rendered_media_ids = '' %}
@@ -40,6 +39,8 @@
           </div>
 
         {% endunless %}
+      {% else %}
+        {%- render 'theme-icon', icon: 'default-image' -%}
       {% endif %}
     {% endfor %}
 
@@ -64,9 +65,6 @@
     {% endunless %}
 
   </div>
-        {% else %}
-        {%- render 'theme-icon', icon: 'default-image' -%}
-      {% endif %}
 </div>
 
 
