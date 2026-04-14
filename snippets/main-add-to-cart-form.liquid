@@ -53,31 +53,31 @@
 
       <!-- ADD TO CART -->
       <div class="product-actions" data-cart-behavior="{{ block.settings.cart_behavior }}">
-<button
-  type="submit"
-  class="btn-add-to-cart"
-  data-role="add-to-cart"
+        <button
+          type="submit"
+          class="btn-add-to-cart"
+          data-role="add-to-cart"
+          {% unless current_variant.available %}
+            disabled
+          {% endunless %}
+        >
 
-  data-text-add="Add to Bag"
-  data-text-preorder="Pre-order"
-  data-text-soldout="Out of stock"
+        {% if inventory_tracked %}
+          {% if inv <= 0 and can_continue %}
+            Pre-order
+          {% else %}
+            Add to Bag
+          {% endif %}
+        {% else %}
+          Add to Bag
+        {% endif %}
+          {% comment %} {% if current_variant.available %}
+            Add to cart
+          {% else %}
+            Out of stock
+          {% endif %} {% endcomment %}
 
-  {% unless current_variant.available %}
-    disabled
-  {% endunless %}
->
-
-{% if inventory_tracked %}
-  {% if inv <= 0 and can_continue %}
-    Pre-order
-  {% else %}
-    Add to Bag
-  {% endif %}
-{% else %}
-  Add to Bag
-{% endif %}
-
-</button>
+        </button>
       </div>
     </div>
 
@@ -123,40 +123,4 @@
           {% endif %}
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
-</script>
-<script>
-  function toggleStockUI(variantId) {
-  const variant = window.product?.variants?.find(v => v.id == variantId);
-  if (!variant) return;
-
-  const addToCartBtn = document.querySelector('[data-role="add-to-cart"]');
-  const buyNowBtn = document.querySelector('[data-role="buy-now"]');
-  const notifyBtn = document.querySelector('[data-role="notify"]');
-
-  if (!addToCartBtn) return;
-
-  const textAdd = addToCartBtn.dataset.textAdd;
-  const textPreorder = addToCartBtn.dataset.textPreorder;
-  const textSoldout = addToCartBtn.dataset.textSoldout;
-
-  if (variant.available) {
-    addToCartBtn.disabled = false;
-    buyNowBtn?.classList.remove('hide');
-    notifyBtn?.classList.add('hide');
-
-    // Preorder logic
-    if (variant.inventory_management && variant.inventory_quantity <= 0 && variant.inventory_policy === "continue") {
-      addToCartBtn.textContent = textPreorder;
-    } else {
-      addToCartBtn.textContent = textAdd;
-    }
-
-  } else {
-    addToCartBtn.disabled = true;
-    buyNowBtn?.classList.add('hide');
-    notifyBtn?.classList.remove('hide');
-
-    addToCartBtn.textContent = textSoldout;
-  }
-}
 </script>
