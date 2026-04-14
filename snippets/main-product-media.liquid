@@ -245,23 +245,58 @@
 </div>
 
 {% stylesheet %}
-  .product-media__main .swiper-slide,
-  .product-media__thumbs .swiper-slide,
-  .media-lightbox__slider .swiper-slide {
-    height: auto;
-  }
+/* Make product layout full height */
+.product-section,
+.product,
+.product__info-wrapper {
+  height: 100%;
+}
 
+/* Make media wrapper stretch */
+.product-media {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-  .product-media__main .swiper-wrapper,
-  .product-media__main .swiper-slide {
-    height: 100%;
-  }
+/* Main media should fill */
+.product-media__main {
+  flex: 1;
+  height: 100%;
+}
 
-  .product-media__fallback--thumb {
-    min-height: 120px;
-  }
+/* Swiper fix */
+.product-media__main .swiper,
+.product-media__main .swiper-wrapper,
+.product-media__main .swiper-slide {
+  height: 100%;
+}
 
+/* Image inside slide */
+.product-media__main .image,
+.product-media__main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
+/* Fallback icon fix */
+.product-media__fallback {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SVG icon sizing */
+.product-media__fallback svg {
+  width: 120px;
+  height: 120px;
+  opacity: 0.6;
+}
 
 
 {% endstylesheet %}
