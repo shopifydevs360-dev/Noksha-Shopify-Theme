@@ -1,9 +1,9 @@
 <div class="product-block product-form-wrapper" {{ block.shopify_attributes }}>
   {% form 'product', product, class: 'product-form' %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
+    {% comment %} {% assign current_variant = product.selected_or_first_available_variant %}
     {% assign inv = current_variant.inventory_quantity %}
     {% assign can_continue = current_variant.available %}
-    {% assign inventory_tracked = current_variant.inventory_management %}
+    {% assign inventory_tracked = current_variant.inventory_management %} {% endcomment %}
     <!-- REQUIRED VARIANT ID (CRITICAL) -->
     <input type="hidden" name="id" value="{{ current_variant.id }}">
 
@@ -102,15 +102,10 @@
     </div>
   {% endform %}
 </div>
-        {% if inventory_tracked %}
-          {% if inv <= 0 and can_continue %}
-            Pre-order
-          {% else %}
-            Add to Bag
-          {% endif %}
-        {% else %}
-          Add to Bag
-        {% endif %}
+    {% assign current_variant = product.selected_or_first_available_variant %}
+    {% assign inv = current_variant.inventory_quantity %}
+    {% assign can_continue = current_variant.available %}
+    {% assign inventory_tracked = current_variant.inventory_management %}
 
           {% if current_variant.available %}
             {% if inv <= 0 %}
