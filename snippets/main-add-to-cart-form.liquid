@@ -115,11 +115,6 @@
           {% if current_variant.available %}
             Add to cart
           {% else %}
-            Out of stock
-          {% endif %}
-          {% if current_variant.available %}
-            Add to cart
-          {% else %}
             {% if inv <= 0 and can_continue %}
               Pre-order
             {% else %}
