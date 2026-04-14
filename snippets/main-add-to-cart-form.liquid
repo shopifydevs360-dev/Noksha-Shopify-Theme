@@ -113,7 +113,7 @@
         {% endif %}
 
           {% if current_variant.available %}
-                        {% if inv <= 0 and can_continue %}
+            {% if inv <= 0 %}
               Pre-order
             {% else %}
             Add to cart
