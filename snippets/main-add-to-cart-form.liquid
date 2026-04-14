@@ -102,21 +102,27 @@
     </div>
   {% endform %}
 </div>
-    {% assign current_variant = product.selected_or_first_available_variant %}
-    {% assign inv = current_variant.inventory_quantity %}
-    {% assign can_continue = current_variant.available %}
-    {% assign inventory_tracked = current_variant.inventory_management %}
+{% assign current_variant = product.selected_or_first_available_variant %}
 
-          {% if current_variant.available %}
-            {% if inv <= 0 %}
-              Pre-order
-            {% else %}
-            Add to cart
-          {% else %}
-                        {% endif %}
-              Out of stock
+{% if current_variant.available %}
 
-          {% endif %}
+  {% if current_variant.inventory_management 
+        and current_variant.inventory_quantity <= 0 
+        and current_variant.inventory_policy == 'continue' %}
+    
+    Pre-order
+
+  {% else %}
+    
+    Add to cart
+
+  {% endif %}
+
+{% else %}
+
+  Out of stock
+
+{% endif %}
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
 </script>
