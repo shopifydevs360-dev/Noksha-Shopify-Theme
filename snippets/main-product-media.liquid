@@ -39,6 +39,8 @@
           </div>
 
         {% endunless %}
+        {% else %}
+{%- render 'theme-icon', icon: 'default-image' -%}
       {% endif %}
     {% endfor %}
 
