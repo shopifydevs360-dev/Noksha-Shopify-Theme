@@ -111,6 +111,12 @@
         {% else %}
           Add to Bag
         {% endif %}
+
+          {% if current_variant.available %}
+            Add to cart
+          {% else %}
+            Out of stock
+          {% endif %}
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
 </script>
