@@ -7,8 +7,7 @@
   assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
   assign classes = classes | append: ' ' | append: section.settings.custom_class | default: ''
   assign image_classes = 'cropped-image-wrapper cropped-image--portrait-tall'
-    assign image_classes = image_classes | append: ' ' | append: section.settings.image_aspect_ratio
-
+  assign image_classes = image_classes | append: ' ' | append: section.settings.image_aspect_ratio
 -%}
 
 {% stylesheet %}
@@ -325,21 +324,21 @@
       if (media) {
         gsap.set(media, {
           opacity: 0,
-          y: 40
+          y: 40,
         });
       }
 
       if (textItems.length) {
         gsap.set(textItems, {
           opacity: 0,
-          y: 24
+          y: 24,
         });
       }
 
       if (hotspots.length) {
         gsap.set(hotspots, {
           opacity: 0,
-          scale: 0.8
+          scale: 0.8,
         });
       }
 
@@ -347,8 +346,8 @@
         scrollTrigger: {
           trigger: section,
           start: 'top 82%',
-          once: true
-        }
+          once: true,
+        },
       });
 
       if (media) {
@@ -356,28 +355,36 @@
           opacity: 1,
           y: 0,
           duration: 0.9,
-          ease: 'power3.out'
+          ease: 'power3.out',
         });
       }
 
       if (textItems.length) {
-        tl.to(textItems, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          stagger: 0.12
-        }, '-=0.45');
+        tl.to(
+          textItems,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            stagger: 0.12,
+          },
+          '-=0.45'
+        );
       }
 
       if (hotspots.length) {
-        tl.to(hotspots, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          ease: 'back.out(1.6)',
-          stagger: 0.08
-        }, '-=0.35');
+        tl.to(
+          hotspots,
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            ease: 'back.out(1.6)',
+            stagger: 0.08,
+          },
+          '-=0.35'
+        );
       }
     });
   }
@@ -450,6 +457,34 @@
       "type": "image_picker",
       "id": "look_image",
       "label": "Look image"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect Ratio",
+      "options": [
+        {
+          "value": "cropped-image--square",
+          "label": "square"
+        },
+        {
+          "value": "cropped-image--portrait",
+          "label": "portrait"
+        },
+        {
+          "value": "cropped-image--portrait-tall",
+          "label": "portrait-tall"
+        },
+        {
+          "value": "cropped-image--landscape",
+          "label": "landscape"
+        },
+        {
+          "value": "cropped-image--wide",
+          "label": "wide"
+        }
+      ],
+      "default": "cropped-image--square"
     },
     {
       "type": "header",
@@ -532,10 +567,7 @@
   "presets": [
     {
       "name": "Shop the Look",
-      "blocks": [
-        { "type": "product_hotspot" },
-        { "type": "product_hotspot" }
-      ]
+      "blocks": [{ "type": "product_hotspot" }, { "type": "product_hotspot" }]
     }
   ]
 }
