@@ -20,31 +20,39 @@
       <p class="notify-me__eyebrow">Back in stock</p>
       <h3 id="NotifyMeTitle" class="notify-me__title">Notify me when available</h3>
       <p class="notify-me__text">
-        Enter your email address and we will let you know when this product becomes available again.
+        Enter your email address and we’ll notify you as soon as this product is back in stock.
       </p>
 
       {% form 'customer', class: 'notify-me__form' %}
         <input type="hidden" name="contact[tags]" value="notify-me">
 
+        <label for="NotifyMeEmail" class="notify-me__label">Email address</label>
+
         <div class="notify-me__field-group">
           <input
+            id="NotifyMeEmail"
             type="email"
             name="contact[email]"
             class="notify-me__input"
-            placeholder="Email address"
+            placeholder="your@email.com"
             required
             autocorrect="off"
             autocapitalize="off"
+            autocomplete="email"
           >
 
           <button type="submit" class="notify-me__submit btn btn--primary">
-            Subscribe
+            Notify me
           </button>
         </div>
 
+        <p class="notify-me__helper">
+          We’ll send you a one-time email when this item is available again.
+        </p>
+
         {% if form.posted_successfully? %}
           <p class="notify-me__message notify-me__message--success">
-            Thanks. We’ll notify you when it’s back.
+            Thanks. We’ll email you when this product is back in stock.
           </p>
         {% endif %}
 
@@ -73,19 +81,20 @@
     position: absolute;
     inset: 0;
     background: rgba(var(--color-overlay), calc(var(--color-overlay-opacity) / 100));
+    z-index: 999;
   }
 
   .notify-me__dialog {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: min(92vw, 560px);
+    width: min(92vw, 620px);
     transform: translate(-50%, -50%);
     background: rgb(var(--color-background));
     color: rgb(var(--color-text));
-    padding: 32px;
+    padding: 36px 32px;
     z-index: 1001;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
   }
 
   .notify-me__close {
@@ -94,17 +103,20 @@
     right: 12px;
     width: 40px;
     height: 40px;
-    font-size: 28px;
+    border: none;
+    background: transparent;
+    font-size: 30px;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
 
   .notify-me__content {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .notify-me__eyebrow {
@@ -112,20 +124,29 @@
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    opacity: 0.75;
+    opacity: 0.7;
   }
 
   .notify-me__title {
     margin: 0;
+    max-width: 12ch;
   }
 
   .notify-me__text {
-    margin: 0 0 6px;
-    max-width: 42ch;
+    margin: 0;
+    max-width: 34ch;
+    line-height: 1.5;
   }
 
   .notify-me__form {
-    margin-top: 8px;
+    margin-top: 10px;
+  }
+
+  .notify-me__label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 8px;
+    opacity: 0.75;
   }
 
   .notify-me__field-group {
@@ -136,19 +157,35 @@
   }
 
   .notify-me__input {
-    min-height: 52px;
+    min-height: 54px;
     padding: 0 16px;
+    border: 1px solid rgb(var(--color-border));
+    background: transparent;
+    color: rgb(var(--color-text));
+  }
+
+  .notify-me__input::placeholder {
+    opacity: 0.6;
   }
 
   .notify-me__submit {
-    min-height: 52px;
-    white-space: nowrap;
+    min-height: 54px;
     padding-inline: 24px;
+    white-space: nowrap;
+  }
+
+  .notify-me__helper {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0.65;
+    max-width: 42ch;
   }
 
   .notify-me__message {
-    margin-top: 12px;
+    margin-top: 14px;
     font-size: 14px;
+    line-height: 1.5;
   }
 
   .notify-me__message--success {
@@ -161,8 +198,12 @@
 
   @media (max-width: 767px) {
     .notify-me__dialog {
-      width: min(94vw, 560px);
-      padding: 24px 18px;
+      width: min(94vw, 620px);
+      padding: 28px 18px 22px;
+    }
+
+    .notify-me__title {
+      max-width: none;
     }
 
     .notify-me__field-group {
