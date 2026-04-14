@@ -62,15 +62,7 @@
           {% endunless %}
         >
 
-        {% if inventory_tracked %}
-          {% if inv <= 0 and can_continue %}
-            Pre-order
-          {% else %}
-            Add to Bag
-          {% endif %}
-        {% else %}
-          Add to Bag
-        {% endif %}
+
           {% comment %} {% if current_variant.available %}
             Add to cart
           {% else %}
