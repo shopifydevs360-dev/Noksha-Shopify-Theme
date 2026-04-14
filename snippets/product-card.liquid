@@ -75,6 +75,8 @@
               width="{{ hover_image.width }}"
               height="{{ hover_image.height }}"
             >
+              {% else %}
+{%- render 'theme-icon', icon: 'default-image' -%}
           {% endif %}
         </div>
       </a>
