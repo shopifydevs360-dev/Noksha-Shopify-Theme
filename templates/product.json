@@ -44,13 +44,13 @@
         "addon_buttons_HDrn66": {
           "type": "addon_buttons",
           "settings": {
-            "show_compare": true,
+            "show_compare": false,
             "show_wishlist": true,
             "show_ask_question": true,
-            "show_size_guide": true,
+            "show_size_guide": false,
             "size_guide_page": "terms-conditions",
             "show_social_share": true,
-            "show_track_order": true
+            "show_track_order": false
           }
         },
         "description_Th49Tf": {
