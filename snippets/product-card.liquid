@@ -91,41 +91,43 @@
                   type="button"
                   class="card-variant-btn {% unless variant.available %} disabled{% endunless %}"
                   data-variant-id="{{ variant.id }}"
-                  {% unless variant.available %}disabled{% endunless %}
+                  {% unless variant.available %}
+                    disabled
+                  {% endunless %}
                 >
                   <span>{{ variant.title }}</span>
                   <span>{{ variant.price | money }}</span>
                 </button>
               {% endfor %}
             </div>
-            <button type="button" class="add-to-cart-btn single-product">
-              Make Selection
-            </button>
+            <button type="button" class="add-to-cart-btn single-product">Make Selection</button>
           </div>
         {% else %}
-{% assign variant = product.variants.first %}
-{% assign inv = variant.inventory_quantity %}
-{% assign can_continue = variant.available %}
+          {% assign variant = product.variants.first %}
+          {% assign inv = variant.inventory_quantity %}
+          {% assign can_continue = variant.available %}
 
-<form method="post" action="{{ routes.cart_add_url }}" class="product-form">
-  <input type="hidden" name="id" value="{{ variant.id }}">
+          <form method="post" action="{{ routes.cart_add_url }}" class="product-form">
+            <input type="hidden" name="id" value="{{ variant.id }}">
 
-  <button
-    type="submit"
-    class="add-to-cart-btn single-product"
-    {% unless variant.available %}disabled{% endunless %}
-  >
-    {% if can_continue %}
-      {% if inv <= 0 %}
-        Pre-order
-      {% else %}
-        Add to Bag
-      {% endif %}
-    {% else %}
-      Out of stock
-    {% endif %}
-  </button>
-</form>
+            <button
+              type="submit"
+              class="add-to-cart-btn single-product"
+              {% unless variant.available %}
+                disabled
+              {% endunless %}
+            >
+              {% if can_continue %}
+                {% if inv <= 0 %}
+                  Pre-order
+                {% else %}
+                  Add to Bag
+                {% endif %}
+              {% else %}
+                Out of stock
+              {% endif %}
+            </button>
+          </form>
         {% endif %}
       </div>
     </div>
