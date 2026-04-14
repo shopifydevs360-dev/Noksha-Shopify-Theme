@@ -1,7 +1,7 @@
 <div class="product-block product-form-wrapper" {{ block.shopify_attributes }}>
   {% form 'product', product, class: 'product-form' %}
     {% assign current_variant = product.selected_or_first_available_variant %}
-    {% assign inv = variant.inventory_quantity %}
+    {% assign inv = current_variant.inventory_quantity %}
     {% assign can_continue = current_variant.available %}
     {% assign inventory_tracked = current_variant.inventory_management %}
     <!-- REQUIRED VARIANT ID (CRITICAL) -->
