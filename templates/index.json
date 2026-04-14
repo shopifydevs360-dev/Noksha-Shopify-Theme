@@ -183,7 +183,8 @@
       "name": "Shop the Look",
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_width": "full-width",
+        "container_type": "full-width",
+        "enable_sidebar_space": false,
         "eyebrow": "Shop the look",
         "heading": "Curated for effortless dressing",
         "heading_size": "h2",
