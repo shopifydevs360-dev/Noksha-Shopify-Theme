@@ -102,7 +102,15 @@
     </div>
   {% endform %}
 </div>
-
+        {% if inventory_tracked %}
+          {% if inv <= 0 and can_continue %}
+            Pre-order
+          {% else %}
+            Add to Bag
+          {% endif %}
+        {% else %}
+          Add to Bag
+        {% endif %}
 <script type="application/json" id="ProductVariantsJson">
   {{ product.variants | json }}
 </script>
