@@ -70,23 +70,23 @@ function initVariantPriceUpdate() {
     });
   }
 
-  // NEW – stock control
-  function toggleStockUI(variantId) {
-    const variant = window.product.variants.find(v => v.id == variantId);
-    if (!variant) return;
+  // // NEW – stock control
+  // function toggleStockUI(variantId) {
+  //   const variant = window.product.variants.find(v => v.id == variantId);
+  //   if (!variant) return;
 
-    if (variant.available) {
-      addToCartBtn.textContent = 'Add to cart';
-      addToCartBtn.disabled = false;
-      buyNowBtn?.classList.remove('hide');
-      notifyBtn?.classList.add('hide');
-    } else {
-      addToCartBtn.textContent = 'Out of stock';
-      addToCartBtn.disabled = true;
-      buyNowBtn?.classList.add('hide');
-      notifyBtn?.classList.remove('hide');
-    }
-  }
+  //   if (variant.available) {
+  //     addToCartBtn.textContent = 'Add to cart';
+  //     addToCartBtn.disabled = false;
+  //     buyNowBtn?.classList.remove('hide');
+  //     notifyBtn?.classList.add('hide');
+  //   } else {
+  //     addToCartBtn.textContent = 'Out of stock';
+  //     addToCartBtn.disabled = true;
+  //     buyNowBtn?.classList.add('hide');
+  //     notifyBtn?.classList.remove('hide');
+  //   }
+  // }
 }
 
 /* =================================
