@@ -1,5 +1,6 @@
 {% comment %} {{ 'collection-tab.css' | asset_url | stylesheet_tag }} {% endcomment %}
 {% render 'section-base-style' %}
+
 <div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
   <div class="product-carousel section-{{ section.id }}-padding">
     <!-- ================= MOBILE TITLE ================= -->
@@ -83,167 +84,273 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const section = document.querySelector('.js-product-carousel-{{ section.id }}');
-  if (!section) return;
-
-  const tabs = section.querySelectorAll('.js-slider-filter');
-  const slides = section.querySelectorAll('.product-slide');
-  const shopNowBtn = section.querySelector('.js-shop-now-btn');
-
-  const hasGSAP = typeof gsap !== 'undefined';
-  const hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
-
-  if (hasGSAP && hasScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-  }
-
-  let sectionInView = false;
-
-  /* ---------------- FILTER TABS SWIPER ---------------- */
-  new Swiper(section.querySelector('.swiper-container-filter'), {
-    slidesPerView: 'auto',
-    freeMode: true,
-    spaceBetween: 40
+  document.addEventListener('DOMContentLoaded', function () {
+    initProductCarouselSection{{ section.id }}();
   });
 
-  /* ---------------- PRODUCTS SWIPER ---------------- */
-  const productSwiper = new Swiper(section.querySelector('.swiper-container-product'), {
-    slidesPerView: 1.2,
-    scrollbar: {
-      el: section.querySelector('.swiper-scrollbar'),
-      draggable: true
-    },
-    breakpoints: {
-      580: { slidesPerView: 2.5 },
-      991: { slidesPerView: 3 },
-      1321: { slidesPerView: 3.5 }
+  document.addEventListener('shopify:section:load', function (event) {
+    const loadedSection = event.target.querySelector('.js-product-carousel-{{ section.id }}') || event.target;
+    if (loadedSection && loadedSection.querySelector && loadedSection.querySelector('.js-product-carousel-{{ section.id }}')) {
+      initProductCarouselSection{{ section.id }}();
+    } else if (loadedSection.classList && loadedSection.classList.contains('js-product-carousel-{{ section.id }}')) {
+      initProductCarouselSection{{ section.id }}();
     }
   });
 
-  /* ---------------- GET VISIBLE CARDS ---------------- */
-  function getVisibleCards() {
-    return Array.from(slides)
-      .filter((slide) => slide.style.display === 'block')
-      .map((slide) => slide.querySelector('.product-card'))
-      .filter(Boolean);
-  }
+  function initProductCarouselSection{{ section.id }}() {
+    const section = document.querySelector('.js-product-carousel-{{ section.id }}');
+    if (!section) return;
 
-  /* ---------------- RESET CARDS ---------------- */
-  function resetVisibleCards() {
-    const cards = getVisibleCards();
-    if (!cards.length) return;
-
-    if (!hasGSAP) {
-      cards.forEach((card) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translate3d(120px,0,0)';
-      });
-      return;
-    }
-
-    gsap.killTweensOf(cards);
-    gsap.set(cards, {
-      opacity: 0,
-      x: 120
-    });
-  }
-
-  /* ---------------- GSAP ANIMATION ---------------- */
-  function animateVisibleCards() {
-    const cards = getVisibleCards();
-    if (!cards.length) return;
-
-    if (!hasGSAP) {
-      cards.forEach((card) => {
-        card.style.opacity = '1';
-        card.style.transform = 'translate3d(0,0,0)';
-      });
-      return;
-    }
-
-    gsap.killTweensOf(cards);
-
-    gsap.set(cards, {
-      opacity: 0,
-      x: 120
-    });
-
-    gsap.to(cards, {
-      opacity: 1,
-      x: 0,
-      duration: 1,
-      ease: 'power3.out',
-      stagger: 0.12,
-      clearProps: 'transform,opacity'
-    });
-  }
-
-  /* ---------------- TAB ACTIVATION ---------------- */
-  function activateTab(filter, tab, shouldAnimate = false) {
-    section.querySelectorAll('.related-product-caps').forEach((el) => {
-      el.classList.remove('active');
-    });
-
-    tab.closest('.related-product-caps').classList.add('active');
-
-    slides.forEach((slide) => {
-      slide.style.display = 'none';
-    });
-
-    slides.forEach((slide) => {
-      if (slide.dataset.collection === filter) {
-        slide.style.display = 'block';
+    if (section.dataset.carouselInitialized === 'true') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
       }
-    });
-
-    if (shopNowBtn) {
-      shopNowBtn.href = '/collections/' + filter;
+      return;
     }
 
-    productSwiper.update();
-    productSwiper.slideTo(0, 0);
+    section.dataset.carouselInitialized = 'true';
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (shouldAnimate) {
-          animateVisibleCards();
-        } else {
-          resetVisibleCards();
+    const tabs = section.querySelectorAll('.js-slider-filter');
+    const slides = section.querySelectorAll('.product-slide');
+    const shopNowBtn = section.querySelector('.js-shop-now-btn');
+
+    const hasGSAP = typeof gsap !== 'undefined';
+    const hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
+
+    if (hasGSAP && hasScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    let sectionAnimated = false;
+
+    /* ---------------- FILTER TABS SWIPER ---------------- */
+    const filterSwiperEl = section.querySelector('.swiper-container-filter');
+    if (filterSwiperEl && !filterSwiperEl.swiper) {
+      new Swiper(filterSwiperEl, {
+        slidesPerView: 'auto',
+        freeMode: true,
+        spaceBetween: 40
+      });
+    }
+
+    /* ---------------- PRODUCTS SWIPER ---------------- */
+    const productSwiperEl = section.querySelector('.swiper-container-product');
+    let productSwiper = null;
+
+    if (productSwiperEl) {
+      productSwiper = productSwiperEl.swiper || new Swiper(productSwiperEl, {
+        slidesPerView: 1.2,
+        scrollbar: {
+          el: section.querySelector('.swiper-scrollbar'),
+          draggable: true
+        },
+        breakpoints: {
+          580: { slidesPerView: 2.5 },
+          991: { slidesPerView: 3 },
+          1321: { slidesPerView: 3.5 }
         }
       });
+    }
+
+    /* ---------------- HELPERS ---------------- */
+    function getVisibleSlides() {
+      return Array.from(slides).filter((slide) => slide.style.display !== 'none');
+    }
+
+    function getVisibleCards() {
+      return getVisibleSlides()
+        .map((slide) => slide.querySelector('.product-card'))
+        .filter(Boolean);
+    }
+
+    function isSectionVisible() {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+      return rect.top < viewportHeight * 0.9 && rect.bottom > viewportHeight * 0.1;
+    }
+
+    function setCardsHiddenState() {
+      const cards = getVisibleCards();
+      if (!cards.length) return;
+
+      if (!hasGSAP) {
+        cards.forEach((card) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translate3d(120px,0,0)';
+        });
+        return;
+      }
+
+      gsap.killTweensOf(cards);
+      gsap.set(cards, {
+        opacity: 0,
+        x: 120
+      });
+    }
+
+    function setCardsVisibleImmediately() {
+      const cards = getVisibleCards();
+      if (!cards.length) return;
+
+      if (!hasGSAP) {
+        cards.forEach((card) => {
+          card.style.opacity = '1';
+          card.style.transform = 'translate3d(0,0,0)';
+        });
+        return;
+      }
+
+      gsap.killTweensOf(cards);
+      gsap.set(cards, {
+        opacity: 1,
+        x: 0,
+        clearProps: 'transform,opacity'
+      });
+    }
+
+    function animateVisibleCards() {
+      const cards = getVisibleCards();
+      if (!cards.length) return;
+
+      if (!hasGSAP) {
+        cards.forEach((card) => {
+          card.style.opacity = '1';
+          card.style.transform = 'translate3d(0,0,0)';
+        });
+        sectionAnimated = true;
+        return;
+      }
+
+      gsap.killTweensOf(cards);
+      gsap.set(cards, {
+        opacity: 0,
+        x: 120
+      });
+
+      gsap.to(cards, {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        ease: 'power3.out',
+        stagger: 0.12,
+        clearProps: 'transform,opacity',
+        onComplete: function () {
+          sectionAnimated = true;
+        }
+      });
+    }
+
+    /* ---------------- TAB ACTIVATION ---------------- */
+    function activateTab(filter, tab, shouldAnimate) {
+      section.querySelectorAll('.related-product-caps').forEach((el) => {
+        el.classList.remove('active');
+      });
+
+      if (tab && tab.closest('.related-product-caps')) {
+        tab.closest('.related-product-caps').classList.add('active');
+      }
+
+      slides.forEach((slide) => {
+        slide.style.display = 'none';
+      });
+
+      slides.forEach((slide) => {
+        if (slide.dataset.collection === filter) {
+          slide.style.display = 'block';
+        }
+      });
+
+      if (shopNowBtn) {
+        shopNowBtn.href = '/collections/' + filter;
+      }
+
+      if (productSwiper) {
+        productSwiper.update();
+        productSwiper.slideTo(0, 0);
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (shouldAnimate) {
+            animateVisibleCards();
+          } else if (sectionAnimated || isSectionVisible()) {
+            setCardsVisibleImmediately();
+          } else {
+            setCardsHiddenState();
+          }
+
+          if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+          }
+        });
+      });
+    }
+
+    /* ---------------- INIT FIRST TAB ---------------- */
+    if (tabs.length) {
+      activateTab(tabs[0].dataset.filter, tabs[0], false);
+    }
+
+    /* ---------------- SCROLL TRIGGER ---------------- */
+    if (hasGSAP && hasScrollTrigger) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 80%',
+        end: 'bottom top',
+        onEnter: function () {
+          if (!sectionAnimated) {
+            animateVisibleCards();
+          } else {
+            setCardsVisibleImmediately();
+          }
+        },
+        onEnterBack: function () {
+          if (!sectionAnimated) {
+            animateVisibleCards();
+          } else {
+            setCardsVisibleImmediately();
+          }
+        }
+      });
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+
+        if (isSectionVisible()) {
+          setCardsVisibleImmediately();
+          sectionAnimated = true;
+        }
+      });
+    } else {
+      setCardsVisibleImmediately();
+      sectionAnimated = true;
+    }
+
+    /* ---------------- TAB CLICK EVENTS ---------------- */
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        activateTab(tab.dataset.filter, tab, sectionAnimated || isSectionVisible());
+      });
     });
-  }
 
-  /* ---------------- INIT FIRST TAB ---------------- */
-  if (tabs.length) {
-    activateTab(tabs[0].dataset.filter, tabs[0], false);
-  }
+    /* ---------------- WINDOW LOAD SAFETY ---------------- */
+    window.addEventListener('load', function () {
+      if (isSectionVisible()) {
+        setCardsVisibleImmediately();
+        sectionAnimated = true;
+      }
 
-  /* ---------------- SCROLL TRIGGER ---------------- */
-  if (hasGSAP && hasScrollTrigger) {
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top 80%',
-      once: true,
-      onEnter: () => {
-        sectionInView = true;
-        animateVisibleCards();
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+
+      if (productSwiper) {
+        productSwiper.update();
       }
     });
-  } else {
-    sectionInView = true;
-    animateVisibleCards();
   }
-
-  /* ---------------- TAB CLICK EVENTS ---------------- */
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', (e) => {
-      e.preventDefault();
-      activateTab(tab.dataset.filter, tab, sectionInView);
-    });
-  });
-});
 </script>
 
 {% stylesheet %}
