@@ -2,58 +2,70 @@
 
   {% assign product_tags = product.tags | downcase %}
   {% assign custom_tag = settings.custom_badge_tag | downcase %}
+  {% assign variant = product.selected_or_first_available_variant %}
+
+  {% assign is_preorder = false %}
+  {% if variant.available and variant.inventory_quantity <= 0 %}
+    {% assign is_preorder = true %}
+  {% endif %}
 
   {% if 
     product_tags contains 'hot' or
     product_tags contains 'new' or
     product_tags contains 'sale' or
-    product_tags contains 'preorder' or
     product_tags contains custom_tag or
-    product.available == false
+    product.available == false or
+    is_preorder
   %}
 
   <div class="product-badges-wrapper">
 
-    {% if product_tags contains 'hot' %}
-      <span class="badge"
-        style="background: {{ settings.hot_badge_bg }}; color: {{ settings.hot_badge_text_color }};">
-        {{ settings.hot_badge_text }}
-      </span>
-    {% endif %}
-
-    {% if product_tags contains 'new' %}
-      <span class="badge"
-        style="background: {{ settings.new_badge_bg }}; color: {{ settings.new_badge_text_color }};">
-        {{ settings.new_badge_text }}
-      </span>
-    {% endif %}
-
-    {% if product_tags contains 'sale' %}
-      <span class="badge"
-        style="background: {{ settings.sale_badge_bg }}; color: {{ settings.sale_badge_text_color }};">
-        {{ settings.sale_badge_text }}
-      </span>
-    {% endif %}
-
-    {% if product_tags contains 'preorder' %}
-      <span class="badge"
-        style="background: {{ settings.preorder_badge_bg }}; color: {{ settings.preorder_badge_text_color }};">
-        {{ settings.preorder_badge_text }}
-      </span>
-    {% endif %}
-
-    {% if product_tags contains custom_tag %}
-      <span class="badge"
-        style="background: {{ settings.custom_badge_bg }}; color: {{ settings.custom_badge_text_color }};">
-        {{ settings.custom_badge_text }}
-      </span>
-    {% endif %}
-
+    {%- comment -%} SOLD OUT (highest priority) {%- endcomment -%}
     {% unless product.available %}
       <span class="badge"
         style="background: {{ settings.sold_out_badge_bg }}; color: {{ settings.sold_out_badge_text_color }};">
         {{ settings.sold_out_badge_text }}
       </span>
+
+    {% else %}
+
+      {%- comment -%} PRE-ORDER (dynamic) {%- endcomment -%}
+      {% if is_preorder %}
+        <span class="badge"
+          style="background: {{ settings.preorder_badge_bg }}; color: {{ settings.preorder_badge_text_color }};">
+          {{ settings.preorder_badge_text }}
+        </span>
+      {% endif %}
+
+      {%- comment -%} TAG BADGES {%- endcomment -%}
+      {% if product_tags contains 'hot' %}
+        <span class="badge"
+          style="background: {{ settings.hot_badge_bg }}; color: {{ settings.hot_badge_text_color }};">
+          {{ settings.hot_badge_text }}
+        </span>
+      {% endif %}
+
+      {% if product_tags contains 'new' %}
+        <span class="badge"
+          style="background: {{ settings.new_badge_bg }}; color: {{ settings.new_badge_text_color }};">
+          {{ settings.new_badge_text }}
+        </span>
+      {% endif %}
+
+      {% if product_tags contains 'sale' %}
+        <span class="badge"
+          style="background: {{ settings.sale_badge_bg }}; color: {{ settings.sale_badge_text_color }};">
+          {{ settings.sale_badge_text }}
+        </span>
+      {% endif %}
+
+      {% if product_tags contains custom_tag %}
+        <span class="badge"
+          style="background: {{ settings.custom_badge_bg }}; color: {{ settings.custom_badge_text_color }};">
+          {{ settings.custom_badge_text }}
+        </span>
+      {% endif %}
+
     {% endunless %}
 
   </div>
