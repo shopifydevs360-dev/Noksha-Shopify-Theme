@@ -45,7 +45,7 @@
           "type": "addon_buttons",
           "settings": {
             "show_compare": false,
-            "show_wishlist": false,
+            "show_wishlist": true,
             "show_ask_question": true,
             "show_size_guide": false,
             "size_guide_page": "terms-conditions",

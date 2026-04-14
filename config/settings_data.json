@@ -51,7 +51,7 @@
     "aspect_ratio": "cropped-image--portrait",
     "enable_wishlist": true,
     "variant_option_design1": "button",
-    "variant_option_design2": "color",
+    "variant_option_design2": "button",
     "enable_newsletter": false,
     "enable_notify_me": true,
     "notify_me_color": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
