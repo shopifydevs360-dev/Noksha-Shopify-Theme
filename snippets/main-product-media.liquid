@@ -19,7 +19,7 @@
     {% assign has_variant_media = false %}
 
     {% for variant in product.variants %}
-      {% if variant.featured_media %}
+
         {% assign has_variant_media = true %}
         {% assign media_id = variant.featured_media.id | append: '' %}
 
@@ -39,7 +39,7 @@
           </div>
 
         {% endunless %}
-      {% endif %}
+   
     {% endfor %}
 
     {%- comment -%}
