@@ -4,6 +4,10 @@
     {% assign inv = current_variant.inventory_quantity %}
     {% assign can_continue = current_variant.available %}
     {% assign inventory_tracked = current_variant.inventory_management %} {% endcomment %}
+
+    {% assign current_variant = product.selected_or_first_available_variant %}
+{% assign inv = current_variant.inventory_quantity %}
+{% assign can_continue = current_variant.available %}
     <!-- REQUIRED VARIANT ID (CRITICAL) -->
     <input type="hidden" name="id" value="{{ current_variant.id }}">
 
