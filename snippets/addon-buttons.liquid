@@ -16,6 +16,22 @@
           <span class="addon-text">Wishlist</span>
         </a>
       </li>
+            <button
+        type="button"
+        class="product-card__wishlist-btn"
+        aria-label="Add {{ product.title | escape }} to wishlist"
+        data-wishlist-toggle
+        data-product-id="{{ product.id }}"
+        data-product-handle="{{ product.handle }}"
+        data-product-url="{{ product.url }}"
+        data-product-title="{{ product.title | escape }}"
+        data-product-price="{{ product.price }}"
+        data-product-image="{% if product.featured_image %}{{ product.featured_image | image_url: width: 533 }}{% endif %}"
+      >
+        <span class="icon icon-wishlist" aria-hidden="true">
+          {%- render 'theme-icon', icon: 'wishlist' -%}
+        </span>
+      </button>
     {% endif %}
 
     {% if block.settings.show_ask_question %}
