@@ -191,6 +191,7 @@
         "button_label": "Explore collection",
         "button_link": "",
         "look_image": "shopify://shop_images/Youmi0088_3_Option2.jpg",
+        "aspect_ratio": "cropped-image--portrait",
         "padding_top": 48,
         "padding_bottom": 48,
         "custom_class": "",
@@ -389,56 +390,6 @@
         "custom_class": "",
         "color_control": "section-light"
       }
-    },
-    "testimonial_quote_slider_ewzJVP": {
-      "type": "testimonial-quote-slider",
-      "blocks": {
-        "quote_yVMRdw": {
-          "type": "quote",
-          "settings": {
-            "quote": "\"A thoughtful, elevated experience from first scroll to final checkout.\"",
-            "author": "Amina Rahman",
-            "role": "Customer",
-            "background_image": "shopify://shop_images/Youmi00708.jpg",
-            "product_image": "shopify://shop_images/Youmi00496.jpg"
-          }
-        },
-        "quote_UriGQe": {
-          "type": "quote",
-          "settings": {
-            "quote": "\"The design feels premium and calm, which made the products feel even more considered.\"",
-            "author": "Sara Khan",
-            "role": "Beauty editor",
-            "background_image": "shopify://shop_images/Youmi0088_3_Option_1_1b8ec3ca-d0c6-4404-9414-bc10f6033ac3.jpg",
-            "product_image": "shopify://shop_images/Youmi00917.jpg"
-          }
-        }
-      },
-      "block_order": [
-        "quote_yVMRdw",
-        "quote_UriGQe"
-      ],
-      "name": "Testimonial quote slider",
-      "settings": {
-        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_width": "full-width",
-        "eyebrow": "Client voices",
-        "show_texture": true,
-        "slider_effect": "fade",
-        "enable_autoplay": false,
-        "autoplay_delay": 5,
-        "enable_loop": true,
-        "transition_speed": 800,
-        "overlay_opacity": 20,
-        "content_width": 52,
-        "foreground_width": 26,
-        "foreground_width_mobile": 12,
-        "foreground_right_offset": 7,
-        "custom_class": "",
-        "color_control": "section-light",
-        "padding_top": 80,
-        "padding_bottom": 80
-      }
     }
   },
   "order": [
@@ -450,7 +401,6 @@
     "editorial_depth_stack_WbF3wA",
     "image_overlay_grid_Gz6VEw",
     "image_overlay_grid_Ez7ym8",
-    "article_wrapper_tkFWde",
-    "testimonial_quote_slider_ewzJVP"
+    "article_wrapper_tkFWde"
   ]
 }
