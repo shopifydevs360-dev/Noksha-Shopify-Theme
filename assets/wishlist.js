@@ -31,10 +31,19 @@ function bindWishlistEvents() {
 
   document.addEventListener('click', function (event) {
     const toggleButton = event.target.closest('[data-wishlist-toggle]');
-    if (!toggleButton) return;
+    if (toggleButton) {
+      event.preventDefault();
+      toggleWishlistItem(toggleButton);
+      return;
+    }
 
-    event.preventDefault();
-    toggleWishlistItem(toggleButton);
+    const removeButton = event.target.closest('[data-wishlist-remove]');
+    if (removeButton) {
+      event.preventDefault();
+      const productId = removeButton.dataset.wishlistRemove;
+      if (!productId) return;
+      removeWishlistItemById(productId);
+    }
   });
 }
 
@@ -333,7 +342,13 @@ function fetchWishlistProduct(item) {
     })
     .catch((error) => {
       console.warn(error);
-      return null;
+      return {
+        id: item.id || '',
+        title: item.title || '',
+        url: item.url || '#',
+        price: item.price || '',
+        image: item.image || ''
+      };
     });
 }
 
@@ -358,19 +373,38 @@ function getWishlistProductImage(product, item) {
 function renderWishlistDrawerCard(product) {
   const imageMarkup = product.image
     ? `
-    <div class="product-card__image cropped-image-wrapper cropped-image--portrait">
-      <img
-        src="${escapeHtml(product.image)}"
-        alt="${escapeHtml(product.title)}"
-        class="wishlist-drawer__card-image"
-        loading="lazy"
-      >
-    </div>
+      <div class="product-card__image cropped-image-wrapper cropped-image--portrait">
+        <img
+          src="${escapeHtml(product.image)}"
+          alt="${escapeHtml(product.title)}"
+          class="wishlist-drawer__card-image"
+          loading="lazy"
+        >
+      </div>
     `
-    : '';
+    : `
+      <div class="product-card__image cropped-image-wrapper cropped-image--portrait wishlist-drawer__card-image-placeholder" aria-hidden="true">
+        <div class="wishlist-drawer__placeholder-inner">
+          <svg viewBox="0 0 24 24" class="wishlist-drawer__placeholder-icon" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="5" width="18" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 15L10 12L13 15L15.5 12.5L18 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+    `;
 
   return `
-    <div class="wishlist-drawer__card">
+    <div class="wishlist-drawer__card" data-wishlist-item="${escapeHtml(product.id)}">
+      <button
+        type="button"
+        class="wishlist-drawer__remove"
+        data-wishlist-remove="${escapeHtml(product.id)}"
+        aria-label="Remove ${escapeHtml(product.title)} from wishlist"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+
       <a
         href="${escapeHtml(product.url)}"
         class="wishlist-drawer__card-image-link"
@@ -379,12 +413,14 @@ function renderWishlistDrawerCard(product) {
         ${imageMarkup}
       </a>
 
-      <h5 class="wishlist-drawer__card-title">
-        <a href="${escapeHtml(product.url)}">${escapeHtml(product.title)}</a>
-      </h5>
+      <div class="wishlist-drawer__card-content">
+        <h5 class="wishlist-drawer__card-title">
+          <a href="${escapeHtml(product.url)}">${escapeHtml(product.title)}</a>
+        </h5>
 
-      <div class="wishlist-drawer__card-price">
-        ${escapeHtml(product.price)}
+        <div class="wishlist-drawer__card-price">
+          ${escapeHtml(product.price)}
+        </div>
       </div>
     </div>
   `;
