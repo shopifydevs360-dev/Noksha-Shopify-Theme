@@ -1,10 +1,8 @@
-
-
 document.addEventListener('DOMContentLoaded', () => {
   initVariantPriceUpdate();
   initMainProductCart();
   initQuantityDropdown();
-  initQuantityButtons(); // NEW
+  initQuantityButtons();
   initVariantButtonState();
   initVariantSelectedLabelUpdate();
 });
@@ -20,18 +18,19 @@ function initVariantPriceUpdate() {
   const priceItems = root.querySelectorAll('.variant-price-item');
   const variantInput = form?.querySelector('input[name="id"]');
 
-  // NEW – buttons
   const addToCartBtn = root.querySelector('[data-role="add-to-cart"]');
   const buyNowBtn = root.querySelector('[data-role="buy-now"]');
   const notifyBtn = root.querySelector('[data-role="notify"]');
 
-  if (!form || !priceItems.length || !window.product || !variantInput || !addToCartBtn) {
+  if (!form || !variantInput || !addToCartBtn) {
     console.warn('Variant price update: missing elements');
     return;
   }
 
-  // Initial load
-  togglePrice(variantInput.value);
+  if (priceItems.length) {
+    togglePrice(variantInput.value);
+  }
+
   toggleStockUI(variantInput.value);
 
   form.addEventListener('change', () => {
@@ -39,22 +38,27 @@ function initVariantPriceUpdate() {
 
     form.querySelectorAll('.variant-group').forEach(group => {
       const checked = group.querySelector('input[type="radio"]:checked');
-      if (checked) selectedOptions.push(checked.value);
+      const select = group.querySelector('select');
+
+      if (checked) {
+        selectedOptions.push(checked.value);
+      } else if (select) {
+        selectedOptions.push(select.value);
+      }
     });
 
-    const variant = window.product.variants.find(v =>
+    const variant = window.product?.variants?.find(v =>
       v.options.every((opt, i) => opt === selectedOptions[i])
     );
 
     if (!variant) return;
 
-    // Update variant ID
     variantInput.value = variant.id;
 
-    // Existing price logic
-    togglePrice(variant.id);
+    if (priceItems.length) {
+      togglePrice(variant.id);
+    }
 
-    // NEW stock logic
     toggleStockUI(variant.id);
   });
 
@@ -70,18 +74,15 @@ function initVariantPriceUpdate() {
     });
   }
 
-  // NEW – stock control
   function toggleStockUI(variantId) {
-    const variant = window.product.variants.find(v => v.id == variantId);
+    const variant = window.product?.variants?.find(v => v.id == variantId);
     if (!variant) return;
 
     if (variant.available) {
-      addToCartBtn.textContent = 'Add to cart';
       addToCartBtn.disabled = false;
       buyNowBtn?.classList.remove('hide');
       notifyBtn?.classList.add('hide');
     } else {
-      addToCartBtn.textContent = 'Out of stock';
       addToCartBtn.disabled = true;
       buyNowBtn?.classList.add('hide');
       notifyBtn?.classList.remove('hide');
@@ -101,10 +102,18 @@ function initVariantButtonState() {
 
   function getSelectedOptions() {
     const options = [];
+
     variantGroups.forEach(group => {
       const checked = group.querySelector('input[type="radio"]:checked');
-      if (checked) options.push(checked.value);
+      const select = group.querySelector('select');
+
+      if (checked) {
+        options.push(checked.value);
+      } else if (select) {
+        options.push(select.value);
+      }
     });
+
     return options;
   }
 
@@ -141,13 +150,11 @@ function initVariantButtonState() {
     });
   }
 
-  // Initial state
   updateCheckedState();
   updateStockState();
 
-  // On variant change
   document.addEventListener('change', e => {
-    if (e.target.matches('.variant-btn input')) {
+    if (e.target.matches('.variant-btn input') || e.target.matches('.variant-group select')) {
       updateCheckedState();
       updateStockState();
     }
@@ -169,9 +176,6 @@ function initMainProductCart() {
 
   const behavior = actions.dataset.cartBehavior;
 
-  /* -----------------------------
-     ADD TO CART
-  ----------------------------- */
   form.addEventListener('submit', e => {
     e.preventDefault();
 
@@ -180,7 +184,6 @@ function initMainProductCart() {
       return;
     }
 
-    // Block sold out add
     if (form.querySelector('[data-role="add-to-cart"]').disabled) {
       return;
     }
@@ -202,13 +205,9 @@ function initMainProductCart() {
       .catch(err => console.error(err));
   });
 
-  /* -----------------------------
-     BUY IT NOW
-  ----------------------------- */
   const buyNowBtn = root.querySelector('.btn-buy-now');
   if (buyNowBtn) {
     buyNowBtn.addEventListener('click', () => {
-      // Block sold out
       if (buyNowBtn.classList.contains('hide')) return;
 
       const formData = new FormData(form);
@@ -224,30 +223,27 @@ function initMainProductCart() {
     });
   }
 }
+
 /* =================================
    QUANTITY DROPDOWN
 ================================= */
 function initQuantityDropdown() {
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const dropdown = e.target.closest('[data-qty-dropdown]');
     const toggle = e.target.closest('[data-qty-toggle]');
     const item = e.target.closest('.qty-item');
 
-    // Close all other dropdowns
     document.querySelectorAll('.quantity-dropdown').forEach(d => {
       if (d !== dropdown) d.classList.remove('is-open');
     });
 
-    // Toggle dropdown
     if (toggle && dropdown) {
       dropdown.classList.toggle('is-open');
     }
 
-    // Select quantity
     if (item) {
       const value = item.dataset.qty;
       const container = item.closest('.quantity-dropdown');
-
       if (!container) return;
 
       const input = container.querySelector("input[name='quantity']");
@@ -256,9 +252,9 @@ function initQuantityDropdown() {
       if (input) input.value = value;
       if (label) label.textContent = item.textContent;
 
-      container.querySelectorAll('.qty-item').forEach(i =>
-        i.classList.remove('is-selected')
-      );
+      container.querySelectorAll('.qty-item').forEach(i => {
+        i.classList.remove('is-selected');
+      });
 
       item.classList.add('is-selected');
       container.classList.remove('is-open');
@@ -270,7 +266,7 @@ function initQuantityDropdown() {
    QUANTITY BUTTONS (PLUS / MINUS)
 ================================= */
 function initQuantityButtons() {
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const minusBtn = e.target.closest('.qty-minus');
     const plusBtn = e.target.closest('.qty-plus');
 
@@ -293,15 +289,13 @@ function initQuantityButtons() {
     }
 
     input.value = value;
-
-    // Trigger change for consistency with other logic
     input.dispatchEvent(new Event('change', { bubbles: true }));
   });
 }
-/* =================================
-   Variant Label update
-================================= */
 
+/* =================================
+   VARIANT LABEL UPDATE
+================================= */
 function initVariantSelectedLabelUpdate() {
   const variantGroups = document.querySelectorAll('.variant-group');
 
@@ -312,7 +306,6 @@ function initVariantSelectedLabelUpdate() {
     const radios = group.querySelectorAll('input[type="radio"]');
     const select = group.querySelector('select');
 
-    // For radio buttons (button, color, image)
     radios.forEach(radio => {
       radio.addEventListener('change', function () {
         if (this.checked) {
@@ -321,7 +314,6 @@ function initVariantSelectedLabelUpdate() {
       });
     });
 
-    // For dropdown
     if (select) {
       select.addEventListener('change', function () {
         selectedValueEl.textContent = this.value;
@@ -329,4 +321,3 @@ function initVariantSelectedLabelUpdate() {
     }
   });
 }
-
