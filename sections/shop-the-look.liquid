@@ -210,7 +210,7 @@
   data-shop-the-look
   data-section-id="{{ section.id }}"
 >
-  <div class="{{ section.settings.container_type }}">
+  <div class="{{ section.settings.container_type }} {% if section.settings.enable_sidebar_space %}sidebar-space{% endif %}">
     <div class="shop-the-look__inner">
       <div class="shop-the-look__media" data-look-media>
         <div class="shop-the-look__image">
