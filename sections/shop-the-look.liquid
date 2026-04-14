@@ -5,6 +5,9 @@
   assign classes = classes | append: ' section-' | append: section.id | append: '-padding'
   assign classes = classes | append: ' ' | append: section.settings.color_control
   assign classes = classes | append: ' m-color-' | append: section.settings.color_scheme
+  unless section.settings.container_type == "full-width"
+    assign classes = classes | append: ' section-x-padding'
+  endunless
   assign classes = classes | append: ' ' | append: section.settings.custom_class | default: ''
   assign image_classes = 'cropped-image-wrapper'
   assign image_classes = image_classes | append: ' ' | append: section.settings.aspect_ratio
