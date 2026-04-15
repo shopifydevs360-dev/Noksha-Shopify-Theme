@@ -142,6 +142,9 @@
       ],
       "settings": {
         "main_product_color": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "main_media_ratio": "cropped-image--portrait",
+        "thumb_media_ratio": "cropped-image--portrait",
+        "video_media_ratio": "cropped-image--square",
         "custom_class": "",
         "color_control": "section-light"
       }
