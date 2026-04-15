@@ -12,11 +12,11 @@
   display: block;
 }
 
-.product-media video {
+/* .product-media video {
   max-height: 94vh;
   object-fit: cover;
   object-position: center;
-}
+} */
 
 /* =====================
    INLINE PRODUCT SLIDER
