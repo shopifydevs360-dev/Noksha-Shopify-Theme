@@ -319,6 +319,7 @@
   display: flex !important;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .media-lightbox .swiper-button-prev::after,
 .media-lightbox .swiper-button-next::after {
