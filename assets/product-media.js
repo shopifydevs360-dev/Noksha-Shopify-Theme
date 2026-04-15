@@ -120,7 +120,13 @@ function initProductMediaThumbs(scope) {
     pagination: {
       el: '.product-media__thumbs .swiper-pagination',
       clickable: true,
-      type: 'fraction'
+      type: 'fraction',
+      formatFractionCurrent: function (number) {
+        return number < 10 ? '0' + number : number;
+      },
+      formatFractionTotal: function (number) {
+        return number < 10 ? '0' + number : number;
+      }
     }
   });
 }
@@ -148,7 +154,14 @@ function initProductMediaLightbox(scope) {
     },
     pagination: {
       el: '.media-lightbox .swiper-pagination',
-      clickable: true
+      clickable: true,
+      type: 'fraction',
+      formatFractionCurrent: function (number) {
+        return number < 10 ? '0' + number : number;
+      },
+      formatFractionTotal: function (number) {
+        return number < 10 ? '0' + number : number;
+      }
     }
   });
 
