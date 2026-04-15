@@ -8,24 +8,24 @@
         </a>
       </li>
     {% endif %}
-
-    {% if block.settings.show_wishlist %}
-
-            <button
-        type="button"
-        class="product-card__wishlist-btn"
-        aria-label="Add {{ product.title | escape }} to wishlist"
-        data-wishlist-toggle
-        data-product-id="{{ product.id }}"
-        data-product-handle="{{ product.handle }}"
-        data-product-url="{{ product.url }}"
-        data-product-title="{{ product.title | escape }}"
-        data-product-price="{{ product.price }}"
-        data-product-image="{% if product.featured_image %}{{ product.featured_image | image_url: width: 533 }}{% endif %}"
-      >
+    {% if settings.enable_wishlist %}
+      {% if block.settings.show_wishlist %}
+        <button
+          type="button"
+          class="product-card__wishlist-btn"
+          aria-label="Add {{ product.title | escape }} to wishlist"
+          data-wishlist-toggle
+          data-product-id="{{ product.id }}"
+          data-product-handle="{{ product.handle }}"
+          data-product-url="{{ product.url }}"
+          data-product-title="{{ product.title | escape }}"
+          data-product-price="{{ product.price }}"
+          data-product-image="{% if product.featured_image %}{{ product.featured_image | image_url: width: 533 }}{% endif %}"
+        >
           <span class="addon-icon">{% render 'theme-icon', icon: 'wishlist' %}</span>
           <span class="addon-text">Wishlist</span>
-      </button>
+        </button>
+      {% endif %}
     {% endif %}
 
     {% if block.settings.show_ask_question %}
@@ -99,7 +99,12 @@
 
       <div class="field">
         <label for="AskQuestionMessage">Message</label>
-        <textarea name="contact[Message]" id="AskQuestionMessage" placeholder="Write your question here" required></textarea>
+        <textarea
+          name="contact[Message]"
+          id="AskQuestionMessage"
+          placeholder="Write your question here"
+          required
+        ></textarea>
       </div>
 
       <button class="button popup-submit-btn" type="submit">Send Question</button>
@@ -115,9 +120,7 @@
     <div class="popup-head">
       <p class="popup-eyebrow">Helpful information</p>
       <h3 class="popup-title" id="SizeGuideTitle">Size Guide</h3>
-      <p class="popup-text">
-        Use this guide to choose the most suitable option before placing your order.
-      </p>
+      <p class="popup-text">Use this guide to choose the most suitable option before placing your order.</p>
     </div>
 
     <div class="popup-richtext">
@@ -138,23 +141,36 @@
     <div class="popup-head">
       <p class="popup-eyebrow">Share this product</p>
       <h3 class="popup-title" id="ShareProductTitle">Share Product</h3>
-      <p class="popup-text">
-        Share this product with friends or copy the direct link.
-      </p>
+      <p class="popup-text">Share this product with friends or copy the direct link.</p>
     </div>
 
     <div class="share-links">
-      <a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}" aria-label="Share on Facebook">
+      <a
+        target="_blank"
+        rel="noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}"
+        aria-label="Share on Facebook"
+      >
         <span class="addon-icon">{% render 'theme-icon', icon: 'facebook' %}</span>
         <span>Facebook</span>
       </a>
 
-      <a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}" aria-label="Share on Twitter">
+      <a
+        target="_blank"
+        rel="noopener"
+        href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}"
+        aria-label="Share on Twitter"
+      >
         <span class="addon-icon">{% render 'theme-icon', icon: 'twitter' %}</span>
         <span>Twitter</span>
       </a>
 
-      <a target="_blank" rel="noopener" href="https://wa.me/?text={{ shop.url }}{{ product.url }}" aria-label="Share on WhatsApp">
+      <a
+        target="_blank"
+        rel="noopener"
+        href="https://wa.me/?text={{ shop.url }}{{ product.url }}"
+        aria-label="Share on WhatsApp"
+      >
         <span class="addon-icon">{% render 'theme-icon', icon: 'whatsapp' %}</span>
         <span>WhatsApp</span>
       </a>
@@ -178,14 +194,14 @@
 
     function closeAllPopups() {
       overlay.classList.remove('active');
-      popups.forEach(popup => {
+      popups.forEach((popup) => {
         popup.classList.remove('active');
         popup.setAttribute('aria-hidden', 'true');
       });
       document.body.classList.remove('noksha-popup-open');
     }
 
-    document.querySelectorAll('[data-popup]').forEach(btn => {
+    document.querySelectorAll('[data-popup]').forEach((btn) => {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
 
@@ -199,7 +215,7 @@
       });
     });
 
-    document.querySelectorAll('.popup-close, .noksha-popup-overlay').forEach(el => {
+    document.querySelectorAll('.popup-close, .noksha-popup-overlay').forEach((el) => {
       el.addEventListener('click', closeAllPopups);
     });
 
@@ -235,260 +251,260 @@
 </script>
 
 {% stylesheet %}
-button.product-card__wishlist-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.8em;
-    font-weight: 600;
-}
-  body.noksha-popup-open {
-    overflow: hidden;
+  button.product-card__wishlist-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8em;
+      font-weight: 600;
   }
+    body.noksha-popup-open {
+      overflow: hidden;
+    }
 
-  .noksha-popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(var(--color-overlay), calc(var(--color-overlay-opacity) / 100));
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    z-index: 999;
-  }
+    .noksha-popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(var(--color-overlay), calc(var(--color-overlay-opacity) / 100));
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 999;
+    }
 
-  .noksha-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: min(92vw, 680px);
-    max-height: calc(100vh - 32px);
-    overflow: auto;
-    transform: translate(-50%, -50%) scale(0.96);
-    background: rgb(var(--color-background));
-    color: rgb(var(--color-text));
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-    z-index: 1000;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
-  }
-
-  .noksha-popup.active,
-  .noksha-popup-overlay.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .noksha-popup.active {
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .popup-inner {
-    position: relative;
-    padding: 42px 32px 32px;
-  }
-
-  .popup-close {
-    position: absolute;
-    right: 14px;
-    top: 14px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    font-size: 30px;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .popup-head,
-  .popup-head--compact {
-    margin-bottom: 24px;
-    padding-right: 40px;
-  }
-
-  .popup-eyebrow {
-    margin: 0 0 10px;
-    font-size: 12px;
-    line-height: 1.4;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    opacity: 0.7;
-  }
-
-  .popup-title {
-    margin: 0 0 14px;
-    padding-bottom: 12px;
-    width: fit-content;
-    font-size: 1.1em;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border-bottom: 1px solid rgb(var(--color-border));
-  }
-
-  .popup-text {
-    margin: 0;
-    max-width: 34ch;
-    line-height: 1.65;
-  }
-
-  .popup-product-title {
-    margin: 12px 0 0;
-    font-weight: 600;
-    font-size: 1.05em;
-  }
-
-  .popup-form .field {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .popup-field-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    align-items: start;
-  }
-
-  .popup-field-grid + .field {
-    margin-top: 18px;
-  }
-
-  .ask-contact label,
-  .copy-link__label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-  }
-
-  .ask-contact input,
-  .ask-contact textarea,
-  .copy-link input {
-    width: 100%;
-    border: 1px solid rgb(var(--color-border));
-    border-radius: 0;
-    background: transparent;
-    color: rgb(var(--color-text));
-  }
-
-  .ask-contact input {
-    min-height: 50px;
-    padding: 0 14px;
-  }
-
-  .ask-contact textarea {
-    min-height: 150px;
-    padding: 14px;
-    resize: vertical;
-  }
-
-  .popup-submit-btn,
-  .copy-link .button {
-    background: rgb(var(--color-heading));
-    color: rgb(var(--color-background));
-    border: 1px solid rgb(var(--color-heading));
-    padding: 0.9rem 1.8rem;
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
-
-  .popup-submit-btn:hover,
-  .copy-link .button:hover {
-    background: transparent;
-    color: rgb(var(--color-heading));
-  }
-
-  .popup-richtext {
-    line-height: 1.7;
-    padding-right: 6px;
-  }
-
-  .popup-richtext table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .popup-richtext th,
-  .popup-richtext td {
-    border: 1px solid rgb(var(--color-border));
-    padding: 10px 12px;
-    text-align: left;
-  }
-
-  .share-links {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 22px;
-  }
-
-  .share-links a {
-    min-height: 56px;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border: 1px solid rgb(var(--color-border));
-    color: rgb(var(--color-text));
-  }
-
-  .copy-link__row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
-    align-items: stretch;
-    margin-top: 8px;
-  }
-
-  .copy-link input {
-    min-height: 52px;
-    padding: 0 14px;
-  }
-
-  .copy-link__helper {
-    margin: 10px 0 0;
-    font-size: 12px;
-    line-height: 1.5;
-    opacity: 0.65;
-  }
-
-  @media (max-width: 767px) {
     .noksha-popup {
-      width: min(94vw, 680px);
-      max-height: calc(100vh - 20px);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: min(92vw, 680px);
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      transform: translate(-50%, -50%) scale(0.96);
+      background: rgb(var(--color-background));
+      color: rgb(var(--color-text));
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+    }
+
+    .noksha-popup.active,
+    .noksha-popup-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .noksha-popup.active {
+      transform: translate(-50%, -50%) scale(1);
     }
 
     .popup-inner {
-      padding: 32px 18px 22px;
+      position: relative;
+      padding: 42px 32px 32px;
+    }
+
+    .popup-close {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .popup-head,
     .popup-head--compact {
-      padding-right: 22px;
+      margin-bottom: 24px;
+      padding-right: 40px;
     }
 
-    .popup-field-grid,
-    .share-links,
-    .copy-link__row {
-      grid-template-columns: 1fr;
+    .popup-eyebrow {
+      margin: 0 0 10px;
+      font-size: 12px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.7;
+    }
+
+    .popup-title {
+      margin: 0 0 14px;
+      padding-bottom: 12px;
+      width: fit-content;
+      font-size: 1.1em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgb(var(--color-border));
     }
 
     .popup-text {
-      max-width: none;
+      margin: 0;
+      max-width: 34ch;
+      line-height: 1.65;
     }
 
-    .share-links a,
-    .copy-link .button,
-    .popup-submit-btn {
-      width: 100%;
+    .popup-product-title {
+      margin: 12px 0 0;
+      font-weight: 600;
+      font-size: 1.05em;
     }
-  }
+
+    .popup-form .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .popup-field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .popup-field-grid + .field {
+      margin-top: 18px;
+    }
+
+    .ask-contact label,
+    .copy-link__label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .ask-contact input,
+    .ask-contact textarea,
+    .copy-link input {
+      width: 100%;
+      border: 1px solid rgb(var(--color-border));
+      border-radius: 0;
+      background: transparent;
+      color: rgb(var(--color-text));
+    }
+
+    .ask-contact input {
+      min-height: 50px;
+      padding: 0 14px;
+    }
+
+    .ask-contact textarea {
+      min-height: 150px;
+      padding: 14px;
+      resize: vertical;
+    }
+
+    .popup-submit-btn,
+    .copy-link .button {
+      background: rgb(var(--color-heading));
+      color: rgb(var(--color-background));
+      border: 1px solid rgb(var(--color-heading));
+      padding: 0.9rem 1.8rem;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .popup-submit-btn:hover,
+    .copy-link .button:hover {
+      background: transparent;
+      color: rgb(var(--color-heading));
+    }
+
+    .popup-richtext {
+      line-height: 1.7;
+      padding-right: 6px;
+    }
+
+    .popup-richtext table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .popup-richtext th,
+    .popup-richtext td {
+      border: 1px solid rgb(var(--color-border));
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .share-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .share-links a {
+      min-height: 56px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgb(var(--color-border));
+      color: rgb(var(--color-text));
+    }
+
+    .copy-link__row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    .copy-link input {
+      min-height: 52px;
+      padding: 0 14px;
+    }
+
+    .copy-link__helper {
+      margin: 10px 0 0;
+      font-size: 12px;
+      line-height: 1.5;
+      opacity: 0.65;
+    }
+
+    @media (max-width: 767px) {
+      .noksha-popup {
+        width: min(94vw, 680px);
+        max-height: calc(100vh - 20px);
+      }
+
+      .popup-inner {
+        padding: 32px 18px 22px;
+      }
+
+      .popup-head,
+      .popup-head--compact {
+        padding-right: 22px;
+      }
+
+      .popup-field-grid,
+      .share-links,
+      .copy-link__row {
+        grid-template-columns: 1fr;
+      }
+
+      .popup-text {
+        max-width: none;
+      }
+
+      .share-links a,
+      .copy-link .button,
+      .popup-submit-btn {
+        width: 100%;
+      }
+    }
 {% endstylesheet %}
