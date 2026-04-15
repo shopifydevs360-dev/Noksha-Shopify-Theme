@@ -11,6 +11,7 @@ function initProductMedia(scope) {
 
   initProductMediaMain(container);
   initProductMediaThumbs(container);
+  initProductMediaMobile(container);
   initProductMediaLightbox(container);
   initProductVideoLightbox(container);
 }
@@ -132,6 +133,37 @@ function initProductMediaThumbs(scope) {
 }
 
 /* =========================
+   MOBILE SWIPER
+========================= */
+function initProductMediaMobile(scope) {
+  const mobile = scope.querySelector('.product-media__mobile');
+  if (!mobile || mobile.dataset.swiperInitialized === 'true') return;
+
+  mobile.dataset.swiperInitialized = 'true';
+
+  new Swiper(mobile, {
+    slidesPerView: 1,
+    loop: true,
+    autoHeight: true,
+    navigation: {
+      nextEl: '.product-media__mobile .swiper-button-next',
+      prevEl: '.product-media__mobile .swiper-button-prev'
+    },
+    pagination: {
+      el: '.product-media__mobile .swiper-pagination',
+      clickable: true,
+      type: 'fraction',
+      formatFractionCurrent: function (number) {
+        return number < 10 ? '0' + number : number;
+      },
+      formatFractionTotal: function (number) {
+        return number < 10 ? '0' + number : number;
+      }
+    }
+  });
+}
+
+/* =========================
    IMAGE LIGHTBOX
 ========================= */
 function initProductMediaLightbox(scope) {
@@ -209,8 +241,9 @@ function initProductMediaLightboxOpen(lightbox, swiper) {
 
     const mainSlide = event.target.closest('.product-media__main .swiper-slide');
     const thumbSlide = event.target.closest('.product-media__thumbs .swiper-slide');
+    const mobileSlide = event.target.closest('.product-media__mobile .swiper-slide');
 
-    if (!mainSlide && !thumbSlide) return;
+    if (!mainSlide && !thumbSlide && !mobileSlide) return;
 
     event.preventDefault();
 
@@ -220,6 +253,8 @@ function initProductMediaLightboxOpen(lightbox, swiper) {
       index = getThumbImageIndex(thumbSlide);
     } else if (mainSlide) {
       index = getMainImageIndex(mainSlide);
+    } else if (mobileSlide) {
+      index = getMobileImageIndex(mobileSlide);
     }
 
     lightbox.classList.add('is-open');
@@ -231,6 +266,12 @@ function initProductMediaLightboxOpen(lightbox, swiper) {
 }
 
 function getMainImageIndex(slide) {
+  const explicitIndex = slide.querySelector('[data-lightbox-index]');
+  if (explicitIndex) {
+    const parsed = parseInt(explicitIndex.getAttribute('data-lightbox-index'), 10);
+    if (!Number.isNaN(parsed)) return parsed;
+  }
+
   const mainSlides = Array.from(
     document.querySelectorAll('#MainProductMedia .swiper-slide:not(.swiper-slide-duplicate)')
   );
@@ -248,6 +289,21 @@ function getThumbImageIndex(slide) {
 
   const slides = Array.from(
     document.querySelectorAll('.product-media__thumbs .swiper-slide:not(.swiper-slide-duplicate)')
+  );
+
+  const index = slides.indexOf(slide);
+  return index >= 0 ? index : 0;
+}
+
+function getMobileImageIndex(slide) {
+  const explicitIndex = slide.querySelector('[data-lightbox-index]');
+  if (explicitIndex) {
+    const parsed = parseInt(explicitIndex.getAttribute('data-lightbox-index'), 10);
+    if (!Number.isNaN(parsed)) return parsed;
+  }
+
+  const slides = Array.from(
+    document.querySelectorAll('.product-media__mobile .swiper-slide:not(.swiper-slide-duplicate)')
   );
 
   const index = slides.indexOf(slide);
