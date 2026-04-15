@@ -994,6 +994,14 @@
         "default": "redirect"
       },
       {
+        "type": "checkbox",
+        "id": "enable_hover_to_show_btn",
+        "label": "Button Showing",
+        "info": "The add to cart/bag button will showing when you hover the product card",
+        "default": true
+
+      },
+      {
         "type": "header",
         "content": "Image"
       },
