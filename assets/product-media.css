@@ -115,15 +115,15 @@
 .product-media__thumbs .swiper-button-next:hover .inner-text {
   transform: translateX(4px);
 }
-.image.js-open-lightbox {
-    cursor: zoom-in;
-}
+
 /* =====================
    VIDEO ROW
 ===================== */
 .product-media__video-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 .product-media__video {
