@@ -262,12 +262,8 @@
     <div class="swiper media-lightbox__slider">
       <div class="swiper-wrapper">
         {% for media in product.media %}
-          <div
-            class="swiper-slide"
-            data-media-id="{{ media.id }}"
-            data-media-type="{{ media.media_type }}"
-          >
-            {% if media.media_type == 'image' %}
+          {% if media.media_type == 'image' %}
+            <div class="swiper-slide">
               {% render 'image',
                 image: media,
                 width: media.width,
@@ -275,23 +271,8 @@
                 img_alt: media.alt,
                 loading: 'eager'
               %}
-
-            {% elsif media.media_type == 'video' %}
-              {{
-                media
-                | video_tag:
-                  autoplay: false,
-                  loop: true,
-                  muted: false,
-                  controls: true,
-                  playsinline: true,
-                  preload: 'metadata'
-              }}
-
-            {% elsif media.media_type == 'external_video' %}
-              {{ media | external_video_tag }}
-            {% endif %}
-          </div>
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
 
