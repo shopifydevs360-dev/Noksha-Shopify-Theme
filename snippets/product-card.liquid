@@ -145,6 +145,18 @@
     </div>
   </div>
 {% endif %}
+<style>
+  .product-card .image-wrap:hover .hover-img {
+    opacity: 1;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+/* Button Style */
+.product-card .cart-button-wrapper {
+    opacity: 0;
+    transform: translateY(20px);
+}
+</style>
 {% stylesheet %}
   .product-card .image-wrap {
     display: block;
@@ -238,14 +250,12 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    opacity: 0;
     margin-bottom: 0;
     width: 100%;
     background: #fff;
     z-index: 3;
     text-align: left;
     transition: all .6s ease;
-    transform: translateY(20px);
 }
 
 .product-card .image-wrap:hover .cart-button-wrapper {
