@@ -208,7 +208,20 @@
       "default": false,
       "info": "If enabled, videos will appear before images in the mobile gallery when video exists."
     },
-    
+    {
+      "type": "select",
+      "id": "mobile_media_ratio",
+      "label": "Mobile image ratio",
+      "options": [
+        { "value": "adapt-image-height", "label": "Adapt to actual size" },
+        { "value": "cropped-image--square", "label": "Square" },
+        { "value": "cropped-image--portrait", "label": "Portrait" },
+        { "value": "cropped-image--portrait-tall", "label": "Portrait tall" },
+        { "value": "cropped-image--landscape", "label": "Landscape" },
+        { "value": "cropped-image--wide", "label": "Wide" }
+      ],
+      "default": "cropped-image--portrait"
+    },
     {
       "type": "header",
       "content": "Dynamic Option"
