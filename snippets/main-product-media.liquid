@@ -182,8 +182,13 @@
       {% endfor %}
     </div>
   {% endif %}
-
-  {% if media_count > 1 %}
+{%- assign image_count = 0 -%}
+{%- for media in product.media -%}
+  {%- if media.media_type == 'image' -%}
+    {%- assign image_count = image_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+  {% if image_count > 1 %}
     <div class="product-media__thumbs swiper">
       <div class="swiper-wrapper">
         {%- comment -%}
