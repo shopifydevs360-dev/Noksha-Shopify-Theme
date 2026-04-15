@@ -115,7 +115,9 @@
 .product-media__thumbs .swiper-button-next:hover .inner-text {
   transform: translateX(4px);
 }
-
+.image.js-open-lightbox {
+    cursor: zoom-in;
+}
 /* =====================
    VIDEO ROW
 ===================== */
