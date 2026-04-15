@@ -1,5 +1,6 @@
 {% comment %} {{ 'collection-tab.css' | asset_url | stylesheet_tag }} {% endcomment %}
 {% render 'section-base-style' %}
+
 <div class="product-tabs-carousel js-product-carousel-{{ section.id }} {{ section.settings.color_control }} {{ section.settings.custom_class }} m-color-{{ section.settings.color_scheme }}">
   <div class="product-carousel section-{{ section.id }}-padding">
     <!-- ================= MOBILE TITLE ================= -->
@@ -44,10 +45,8 @@
                 </div>
               </a>
             </h2>
-            <a
-              href="#"
-              class="btn btn-arrow js-shop-now-btn"
-            >
+
+            <a href="#" class="btn btn-arrow js-shop-now-btn">
               SHOP NOW
               <span class="icon">
                 {% render 'theme-icon', icon: 'right-arrow' %}
@@ -83,7 +82,7 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
   const section = document.querySelector('.js-product-carousel-{{ section.id }}');
   if (!section) return;
 
@@ -99,33 +98,53 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let sectionInView = false;
+  let productSwiper = null;
+  let filterSwiper = null;
 
   /* ---------------- FILTER TABS SWIPER ---------------- */
-  new Swiper(section.querySelector('.swiper-container-filter'), {
-    slidesPerView: 'auto',
-    freeMode: true,
-    spaceBetween: 40
-  });
+  const filterContainer = section.querySelector('.swiper-container-filter');
+  if (filterContainer) {
+    filterSwiper = new Swiper(filterContainer, {
+      slidesPerView: 'auto',
+      freeMode: true,
+      spaceBetween: 40
+    });
+  }
 
   /* ---------------- PRODUCTS SWIPER ---------------- */
-  const productSwiper = new Swiper(section.querySelector('.swiper-container-product'), {
-    slidesPerView: 1.2,
-    scrollbar: {
-      el: section.querySelector('.swiper-scrollbar'),
-      draggable: true
-    },
-    breakpoints: {
-      580: { slidesPerView: 2.5 },
-      991: { slidesPerView: 3 },
-      1321: { slidesPerView: 3.5 }
-    }
-  });
+  const productContainer = section.querySelector('.swiper-container-product');
+  if (productContainer) {
+    productSwiper = new Swiper(productContainer, {
+      slidesPerView: 1.2,
+      scrollbar: {
+        el: section.querySelector('.swiper-scrollbar'),
+        draggable: true
+      },
+      breakpoints: {
+        580: { slidesPerView: 2.5 },
+        991: { slidesPerView: 3 },
+        1321: { slidesPerView: 3.5 }
+      }
+    });
+  }
+
+  /* ---------------- VIEWPORT CHECK ---------------- */
+  function isSectionVisible() {
+    const rect = section.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+
+    return rect.top < vh * 0.85 && rect.bottom > 0;
+  }
 
   /* ---------------- GET VISIBLE CARDS ---------------- */
   function getVisibleCards() {
     return Array.from(slides)
-      .filter((slide) => slide.style.display === 'block')
-      .map((slide) => slide.querySelector('.product-card'))
+      .filter(function (slide) {
+        return slide.style.display === 'block';
+      })
+      .map(function (slide) {
+        return slide.querySelector('.product-card');
+      })
       .filter(Boolean);
   }
 
@@ -135,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!cards.length) return;
 
     if (!hasGSAP) {
-      cards.forEach((card) => {
+      cards.forEach(function (card) {
         card.style.opacity = '0';
         card.style.transform = 'translate3d(120px,0,0)';
       });
@@ -149,13 +168,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ---------------- SHOW CARDS WITHOUT ANIMATION ---------------- */
+  function showVisibleCardsImmediately() {
+    const cards = getVisibleCards();
+    if (!cards.length) return;
+
+    if (!hasGSAP) {
+      cards.forEach(function (card) {
+        card.style.opacity = '1';
+        card.style.transform = 'translate3d(0,0,0)';
+      });
+      return;
+    }
+
+    gsap.killTweensOf(cards);
+    gsap.set(cards, {
+      opacity: 1,
+      x: 0,
+      clearProps: 'transform,opacity'
+    });
+  }
+
   /* ---------------- GSAP ANIMATION ---------------- */
   function animateVisibleCards() {
     const cards = getVisibleCards();
     if (!cards.length) return;
 
     if (!hasGSAP) {
-      cards.forEach((card) => {
+      cards.forEach(function (card) {
         card.style.opacity = '1';
         card.style.transform = 'translate3d(0,0,0)';
       });
@@ -180,18 +220,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------------- TAB ACTIVATION ---------------- */
-  function activateTab(filter, tab, shouldAnimate = false) {
-    section.querySelectorAll('.related-product-caps').forEach((el) => {
+  function activateTab(filter, tab, shouldAnimate) {
+    section.querySelectorAll('.related-product-caps').forEach(function (el) {
       el.classList.remove('active');
     });
 
-    tab.closest('.related-product-caps').classList.add('active');
+    const tabCapsule = tab.closest('.related-product-caps');
+    if (tabCapsule) {
+      tabCapsule.classList.add('active');
+    }
 
-    slides.forEach((slide) => {
+    slides.forEach(function (slide) {
       slide.style.display = 'none';
     });
 
-    slides.forEach((slide) => {
+    slides.forEach(function (slide) {
       if (slide.dataset.collection === filter) {
         slide.style.display = 'block';
       }
@@ -201,15 +244,22 @@ document.addEventListener('DOMContentLoaded', () => {
       shopNowBtn.href = '/collections/' + filter;
     }
 
-    productSwiper.update();
-    productSwiper.slideTo(0, 0);
+    if (productSwiper) {
+      productSwiper.update();
+      productSwiper.slideTo(0, 0);
+    }
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
         if (shouldAnimate) {
           animateVisibleCards();
         } else {
           resetVisibleCards();
+
+          if (isSectionVisible()) {
+            sectionInView = true;
+            showVisibleCardsImmediately();
+          }
         }
       });
     });
@@ -224,24 +274,55 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hasGSAP && hasScrollTrigger) {
     ScrollTrigger.create({
       trigger: section,
-      start: 'top 80%',
-      once: true,
-      onEnter: () => {
+      start: 'top 85%',
+      end: 'bottom top',
+      onEnter: function () {
         sectionInView = true;
         animateVisibleCards();
+      },
+      onEnterBack: function () {
+        sectionInView = true;
+        animateVisibleCards();
+      },
+      onLeave: function () {
+        sectionInView = false;
+      },
+      onLeaveBack: function () {
+        sectionInView = false;
+      }
+    });
+
+    requestAnimationFrame(function () {
+      ScrollTrigger.refresh();
+
+      if (isSectionVisible()) {
+        sectionInView = true;
+        showVisibleCardsImmediately();
       }
     });
   } else {
     sectionInView = true;
-    animateVisibleCards();
+    showVisibleCardsImmediately();
   }
 
   /* ---------------- TAB CLICK EVENTS ---------------- */
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', (e) => {
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function (e) {
       e.preventDefault();
       activateTab(tab.dataset.filter, tab, sectionInView);
     });
+  });
+
+  /* ---------------- WINDOW LOAD SAFETY ---------------- */
+  window.addEventListener('load', function () {
+    if (hasGSAP && hasScrollTrigger) {
+      ScrollTrigger.refresh();
+    }
+
+    if (isSectionVisible()) {
+      sectionInView = true;
+      showVisibleCardsImmediately();
+    }
   });
 });
 </script>
