@@ -129,7 +129,7 @@
           {% if media.media_type == 'image' %}
             <div class="swiper-slide">
               {% render 'image',
-                class: 'js-open-lightbox',
+                class: 'js-open-lightbox cropped-image-wrapper cropped-image--portrait',
                 image: media,
                 crop: 'center',
                 width: media.width,
