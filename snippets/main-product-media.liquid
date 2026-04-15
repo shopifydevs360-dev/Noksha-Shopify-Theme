@@ -49,7 +49,7 @@
 
               <div class="swiper-slide" data-media-id="{{ variant.featured_media.id }}">
                 {% render 'image',
-                  class: 'js-open-lightbox',
+                  class: 'js-open-lightbox cropped-image-wrapper cropped-image--square',
                   image: variant.featured_media,
                   width: variant.featured_media.width,
                   height: variant.featured_media.height,
