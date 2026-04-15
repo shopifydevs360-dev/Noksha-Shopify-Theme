@@ -300,6 +300,26 @@
 /* =====================
    IMAGE LIGHTBOX NAVIGATION
 ===================== */
+.media-lightbox .swiper-button-prev,
+.media-lightbox .swiper-button-next {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 58px;
+  height: 58px;
+  margin-top: 0 !important;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+  color: #ffffff !important;
+  z-index: 30 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
 .media-lightbox .swiper-button-prev::after,
 .media-lightbox .swiper-button-next::after {
   content: '';
@@ -320,7 +340,6 @@
   transform: rotate(45deg);
   margin-right: 4px;
 }
-
 .media-lightbox .swiper-button-prev:hover,
 .media-lightbox .swiper-button-next:hover {
   background: rgba(255, 255, 255, 0.22);
