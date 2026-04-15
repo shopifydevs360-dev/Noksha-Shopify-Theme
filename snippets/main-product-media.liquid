@@ -101,17 +101,22 @@
   {% if has_video %}
     <div class="product-media__video-row hide-tablet hide-mobile hide-tablet-landscape">
       {% for media in product.media %}
-        {% if media.media_type contains 'video' %}
+        {% if media.media_type == 'video' %}
+          <div class="product-media__video js-open-lightbox">
+            {% render 'video',
+              video: media,
+              class: 'product-media__video-inner',
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false
+            %}
+          </div>
+        {% elsif media.media_type == 'external_video' %}
           <div class="product-media__video js-open-lightbox">
             {{
               media
-              | video_tag:
-                autoplay: true,
-                loop: true,
-                muted: true,
-                controls: false,
-                playsinline: true,
-                preload: 'metadata'
+              | external_video_tag
             }}
           </div>
         {% endif %}
