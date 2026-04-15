@@ -3,24 +3,30 @@
     echo 'Product media unavailable'
     break
   endif
+
   assign media_count = product.media.size
+  assign main_media_ratio = section.settings.main_media_ratio | default: 'cropped-image--portrait'
+  assign thumb_media_ratio = section.settings.thumb_media_ratio | default: 'cropped-image--square'
+  assign video_media_ratio = section.settings.video_media_ratio | default: 'cropped-image--portrait'
 -%}
+
 {% if product.media.size == 0 %}
 <style>
   .media-warpper {
     height: 100%;
     width: 100%;
     position: relative;
-}
-.product-media {
+  }
+  .product-media {
     height: 100%;
     width: 100%;
-}
-.swiper {
+  }
+  .swiper {
     height: 100%;
-}
+  }
 </style>
 {% endif %}
+
 <div class="product-media">
   <!--
     =====================
@@ -30,7 +36,7 @@
   <div class="product-media__main swiper hide-tablet hide-mobile hide-tablet-landscape" id="MainProductMedia">
     {% if product.media.size == 0 %}
       <div class="product-media is-empty">
-        <div class="product-media__fallback">
+        <div class="product-media__fallback cropped-image-wrapper {{ main_media_ratio }}">
           {% render 'theme-icon', icon: 'default-image' %}
         </div>
       </div>
@@ -48,15 +54,19 @@
               {% assign rendered_media_ids = rendered_media_ids | append: media_id | append: ',' %}
 
               <div class="swiper-slide" data-media-id="{{ variant.featured_media.id }}">
-                {% render 'image',
-                  class: 'js-open-lightbox cropped-image-wrapper cropped-image--square',
-                  image: variant.featured_media,
-                  width: variant.featured_media.width,
-                  height: variant.featured_media.height,
-                  crop: 'center',
-                  img_alt: variant.featured_media.alt,
-                  style: wrapper_style
-                %}
+                {% if variant.featured_media.media_type == 'image' %}
+                  <div class="cropped-image-wrapper {{ main_media_ratio }}">
+                    {% render 'image',
+                      class: 'js-open-lightbox',
+                      image: variant.featured_media,
+                      width: variant.featured_media.width,
+                      height: variant.featured_media.height,
+                      crop: 'center',
+                      img_alt: variant.featured_media.alt,
+                      style: wrapper_style
+                    %}
+                  </div>
+                {% endif %}
               </div>
             {% endunless %}
           {% endif %}
@@ -69,15 +79,17 @@
           {% assign fallback_media = product.featured_media | default: product.media.first %}
           {% if fallback_media and fallback_media.media_type == 'image' %}
             <div class="swiper-slide" data-media-id="{{ fallback_media.id }}">
-              {% render 'image',
-                class: 'js-open-lightbox',
-                image: fallback_media,
-                width: fallback_media.width,
-                height: fallback_media.height,
-                crop: 'center',
-                img_alt: fallback_media.alt,
-                style: wrapper_style
-              %}
+              <div class="cropped-image-wrapper {{ main_media_ratio }}">
+                {% render 'image',
+                  class: 'js-open-lightbox',
+                  image: fallback_media,
+                  width: fallback_media.width,
+                  height: fallback_media.height,
+                  crop: 'center',
+                  img_alt: fallback_media.alt,
+                  style: wrapper_style
+                %}
+              </div>
             </div>
           {% endif %}
         {% endunless %}
@@ -101,23 +113,20 @@
   {% if has_video %}
     <div class="product-media__video-row hide-tablet hide-mobile hide-tablet-landscape">
       {% for media in product.media %}
-        {% if media.media_type == 'video' %}
+        {% if media.media_type contains 'video' %}
           <div class="product-media__video js-open-lightbox">
-            {% render 'video',
-              video: media,
-              class: 'product-media__video-inner',
-              autoplay: true,
-              loop: true,
-              muted: true,
-              controls: false
-            %}
-          </div>
-        {% elsif media.media_type == 'external_video' %}
-          <div class="product-media__video js-open-lightbox">
-            {{
-              media
-              | external_video_tag
-            }}
+            <div class="cropped-video-wrapper {{ video_media_ratio }}">
+              {{
+                media
+                | video_tag:
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  preload: 'metadata'
+              }}
+            </div>
           </div>
         {% endif %}
       {% endfor %}
@@ -133,14 +142,16 @@
         {% for media in product.media offset: 1 %}
           {% if media.media_type == 'image' %}
             <div class="swiper-slide">
-              {% render 'image',
-                class: 'js-open-lightbox cropped-image-wrapper cropped-image--portrait',
-                image: media,
-                crop: 'center',
-                width: media.width,
-                height: media.height,
-                img_alt: media.alt
-              %}
+              <div class="cropped-image-wrapper {{ thumb_media_ratio }}">
+                {% render 'image',
+                  class: 'js-open-lightbox',
+                  image: media,
+                  crop: 'center',
+                  width: media.width,
+                  height: media.height,
+                  img_alt: media.alt
+                %}
+              </div>
             </div>
           {% endif %}
         {% endfor %}
@@ -151,16 +162,17 @@
         {% assign first_media = product.media.first %}
         {% if first_media.media_type == 'image' %}
           <div class="swiper-slide">
-            {%
-              render 'image',
-              class: 'js-open-lightbox cropped-image-wrapper cropped-image--portrait',
-              image: first_media,
-              crop: 'center',
-              width: first_media.width,
-              height: first_media.height,
-              img_alt: first_media.alt,
-              data_lightbox_index: product.media.size | minus: 1
-            %}
+            <div class="cropped-image-wrapper {{ thumb_media_ratio }}">
+              {% render 'image',
+                class: 'js-open-lightbox',
+                image: first_media,
+                crop: 'center',
+                width: first_media.width,
+                height: first_media.height,
+                img_alt: first_media.alt,
+                data_lightbox_index: product.media.size | minus: 1
+              %}
+            </div>
           </div>
         {% endif %}
       </div>
