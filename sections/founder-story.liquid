@@ -1,10 +1,10 @@
+
 {% render 'section-base-style' %}
 
 {%- liquid
   assign section_classes = 'founder-story section-' | append: section.id | append: '-padding'
   assign section_classes = section_classes | append: ' m-color-' | append: section.settings.color_scheme
   assign section_classes = section_classes | append: ' ' | append: section.settings.custom_class
-  assign section_classes = section_classes | append: ' ' | append: section.settings.color_control
 
   assign container_class = section.settings.container_width | default: 'container-fluid'
 -%}
@@ -12,18 +12,23 @@
 <section class="{{ section_classes }}" id="FounderStory-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="{{ container_class }}">
     <div class="sidebar-space">
-      <div class="founder-story__inner founder-story__layout-{{ section.settings.layout_style }}">
+      <div class="founder-story__wrap founder-story__layout-{{ section.settings.layout_style }}">
+        
+        {% if section.settings.bg_title_left != blank %}
+          <div class="founder-story__bg-title founder-story__bg-title--left special-font-4">
+            {{ section.settings.bg_title_left }}
+          </div>
+        {% endif %}
 
-        {% if section.settings.bg_text != blank %}
-          <div class="founder-story__bg-text special-font-4">
-            <span>{{ section.settings.bg_text }}</span>
+        {% if section.settings.bg_title_right != blank %}
+          <div class="founder-story__bg-title founder-story__bg-title--right special-font-4">
+            {{ section.settings.bg_title_right }}
           </div>
         {% endif %}
 
         <div class="founder-story__grid">
-
           <div class="founder-story__media founder-story__anim-media">
-            <div class="founder-story__media-card border-radius-style-one">
+            <div class="founder-story__media-inner border-radius-style-one">
               {% render 'image',
                 image: section.settings.image,
                 class: 'founder-story__image cropped-image-wrapper adapt-image-height',
@@ -48,7 +53,7 @@
             {% endif %}
 
             {% if section.settings.name != blank %}
-              <h2 class="founder-story__title founder-story__anim-title">
+              <h2 class="founder-story__name founder-story__anim-title">
                 {{ section.settings.name }}
               </h2>
             {% endif %}
@@ -77,7 +82,6 @@
               </div>
             {% endif %}
           </div>
-
         </div>
       </div>
     </div>
@@ -91,49 +95,30 @@
     background: rgb(var(--color-background));
   }
 
-  #FounderStory-{{ section.id }} .founder-story__inner {
+  #FounderStory-{{ section.id }} .founder-story__wrap {
     position: relative;
+    min-height: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   #FounderStory-{{ section.id }} .founder-story__grid {
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2.4rem;
     align-items: center;
+    gap: 2rem;
     z-index: 2;
-  }
-
-  #FounderStory-{{ section.id }} .founder-story__bg-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  #FounderStory-{{ section.id }} .founder-story__bg-text span {
-    display: block;
-    font-family: var(--font-custom-4, var(--font-heading-family, sans-serif));
-    font-size: clamp(3.5rem, 12vw, {{ section.settings.bg_text_size }}px);
-    line-height: 0.82;
-    text-transform: uppercase;
-    white-space: nowrap;
-    letter-spacing: 0.04em;
-    color: rgba(var(--color-additional-1), {{ section.settings.bg_text_opacity | divided_by: 100.0 }});
   }
 
   #FounderStory-{{ section.id }} .founder-story__media {
     position: relative;
-    z-index: 2;
     max-width: min(100%, {{ section.settings.image_max_width }}px);
     margin: 0 auto;
+    z-index: 2;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__media-card {
-    position: relative;
+  #FounderStory-{{ section.id }} .founder-story__media-inner {
     overflow: hidden;
     background: rgba(var(--color-background-secondary), 1);
   }
@@ -150,15 +135,6 @@
     display: block;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__image-caption {
-    margin-top: 0.9rem;
-    font-size: 0.82rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(var(--color-subtext), 0.82);
-    text-align: center;
-  }
-
   #FounderStory-{{ section.id }} .founder-story__content {
     position: relative;
     z-index: 3;
@@ -167,44 +143,41 @@
   }
 
   #FounderStory-{{ section.id }} .founder-story__eyebrow {
-    margin-bottom: 1rem;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(var(--color-subtext), 0.9);
+    margin-bottom: 1rem;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__name {
+    margin: 0;
+    line-height: 0.95;
+    color: rgb(var(--color-heading));
+    font-size: clamp(2.2rem, 7vw, {{ section.settings.name_size }}px);
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__designation {
+    margin-top: 0.9rem;
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: rgba(var(--color-subtext), 0.9);
   }
 
-  #FounderStory-{{ section.id }} .founder-story__title {
-    margin: 0;
-    font-size: clamp(2.4rem, 7vw, {{ section.settings.name_size }}px);
-    line-height: 0.94;
-    letter-spacing: -0.03em;
-    color: rgb(var(--color-heading));
-    max-width: 12ch;
-  }
-
-  #FounderStory-{{ section.id }} .founder-story__designation {
-    margin-top: 1rem;
-    margin-bottom: 1.3rem;
-    font-size: 0.95rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(var(--color-subtext), 0.92);
-  }
-
   #FounderStory-{{ section.id }} .founder-story__intro {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.4rem;
     color: rgb(var(--color-heading));
-    font-size: clamp(1rem, 1.8vw, {{ section.settings.intro_size }}px);
-    line-height: 1.65;
-    max-width: 36em;
+    font-size: clamp(1rem, 1.9vw, {{ section.settings.intro_size }}px);
+    line-height: 1.6;
   }
 
   #FounderStory-{{ section.id }} .founder-story__description {
     color: rgb(var(--color-text));
-    font-size: clamp(1rem, 1.35vw, {{ section.settings.body_size }}px);
-    line-height: 1.9;
-    max-width: 42em;
+    font-size: clamp(1rem, 1.4vw, {{ section.settings.body_size }}px);
+    line-height: 1.85;
+    max-width: 100%;
   }
 
   #FounderStory-{{ section.id }} .founder-story__description p + p {
@@ -213,17 +186,49 @@
 
   #FounderStory-{{ section.id }} .founder-story__signature {
     margin-top: 1.8rem;
-    font-size: clamp(1.15rem, 2vw, 2rem);
+    font-size: clamp(1.2rem, 2vw, 2rem);
     color: rgb(var(--color-heading));
-    opacity: 0.92;
+    opacity: 0.9;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__image-caption {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: rgba(var(--color-subtext), 0.8);
+    text-align: center;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__bg-title {
+    position: absolute;
+    z-index: 1;
+    line-height: 0.82;
+    font-family: var(--font-heading-family, sans-serif);
+    font-weight: 300;
+    text-transform: uppercase;
+    pointer-events: none;
+    color: rgba(var(--color-additional-1), {{ section.settings.bg_title_opacity | divided_by: 100.0 }});
+    font-size: clamp(4rem, 16vw, {{ section.settings.bg_title_size }}px);
+    max-width: min(42vw, 520px);
+    word-break: break-word;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__bg-title--left {
+    top: 0;
+    left: 0;
+    text-align: left;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__bg-title--right {
+    right: 0;
+    bottom: 0;
+    text-align: right;
   }
 
   @media (min-width: 992px) {
     #FounderStory-{{ section.id }} .founder-story__grid {
-      grid-template-columns: minmax(340px, 0.82fr) minmax(460px, 1fr);
+      grid-template-columns: minmax(320px, 0.85fr) minmax(420px, 1fr);
       gap: clamp(2rem, 5vw, 7rem);
-      min-height: {{ section.settings.desktop_section_height }}vh;
-      padding-top: 4rem;
+      min-height: {{ section.settings.section_min_height }}vh;
     }
 
     #FounderStory-{{ section.id }} .founder-story__layout-image-right .founder-story__media {
@@ -242,10 +247,6 @@
       order: 2;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__media {
-      margin: 0;
-    }
-
     #FounderStory-{{ section.id }} .founder-story__content {
       margin: 0;
     }
@@ -256,24 +257,28 @@
   }
 
   @media (max-width: 991px) {
-    #FounderStory-{{ section.id }} .founder-story__inner {
+    #FounderStory-{{ section.id }} .founder-story__wrap {
       padding-top: 1rem;
+      padding-bottom: 1rem;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-text {
-      top: 0.2rem;
+    #FounderStory-{{ section.id }} .founder-story__bg-title {
+      opacity: 0.5;
+      max-width: 60vw;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-text span {
-      font-size: clamp(2.7rem, 14vw, 5rem);
+    #FounderStory-{{ section.id }} .founder-story__bg-title--left {
+      top: -0.5rem;
+      left: 0;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__bg-title--right {
+      right: 0;
+      bottom: 1rem;
     }
 
     #FounderStory-{{ section.id }} .founder-story__media {
-      max-width: min(100%, 560px);
-    }
-
-    #FounderStory-{{ section.id }} .founder-story__title {
-      max-width: 100%;
+      max-width: min(100%, 520px);
     }
   }
 </style>
@@ -283,8 +288,8 @@
     function initFounderStory(sectionId) {
       var section = document.getElementById('FounderStory-' + sectionId);
       if (!section) return;
-      if (section.dataset.founderStoryInit === 'true') return;
-      section.dataset.founderStoryInit = 'true';
+      if (section.dataset.founderInit === 'true') return;
+      section.dataset.founderInit = 'true';
 
       if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
@@ -294,36 +299,38 @@
       var title = section.querySelector('.founder-story__anim-title');
       var fades = section.querySelectorAll('.founder-story__anim-fade');
       var text = section.querySelector('.founder-story__anim-text');
-      var bgText = section.querySelector('.founder-story__bg-text span');
+      var bgTitles = section.querySelectorAll('.founder-story__bg-title');
       var image = section.querySelector('.founder-story__image img');
 
-      if (bgText) {
-        gsap.fromTo(bgText,
-          {
-            xPercent: -8,
-            opacity: 0
-          },
-          {
-            xPercent: 0,
-            opacity: 1,
-            duration: 1.3,
-            ease: 'power3.out',
+      if (bgTitles.length) {
+        bgTitles.forEach(function(item, index) {
+          gsap.fromTo(item,
+            {
+              y: index === 0 ? -30 : 30,
+              opacity: 0
+            },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 1.2,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 80%'
+              }
+            }
+          );
+
+          gsap.to(item, {
+            yPercent: index === 0 ? -10 : 10,
+            ease: 'none',
             scrollTrigger: {
               trigger: section,
-              start: 'top 82%'
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.2
             }
-          }
-        );
-
-        gsap.to(bgText, {
-          xPercent: 8,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1.2
-          }
+          });
         });
       }
 
@@ -332,13 +339,13 @@
           {
             y: 60,
             opacity: 0,
-            scale: 0.97
+            scale: 0.96
           },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            duration: 1.1,
+            duration: 1.2,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: media,
@@ -356,7 +363,7 @@
             trigger: section,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1.4
+            scrub: 1.5
           }
         });
       }
@@ -364,7 +371,7 @@
       if (title) {
         gsap.fromTo(title,
           {
-            y: 45,
+            y: 50,
             opacity: 0
           },
           {
@@ -394,7 +401,7 @@
             ease: 'power2.out',
             scrollTrigger: {
               trigger: section.querySelector('.founder-story__content'),
-              start: 'top 82%'
+              start: 'top 80%'
             }
           }
         );
@@ -402,7 +409,6 @@
 
       if (text) {
         var paragraphs = text.querySelectorAll('p');
-
         if (paragraphs.length) {
           gsap.fromTo(paragraphs,
             {
@@ -417,7 +423,7 @@
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: text,
-                start: 'top 80%'
+                start: 'top 78%'
               }
             }
           );
@@ -434,7 +440,7 @@
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: text,
-                start: 'top 80%'
+                start: 'top 78%'
               }
             }
           );
@@ -459,7 +465,6 @@
 {% schema %}
 {
   "name": "Founder story",
-  "limit": 1,
   "settings": [
     {
       "type": "color_scheme",
@@ -475,7 +480,6 @@
         { "value": "container", "label": "Container" },
         { "value": "container-fluid", "label": "Container fluid" },
         { "value": "container-narrow", "label": "Container narrow" },
-        { "value": "container-extra-narrow", "label": "Container extra narrow" },
         { "value": "extended", "label": "Extended" }
       ],
       "default": "container-fluid"
@@ -489,10 +493,6 @@
         { "value": "image-right", "label": "Image right" }
       ],
       "default": "image-left"
-    },
-    {
-      "type": "header",
-      "content": "Content"
     },
     {
       "type": "text",
@@ -531,10 +531,6 @@
       "default": "Founder"
     },
     {
-      "type": "header",
-      "content": "Media"
-    },
-    {
       "type": "image_picker",
       "id": "image",
       "label": "Founder image"
@@ -546,6 +542,38 @@
       "default": "Portrait / leadership image"
     },
     {
+      "type": "text",
+      "id": "bg_title_left",
+      "label": "Background title left",
+      "default": "Meet CEO"
+    },
+    {
+      "type": "text",
+      "id": "bg_title_right",
+      "label": "Background title right",
+      "default": "Founder"
+    },
+    {
+      "type": "range",
+      "id": "bg_title_size",
+      "min": 80,
+      "max": 360,
+      "step": 4,
+      "unit": "px",
+      "label": "Background title size",
+      "default": 220
+    },
+    {
+      "type": "range",
+      "id": "bg_title_opacity",
+      "min": 1,
+      "max": 25,
+      "step": 1,
+      "unit": "%",
+      "label": "Background title opacity",
+      "default": 10
+    },
+    {
       "type": "range",
       "id": "image_max_width",
       "min": 280,
@@ -554,40 +582,6 @@
       "unit": "px",
       "label": "Image max width",
       "default": 520
-    },
-    {
-      "type": "header",
-      "content": "Background text"
-    },
-    {
-      "type": "text",
-      "id": "bg_text",
-      "label": "Background text",
-      "default": "Meet The Founder"
-    },
-    {
-      "type": "range",
-      "id": "bg_text_size",
-      "min": 80,
-      "max": 360,
-      "step": 4,
-      "unit": "px",
-      "label": "Background text size",
-      "default": 220
-    },
-    {
-      "type": "range",
-      "id": "bg_text_opacity",
-      "min": 1,
-      "max": 20,
-      "step": 1,
-      "unit": "%",
-      "label": "Background text opacity",
-      "default": 8
-    },
-    {
-      "type": "header",
-      "content": "Typography and layout"
     },
     {
       "type": "range",
@@ -601,7 +595,7 @@
     },
     {
       "type": "range",
-      "id": "desktop_section_height",
+      "id": "section_min_height",
       "min": 50,
       "max": 120,
       "step": 2,
@@ -617,7 +611,7 @@
       "step": 2,
       "unit": "px",
       "label": "Name title size",
-      "default": 84
+      "default": 80
     },
     {
       "type": "range",
@@ -664,23 +658,9 @@
       "default": 80
     },
     {
-      "type": "header",
-      "content": "Dynamic option"
-    },
-    {
       "type": "text",
       "id": "custom_class",
       "label": "Custom class"
-    },
-    {
-      "type": "select",
-      "id": "color_control",
-      "label": "Color Control",
-      "options": [
-        { "value": "section-dark", "label": "Dark" },
-        { "value": "section-light", "label": "Light" }
-      ],
-      "default": "section-light"
     }
   ],
   "presets": [
