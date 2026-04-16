@@ -19,6 +19,31 @@
         "color_control": "section-light"
       }
     },
+    "about_story_reveal_QHe7wL": {
+      "type": "about-story-reveal",
+      "name": "About story reveal",
+      "settings": {
+        "enable_sidebar_space": false,
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "container_width": "full-width",
+        "layout": "image-left",
+        "text_align": "left",
+        "font_size": "h2",
+        "subheading": "Our story",
+        "heading": "Crafting a more editorial and premium brand story.",
+        "text": "<p>Use this section to introduce your brand story, philosophy, process, or founder message with elegant layered imagery and subtle scrolling motion.</p>",
+        "button_label": "Learn more",
+        "button_link": "",
+        "button_style": "btn--primary",
+        "main_image": "shopify://shop_images/Youmi_beauty_Hair_Extensions_colored_Contact_lenses_hair_Curler_hair_dryer_bd503878-17ef-44c4-b6b5-08e085cf9c98.jpg",
+        "aspect_ratio": "cropped-image--portrait",
+        "hover_effect_action": "no-effect",
+        "padding_top": 0,
+        "padding_bottom": 60,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
     "image_features_split_WNBMaA": {
       "type": "image-features-split",
       "blocks": {
@@ -289,6 +314,7 @@
   },
   "order": [
     "main",
+    "about_story_reveal_QHe7wL",
     "image_features_split_WNBMaA",
     "image_features_split_7cNjbW",
     "timeline_yAPL6B",
