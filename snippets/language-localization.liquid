@@ -38,7 +38,7 @@
                 >
                   <span class="checkmark-icon-wrapper" aria-hidden="true">
                     {% if language.iso_code == localization.language.iso_code %}
-                      {{ 'icon-checkmark.svg' | inline_asset_content }}
+                      {%- render 'theme-icon', icon: 'account' -%}
                     {% endif %}
                   </span>
 
