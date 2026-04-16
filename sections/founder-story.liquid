@@ -1,0 +1,673 @@
+{{ 'gsap.min.js' | asset_url | script_tag }}
+{{ 'ScrollTrigger.min.js' | asset_url | script_tag }}
+{% render 'section-base-style' %}
+
+{%- liquid
+  assign section_classes = 'founder-story section-' | append: section.id | append: '-padding'
+  assign section_classes = section_classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign section_classes = section_classes | append: ' ' | append: section.settings.custom_class
+
+  assign container_class = section.settings.container_width | default: 'container-fluid'
+-%}
+
+<section class="{{ section_classes }}" id="FounderStory-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="{{ container_class }}">
+    <div class="sidebar-space">
+      <div class="founder-story__wrap founder-story__layout-{{ section.settings.layout_style }}">
+        
+        {% if section.settings.bg_title_left != blank %}
+          <div class="founder-story__bg-title founder-story__bg-title--left special-font-4">
+            {{ section.settings.bg_title_left }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.bg_title_right != blank %}
+          <div class="founder-story__bg-title founder-story__bg-title--right special-font-4">
+            {{ section.settings.bg_title_right }}
+          </div>
+        {% endif %}
+
+        <div class="founder-story__grid">
+          <div class="founder-story__media founder-story__anim-media">
+            <div class="founder-story__media-inner border-radius-style-one">
+              {% render 'image',
+                image: section.settings.image,
+                class: 'founder-story__image cropped-image-wrapper adapt-image-height',
+                img_alt: section.settings.name,
+                loading: 'lazy',
+                fetchpriority: 'low'
+              %}
+            </div>
+
+            {% if section.settings.image_caption != blank %}
+              <div class="founder-story__image-caption founder-story__anim-fade">
+                {{ section.settings.image_caption }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="founder-story__content">
+            {% if section.settings.eyebrow != blank %}
+              <div class="founder-story__eyebrow founder-story__anim-fade">
+                {{ section.settings.eyebrow }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.name != blank %}
+              <h2 class="founder-story__name founder-story__anim-title">
+                {{ section.settings.name }}
+              </h2>
+            {% endif %}
+
+            {% if section.settings.designation != blank %}
+              <div class="founder-story__designation founder-story__anim-fade">
+                {{ section.settings.designation }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.short_intro != blank %}
+              <div class="founder-story__intro founder-story__anim-fade rte">
+                {{ section.settings.short_intro }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.description != blank %}
+              <div class="founder-story__description founder-story__anim-text rte">
+                {{ section.settings.description }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.signature_text != blank %}
+              <div class="founder-story__signature founder-story__anim-fade special-font-3">
+                {{ section.settings.signature_text }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #FounderStory-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    background: rgb(var(--color-background));
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__wrap {
+    position: relative;
+    min-height: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 2rem;
+    z-index: 2;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__media {
+    position: relative;
+    max-width: min(100%, {{ section.settings.image_max_width }}px);
+    margin: 0 auto;
+    z-index: 2;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__media-inner {
+    overflow: hidden;
+    background: rgba(var(--color-background-secondary), 1);
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__image {
+    display: block;
+    width: 100%;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__image img,
+  #FounderStory-{{ section.id }} .founder-story__image svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__content {
+    position: relative;
+    z-index: 3;
+    max-width: {{ section.settings.content_max_width }}px;
+    margin: 0 auto;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__eyebrow {
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(var(--color-subtext), 0.9);
+    margin-bottom: 1rem;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__name {
+    margin: 0;
+    line-height: 0.95;
+    color: rgb(var(--color-heading));
+    font-size: clamp(2.2rem, 7vw, {{ section.settings.name_size }}px);
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__designation {
+    margin-top: 0.9rem;
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(var(--color-subtext), 0.9);
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__intro {
+    margin-bottom: 1.4rem;
+    color: rgb(var(--color-heading));
+    font-size: clamp(1rem, 1.9vw, {{ section.settings.intro_size }}px);
+    line-height: 1.6;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__description {
+    color: rgb(var(--color-text));
+    font-size: clamp(1rem, 1.4vw, {{ section.settings.body_size }}px);
+    line-height: 1.85;
+    max-width: 100%;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__description p + p {
+    margin-top: 1.1rem;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__signature {
+    margin-top: 1.8rem;
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    color: rgb(var(--color-heading));
+    opacity: 0.9;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__image-caption {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: rgba(var(--color-subtext), 0.8);
+    text-align: center;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__bg-title {
+    position: absolute;
+    z-index: 1;
+    line-height: 0.82;
+    font-family: var(--font-heading-family, sans-serif);
+    font-weight: 300;
+    text-transform: uppercase;
+    pointer-events: none;
+    color: rgba(var(--color-additional-1), {{ section.settings.bg_title_opacity | divided_by: 100.0 }});
+    font-size: clamp(4rem, 16vw, {{ section.settings.bg_title_size }}px);
+    max-width: min(42vw, 520px);
+    word-break: break-word;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__bg-title--left {
+    top: 0;
+    left: 0;
+    text-align: left;
+  }
+
+  #FounderStory-{{ section.id }} .founder-story__bg-title--right {
+    right: 0;
+    bottom: 0;
+    text-align: right;
+  }
+
+  @media (min-width: 992px) {
+    #FounderStory-{{ section.id }} .founder-story__grid {
+      grid-template-columns: minmax(320px, 0.85fr) minmax(420px, 1fr);
+      gap: clamp(2rem, 5vw, 7rem);
+      min-height: {{ section.settings.section_min_height }}vh;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__layout-image-right .founder-story__media {
+      order: 2;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__layout-image-right .founder-story__content {
+      order: 1;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__layout-image-left .founder-story__media {
+      order: 1;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__layout-image-left .founder-story__content {
+      order: 2;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__content {
+      margin: 0;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__image-caption {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 991px) {
+    #FounderStory-{{ section.id }} .founder-story__wrap {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__bg-title {
+      opacity: 0.5;
+      max-width: 60vw;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__bg-title--left {
+      top: -0.5rem;
+      left: 0;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__bg-title--right {
+      right: 0;
+      bottom: 1rem;
+    }
+
+    #FounderStory-{{ section.id }} .founder-story__media {
+      max-width: min(100%, 520px);
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    function initFounderStory(sectionId) {
+      var section = document.getElementById('FounderStory-' + sectionId);
+      if (!section) return;
+      if (section.dataset.founderInit === 'true') return;
+      section.dataset.founderInit = 'true';
+
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      var media = section.querySelector('.founder-story__anim-media');
+      var title = section.querySelector('.founder-story__anim-title');
+      var fades = section.querySelectorAll('.founder-story__anim-fade');
+      var text = section.querySelector('.founder-story__anim-text');
+      var bgTitles = section.querySelectorAll('.founder-story__bg-title');
+      var image = section.querySelector('.founder-story__image img');
+
+      if (bgTitles.length) {
+        bgTitles.forEach(function(item, index) {
+          gsap.fromTo(item,
+            {
+              y: index === 0 ? -30 : 30,
+              opacity: 0
+            },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 1.2,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 80%'
+              }
+            }
+          );
+
+          gsap.to(item, {
+            yPercent: index === 0 ? -10 : 10,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.2
+            }
+          });
+        });
+      }
+
+      if (media) {
+        gsap.fromTo(media,
+          {
+            y: 60,
+            opacity: 0,
+            scale: 0.96
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: media,
+              start: 'top 82%'
+            }
+          }
+        );
+      }
+
+      if (image) {
+        gsap.to(image, {
+          yPercent: -8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        });
+      }
+
+      if (title) {
+        gsap.fromTo(title,
+          {
+            y: 50,
+            opacity: 0
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: title,
+              start: 'top 85%'
+            }
+          }
+        );
+      }
+
+      if (fades.length) {
+        gsap.fromTo(fades,
+          {
+            y: 26,
+            opacity: 0
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            stagger: 0.12,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section.querySelector('.founder-story__content'),
+              start: 'top 80%'
+            }
+          }
+        );
+      }
+
+      if (text) {
+        var paragraphs = text.querySelectorAll('p');
+        if (paragraphs.length) {
+          gsap.fromTo(paragraphs,
+            {
+              y: 34,
+              opacity: 0
+            },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.9,
+              stagger: 0.14,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: text,
+                start: 'top 78%'
+              }
+            }
+          );
+        } else {
+          gsap.fromTo(text,
+            {
+              y: 34,
+              opacity: 0
+            },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.9,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: text,
+                start: 'top 78%'
+              }
+            }
+          );
+        }
+      }
+
+      ScrollTrigger.refresh();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initFounderStory('{{ section.id }}');
+    });
+
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.target && event.target.id === 'shopify-section-{{ section.id }}') {
+        initFounderStory('{{ section.id }}');
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Founder story",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "container-fluid"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout style",
+      "options": [
+        { "value": "image-left", "label": "Image left" },
+        { "value": "image-right", "label": "Image right" }
+      ],
+      "default": "image-left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Leadership"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Founder / CEO name",
+      "default": "Meet Our Founder"
+    },
+    {
+      "type": "text",
+      "id": "designation",
+      "label": "Designation",
+      "default": "Founder & CEO"
+    },
+    {
+      "type": "richtext",
+      "id": "short_intro",
+      "label": "Short intro",
+      "default": "<p>A visionary leader shaping the company with elegance, confidence, and a clear long-term direction.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Large description",
+      "default": "<p>Use this section to tell the founder story in a more premium and emotional way. Share the company vision, the journey behind the brand, and the values that guide every decision.</p><p>As the user scrolls, the content reveals softly to create a refined editorial feeling that matches a modern luxury brand presentation.</p>"
+    },
+    {
+      "type": "text",
+      "id": "signature_text",
+      "label": "Signature text",
+      "default": "Founder"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Founder image"
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Image caption",
+      "default": "Portrait / leadership image"
+    },
+    {
+      "type": "text",
+      "id": "bg_title_left",
+      "label": "Background title left",
+      "default": "Meet CEO"
+    },
+    {
+      "type": "text",
+      "id": "bg_title_right",
+      "label": "Background title right",
+      "default": "Founder"
+    },
+    {
+      "type": "range",
+      "id": "bg_title_size",
+      "min": 80,
+      "max": 360,
+      "step": 4,
+      "unit": "px",
+      "label": "Background title size",
+      "default": 220
+    },
+    {
+      "type": "range",
+      "id": "bg_title_opacity",
+      "min": 1,
+      "max": 25,
+      "step": 1,
+      "unit": "%",
+      "label": "Background title opacity",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "min": 280,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "label": "Image max width",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 360,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 720
+    },
+    {
+      "type": "range",
+      "id": "section_min_height",
+      "min": 50,
+      "max": 120,
+      "step": 2,
+      "unit": "%",
+      "label": "Desktop section height",
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "name_size",
+      "min": 32,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "label": "Name title size",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "intro_size",
+      "min": 16,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Intro text size",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Founder story"
+    }
+  ]
+}
+{% endschema %}
