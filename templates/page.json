@@ -25,29 +25,36 @@
         "faq_item_KDqTge": {
           "type": "faq_item",
           "settings": {
-            "question": "What makes your brand different?",
-            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+            "question": "1. How long does shipping take?",
+            "answer": "<p>We aim to process all orders within 1–2 business days. Delivery typically takes 2–5 business days within the UAE. International shipping times may vary depending on your location.</p>"
           }
         },
         "faq_item_eJmg4y": {
           "type": "faq_item",
           "settings": {
-            "question": "What makes your brand different?",
-            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+            "question": "2. Can I return or exchange a product?",
+            "answer": "<p>Yes, we offer returns and exchanges within a specified period after delivery. Products must be unused and in their original packaging. Please contact our support team to initiate a return.</p>"
           }
         },
         "faq_item_9PaxxW": {
           "type": "faq_item",
           "settings": {
-            "question": "What makes your brand different?",
-            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+            "question": "3. Are your products safe for all hair and skin types?",
+            "answer": "<p>Our products are designed to be safe and effective for a wide range of hair and skin types. However, we always recommend reviewing product details or consulting with a professional if you have specific concerns.</p>"
           }
         },
         "faq_item_BhVmPN": {
           "type": "faq_item",
           "settings": {
-            "question": "What makes your brand different?",
-            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+            "question": "4. How can I track my order?",
+            "answer": "<p>Once your order is shipped, you will receive a confirmation email with a tracking link. You can use this link to monitor your delivery in real-time.</p>"
+          }
+        },
+        "faq_item_gbnTXR": {
+          "type": "faq_item",
+          "settings": {
+            "question": "5. What payment methods do you accept?",
+            "answer": "<p>We accept major payment methods including credit/debit cards, Apple Pay, and Buy Now Pay Later options like Tamara (available in UAE).</p>"
           }
         }
       },
@@ -55,7 +62,8 @@
         "faq_item_KDqTge",
         "faq_item_eJmg4y",
         "faq_item_9PaxxW",
-        "faq_item_BhVmPN"
+        "faq_item_BhVmPN",
+        "faq_item_gbnTXR"
       ],
       "name": "FAQ elegant",
       "settings": {
@@ -64,7 +72,7 @@
         "text_align": "left",
         "eyebrow": "Frequently asked questions",
         "heading": "Everything you may want to know.",
-        "text": "<p>Use this section to answer the most common customer questions in a clean and elegant way.</p>",
+        "text": "<p>Find answers to the most common questions about our products, orders, and services. If you need further assistance, our support team is always here to help.</p>",
         "heading_size": "h2",
         "bg_text": "FAQ",
         "bg_text_size": 180,
