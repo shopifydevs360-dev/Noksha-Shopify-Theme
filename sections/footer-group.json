@@ -33,16 +33,16 @@
           "type": "menu",
           "settings": {
             "block_width": "15",
-            "title": "Contact",
-            "menu": ""
+            "title": "HAIR ESSENTIALS",
+            "menu": "hair-essentials"
           }
         },
         "menu_gkXTYr": {
           "type": "menu",
           "settings": {
             "block_width": "20",
-            "title": "Customer Care",
-            "menu": ""
+            "title": "LENSES",
+            "menu": "contact-lenses"
           }
         },
         "get_in_touch_GMYwnU": {
