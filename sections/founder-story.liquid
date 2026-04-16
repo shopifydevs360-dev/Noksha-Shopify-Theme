@@ -1,15 +1,15 @@
-
 {% render 'section-base-style' %}
 
 {%- liquid
   assign section_classes = 'founder-story section-' | append: section.id | append: '-padding'
   assign section_classes = section_classes | append: ' m-color-' | append: section.settings.color_scheme
   assign section_classes = section_classes | append: ' ' | append: section.settings.custom_class
+  assign section_classes = section_classes | append: ' ' | append: section.settings.color_control
 
   assign container_class = section.settings.container_width | default: 'container-fluid'
 -%}
 
-<section class="{{ section_classes }}" id="FounderStory-{{ section.id }}" {{ section.shopify_attributes }}>
+<section class="{{ section_classes }}" id="FounderStory" {{ section.shopify_attributes }}>
   <div class="{{ container_class }}">
     <div class="sidebar-space">
       <div class="founder-story__wrap founder-story__layout-{{ section.settings.layout_style }}">
@@ -89,20 +89,20 @@
 </section>
 
 <style>
-  #FounderStory-{{ section.id }} {
+  .founder-story {
     position: relative;
     overflow: hidden;
     background: rgb(var(--color-background));
   }
 
-  #FounderStory-{{ section.id }} .founder-story__wrap {
+  .founder-story .founder-story__wrap {
     position: relative;
     min-height: 100%;
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__grid {
+  .founder-story .founder-story__grid {
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
@@ -111,38 +111,38 @@
     z-index: 2;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__media {
+  .founder-story .founder-story__media {
     position: relative;
     max-width: min(100%, {{ section.settings.image_max_width }}px);
     margin: 0 auto;
     z-index: 2;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__media-inner {
+  .founder-story .founder-story__media-inner {
     overflow: hidden;
     background: rgba(var(--color-background-secondary), 1);
   }
 
-  #FounderStory-{{ section.id }} .founder-story__image {
+  .founder-story .founder-story__image {
     display: block;
     width: 100%;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__image img,
-  #FounderStory-{{ section.id }} .founder-story__image svg {
+  .founder-story .founder-story__image img,
+  .founder-story .founder-story__image svg {
     width: 100%;
     height: auto;
     display: block;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__content {
+  .founder-story .founder-story__content {
     position: relative;
     z-index: 3;
     max-width: {{ section.settings.content_max_width }}px;
     margin: 0 auto;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__eyebrow {
+  .founder-story .founder-story__eyebrow {
     font-size: 0.85rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -150,14 +150,14 @@
     margin-bottom: 1rem;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__name {
+  .founder-story .founder-story__name {
     margin: 0;
     line-height: 0.95;
     color: rgb(var(--color-heading));
     font-size: clamp(2.2rem, 7vw, {{ section.settings.name_size }}px);
   }
 
-  #FounderStory-{{ section.id }} .founder-story__designation {
+  .founder-story .founder-story__designation {
     margin-top: 0.9rem;
     margin-bottom: 1.2rem;
     font-size: 1rem;
@@ -166,39 +166,39 @@
     color: rgba(var(--color-subtext), 0.9);
   }
 
-  #FounderStory-{{ section.id }} .founder-story__intro {
+  .founder-story .founder-story__intro {
     margin-bottom: 1.4rem;
     color: rgb(var(--color-heading));
     font-size: clamp(1rem, 1.9vw, {{ section.settings.intro_size }}px);
     line-height: 1.6;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__description {
+  .founder-story .founder-story__description {
     color: rgb(var(--color-text));
     font-size: clamp(1rem, 1.4vw, {{ section.settings.body_size }}px);
     line-height: 1.85;
     max-width: 100%;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__description p + p {
+  .founder-story .founder-story__description p + p {
     margin-top: 1.1rem;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__signature {
+  .founder-story .founder-story__signature {
     margin-top: 1.8rem;
     font-size: clamp(1.2rem, 2vw, 2rem);
     color: rgb(var(--color-heading));
     opacity: 0.9;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__image-caption {
+  .founder-story .founder-story__image-caption {
     margin-top: 0.8rem;
     font-size: 0.85rem;
     color: rgba(var(--color-subtext), 0.8);
     text-align: center;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__bg-title {
+  .founder-story .founder-story__bg-title {
     position: absolute;
     z-index: 1;
     line-height: 0.82;
@@ -208,76 +208,76 @@
     pointer-events: none;
     color: rgba(var(--color-additional-1), {{ section.settings.bg_title_opacity | divided_by: 100.0 }});
     font-size: clamp(4rem, 16vw, {{ section.settings.bg_title_size }}px);
-    max-width: min(42vw, 520px);
-    word-break: break-word;
+    white-space: nowrap;
+    max-width: 100%;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__bg-title--left {
+  .founder-story .founder-story__bg-title--left {
     top: 0;
     left: 0;
     text-align: left;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__bg-title--right {
+  .founder-story .founder-story__bg-title--right {
     right: 0;
     bottom: 0;
     text-align: right;
   }
 
   @media (min-width: 992px) {
-    #FounderStory-{{ section.id }} .founder-story__grid {
+    .founder-story .founder-story__grid {
       grid-template-columns: minmax(320px, 0.85fr) minmax(420px, 1fr);
       gap: clamp(2rem, 5vw, 7rem);
       min-height: {{ section.settings.section_min_height }}vh;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-right .founder-story__media {
+    .founder-story .founder-story__layout-image-right .founder-story__media {
       order: 2;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-right .founder-story__content {
+    .founder-story .founder-story__layout-image-right .founder-story__content {
       order: 1;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-left .founder-story__media {
+    .founder-story .founder-story__layout-image-left .founder-story__media {
       order: 1;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-left .founder-story__content {
+    .founder-story .founder-story__layout-image-left .founder-story__content {
       order: 2;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__content {
+    .founder-story .founder-story__content {
       margin: 0;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__image-caption {
+    .founder-story .founder-story__image-caption {
       text-align: left;
     }
   }
 
   @media (max-width: 991px) {
-    #FounderStory-{{ section.id }} .founder-story__wrap {
+    .founder-story .founder-story__wrap {
       padding-top: 1rem;
       padding-bottom: 1rem;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-title {
+    .founder-story .founder-story__bg-title {
       opacity: 0.5;
       max-width: 60vw;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-title--left {
+    .founder-story .founder-story__bg-title--left {
       top: -0.5rem;
       left: 0;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-title--right {
+    .founder-story .founder-story__bg-title--right {
       right: 0;
       bottom: 1rem;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__media {
+    .founder-story .founder-story__media {
       max-width: min(100%, 520px);
     }
   }
@@ -285,8 +285,8 @@
 
 <script>
   (function() {
-    function initFounderStory(sectionId) {
-      var section = document.getElementById('FounderStory-' + sectionId);
+    function initFounderStory() {
+      var section = document.getElementById('FounderStory');
       if (!section) return;
       if (section.dataset.founderInit === 'true') return;
       section.dataset.founderInit = 'true';
@@ -451,13 +451,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-      initFounderStory('{{ section.id }}');
+      initFounderStory();
     });
 
-    document.addEventListener('shopify:section:load', function(event) {
-      if (event.target && event.target.id === 'shopify-section-{{ section.id }}') {
-        initFounderStory('{{ section.id }}');
-      }
+    document.addEventListener('shopify:section:load', function() {
+      initFounderStory();
     });
   })();
 </script>
@@ -465,6 +463,7 @@
 {% schema %}
 {
   "name": "Founder story",
+  "limit": 1,
   "settings": [
     {
       "type": "color_scheme",
@@ -480,6 +479,7 @@
         { "value": "container", "label": "Container" },
         { "value": "container-fluid", "label": "Container fluid" },
         { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
         { "value": "extended", "label": "Extended" }
       ],
       "default": "container-fluid"
@@ -658,9 +658,23 @@
       "default": 80
     },
     {
+      "type": "header",
+      "content": "Dynamic Option"
+    },
+    {
       "type": "text",
       "id": "custom_class",
       "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
     }
   ],
   "presets": [
