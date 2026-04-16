@@ -20,6 +20,12 @@
           "type": "breadcrumb",
           "settings": {}
         },
+        "yotpo_product_reviews_star_rating_Tz7TUD": {
+          "type": "shopify://apps/yotpo-product-reviews/blocks/star-rating/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
         "empty_space_BGkTxy": {
           "type": "empty_space",
           "settings": {
@@ -126,6 +132,7 @@
       "block_order": [
         "product_collection_3QwKdn",
         "breadcrumb_6V9nX7",
+        "yotpo_product_reviews_star_rating_Tz7TUD",
         "empty_space_BGkTxy",
         "title_price_YnB7D8",
         "add_to_cart_form_8aMLxd",
