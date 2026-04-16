@@ -328,12 +328,16 @@ a:hover {
 /* ------------------------------
    BUTTON STYLES
 ------------------------------- */
-button{
+/* ------------------------------
+   BUTTON STYLES
+------------------------------- */
+button {
   border: none;
   cursor: pointer;
   background: transparent;
   transition: all .3s cubic-bezier(.34,.615,.4,.985);
 }
+
 .btn,
 .shopify-payment-button button {
   cursor: pointer;
@@ -341,84 +345,100 @@ button{
   font-size: var(--btn_link_font_size);
   letter-spacing: var(--link_letter_spacing);
   font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  line-height: 1.1;
+  text-decoration: none;
+  transition: all 0.25s ease-in-out;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.8em 1.6em;
+  padding: 0.85em 1.6em;
   gap: 0.5rem;
+  border-radius: 0;
+  min-height: 44px;
 }
 
 /* Primary Button */
 .btn--primary {
-  background-color: var(--color-heading);
-  color: var(--color-background);
-  border: 1px solid var(--color-heading);
-  font-size: var(--btn_link_font_size);
-
+  background-color: rgb(var(--color-heading));
+  color: rgb(var(--color-background));
+  border: 1px solid rgb(var(--color-heading));
 }
+
 .btn--primary:hover {
-  background-color: var(--color-background);
-  color: var(--color-heading);
+  background-color: transparent;
+  color: rgb(var(--color-heading));
+  border-color: rgb(var(--color-heading));
 }
 
 /* Secondary Button */
 .btn--secondary {
-  background-color: var(--color-background-secondary);
-  color: var(--color-heading);
-  border: 1px solid var(--color-background-secondary);
-  font-size: var(--btn_link_font_size);
+  background-color: rgb(var(--color-background-secondary));
+  color: rgb(var(--color-heading));
+  border: 1px solid rgb(var(--color-border));
 }
+
 .btn--secondary:hover {
-  background-color: var(--color-heading);
-  color: var(--color-background-secondary);
+  background-color: rgb(var(--color-heading));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-heading));
 }
 
 /* Underline Button */
 .btn--underline {
   background: transparent;
+  color: rgb(var(--color-link));
   border: none;
-  font-size: var(--btn_link_font_size);
-  color: var(--color-link);
-  text-decoration: underline;
-}
-.btn--underline:hover {
-  color: var(--color-link-hover);
-  text-decoration-color: var(--color-link-hover);
+  padding: 0;
+  min-height: auto;
+  justify-content: flex-start;
+  text-decoration: none;
+  position: relative;
 }
 
-/* ======================
-    Animation Button
-=========================*/
-/* Hover to underline */
-.hover-underline {
-    background: transparent;
-    font-size: rgb(var(--btn_link_font_size));
-    color: rgb(var(--color-link));
-    padding-bottom: 8px;
-    position: relative;
-    overflow: hidden;
-    padding-left: 0;
-    padding-right: 0;
-}
-.hover-underline:before{
+.btn--underline::after {
   content: "";
-  display: block;
   position: absolute;
-  bottom: 0;
   left: 0;
+  bottom: -0.15em;
   width: 100%;
   height: 1px;
-  transform: translateX(-130%);
-  transition: all .3s cubic-bezier(.34,.615,.4,.985);
-  background: rgb(var(--color-link-hover));
+  background: currentColor;
+  transition: transform .3s cubic-bezier(.34,.615,.4,.985), opacity .3s ease;
+  transform-origin: left center;
 }
-a:hover .hover-underline:before{
-  transform: none;
-  transition-delay: .3s;
-}
-a:hover .hover-underline{
+
+.btn--underline:hover {
   color: rgb(var(--color-link-hover));
+}
+
+.btn--underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* Optional: full width button helper */
+.btn--full {
+  width: 100%;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .btn,
+  .shopify-payment-button button {
+    line-height: 1;
+    padding: 0.7em 1.15em;
+    font-size: calc(var(--btn_link_font_size) * 0.8);
+  }
+
+  .btn--underline {
+    padding: 0;
+  }
+}
+
+/* Disabled buttons */
+button:disabled,
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 /* Hover to fill Background */
 .hover-fill-bg {
