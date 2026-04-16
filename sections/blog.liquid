@@ -6,11 +6,10 @@
 {% endcomment %}
 
 {% render 'section-base-style' %}
-
 {% liquid
   assign ss = section.settings
 
-  assign first_class = 'article-list ' | append: 'm-color-' | append: ss.color_scheme
+  assign first_class = 'article-list ' | append: 'm-color-' | append: ss.color_scheme 
   assign first_class = first_class | append: ' ' | append: ss.color_control
   assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
@@ -19,10 +18,10 @@
   assign blog_classes = 'blogs'
   assign blog_classes = blog_classes | append: ' ' | append: 'cols-' | append: ss.grid_columns
   if ss.show_two_mobile
-    assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
+  assign blog_classes = blog_classes | append: ' ' | append: 'cols-mobile-2'
   endif
 
-  assign image_wapper_classes = 'cropped-image-wrapper blog-card__image'
+  assign image_wapper_classes = 'cropped-image-wrapper'
   assign wrapper_style = ''
 
   if ss.aspect_ratio == 'adapt-to-image'
@@ -38,203 +37,60 @@
     assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.hover_effect_action
   endif
 %}
-
-<div class="{{ first_class }}" id="blog-list-{{ section.id }}">
+<div class="{{ first_class }}" id="store-location-{{ section.id }}">
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-      <div class="hero-info text-{{ ss.text_align }}">
-        {% render 'hero-info',
-          heading: blog.title,
-          heading_tag: 'h1',
-          heading_size: ss.font_size,
-          text_align: ss.text_align,
-          container_width: container_width
-        %}
-      </div>
-
-      {% paginate blog.articles by 6 %}
-        <div class="inner-blog-list">
-          <div class="{{ blog_classes }}" style="--grid-gap: {{ ss.grid_gap }}px">
-            {% for article in blog.articles %}
-              {% liquid
-                assign article_excerpt = article.excerpt | strip_html | strip
-                if article_excerpt == blank
-                  assign article_excerpt = article.content | strip_html | truncatewords: 22
-                endif
-              %}
-              <article class="article-card">
-                <div class="article-card__media">
-                  {% if article.image %}
-                    {% render 'image',
-                      class: image_wapper_classes,
-                      image: article.image,
-                      url: article.url,
-                      width: 1000,
-                      img_alt: article.title,
-                      style: wrapper_style
-                    %}
-                  {% else %}
-                    <a href="{{ article.url }}" class="image {{ image_wapper_classes }}" {% if wrapper_style != blank %}style="{{ wrapper_style }}"{% endif %}>
-                      {%- render 'theme-icon', icon: 'default-image' -%}
-                    </a>
-                  {% endif %}
-                </div>
-
-                <div class="article-card__content">
-                  <div class="article-card__meta">
-                    <span class="article-card__date">{{ article.published_at | date: '%b %d, %Y' }}</span>
-                    <span class="article-card__meta-divider">—</span>
-                    <span class="article-card__author">{{ article.author }}</span>
-                  </div>
-
-                  <h3 class="article-card__title">
-                    <a href="{{ article.url }}">{{ article.title }}</a>
-                  </h3>
-
-                  {% if article_excerpt != blank %}
-                    <div class="article-card__excerpt">
-                      {{ article_excerpt }}
-                    </div>
-                  {% endif %}
-
-                  <div class="article-card__footer">
-                    <a href="{{ article.url }}" class="article-card__link">
-                      <span class="hover-underline">Read article</span>
-                    </a>
-                  </div>
-                </div>
-              </article>
-            {% endfor %}
-          </div>
+        <div class="hero-info text-{{ ss.text_align }}">
+            {% render 'hero-info',
+            heading: blog.title,
+            heading_tag: 'h1',
+            heading_size: ss.font_size,
+            text_align: ss.text_align,
+            container_width: container_width
+            %} 
+        </div>
+      <div class="inner-blog-list">
+        <div class="{{ blog_classes }}" style="--grid-gap: {{ ss.grid_gap }}px">
+          {% paginate blog.articles by 5 %}
+          {% for article in blog.articles %}
+            <div class="article-card">
+              {% if article.image %}
+                  {% render 'image',
+                    class: image_wapper_classes,
+                    image:  article.image,
+                    url: article.url,
+                    width: 1000, 
+                    img_alt: article.title,
+                    style: wrapper_style
+                  %}
+              {% endif %}
+              <div class="artile-title">
+                <a href="article.url">{{ article.title }}</a>
+              </div>
+              {% assign date = article.published_at | time_tag: format: 'date' %}
+              <p class="article-metadata">{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
+              <p class="article-excerpt">{{ article.excerpt }}</p>
+            </div>
+          {% endfor %}
 
           {%- if paginate.pages > 1 -%}
-            <div class="blog-pagination">
-              {{ paginate | default_pagination }}
-            </div>
+            {{- paginate | default_pagination -}}
           {%- endif -%}
+        {% endpaginate %}
         </div>
-      {% endpaginate %}
+      </div>
     </div>
   </div>
 </div>
-
 {% stylesheet %}
-.article-list .hero-info {
-  margin-bottom: 2rem;
+.artile-title {
+  margin: 0.5rem 0 0.2rem 0;
 }
-
-.inner-blog-list {
-  width: 100%;
-}
-
-.article-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background: rgb(var(--color-background));
-  border: 1px solid rgba(var(--color-border), 0.8);
-  overflow: hidden;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-.article-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  border-color: rgba(var(--color-heading), 0.14);
-}
-
-.article-card__media {
-  position: relative;
-  overflow: hidden;
-}
-
-.article-card__content {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  padding: 1rem 1rem 1.2rem;
-}
-
-.article-card__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
-  margin-bottom: 0.75rem;
-  font-size: 0.78em;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(var(--color-heading), 0.68);
-}
-
-.article-card__meta-divider {
-  opacity: 0.45;
-}
-
-.article-card__title {
-  margin: 0 0 0.7rem;
-  line-height: 1.2;
-}
-
-.article-card__title a {
-  color: rgb(var(--color-heading));
-  font-size: inherit;
-}
-
-.article-card__title a:hover {
-  color: rgb(var(--color-link-hover));
-}
-
-.article-card__excerpt {
-  color: rgba(var(--color-text), 0.8);
-  line-height: 1.7;
-  margin-bottom: 1rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  flex-grow: 1;
-}
-
-.article-card__footer {
-  margin-top: auto;
-  padding-top: 0.4rem;
-}
-
-.article-card__link {
-  display: inline-flex;
-  align-items: center;
-}
-
-.blog-pagination {
-  margin-top: 2rem;
-}
-
-@media (max-width: 768px) {
-  .article-list .hero-info {
-    margin-bottom: 1.4rem;
-  }
-
-  .article-card__content {
-    padding: 0.85rem 0.85rem 1rem;
-  }
-
-  .article-card__meta {
-    font-size: 0.72em;
-    margin-bottom: 0.55rem;
-  }
-
-  .article-card__title {
-    margin-bottom: 0.55rem;
-  }
-
-  .article-card__excerpt {
-    -webkit-line-clamp: 2;
-    line-height: 1.55;
-  }
+.article-metadata {
+    font-size: 0.8em;
+    color: rgba(var(--color-heading), 0.7);
 }
 {% endstylesheet %}
-
 {% schema %}
 {
   "name": "t:general.blog",
@@ -277,7 +133,7 @@
         { "value": "h1", "label": "h1" },
         { "value": "h2", "label": "h2" },
         { "value": "h3", "label": "h3" },
-        { "value": "h4", "label": "h4" }
+        { "value": "h4", "label": "h4" },
       ],
       "default": "h3"
     },
@@ -289,11 +145,11 @@
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "right", "label": "Right" },
       ],
       "default": "center"
     },
-    {
+        {
       "type": "header",
       "content": "Post Grid"
     },
@@ -308,7 +164,7 @@
         { "value": "5", "label": "5" },
         { "value": "6", "label": "6" }
       ],
-      "default": "3"
+      "default": "4"
     },
     {
       "type": "checkbox",
@@ -325,7 +181,7 @@
       "max": 50,
       "step": 5,
       "unit": "px",
-      "default": 20
+      "default": 10
     },
     {
       "type": "select",
@@ -339,9 +195,9 @@
         { "value": "cropped-image--landscape", "label": "Landscape" },
         { "value": "cropped-image--wide", "label": "Wide" }
       ],
-      "default": "cropped-image--landscape"
+      "default": "cropped-image--square"
     },
-    {
+      {
       "type": "select",
       "id": "hover_effect_action",
       "label": "Image Hover Effect",
@@ -355,7 +211,7 @@
         { "value": "is-hover-drift", "label": "Drift" },
         { "value": "is-hover-overlay", "label": "Overlay" }
       ],
-      "default": "is-hover-zoom-in"
+      "default": "no-effect"
     },
     {
       "type": "header",
