@@ -69,6 +69,27 @@
                   <strong class="text">Close</strong>
                 </span>
               </a>
+
+            {% when 'language_drawer' %}
+              <a
+                href="#"
+                class="js-open-section nav-icon-text-wrap color-control"
+                data-trigger-section="language-drawer"
+                aria-label="Site language"
+              >
+              <span class="js-open-icon-text" data-open-item="language-drawer-open-item">
+                <span class="icon">
+                  <!-- icon bag -->
+                  {%- render 'theme-icon', icon: 'language' -%}
+                </span>
+                <strong class="text"
+                  >Language</strong
+                >
+              </span>
+              <span class="js-close-icon-text hide" data-close-item="language-drawer-close-item">
+                <strong class="text">Close</strong>
+              </span>
+            </a>
             {% when 'bag_drawer' %}
               <!-- Bag -->
               <a
@@ -88,27 +109,6 @@
                   >
                 </span>
                 <span class="js-close-icon-text hide" data-close-item="bag-drawer-close-item">
-                  <strong class="text">Close</strong>
-                </span>
-              </a>
-
-
-                            <a
-                href="#"
-                class="js-open-section nav-icon-text-wrap color-control"
-                data-trigger-section="language-drawer"
-                aria-label="Site language"
-              >
-                <span class="js-open-icon-text" data-open-item="language-drawer-open-item">
-                  <span class="icon">
-                    <!-- icon bag -->
-                    {%- render 'theme-icon', icon: 'language' -%}
-                  </span>
-                  <strong class="text"
-                    >Language</strong
-                  >
-                </span>
-                <span class="js-close-icon-text hide" data-close-item="language-drawer-close-item">
                   <strong class="text">Close</strong>
                 </span>
               </a>
