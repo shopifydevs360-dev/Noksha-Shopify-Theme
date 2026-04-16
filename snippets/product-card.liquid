@@ -4,6 +4,30 @@
   {% assign tags = product.tags | join: ',' | downcase %}
   {% assign title = product.title | downcase %}
 
+  {% liquid
+    assign rating_value = blank
+    assign rating_count = 0
+
+    if product.metafields.reviews.rating.value != blank
+      assign rating_value = product.metafields.reviews.rating.value.rating | default: product.metafields.reviews.rating.value
+    endif
+
+    if product.metafields.reviews.rating_count != blank
+      assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count
+    elsif product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count.value != blank
+      assign rating_count = product.metafields.reviews.rating_count.value
+    endif
+
+    assign rating_value_number = rating_value | times: 1.0
+    assign rating_count_number = rating_count | plus: 0
+    assign rating_scale_max = 5
+    assign rating_percentage = 0
+
+    if rating_value != blank
+      assign rating_percentage = rating_value_number | times: 100.0 | divided_by: rating_scale_max
+    endif
+  %}
+
   <div
     class="product-card"
     data-product-id="{{ product.id }}"
@@ -142,31 +166,51 @@
           {{ product.price | money }}
         </p>
       </div>
+
+      {% if rating_value != blank and rating_count_number > 0 %}
+        <div
+          class="product-card__rating product-card__rating--bottom"
+          aria-label="Rated {{ rating_value_number | round: 1 }} out of {{ rating_scale_max }} based on {{ rating_count_number }} reviews"
+        >
+          <div class="product-card__rating-stars" aria-hidden="true">
+            <span class="product-card__rating-stars-base">★★★★★</span>
+            <span
+              class="product-card__rating-stars-fill"
+              style="width: {{ rating_percentage }}%;"
+            >★★★★★</span>
+          </div>
+
+          <div class="product-card__rating-text">
+            <span class="product-card__rating-value">{{ rating_value_number | round: 1 }}</span>
+            <span class="product-card__rating-count">({{ rating_count_number }})</span>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endif %}
+
 {% if settings.enable_hover_to_show_btn %}
 <style>
   @media screen and (min-width: 991px) {
-  .product-card .image-wrap:hover .hover-img {
-    opacity: 1;
-    transform: translate(-50%,-50%) scale(1);
-  }
+    .product-card .image-wrap:hover .hover-img {
+      opacity: 1;
+      transform: translate(-50%,-50%) scale(1);
+    }
 
-  /* Button Style */
-  .product-card .cart-button-wrapper {
+    .product-card .cart-button-wrapper {
       opacity: 0;
       transform: translateY(20px);
+    }
   }
-}
-
 </style>
 {% endif %}
+
 {% stylesheet %}
-  .product-card .image-wrap {
-    display: block;
-    margin-bottom: 1.2rem;
-    position: relative;
+.product-card .image-wrap {
+  display: block;
+  margin-bottom: 1.2rem;
+  position: relative;
 }
 
 .product-card .product-badges-wrapper {
@@ -239,82 +283,82 @@
 }
 
 .product-card .image-wrap .hover-img {
-    opacity: 0;
-    transform: translate(-50%,-50%) scale(1.08);
+  opacity: 0;
+  transform: translate(-50%,-50%) scale(1.08);
 }
 
 .product-card .image-wrap:hover .hover-img {
-    opacity: 1;
-    transform: translate(-50%,-50%) scale(1);
+  opacity: 1;
+  transform: translate(-50%,-50%) scale(1);
 }
 
 /* Button Style */
 .product-card .cart-button-wrapper {
-    font-weight: 400;
-    letter-spacing: 0;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    margin-bottom: 0;
-    width: 100%;
-    background: #fff;
-    z-index: 3;
-    text-align: left;
-    transition: all .6s ease;
+  font-weight: 400;
+  letter-spacing: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 3;
+  text-align: left;
+  transition: all .6s ease;
 }
 
 .product-card .image-wrap:hover .cart-button-wrapper {
-    transform: translateY(0);
-    opacity: 1;
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .product-card .add-to-cart-btn {
-    width: 100%;
-    height: auto;
-    background: transparent;
-    font-size: 20px;
-    font-family: inherit;
-    text-transform: inherit;
-    color: inherit;
-    padding: 12px 24px;
+  width: 100%;
+  height: auto;
+  background: transparent;
+  font-size: 20px;
+  font-family: inherit;
+  text-transform: inherit;
+  color: inherit;
+  padding: 12px 24px;
 }
 
 .product-card .cart-button-wrapper .card-variants-wrapper {
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all .6s ease;
-    height: 0;
-    overflow: hidden;
-    border-bottom: 1px solid #e3c7bf;
-    padding: 0 0.7rem;
-    max-height: 30rem;
-    overflow-y: auto;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all .6s ease;
+  height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid #e3c7bf;
+  padding: 0 0.7rem;
+  max-height: 30rem;
+  overflow-y: auto;
 }
 
 .product-card .cart-button-wrapper:hover .card-variants-wrapper {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    height: auto;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  height: auto;
 }
 
 .product-card .card-variant-btn {
-    width: 100%;
-    background: transparent;
-    height: auto;
-    padding: 12px 4px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 18px;
+  width: 100%;
+  background: transparent;
+  height: auto;
+  padding: 12px 4px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
 }
 
 .product-card .card-variant-btn:first-of-type {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .product-card .card-variant-btn:last-of-type {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .product-card .card-variant-btn:hover {
@@ -322,17 +366,67 @@
 }
 
 /* Product Information */
+.product-card .product-card-info {
+  display: flex;
+  flex-direction: column;
+}
 
 .product-card .split-aligner {
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid rgb(var(--color-border));
-    padding: 6px;
-    gap: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgb(var(--color-border));
+  padding: 8px 6px 6px;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.product-card .product-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 6px 4px;
+}
+
+.product-card .product-card__rating--bottom {
+  margin-top: -1px;
+}
+
+.product-card .product-card__rating-stars {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.product-card .product-card__rating-stars-base {
+  color: rgba(var(--color-heading), 0.18);
+}
+
+.product-card .product-card__rating-stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: rgb(var(--color-heading));
+}
+
+.product-card .product-card__rating-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  line-height: 1;
+}
+
+.product-card .product-card__rating-value,
+.product-card .product-card__rating-count {
+  font-size: 11px;
+  color: rgba(var(--color-heading), 0.62);
 }
 
 @media (max-width: 991px){
-   .product-card .split-aligner {
+  .product-card .split-aligner {
     flex-direction: column;
   }
 
@@ -348,18 +442,23 @@
     width: 18px;
     height: 18px;
   }
+
+  .product-card .product-card__rating {
+    padding: 0 6px 4px;
+    flex-wrap: wrap;
+  }
 }
 
 .product-card .title a {
-    color: rgb(var(--color-heading));
-    font-size: 1em;
-    display: block;
-    text-transform: uppercase;
+  color: rgb(var(--color-heading));
+  font-size: 1em;
+  display: block;
+  text-transform: uppercase;
 }
 
 .product-card .price {
-    color: rgb(var(--color-price-regular));
-    min-width: fit-content;
-    font-size: 1em;
+  color: rgb(var(--color-price-regular));
+  min-width: fit-content;
+  font-size: 1em;
 }
 {% endstylesheet %}
