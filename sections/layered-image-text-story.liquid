@@ -244,7 +244,7 @@
         {% endif %}
       </div>
 
-      <div class="layered-image-story__content">
+      <div class="layered-image-story__content {% if section.settings.container_type == "full-width" %}section-x-padding{% endif %}">
         {% if section.settings.eyebrow != blank %}
           <span class="layered-image-story__eyebrow h6" data-story-text>
             {{ section.settings.eyebrow }}
