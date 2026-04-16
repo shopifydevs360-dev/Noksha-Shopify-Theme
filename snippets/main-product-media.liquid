@@ -9,11 +9,13 @@
   assign thumb_media_ratio = section.settings.thumb_media_ratio | default: 'cropped-image--square'
   assign video_media_ratio = section.settings.video_media_ratio | default: 'cropped-image--portrait'
   assign mobile_media_ratio = section.settings.mobile_media_ratio | default: 'cropped-image--portrait'
+  assign mobile_video_media_ratio = section.settings.mobile_video_media_ratio | default: video_media_ratio
 
   assign main_image_wrapper_class = 'cropped-image-wrapper '
   assign thumb_image_wrapper_class = 'cropped-image-wrapper '
   assign mobile_image_wrapper_class = 'cropped-image-wrapper '
   assign video_wrapper_class = 'cropped-video-wrapper '
+  assign mobile_video_wrapper_class = 'cropped-video-wrapper '
 
   if main_media_ratio == 'adapt-image-height'
     assign main_image_wrapper_class = main_image_wrapper_class | append: 'adapt-image-height'
@@ -37,6 +39,12 @@
     assign video_wrapper_class = video_wrapper_class | append: 'adapt-video-height'
   else
     assign video_wrapper_class = video_wrapper_class | append: video_media_ratio
+  endif
+
+  if mobile_video_media_ratio == 'adapt-video-height'
+    assign mobile_video_wrapper_class = mobile_video_wrapper_class | append: 'adapt-video-height'
+  else
+    assign mobile_video_wrapper_class = mobile_video_wrapper_class | append: mobile_video_media_ratio
   endif
 
   assign show_mobile_videos = section.settings.show_mobile_videos
@@ -314,7 +322,7 @@
             {% if media.media_type == 'video' %}
               <div class="swiper-slide">
                 <div class="product-media__video js-open-video-lightbox" data-video-lightbox-trigger>
-                  <div class="{{ video_wrapper_class }}">
+                  <div class="{{ mobile_video_wrapper_class }}">
                     {{
                       media
                       | video_tag:
@@ -331,7 +339,7 @@
             {% elsif media.media_type == 'external_video' %}
               <div class="swiper-slide">
                 <div class="product-media__video js-open-video-lightbox" data-video-lightbox-trigger>
-                  <div class="{{ video_wrapper_class }}">
+                  <div class="{{ mobile_video_wrapper_class }}">
                     {{ media | external_video_tag }}
                   </div>
                 </div>
@@ -411,7 +419,7 @@
             {% if media.media_type == 'video' %}
               <div class="swiper-slide">
                 <div class="product-media__video js-open-video-lightbox" data-video-lightbox-trigger>
-                  <div class="{{ video_wrapper_class }}">
+                  <div class="{{ mobile_video_wrapper_class }}">
                     {{
                       media
                       | video_tag:
@@ -428,7 +436,7 @@
             {% elsif media.media_type == 'external_video' %}
               <div class="swiper-slide">
                 <div class="product-media__video js-open-video-lightbox" data-video-lightbox-trigger>
-                  <div class="{{ video_wrapper_class }}">
+                  <div class="{{ mobile_video_wrapper_class }}">
                     {{ media | external_video_tag }}
                   </div>
                 </div>
