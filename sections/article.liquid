@@ -1,391 +1,192 @@
 {% comment %}
   This section is used in the article template to render the article page, which
   displays the full content of the blog post and can optionally include a
-  comments section for customers.
+  comments section for customers (not shown in this example).
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/article
 {% endcomment %}
-
 {% render 'section-base-style' %}
-
 {% liquid
   assign ss = section.settings
 
-  assign first_class = 'main-article ' | append: 'm-color-' | append: ss.color_scheme
+  assign first_class = 'main-article ' | append: 'm-color-' | append: ss.color_scheme 
   assign first_class = first_class | append: ' ' | append: ss.color_control
   assign first_class = first_class | append: ' ' | append: ss.custom_class
   assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
   assign container_width = ss.container_width
-
-  assign image_wapper_classes = 'cropped-image-wrapper article-featured-image'
-  if ss.image_aspect_ratio == 'adapt-to-image'
-    assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
-  else
-    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.image_aspect_ratio
-  endif
-
-  if ss.image_hover_effect != 'no-effect'
-    assign image_wapper_classes = image_wapper_classes | append: ' ' | append: ss.image_hover_effect
-  endif
+  
+  assign image_wapper_classes = 'cropped-image-wrapper cropped-image--landscape'
 %}
-
-<div class="{{ first_class }}" id="article-{{ section.id }}">
+<div class="{{ first_class }}" id="store-location-{{ section.id }}">
+  <div class="article-header">
+    {% if article.image %}
+    <div class="article-image">
+        {% render 'image',
+          class: image_wapper_classes,
+          image:  article.image,
+          width: 1000,
+          img_alt: article.title
+        %}
+    </div>
+    <div class="article-info">
+        {% render 'hero-info',
+        heading: article.title,
+        heading_tag: 'h1',
+        heading_size: ss.font_size,
+        text_align: ss.text_align,
+        container_width: container_width
+        %} 
+      {% assign date = article.published_at | time_tag: format: 'date' %}
+        <p>{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
+    </div>
+    {% endif %}
+  </div>
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-      <article class="article-template" itemscope itemtype="http://schema.org/BlogPosting">
-        <header class="article-template__header {% if article.image %}has-image{% endif %}">
-          {% if article.image %}
-            <div class="article-template__media">
-              {% render 'image',
-                class: image_wapper_classes,
-                image: article.image,
-                width: 1600,
-                img_alt: article.title,
-                loading: 'eager',
-                fetchpriority: 'high'
-              %}
-            </div>
-          {% endif %}
+      <div class="article-content">
+        {{ article.content }}
+      </div>
+      <div class="article-comment">
+      {% if blog.comments_enabled? %}
+        <h2 class="sub-title">{{ 'blog.article_comments' | t }}</h2>
 
-          <div class="article-template__intro">
-            <div class="article-template__meta">
-              <span class="article-template__date">{{ article.published_at | date: '%b %d, %Y' }}</span>
-              <span class="article-template__meta-divider">—</span>
-              <span class="article-template__author">{{ article.author }}</span>
-            </div>
-
-            <h1 class="article-template__title {{ ss.font_size }}" itemprop="headline">
-              {{ article.title }}
-            </h1>
-
-            {% if article.excerpt != blank %}
-              <div class="article-template__excerpt">
-                {{ article.excerpt | strip_html }}
+        <div class="comment-list" id="comments">
+          {% paginate article.comments by 10 %}
+            {% for comment in article.comments %}
+              <div class="comment-item">
+                <p class="comment-author">{{ comment.author }}</p>
+                <p class="comment-date">{{- comment.created_at | time_tag: format: 'date' -}}</p>
+                <div class="comment-content">{{ comment.content }}</div>
               </div>
-            {% endif %}
-          </div>
-        </header>
+            {% endfor %}
 
-        <div class="article-template__body-wrap">
-          <div class="article-template__body rte" itemprop="articleBody">
-            {{ article.content }}
-          </div>
+            {{ paginate | default_pagination: anchor: 'comments' }}
+          {% endpaginate %}
         </div>
 
-        {% if blog.comments_enabled? %}
-          <div class="article-template__comments">
-            <div class="article-template__comments-inner">
-              <div class="article-template__comments-head">
-                <h2 class="sub-title">{{ 'blog.article_comments' | t }}</h2>
-              </div>
+        {% form 'new_comment', article %}
+          <h2 class="sub-title">{{ 'blog.comment_form_title' | t }}</h2>
 
-              <div class="comment-list" id="comments">
-                {% paginate article.comments by 10 %}
-                  {% for comment in article.comments %}
-                    <div class="comment-item">
-                      <div class="comment-item__head">
-                        <p class="comment-author">{{ comment.author }}</p>
-                        <p class="comment-date">{{ comment.created_at | date: '%b %d, %Y' }}</p>
-                      </div>
-                      <div class="comment-content">{{ comment.content }}</div>
-                    </div>
-                  {% endfor %}
+          {{ form.errors | default_errors }}
 
-                  {{ paginate | default_pagination: anchor: 'comments' }}
-                {% endpaginate %}
-              </div>
-
-              {% form 'new_comment', article %}
-                <div class="article-template__comment-form">
-                  <h2 class="sub-title">{{ 'blog.comment_form_title' | t }}</h2>
-
-                  {{ form.errors | default_errors }}
-
-                  <div class="field">
-                    <label for="CommentAuthor-{{ section.id }}">{{ 'blog.comment_form_name' | t }}</label>
-                    <input
-                      type="text"
-                      name="comment[author]"
-                      id="CommentAuthor-{{ section.id }}"
-                      value="{{ form.author }}"
-                      required
-                    >
-                  </div>
-
-                  <div class="field">
-                    <label for="CommentEmail-{{ section.id }}">{{ 'blog.comment_form_email' | t }}</label>
-                    <input
-                      type="email"
-                      name="comment[email]"
-                      id="CommentEmail-{{ section.id }}"
-                      value="{{ form.email }}"
-                      required
-                    >
-                  </div>
-
-                  <div class="field">
-                    <label for="CommentBody-{{ section.id }}">{{ 'blog.comment_form_body' | t }}</label>
-                    <textarea
-                      name="comment[body]"
-                      id="CommentBody-{{ section.id }}"
-                      rows="6"
-                      required
-                    >{{ form.body }}</textarea>
-                  </div>
-
-                  <button type="submit" class="btn btn--primary">
-                    {{ 'blog.comment_form_submit' | t }}
-                  </button>
-                </div>
-              {% endform %}
-            </div>
+          <div class="field">
+            <label for="author">{{ 'blog.comment_form_name' | t }}</label>
+            <input type="text" name="comment[author]" id="author" placeholder="" value="{{ form.author }}" required>
           </div>
-        {% endif %}
-      </article>
+
+          <div class="field">
+            <label for="email">{{ 'blog.comment_form_email' | t }}</label>
+            <input type="email" name="comment[email]" id="email" value="{{ form.email }}" required>
+          </div>
+
+          <div class="field">
+            <label for="body">{{ 'blog.comment_form_body' | t }}</label>
+            <textarea name="comment[body]" id="body" required>{{ form.body }}</textarea>
+          </div>
+
+          <input class="button" type="submit" value="{{ 'blog.comment_form_submit' | t }}">
+        {% endform %}
+      {% endif %}
+
+      </div>
     </div>
   </div>
 </div>
-
 {% stylesheet %}
-.main-article {
+.main-article{
   background: rgb(var(--color-background-secondary));
 }
-
-.article-template {
-  width: 100%;
+.article-header {
+  margin-bottom: 1rem;
 }
-
-.article-template__header {
-  margin-bottom: 2rem;
+.article-image,
+.article-info {
+    margin-bottom: 1rem;
 }
-
-.article-template__media {
-  margin-bottom: 1.4rem;
+@media (max-width: 990px){
+  .article-header {
+    padding: 1rem;
+  }
 }
-
-.article-template__intro {
-  max-width: 56rem;
-}
-
-.article-template__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
-  margin-bottom: 0.9rem;
-  font-size: 0.78em;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(var(--color-heading), 0.58);
-}
-
-.article-template__meta-divider {
-  opacity: 0.4;
-}
-
-.article-template__title {
-  margin: 0;
-  line-height: 1.08;
-}
-
-.article-template__excerpt {
-  max-width: 42rem;
-  margin-top: 1rem;
-  color: rgba(var(--color-text), 0.72);
-  line-height: 1.7;
-  font-size: 1.02em;
-}
-
-.article-template__body-wrap {
-  display: flex;
-  justify-content: center;
-}
-
-.article-template__body {
-  width: 100%;
-  max-width: 54rem;
-  color: rgb(var(--color-text));
-}
-
-.article-template__body > *:first-child {
-  margin-top: 0;
-}
-
-.article-template__body p,
-.article-template__body ul,
-.article-template__body ol,
-.article-template__body blockquote {
-  margin-bottom: 1.4rem;
-  line-height: 1.85;
-}
-
-.article-template__body h2,
-.article-template__body h3,
-.article-template__body h4,
-.article-template__body h5,
-.article-template__body h6 {
-  margin-top: 2.2rem;
-  margin-bottom: 0.9rem;
-}
-
-.article-template__body img {
-  margin: 2rem auto;
-  height: auto;
-}
-
-.article-template__body a {
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}
-
-.article-template__body blockquote {
-  padding: 1.2rem 1.4rem;
-  border-left: 2px solid rgb(var(--color-heading));
-  background: rgba(var(--color-background), 0.65);
-}
-
-.article-template__body ul,
-.article-template__body ol {
-  padding-left: 1.4rem;
-}
-
-.article-template__comments {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(var(--color-border), 0.7);
-}
-
-.article-template__comments-inner {
-  max-width: 54rem;
-  margin: 0 auto;
-}
-
-.sub-title {
-  font-size: 1em;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 1.2rem;
-}
-
-.comment-list {
-  margin-bottom: 2rem;
-}
-
-.comment-item {
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(var(--color-border), 0.65);
-}
-
-.comment-item__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.45rem;
-}
-
-.comment-author {
-  font-weight: 600;
-  color: rgb(var(--color-heading));
-}
-
-.comment-date {
-  font-size: 0.9rem;
-  color: rgba(var(--color-text), 0.7);
-}
-
-.comment-content {
-  color: rgba(var(--color-text), 0.9);
-  line-height: 1.75;
-}
-
-.article-template__comment-form {
-  max-width: 34rem;
-}
-
-.article-comment .field,
-.article-template__comment-form .field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  margin-bottom: 1.1rem;
-}
-
-.article-template__comment-form label {
-  font-size: 0.78em;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(var(--color-heading), 0.78);
-}
-
-.article-template__comment-form input,
-.article-template__comment-form textarea {
-  background: rgb(var(--color-background));
-  border: 1px solid rgba(var(--color-border), 0.8);
-  padding: 0.9rem 1rem;
-  color: rgb(var(--color-text));
-}
-
-.article-template__comment-form textarea {
-  resize: vertical;
-  min-height: 9rem;
-}
-
 @media (min-width: 991px) {
-  .article-template__header.has-image {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.8fr);
-    gap: 2.5rem;
-    align-items: center;
+.article-header {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 2rem;
     margin-bottom: 3rem;
-  }
-
-  .article-template__media {
-    margin-bottom: 0;
-  }
-
-  .article-template__intro {
-    max-width: 34rem;
-  }
+    align-items: center;
 }
-
-@media (max-width: 990px) {
-  .article-template__header {
-    margin-bottom: 1.8rem;
-  }
-
-  .article-template__excerpt {
-    max-width: 100%;
-  }
+.article-image,
+.article-info {
+    width: 100%;
 }
-
-@media (max-width: 768px) {
-  .article-template__meta {
-    font-size: 0.7em;
-    margin-bottom: 0.7rem;
-  }
-
-  .article-template__body p,
-  .article-template__body ul,
-  .article-template__body ol,
-  .article-template__body blockquote {
-    margin-bottom: 1.1rem;
-    line-height: 1.75;
-  }
-
-  .article-template__body h2,
-  .article-template__body h3,
-  .article-template__body h4,
-  .article-template__body h5,
-  .article-template__body h6 {
-    margin-top: 1.8rem;
-  }
-
-  .article-template__comments {
-    margin-top: 2.2rem;
-    padding-top: 1.5rem;
-  }
+.article-info {
+    position: relative;
+    left: -10rem;
+    background: rgb(var(--color-background));
+    padding: 2rem;
+}
+}
+.sub-title {
+    font-size: 1.4em;
+    text-transform: uppercase;
+    margin-top: 2rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 1rem;
+}
+.comment-list {
+    max-width: 38rem;
+}
+.comment-item {
+    border-bottom: 1px solid rgba(var(--color-border), 0.5);
+    padding-bottom: 0.6rem;
+    margin-bottom: 1rem;
+}
+.comment-date {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: rgb(var(--color-text), 0.8);
+}
+.comment-content {
+    border-left: 2px solid rgb(var(--color-border));
+    padding-left: 0.4rem;
+    margin-left: 0.4rem;
+}
+.article-comment form {
+  max-width: 26rem;
+  width: 100%;
+}
+.article-comment .field {
+    display: flex;
+    flex-direction: column;
+}
+.article-comment label {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+.article-comment input {
+    padding: .8rem 0;
+    border-bottom: 2px solid rgb(var(--color-border));
+    border-radius: 0;
+    margin-bottom: 1.4rem;
+}
+.article-comment .button {
+    background: rgb(var(--color-heading));
+    color: rgb(var(--color-background));
+    border: 2px solid rgb(var(--color-heading));
+    padding: 0.8rem 2rem;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+.article-comment .button:hover {
+    background: transparent;
+    color: rgb(var(--color-heading));
 }
 {% endstylesheet %}
 
@@ -431,39 +232,9 @@
         { "value": "h1", "label": "h1" },
         { "value": "h2", "label": "h2" },
         { "value": "h3", "label": "h3" },
-        { "value": "h4", "label": "h4" }
+        { "value": "h4", "label": "h4" },
       ],
-      "default": "h2"
-    },
-    {
-      "type": "select",
-      "id": "image_aspect_ratio",
-      "label": "Featured image aspect ratio",
-      "options": [
-        { "value": "adapt-to-image", "label": "Adapt to image" },
-        { "value": "cropped-image--square", "label": "Square" },
-        { "value": "cropped-image--portrait", "label": "Portrait" },
-        { "value": "cropped-image--portrait-tall", "label": "Portrait tall" },
-        { "value": "cropped-image--landscape", "label": "Landscape" },
-        { "value": "cropped-image--wide", "label": "Wide" }
-      ],
-      "default": "cropped-image--landscape"
-    },
-    {
-      "type": "select",
-      "id": "image_hover_effect",
-      "label": "Featured image hover effect",
-      "options": [
-        { "value": "no-effect", "label": "No effect" },
-        { "value": "is-hover-zoom-in", "label": "Zoom in" },
-        { "value": "is-hover-zoom-out", "label": "Zoom out" },
-        { "value": "is-hover-zoom-up", "label": "Zoom up" },
-        { "value": "is-hover-fade", "label": "Fade" },
-        { "value": "is-hover-cinematic", "label": "Cinematic" },
-        { "value": "is-hover-drift", "label": "Drift" },
-        { "value": "is-hover-overlay", "label": "Overlay" }
-      ],
-      "default": "no-effect"
+      "default": "h3"
     },
     {
       "type": "header",
