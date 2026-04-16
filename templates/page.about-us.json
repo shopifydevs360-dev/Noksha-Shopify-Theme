@@ -204,48 +204,34 @@
         "padding_bottom": 0
       }
     },
-    "about_editorial_portrait_Eiwnxd": {
-      "type": "about-editorial-portrait",
-      "blocks": {
-        "highlight_934TN8": {
-          "type": "highlight",
-          "settings": {
-            "number": "2017",
-            "label": "Brand established with a premium beauty vision."
-          }
-        },
-        "text_block_qNw3qf": {
-          "type": "text_block",
-          "settings": {
-            "title": "Her journey began with a clear vision",
-            "text": "<p>Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "highlight_934TN8",
-        "text_block_qNw3qf"
-      ],
-      "name": "About editorial portrait",
+    "founder_story_837HPX": {
+      "type": "founder-story",
+      "name": "Founder story",
       "settings": {
-        "enable_sidebar_space": true,
-        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_width": "extended",
-        "text_align": "left",
-        "font_size": "h3",
-        "bg_word_top": "MEET",
-        "bg_word_bottom": "FOUNDER",
-        "subheading": "About the founder",
-        "heading": "A refined vision behind the brand.",
-        "button_label": "Read our story",
-        "button_link": "",
-        "button_style": "btn--primary",
-        "aspect_ratio": "cropped-image--portrait-tall",
-        "hover_effect_action": "no-effect",
-        "padding_top": 70,
-        "padding_bottom": 70,
-        "custom_class": "",
-        "color_control": "section-light"
+        "color_scheme": "",
+        "container_width": "container-fluid",
+        "layout_style": "image-left",
+        "eyebrow": "Leadership",
+        "name": "Meet Our Founder",
+        "designation": "Founder & CEO",
+        "short_intro": "<p>A visionary leader shaping the company with elegance, confidence, and a clear long-term direction.</p>",
+        "description": "<p>Her journey began with a simple insight: her followers trusted her. Known for her distinctive eyes, lashes, and hair. Youmna regularly received questions about the products she used for her skin care and hair routine.<br/><br/>Recognizing this demand, she launched YOUMI BEAUTY — starting with colored contact lenses and later expanding into lashes and hair extensions. Each product was designed based on her own beauty routine, with a focus on quality, comfort, and visual impact.<br/><br/>Youmna’s involvement in the brand goes beyond her name. She has played a hands-on role in product development, quality control, and creative direction. Her experience with international luxury brands and her understanding of regional beauty preferences allowed her to build a brand that quickly gained traction and credibility.<br/><br/>Today, Youmna Khoury stands as a leading voice in the beauty industry — blending business acumen with social responsibility, and building a brand that is as impactful as it is aspirational.</p>",
+        "signature_text": "Founder",
+        "image": "shopify://shop_images/Youmi01010.jpg",
+        "image_caption": "Portrait / leadership image",
+        "bg_title_left": "Meet CEO",
+        "bg_title_right": "Founder",
+        "bg_title_size": 228,
+        "bg_title_opacity": 10,
+        "image_max_width": 520,
+        "content_max_width": 720,
+        "section_min_height": 92,
+        "name_size": 80,
+        "intro_size": 22,
+        "body_size": 18,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "custom_class": ""
       }
     }
   },
@@ -255,6 +241,6 @@
     "image_features_split_WNBMaA",
     "image_features_split_7cNjbW",
     "image_features_split_DeXfct",
-    "about_editorial_portrait_Eiwnxd"
+    "founder_story_837HPX"
   ]
 }
