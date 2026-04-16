@@ -62,6 +62,10 @@
           "type": "account_drawer",
           "settings": {}
         },
+        "language_drawer_nPbng6": {
+          "type": "language_drawer",
+          "settings": {}
+        },
         "bag_drawer_czpN4Y": {
           "type": "bag_drawer",
           "settings": {}
@@ -74,6 +78,7 @@
       "block_order": [
         "search_drawer_BWxUax",
         "account_drawer_TazcYX",
+        "language_drawer_nPbng6",
         "bag_drawer_czpN4Y",
         "wishlist_drawer_UiMkAk"
       ],
