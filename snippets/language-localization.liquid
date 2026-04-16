@@ -1,7 +1,6 @@
 <localization-form class="sidebar-localization">
   {%- form 'localization', id: 'SidebarLanguageForm', class: 'localization-form' -%}
     <div class="sidebar-localization__inner">
-      <p class="sidebar-localization__eyebrow">Your Language</p>
       <label class="sidebar-localization__label" for="SidebarLanguageToggle">
         Select Language
       </label>
@@ -10,14 +9,12 @@
         <button
           id="SidebarLanguageToggle"
           type="button"
-          class="disclosure__button localization-form__select localization-selector js-language-toggle"
+          class="disclosure__button js-language-toggle"
           aria-expanded="false"
           aria-controls="SidebarLanguageList"
         >
-          <span class="disclosure__button-text">
-            <span class="language-selected-text">
-              {{ localization.language.endonym_name | capitalize }}
-            </span>
+          <span class="language-selected-text">
+            {{ localization.language.endonym_name | capitalize }}
           </span>
 
           <span class="disclosure__caret" aria-hidden="true">
@@ -25,7 +22,7 @@
           </span>
         </button>
 
-        <div class="disclosure__list-wrapper language-selector js-language-list">
+        <div class="disclosure__list-wrapper js-language-list">
           <ul id="SidebarLanguageList" role="list" class="disclosure__list list-unstyled">
             {%- for language in localization.available_languages -%}
               <li class="disclosure__item">
@@ -67,23 +64,12 @@
     width: 100%;
   }
 
-  .sidebar-localization__eyebrow {
-    margin: 0 0 0.6rem;
-    font-family: var(--font-heading-family, sans-serif);
-    font-weight: var(--font-heading-weight, 600);
-    font-size: 0.75rem;
-    line-height: 1.2;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgb(var(--color-heading));
-  }
-
   .sidebar-localization__label {
     display: block;
-    margin: 0 0 0.75rem;
-    font-size: 0.82rem;
+    margin: 0 0 0.6rem;
+    font-size: 0.8rem;
     line-height: 1.4;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     color: rgb(var(--color-subtext));
   }
 
@@ -94,22 +80,21 @@
 
   .sidebar-localization .disclosure__button {
     width: 100%;
-    min-height: 3.25rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    text-align: left;
-    padding: 0.95rem 1rem;
-    border: 1px solid rgb(var(--color-border));
-    background: rgb(var(--color-background));
+    padding: 0.85rem 0;
+    border: 0;
+    border-bottom: 1px solid rgb(var(--color-border));
+    background: transparent;
     color: rgb(var(--color-heading));
+    text-align: left;
     cursor: pointer;
-    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    transition: border-color 0.25s ease, opacity 0.25s ease;
   }
 
   .sidebar-localization .disclosure__button:hover {
-    background: rgba(var(--color-text), 0.03);
     border-color: rgb(var(--color-heading));
   }
 
@@ -118,26 +103,20 @@
     border-color: rgb(var(--color-heading));
   }
 
-  .sidebar-localization .disclosure__button-text {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-  }
-
   .sidebar-localization .language-selected-text {
     display: inline-block;
-    font-size: 0.98rem;
+    font-size: 1rem;
     line-height: 1.3;
     color: rgb(var(--color-heading));
   }
 
   .sidebar-localization .disclosure__caret {
-    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1rem;
-    height: 1rem;
+    flex: 0 0 auto;
+    width: 0.9rem;
+    height: 0.9rem;
     transition: transform 0.3s ease;
   }
 
@@ -148,13 +127,16 @@
 
   .sidebar-localization .disclosure__list-wrapper {
     display: none;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid rgb(var(--color-border));
+    margin-top: 0.7rem;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
   }
 
   .sidebar-localization .disclosure.is-open .disclosure__list-wrapper {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .sidebar-localization .disclosure.is-open .disclosure__caret {
@@ -168,29 +150,31 @@
   }
 
   .sidebar-localization .disclosure__item + .disclosure__item {
-    margin-top: 0.2rem;
+    margin-top: 0.15rem;
   }
 
   .sidebar-localization .disclosure__link {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.7rem;
+    padding: 0.5rem 0;
+    border: 0;
+    background: transparent;
     text-align: left;
-    padding: 0.7rem 0;
-    color: rgb(var(--color-text));
     cursor: pointer;
+    color: rgb(var(--color-text));
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
   .sidebar-localization .disclosure__link:hover {
-    opacity: 0.7;
+    opacity: 0.65;
     transform: translateX(2px);
   }
 
   .sidebar-localization .disclosure__link[aria-current="true"] {
-    color: rgb(var(--color-heading));
     font-weight: 600;
+    color: rgb(var(--color-heading));
   }
 
   .sidebar-localization .checkmark-icon-wrapper {
@@ -202,8 +186,8 @@
   }
 
   .sidebar-localization .checkmark-icon-wrapper svg {
-    width: 0.9rem;
-    height: 0.9rem;
+    width: 0.85rem;
+    height: 0.85rem;
   }
 
   .sidebar-localization .language-name {
