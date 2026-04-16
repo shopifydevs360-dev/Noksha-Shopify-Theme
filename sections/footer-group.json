@@ -18,6 +18,7 @@
           "type": "newsletter",
           "settings": {
             "block_width": "33",
+            "logo": "shopify://shop_images/Youmi_Beauty_Logo_whit.png",
             "text": "<p>By registering, I agree to receive emails from Halla Hijab and other trusted P&G brands and programs. </p>",
             "checkbox_text": "Yes, send me your newsletter",
             "button_text": "Subscribe"
