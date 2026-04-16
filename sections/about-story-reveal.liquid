@@ -31,45 +31,64 @@
   endif
 %}
 
-<div class="{{ first_class }}" id="about-story-reveal-{{ section.id }}">
+<section class="{{ first_class }}" id="about-story-reveal-{{ section.id }}">
+  <div class="about-story-reveal__bg about-story-reveal__bg--one"></div>
+  <div class="about-story-reveal__bg about-story-reveal__bg--two"></div>
+  <div class="about-story-reveal__line about-story-reveal__line--one"></div>
+  <div class="about-story-reveal__line about-story-reveal__line--two"></div>
+
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
       <div class="about-story-reveal__inner {% if ss.layout == 'image-right' %}is-reversed{% endif %}">
+
         <div class="about-story-reveal__media" data-about-media>
           <div class="about-story-reveal__media-stack">
+            <div class="about-story-reveal__media-frame"></div>
+
             <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--main" data-parallax-image="main">
               {% render 'image',
                 class: main_image_classes,
                 image: ss.main_image,
                 mobile_image: ss.main_image_mobile,
-                width: 1400,
+                width: 1600,
                 img_alt: ss.heading,
                 loading: 'lazy'
               %}
             </div>
+
             {% if ss.secondary_image != blank %}
-            <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--secondary" data-parallax-image="secondary">
-              {% render 'image',
-                class: secondary_image_classes,
-                image: ss.secondary_image,
-                mobile_image: ss.secondary_image_mobile,
-                width: 900,
-                img_alt: ss.heading,
-                loading: 'lazy'
-              %}
-            </div>
+              <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--secondary" data-parallax-image="secondary">
+                {% render 'image',
+                  class: secondary_image_classes,
+                  image: ss.secondary_image,
+                  mobile_image: ss.secondary_image_mobile,
+                  width: 900,
+                  img_alt: ss.heading,
+                  loading: 'lazy'
+                %}
+              </div>
             {% endif %}
+
             {% if ss.accent_image != blank %}
-            <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--accent" data-parallax-image="accent">
-              {% render 'image',
-                class: accent_image_classes,
-                image: ss.accent_image,
-                mobile_image: ss.accent_image_mobile,
-                width: 700,
-                img_alt: ss.heading,
-                loading: 'lazy'
-              %}
-            </div>
+              <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--accent" data-parallax-image="accent">
+                {% render 'image',
+                  class: accent_image_classes,
+                  image: ss.accent_image,
+                  mobile_image: ss.accent_image_mobile,
+                  width: 700,
+                  img_alt: ss.heading,
+                  loading: 'lazy'
+                %}
+              </div>
+            {% endif %}
+
+            {% if ss.floating_label != blank %}
+              <div class="about-story-reveal__floating-card" data-about-floating>
+                {% if ss.floating_caption != blank %}
+                  <span class="about-story-reveal__floating-caption">{{ ss.floating_caption }}</span>
+                {% endif %}
+                <strong class="about-story-reveal__floating-label">{{ ss.floating_label }}</strong>
+              </div>
             {% endif %}
           </div>
         </div>
@@ -82,9 +101,9 @@
           {% endif %}
 
           {% if ss.heading != blank %}
-            <h2 class="about-story-reveal__heading {{ ss.font_size }}" data-about-item>
+            <h1 class="about-story-reveal__heading {{ ss.font_size }}" data-about-item>
               {{ ss.heading }}
-            </h2>
+            </h1>
           {% endif %}
 
           {% if ss.text != blank %}
@@ -101,20 +120,79 @@
             </div>
           {% endif %}
         </div>
+
       </div>
     </div>
   </div>
-</div>
+</section>
 
 {% stylesheet %}
 .about-story-reveal {
+  position: relative;
   overflow: hidden;
+  isolation: isolate;
+  background: rgb(var(--color-background));
+}
+
+.about-story-reveal__bg,
+.about-story-reveal__line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.about-story-reveal__bg--one {
+  width: 34rem;
+  height: 34rem;
+  top: -8rem;
+  right: -10rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--color-additional-1), 0.08) 0%, rgba(var(--color-additional-1), 0) 72%);
+  filter: blur(10px);
+}
+
+.about-story-reveal__bg--two {
+  width: 28rem;
+  height: 28rem;
+  bottom: -8rem;
+  left: 34%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--color-additional-2), 0.06) 0%, rgba(var(--color-additional-2), 0) 72%);
+  filter: blur(16px);
+}
+
+.about-story-reveal__line--one {
+  top: 12%;
+  right: 10%;
+  width: 9rem;
+  height: 9rem;
+  border: 1px solid rgba(var(--color-border), 0.5);
+  border-radius: 50%;
+}
+
+.about-story-reveal__line--two {
+  bottom: 12%;
+  right: 22%;
+  width: 14rem;
+  height: 14rem;
+  border: 1px solid rgba(var(--color-border), 0.22);
+  border-radius: 50%;
+}
+
+.about-story-reveal .container,
+.about-story-reveal .container-fluid,
+.about-story-reveal .container-narrow,
+.about-story-reveal .container-extra-narrow,
+.about-story-reveal .extended,
+.about-story-reveal .full-width {
+  position: relative;
+  z-index: 1;
 }
 
 .about-story-reveal__inner {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: center;
 }
 
@@ -124,7 +202,14 @@
 
 .about-story-reveal__media-stack {
   position: relative;
-  min-height: 28rem;
+  min-height: 34rem;
+}
+
+.about-story-reveal__media-frame {
+  position: absolute;
+  inset: 2rem 2rem 2rem 0;
+  border: 1px solid rgba(var(--color-border), 0.45);
+  z-index: 1;
 }
 
 .about-story-reveal__image-wrap {
@@ -133,64 +218,101 @@
 }
 
 .about-story-reveal__image-wrap--main {
-  width: min(100%, 34rem);
+  width: min(100%, 40rem);
   z-index: 2;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.08);
 }
 
 .about-story-reveal__image-wrap--secondary {
-  width: min(56%, 18rem);
+  width: min(46%, 17rem);
   position: absolute;
-  right: 0;
-  top: 12%;
+  right: -2%;
+  top: 8%;
   z-index: 3;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
 }
 
 .about-story-reveal__image-wrap--accent {
-  width: min(42%, 13rem);
+  width: min(34%, 11rem);
   position: absolute;
-  left: 6%;
-  bottom: -6%;
+  left: -2%;
+  bottom: -4%;
   z-index: 4;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.06);
+}
+
+.about-story-reveal__floating-card {
+  position: absolute;
+  right: 6%;
+  bottom: 5%;
+  z-index: 5;
+  min-width: 12rem;
+  padding: 1rem 1.2rem;
+  background: rgba(var(--color-background), 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--color-border), 0.35);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+.about-story-reveal__floating-caption {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(var(--color-subtext), 0.8);
+}
+
+.about-story-reveal__floating-label {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: rgb(var(--color-heading));
 }
 
 .about-story-reveal__content {
-  max-width: 38rem;
+  max-width: 42rem;
+  position: relative;
+  z-index: 2;
 }
 
 .about-story-reveal__eyebrow {
-  margin-bottom: 0.9rem;
+  margin-bottom: 1rem;
   font-size: 0.82em;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(var(--color-heading), 0.65);
 }
 
 .about-story-reveal__heading {
-  margin: 0 0 1rem;
-  line-height: 1.05;
+  margin: 0 0 1.2rem;
+  line-height: 1;
+  max-width: 12ch;
 }
 
 .about-story-reveal__text {
-  color: rgba(var(--color-text), 0.82);
+  max-width: 34rem;
+  color: rgba(var(--color-text), 0.84);
 }
 
 .about-story-reveal__text p {
-  line-height: 1.8;
+  line-height: 1.85;
   margin-bottom: 1rem;
 }
 
 .about-story-reveal__button {
-  margin-top: 1.4rem;
+  margin-top: 1.5rem;
 }
 
 @media (min-width: 991px) {
   .about-story-reveal__inner {
-    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
-    gap: 4rem;
+    grid-template-columns: minmax(0, 1.08fr) minmax(28rem, 0.92fr);
+    gap: clamp(3rem, 5vw, 7rem);
+    min-height: {{ ss.desktop_min_height }}vh;
   }
 
   .about-story-reveal__inner.is-reversed {
-    grid-template-columns: minmax(22rem, 0.95fr) minmax(0, 1.05fr);
+    grid-template-columns: minmax(28rem, 0.92fr) minmax(0, 1.08fr);
   }
 
   .about-story-reveal__inner.is-reversed .about-story-reveal__media {
@@ -202,33 +324,46 @@
   }
 
   .about-story-reveal__media-stack {
-    min-height: 40rem;
+    min-height: 44rem;
   }
 
   .about-story-reveal__image-wrap--main {
-    width: min(100%, 40rem);
+    width: min(100%, 44rem);
   }
 
   .about-story-reveal__image-wrap--secondary {
-    width: min(48%, 20rem);
-    right: 2%;
-    top: 10%;
+    width: min(42%, 18rem);
+    right: -1%;
+    top: 8%;
   }
 
   .about-story-reveal__image-wrap--accent {
-    width: min(34%, 14rem);
-    left: 4%;
-    bottom: -5%;
+    width: min(30%, 12rem);
+    left: -1%;
+    bottom: -3%;
   }
 
   .about-story-reveal__content {
-    padding-top: 2rem;
+    padding-top: 1rem;
+  }
+
+  .about-story-reveal__heading.h1,
+  .about-story-reveal__heading.h2 {
+    font-size: clamp(3.2rem, 5vw, {{ ss.hero_heading_size }}px);
   }
 }
 
 @media (max-width: 990px) {
+  .about-story-reveal__inner {
+    gap: 2rem;
+  }
+
   .about-story-reveal__media-stack {
-    min-height: 25rem;
+    min-height: 28rem;
+  }
+
+  .about-story-reveal__media-frame {
+    inset: 1.2rem 1.2rem 1.2rem 0;
   }
 
   .about-story-reveal__image-wrap--main {
@@ -236,14 +371,29 @@
   }
 
   .about-story-reveal__image-wrap--secondary {
-    width: min(48%, 14rem);
-    top: 10%;
+    width: min(42%, 13rem);
+    top: 8%;
   }
 
   .about-story-reveal__image-wrap--accent {
-    width: min(36%, 10rem);
-    left: 2%;
-    bottom: -3%;
+    width: min(30%, 9rem);
+    left: 0;
+    bottom: -2%;
+  }
+
+  .about-story-reveal__floating-card {
+    right: 4%;
+    bottom: 4%;
+    min-width: 10rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .about-story-reveal__content {
+    max-width: 100%;
+  }
+
+  .about-story-reveal__heading {
+    max-width: 100%;
   }
 }
 
@@ -253,7 +403,7 @@
   }
 
   .about-story-reveal__media-stack {
-    min-height: 21rem;
+    min-height: 23rem;
   }
 
   .about-story-reveal__eyebrow {
@@ -262,15 +412,32 @@
   }
 
   .about-story-reveal__heading {
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.9rem;
   }
 
   .about-story-reveal__text p {
-    line-height: 1.65;
+    line-height: 1.7;
   }
 
   .about-story-reveal__button {
     margin-top: 1rem;
+  }
+
+  .about-story-reveal__bg--one {
+    width: 18rem;
+    height: 18rem;
+    right: -7rem;
+  }
+
+  .about-story-reveal__bg--two {
+    width: 15rem;
+    height: 15rem;
+    left: 10%;
+  }
+
+  .about-story-reveal__line--one,
+  .about-story-reveal__line--two {
+    display: none;
   }
 }
 {% endstylesheet %}
@@ -293,10 +460,13 @@
       var mainImage = section.querySelector('[data-parallax-image="main"]');
       var secondaryImage = section.querySelector('[data-parallax-image="secondary"]');
       var accentImage = section.querySelector('[data-parallax-image="accent"]');
+      var floatingCard = section.querySelector('[data-about-floating]');
+      var bgOne = section.querySelector('.about-story-reveal__bg--one');
+      var bgTwo = section.querySelector('.about-story-reveal__bg--two');
 
       gsap.set(contentItems, {
         opacity: 0,
-        y: 30
+        y: 34
       });
 
       gsap.to(contentItems, {
@@ -312,6 +482,27 @@
         }
       });
 
+      if (floatingCard) {
+        gsap.fromTo(floatingCard,
+          {
+            opacity: 0,
+            y: 24
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            delay: 0.3,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 78%',
+              once: true
+            }
+          }
+        );
+      }
+
       if (typeof ScrollTrigger !== 'undefined') {
         if (mainImage) {
           gsap.to(mainImage, {
@@ -321,7 +512,7 @@
               trigger: section,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: 0.8
+              scrub: 0.9
             }
           });
         }
@@ -341,13 +532,54 @@
 
         if (accentImage) {
           gsap.to(accentImage, {
-            yPercent: -18,
+            yPercent: -16,
             ease: 'none',
             scrollTrigger: {
               trigger: section,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: 1.1
+              scrub: 1.05
+            }
+          });
+        }
+
+        if (floatingCard) {
+          gsap.to(floatingCard, {
+            yPercent: -10,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.2
+            }
+          });
+        }
+
+        if (bgOne) {
+          gsap.to(bgOne, {
+            yPercent: 10,
+            xPercent: -6,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.3
+            }
+          });
+        }
+
+        if (bgTwo) {
+          gsap.to(bgTwo, {
+            yPercent: -10,
+            xPercent: 6,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.4
             }
           });
         }
@@ -430,7 +662,27 @@
         { "value": "h3", "label": "h3" },
         { "value": "h4", "label": "h4" }
       ],
-      "default": "h2"
+      "default": "h1"
+    },
+    {
+      "type": "range",
+      "id": "hero_heading_size",
+      "min": 42,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Hero heading size",
+      "default": 84
+    },
+    {
+      "type": "range",
+      "id": "desktop_min_height",
+      "min": 50,
+      "max": 120,
+      "step": 2,
+      "unit": "%",
+      "label": "Desktop section height",
+      "default": 92
     },
     {
       "type": "header",
@@ -440,25 +692,25 @@
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Our story"
+      "default": "About YB"
     },
     {
       "type": "textarea",
       "id": "heading",
       "label": "Heading",
-      "default": "Crafting a more editorial and premium brand story."
+      "default": "YOUMI BEAUTY – More Than Just a Beauty Brand"
     },
     {
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Use this section to introduce your brand story, philosophy, process, or founder message with elegant layered imagery and subtle scrolling motion.</p>"
+      "default": "<p>Use this section as a premium about page hero. Combine strong visual storytelling with refined typography to introduce the brand in a more editorial and elegant way.</p>"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "Learn more"
+      "default": "Discover our story"
     },
     {
       "type": "url",
@@ -474,7 +726,23 @@
         { "value": "btn--secondary", "label": "Secondary" },
         { "value": "btn--underline", "label": "Underline" }
       ],
-      "default": "btn--primary"
+      "default": "btn--underline"
+    },
+    {
+      "type": "header",
+      "content": "Floating card"
+    },
+    {
+      "type": "text",
+      "id": "floating_caption",
+      "label": "Floating caption",
+      "default": "Editorial beauty"
+    },
+    {
+      "type": "text",
+      "id": "floating_label",
+      "label": "Floating label",
+      "default": "Luxury, identity, and confidence"
     },
     {
       "type": "header",
@@ -548,21 +816,21 @@
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 140,
+      "max": 180,
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 60
+      "default": 80
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 140,
+      "max": 180,
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 60
+      "default": 80
     },
     {
       "type": "text",
