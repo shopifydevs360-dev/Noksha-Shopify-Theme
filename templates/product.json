@@ -146,7 +146,7 @@
         "thumb_media_ratio": "cropped-image--square",
         "video_media_ratio": "adapt-video-height",
         "show_mobile_videos": true,
-        "show_mobile_video_first": false,
+        "show_mobile_video_first": true,
         "mobile_media_ratio": "cropped-image--portrait",
         "custom_class": "",
         "color_control": "section-light"
