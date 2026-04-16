@@ -11,37 +11,29 @@
       {% for block in section.blocks %}
 
         {% liquid
-          assign image_wapper_classes = 'image cropped-image-wrapper'
+          assign button_class = 'btn ' | append: block.settings.button_type
 
-          if block.settings.aspect_ratio == 'adapt-to-image'
-            assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
-          else
-            assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.aspect_ratio
-          endif
+        assign image_wapper_classes = 'image cropped-image-wrapper'
 
-          if block.settings.hover_effect_action != 'no-effect'
-            assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
-          endif
+        if block.settings.aspect_ratio == 'adapt-to-image'
+          assign image_wapper_classes = image_wapper_classes | append: ' adapt-image-height'
+        else
+          assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.aspect_ratio
+        endif
 
-          assign title_class = 'title'
-          assign cta_class = 'cta'
-          assign is_animated_button = false
-
-          if block.settings.button_type == 'hover-underline' or block.settings.button_type == 'hover-fill-bg'
-            assign is_animated_button = true
-            assign cta_class = cta_class | append: ' ' | append: block.settings.button_type
-          else
-            assign cta_class = cta_class | append: ' btn ' | append: block.settings.button_type
-          endif
+        if block.settings.hover_effect_action != 'no-effect'
+          assign image_wapper_classes = image_wapper_classes | append: ' ' | append: block.settings.hover_effect_action
+        endif
         %}
 
         <div class="grid-item" {{ block.shopify_attributes }}>
           <a
             href="{{ block.settings.link }}"
-            aria-label="{{ block.settings.title }} {{ block.settings.cta_text }}"
-            class="image-with-text-overlay{% if is_animated_button %} has-animated-cta{% endif %}"
+            aria-label="{{ block.settings.title }} Shop Now"
+            class="image-with-text-overlay{% if block.settings.button_type == 'btn--animation' and block.settings.animation_type == 'hover-underline' %} active-underline{% endif %}"
           >
 
+            <!-- IMAGE -->
             <div class="scaling-image-wrapper">
               <div
                 class="sliding-img-wrapper large-image"
@@ -52,21 +44,21 @@
                   class="img-slide-bg"
                   style="background-color: {{ block.settings.image_background_color }};"
                 ></div>
-
                 {% render 'image',
-                  image: block.settings.image,
-                  class: image_wapper_classes,
-                  img_alt: block.settings.title
-                %}
+                    image: block.settings.image,
+                    class: image_wapper_classes,
+                    img_alt: block.settings.title
+                  %}
               </div>
             </div>
 
+            <!-- TEXT -->
             <div class="image-overlay-end-details">
-              <span class="{{ title_class }}">
+              <span class="title {{ button_class }}">
                 {{ block.settings.title }}
               </span>
 
-              <span class="{{ cta_class }}">
+              <span class="cta {{ button_class }}">
                 {{ block.settings.cta_text }}
               </span>
             </div>
@@ -79,24 +71,6 @@
     </div>
   </div>
 </div>
-
-<style>
-  .image-overlay-grid .image-overlay-end-details .title {
-    display: block;
-  }
-
-  .image-overlay-grid .image-overlay-end-details .cta {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-  }
-
-  .image-overlay-grid .image-with-text-overlay.has-animated-cta .cta.hover-underline,
-  .image-overlay-grid .image-with-text-overlay.has-animated-cta .cta.hover-fill-bg {
-    margin-top: 0.35rem;
-  }
-</style>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -128,7 +102,6 @@
     });
   });
 </script>
-
 {% schema %}
 {
   "name": "Image Overlay Grid",
@@ -203,35 +176,35 @@
           "label": "Image"
         },
         {
-          "type": "select",
-          "id": "aspect_ratio",
-          "label": "Aspect Ratio",
-          "options": [
-            { "value": "adapt-to-image", "label": "Adapt to image" },
-            { "value": "cropped-image--square", "label": "Square" },
-            { "value": "cropped-image--portrait", "label": "Portrait" },
-            { "value": "cropped-image--portrait-tall", "label": "Portrait-tall" },
-            { "value": "cropped-image--landscape", "label": "Landscape" },
-            { "value": "cropped-image--wide", "label": "Wide" }
-          ],
-          "default": "cropped-image--square"
-        },
+        "type": "select",
+        "id": "aspect_ratio",
+        "label": "Aspect Ratio",
+        "options": [
+          { "value": "adapt-to-image", "label": "Adapt to image" },
+          { "value": "cropped-image--square", "label": "Square" },
+          { "value": "cropped-image--portrait", "label": "Portrait" },
+          { "value": "cropped-image--portrait-tall", "label": "Portrait-tall" },
+          { "value": "cropped-image--landscape", "label": "Landscape" },
+          { "value": "cropped-image--wide", "label": "Wide" }
+        ],
+        "default": "cropped-image--square"
+      },
         {
-          "type": "select",
-          "id": "hover_effect_action",
-          "label": "Image Hover Effect",
-          "options": [
-            { "value": "no-effect", "label": "No effect" },
-            { "value": "is-hover-zoom-in", "label": "Zoom in" },
-            { "value": "is-hover-zoom-out", "label": "Zoom out" },
-            { "value": "is-hover-zoom-up", "label": "Zoom up" },
-            { "value": "is-hover-fade", "label": "Fade" },
-            { "value": "is-hover-cinematic", "label": "Cinematic" },
-            { "value": "is-hover-drift", "label": "Drift" },
-            { "value": "is-hover-overlay", "label": "Overlay" }
-          ],
-          "default": "no-effect"
-        },
+        "type": "select",
+        "id": "hover_effect_action",
+        "label": "Image Hover Effect",
+        "options": [
+          { "value": "no-effect", "label": "No effect" },
+          { "value": "is-hover-zoom-in", "label": "Zoom in" },
+          { "value": "is-hover-zoom-out", "label": "Zoom out" },
+          { "value": "is-hover-zoom-up", "label": "Zoom up" },
+          { "value": "is-hover-fade", "label": "Fade" },
+          { "value": "is-hover-cinematic", "label": "Cinematic" },
+          { "value": "is-hover-drift", "label": "Drift" },
+          { "value": "is-hover-overlay", "label": "Overlay" }
+        ],
+        "default": "no-effect"
+      },
         {
           "type": "text",
           "id": "title",
