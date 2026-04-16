@@ -15,7 +15,7 @@
     "logo_width_mobile": 150,
     "site_name": "Youmi Beauty",
     "favicon": "shopify://shop_images/YB_Favicon.png",
-    "enable_rtl": true,
+    "enable_rtl": false,
     "type_base_font": "chivo_n4",
     "use_custom_font_body": true,
     "custom_body_font": "https://cdn.shopify.com/s/files/1/0693/6448/2323/files/Sofia_Pro_Regular_Az.woff?v=1775677609",
