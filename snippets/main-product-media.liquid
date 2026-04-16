@@ -43,25 +43,7 @@
   assign show_mobile_video_first = section.settings.show_mobile_video_first
 -%}
 
-{% if product.media.size == 0 %}
-  <style>
-    .media-warpper {
-      height: 100%;
-      width: 100%;
-      position: relative;
-    }
-    .product-media {
-      height: 100%;
-      width: 100%;
-    }
-    .swiper {
-      height: 100%;
-    }
-  </style>
-{% endif %}
-
 {%- assign image_index = 0 -%}
-
 {%- assign has_video = false -%}
 {%- assign product_image_count = 0 -%}
 {%- assign mobile_custom_image_count = 0 -%}
@@ -116,6 +98,7 @@
       <div class="swiper-wrapper">
         {% assign rendered_media_ids = '' %}
         {% assign has_variant_media = false %}
+        {% assign desktop_main_image_loaded = false %}
 
         {% for variant in product.variants %}
           {% if variant.featured_media and variant.featured_media.media_type == 'image' %}
@@ -127,15 +110,32 @@
 
               <div class="swiper-slide" data-media-id="{{ variant.featured_media.id }}">
                 <div class="{{ main_image_wrapper_class }}">
-                  {% render 'image',
-                    class: 'js-open-lightbox',
-                    image: variant.featured_media,
-                    width: variant.featured_media.width,
-                    height: variant.featured_media.height,
-                    crop: 'center',
-                    img_alt: variant.featured_media.alt,
-                    style: wrapper_style
-                  %}
+                  {% if desktop_main_image_loaded == false %}
+                    {% render 'image',
+                      class: 'js-open-lightbox',
+                      image: variant.featured_media,
+                      width: 1600,
+                      height: variant.featured_media.height,
+                      crop: 'center',
+                      img_alt: variant.featured_media.alt,
+                      style: wrapper_style,
+                      loading: 'eager',
+                      fetchpriority: 'high'
+                    %}
+                    {% assign desktop_main_image_loaded = true %}
+                  {% else %}
+                    {% render 'image',
+                      class: 'js-open-lightbox',
+                      image: variant.featured_media,
+                      width: 1600,
+                      height: variant.featured_media.height,
+                      crop: 'center',
+                      img_alt: variant.featured_media.alt,
+                      style: wrapper_style,
+                      loading: 'lazy',
+                      fetchpriority: 'low'
+                    %}
+                  {% endif %}
                   <span class="hide" data-lightbox-index="{{ image_index }}"></span>
                 </div>
               </div>
@@ -155,11 +155,13 @@
                   {% render 'image',
                     class: 'js-open-lightbox',
                     image: fallback_media,
-                    width: fallback_media.width,
+                    width: 1600,
                     height: fallback_media.height,
                     crop: 'center',
                     img_alt: fallback_media.alt,
-                    style: wrapper_style
+                    style: wrapper_style,
+                    loading: 'eager',
+                    fetchpriority: 'high'
                   %}
                   <span class="hide" data-lightbox-index="0"></span>
                 </div>
@@ -169,8 +171,8 @@
                     {{
                       fallback_media
                       | video_tag:
-                        autoplay: true,
-                        loop: true,
+                        autoplay: false,
+                        loop: false,
                         muted: true,
                         controls: false,
                         playsinline: true,
@@ -212,8 +214,8 @@
               {{
                 media
                 | video_tag:
-                  autoplay: true,
-                  loop: true,
+                  autoplay: false,
+                  loop: false,
                   muted: true,
                   controls: false,
                   playsinline: true,
@@ -250,9 +252,11 @@
                   class: 'js-open-lightbox',
                   image: media,
                   crop: 'center',
-                  width: media.width,
+                  width: 500,
                   height: media.height,
-                  img_alt: media.alt
+                  img_alt: media.alt,
+                  loading: 'lazy',
+                  fetchpriority: 'low'
                 %}
                 <span class="hide" data-lightbox-index="{{ thumb_image_index | plus: 1 }}"></span>
               </div>
@@ -268,9 +272,11 @@
                 class: 'js-open-lightbox',
                 image: first_media,
                 crop: 'center',
-                width: first_media.width,
+                width: 500,
                 height: first_media.height,
-                img_alt: first_media.alt
+                img_alt: first_media.alt,
+                loading: 'lazy',
+                fetchpriority: 'low'
               %}
               <span class="hide" data-lightbox-index="0"></span>
             </div>
@@ -301,6 +307,7 @@
   {% if mobile_total_items > 0 %}
     <div class="product-media__mobile swiper hide-desktop hide-large-screens">
       <div class="swiper-wrapper">
+        {% assign mobile_first_visual_loaded = false %}
 
         {% if show_mobile_videos and show_mobile_video_first %}
           {% for media in product.media %}
@@ -311,12 +318,12 @@
                     {{
                       media
                       | video_tag:
-                        autoplay: true,
-                        loop: true,
+                        autoplay: false,
+                        loop: false,
                         muted: true,
                         controls: false,
                         playsinline: true,
-                        preload: 'metadata'
+                        preload: 'none'
                     }}
                   </div>
                 </div>
@@ -338,13 +345,28 @@
             {% if block.type == 'mobile_image' and block.settings.image != blank %}
               <div class="swiper-slide" {{ block.shopify_attributes }}>
                 <div class="{{ mobile_image_wrapper_class }}">
-                  {% render 'image',
-                    image: block.settings.image,
-                    width: block.settings.image.width,
-                    height: block.settings.image.height,
-                    crop: 'center',
-                    img_alt: block.settings.image.alt
-                  %}
+                  {% if mobile_first_visual_loaded == false %}
+                    {% render 'image',
+                      image: block.settings.image,
+                      width: 900,
+                      height: block.settings.image.height,
+                      crop: 'center',
+                      img_alt: block.settings.image.alt,
+                      loading: 'eager',
+                      fetchpriority: 'high'
+                    %}
+                    {% assign mobile_first_visual_loaded = true %}
+                  {% else %}
+                    {% render 'image',
+                      image: block.settings.image,
+                      width: 900,
+                      height: block.settings.image.height,
+                      crop: 'center',
+                      img_alt: block.settings.image.alt,
+                      loading: 'lazy',
+                      fetchpriority: 'low'
+                    %}
+                  {% endif %}
                 </div>
               </div>
             {% endif %}
@@ -354,14 +376,30 @@
             {% if media.media_type == 'image' %}
               <div class="swiper-slide">
                 <div class="{{ mobile_image_wrapper_class }}">
-                  {% render 'image',
-                    class: 'js-open-lightbox',
-                    image: media,
-                    crop: 'center',
-                    width: media.width,
-                    height: media.height,
-                    img_alt: media.alt
-                  %}
+                  {% if mobile_first_visual_loaded == false %}
+                    {% render 'image',
+                      class: 'js-open-lightbox',
+                      image: media,
+                      crop: 'center',
+                      width: 900,
+                      height: media.height,
+                      img_alt: media.alt,
+                      loading: 'eager',
+                      fetchpriority: 'high'
+                    %}
+                    {% assign mobile_first_visual_loaded = true %}
+                  {% else %}
+                    {% render 'image',
+                      class: 'js-open-lightbox',
+                      image: media,
+                      crop: 'center',
+                      width: 900,
+                      height: media.height,
+                      img_alt: media.alt,
+                      loading: 'lazy',
+                      fetchpriority: 'low'
+                    %}
+                  {% endif %}
                 </div>
               </div>
             {% endif %}
@@ -377,12 +415,12 @@
                     {{
                       media
                       | video_tag:
-                        autoplay: true,
-                        loop: true,
+                        autoplay: false,
+                        loop: false,
                         muted: true,
                         controls: false,
                         playsinline: true,
-                        preload: 'metadata'
+                        preload: 'none'
                     }}
                   </div>
                 </div>
@@ -434,10 +472,11 @@
             <div class="swiper-slide">
               {% render 'image',
                 image: media,
-                width: media.width,
+                width: 2000,
                 height: media.height,
                 img_alt: media.alt,
-                loading: 'eager'
+                loading: 'lazy',
+                fetchpriority: 'low'
               %}
             </div>
           {% endif %}
