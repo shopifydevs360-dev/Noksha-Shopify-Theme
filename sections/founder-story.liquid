@@ -1,28 +1,30 @@
-
 {% render 'section-base-style' %}
 
 {%- liquid
-  assign section_classes = 'founder-story section-' | append: section.id | append: '-padding'
+  assign section_classes = 'founder-story'
+  assign section_classes = section_classes | append: ' section-' | append: section.id | append: '-padding'
   assign section_classes = section_classes | append: ' m-color-' | append: section.settings.color_scheme
+  assign section_classes = section_classes | append: ' ' | append: section.settings.color_control
   assign section_classes = section_classes | append: ' ' | append: section.settings.custom_class
 
   assign container_class = section.settings.container_width | default: 'container-fluid'
+
+  assign media_ratio_class = section.settings.image_ratio
+  if section.settings.adapt_image_height
+    assign media_ratio_class = media_ratio_class | append: ' adapt-image-height'
+  endif
+
+  assign layout_class = 'founder-story--image-' | append: section.settings.layout_style
 -%}
 
 <section class="{{ section_classes }}" id="FounderStory-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="{{ container_class }}">
     <div class="sidebar-space">
-      <div class="founder-story__wrap founder-story__layout-{{ section.settings.layout_style }}">
-        
-        {% if section.settings.bg_title_left != blank %}
-          <div class="founder-story__bg-title founder-story__bg-title--left special-font-4">
-            {{ section.settings.bg_title_left }}
-          </div>
-        {% endif %}
+      <div class="founder-story__wrap {{ layout_class }}">
 
-        {% if section.settings.bg_title_right != blank %}
-          <div class="founder-story__bg-title founder-story__bg-title--right special-font-4">
-            {{ section.settings.bg_title_right }}
+        {% if section.settings.bg_title != blank %}
+          <div class="founder-story__bg-title special-font-4 founder-story__anim-bg">
+            {{ section.settings.bg_title }}
           </div>
         {% endif %}
 
@@ -31,7 +33,7 @@
             <div class="founder-story__media-inner border-radius-style-one">
               {% render 'image',
                 image: section.settings.image,
-                class: 'founder-story__image cropped-image-wrapper adapt-image-height',
+                class: 'founder-story__image cropped-image-wrapper ' | append: media_ratio_class,
                 img_alt: section.settings.name,
                 loading: 'lazy',
                 fetchpriority: 'low'
@@ -89,196 +91,199 @@
 </section>
 
 <style>
-  #FounderStory-{{ section.id }} {
+  .founder-story {
     position: relative;
     overflow: hidden;
     background: rgb(var(--color-background));
   }
 
-  #FounderStory-{{ section.id }} .founder-story__wrap {
+  .founder-story__wrap {
     position: relative;
     min-height: 100%;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__grid {
+  .founder-story__grid {
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
-    align-items: center;
     gap: 2rem;
+    align-items: center;
     z-index: 2;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__media {
+  .founder-story__media {
     position: relative;
+    z-index: 2;
+    width: 100%;
     max-width: min(100%, {{ section.settings.image_max_width }}px);
     margin: 0 auto;
-    z-index: 2;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__media-inner {
+  .founder-story__media-inner {
     overflow: hidden;
     background: rgba(var(--color-background-secondary), 1);
   }
 
-  #FounderStory-{{ section.id }} .founder-story__image {
+  .founder-story__image {
     display: block;
     width: 100%;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__image img,
-  #FounderStory-{{ section.id }} .founder-story__image svg {
-    width: 100%;
-    height: auto;
+  .founder-story__image img,
+  .founder-story__image svg {
     display: block;
+    width: 100%;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__content {
+  .founder-story__content {
     position: relative;
     z-index: 3;
+    width: 100%;
     max-width: {{ section.settings.content_max_width }}px;
     margin: 0 auto;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__eyebrow {
-    font-size: 0.85rem;
+  .founder-story__eyebrow {
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+    line-height: 1.2;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(var(--color-subtext), 0.9);
-    margin-bottom: 1rem;
+    color: rgba(var(--color-subtext), 0.88);
   }
 
-  #FounderStory-{{ section.id }} .founder-story__name {
+  .founder-story__name {
     margin: 0;
-    line-height: 0.95;
     color: rgb(var(--color-heading));
-    font-size: clamp(2.2rem, 7vw, {{ section.settings.name_size }}px);
+    line-height: 0.96;
+    font-size: clamp(2.4rem, 7vw, {{ section.settings.name_size }}px);
+    max-width: 12ch;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__designation {
+  .founder-story__designation {
     margin-top: 0.9rem;
     margin-bottom: 1.2rem;
-    font-size: 1rem;
+    color: rgba(var(--color-subtext), 0.9);
+    font-size: 0.95rem;
+    line-height: 1.5;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(var(--color-subtext), 0.9);
   }
 
-  #FounderStory-{{ section.id }} .founder-story__intro {
+  .founder-story__intro {
     margin-bottom: 1.4rem;
     color: rgb(var(--color-heading));
     font-size: clamp(1rem, 1.9vw, {{ section.settings.intro_size }}px);
-    line-height: 1.6;
+    line-height: 1.65;
+    max-width: 26ch;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__description {
+  .founder-story__description {
     color: rgb(var(--color-text));
-    font-size: clamp(1rem, 1.4vw, {{ section.settings.body_size }}px);
-    line-height: 1.85;
+    font-size: clamp(1rem, 1.35vw, {{ section.settings.body_size }}px);
+    line-height: 1.9;
     max-width: 100%;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__description p + p {
-    margin-top: 1.1rem;
+  .founder-story__description p + p {
+    margin-top: 1rem;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__signature {
+  .founder-story__signature {
     margin-top: 1.8rem;
-    font-size: clamp(1.2rem, 2vw, 2rem);
     color: rgb(var(--color-heading));
-    opacity: 0.9;
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    opacity: 0.92;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__image-caption {
+  .founder-story__image-caption {
     margin-top: 0.8rem;
-    font-size: 0.85rem;
-    color: rgba(var(--color-subtext), 0.8);
     text-align: center;
+    color: rgba(var(--color-subtext), 0.8);
+    font-size: 0.84rem;
+    line-height: 1.4;
   }
 
-  #FounderStory-{{ section.id }} .founder-story__bg-title {
+  .founder-story__bg-title {
     position: absolute;
-    z-index: 1;
-    line-height: 0.82;
-    font-family: var(--font-heading-family, sans-serif);
-    font-weight: 300;
-    text-transform: uppercase;
-    pointer-events: none;
-    color: rgba(var(--color-additional-1), {{ section.settings.bg_title_opacity | divided_by: 100.0 }});
-    font-size: clamp(4rem, 16vw, {{ section.settings.bg_title_size }}px);
-    max-width: min(42vw, 520px);
-    word-break: break-word;
-  }
-
-  #FounderStory-{{ section.id }} .founder-story__bg-title--left {
-    top: 0;
+    top: clamp(0rem, 2vw, 1rem);
     left: 0;
-    text-align: left;
-  }
-
-  #FounderStory-{{ section.id }} .founder-story__bg-title--right {
-    right: 0;
-    bottom: 0;
-    text-align: right;
+    z-index: 1;
+    pointer-events: none;
+    max-width: min(72vw, 900px);
+    color: rgba(var(--color-additional-1), {{ section.settings.bg_title_opacity | divided_by: 100.0 }});
+    font-family: var(--font-heading-family, sans-serif);
+    font-size: clamp(4rem, 14vw, {{ section.settings.bg_title_size }}px);
+    line-height: 0.85;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
   @media (min-width: 992px) {
-    #FounderStory-{{ section.id }} .founder-story__grid {
-      grid-template-columns: minmax(320px, 0.85fr) minmax(420px, 1fr);
-      gap: clamp(2rem, 5vw, 7rem);
+    .founder-story__grid {
       min-height: {{ section.settings.section_min_height }}vh;
+      gap: clamp(2rem, 4vw, 6rem);
+      grid-template-columns: minmax(320px, 0.88fr) minmax(420px, 1fr);
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-right .founder-story__media {
+    .founder-story--image-right .founder-story__media {
       order: 2;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-right .founder-story__content {
+    .founder-story--image-right .founder-story__content {
       order: 1;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-left .founder-story__media {
+    .founder-story--image-left .founder-story__media {
       order: 1;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__layout-image-left .founder-story__content {
+    .founder-story--image-left .founder-story__content {
       order: 2;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__content {
+    .founder-story__content {
       margin: 0;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__image-caption {
+    .founder-story__image-caption {
       text-align: left;
+    }
+
+    .founder-story__wrap {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
     }
   }
 
   @media (max-width: 991px) {
-    #FounderStory-{{ section.id }} .founder-story__wrap {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+    .founder-story__wrap {
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-title {
-      opacity: 0.5;
-      max-width: 60vw;
+    .founder-story__media {
+      max-width: min(100%, 560px);
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-title--left {
-      top: -0.5rem;
+    .founder-story__bg-title {
+      top: 0;
       left: 0;
+      max-width: 100%;
+      font-size: clamp(3.2rem, 18vw, 8rem);
+      opacity: 0.55;
+      white-space: normal;
+      line-height: 0.9;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__bg-title--right {
-      right: 0;
-      bottom: 1rem;
+    .founder-story__name {
+      max-width: 100%;
     }
 
-    #FounderStory-{{ section.id }} .founder-story__media {
-      max-width: min(100%, 520px);
+    .founder-story__intro {
+      max-width: 100%;
     }
   }
 </style>
@@ -288,8 +293,9 @@
     function initFounderStory(sectionId) {
       var section = document.getElementById('FounderStory-' + sectionId);
       if (!section) return;
-      if (section.dataset.founderInit === 'true') return;
-      section.dataset.founderInit = 'true';
+
+      if (section.dataset.founderStoryInit === 'true') return;
+      section.dataset.founderStoryInit = 'true';
 
       if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
@@ -299,57 +305,57 @@
       var title = section.querySelector('.founder-story__anim-title');
       var fades = section.querySelectorAll('.founder-story__anim-fade');
       var text = section.querySelector('.founder-story__anim-text');
-      var bgTitles = section.querySelectorAll('.founder-story__bg-title');
+      var bgTitle = section.querySelector('.founder-story__anim-bg');
       var image = section.querySelector('.founder-story__image img');
 
-      if (bgTitles.length) {
-        bgTitles.forEach(function(item, index) {
-          gsap.fromTo(item,
-            {
-              y: index === 0 ? -30 : 30,
-              opacity: 0
-            },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1.2,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 80%'
-              }
-            }
-          );
-
-          gsap.to(item, {
-            yPercent: index === 0 ? -10 : 10,
-            ease: 'none',
+      if (bgTitle) {
+        gsap.fromTo(
+          bgTitle,
+          {
+            y: -24,
+            opacity: 0
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.1,
+            ease: 'power3.out',
             scrollTrigger: {
               trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.2
+              start: 'top 82%'
             }
-          });
+          }
+        );
+
+        gsap.to(bgTitle, {
+          yPercent: -8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2
+          }
         });
       }
 
       if (media) {
-        gsap.fromTo(media,
+        gsap.fromTo(
+          media,
           {
-            y: 60,
+            y: 55,
             opacity: 0,
-            scale: 0.96
+            scale: 0.97
           },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            duration: 1.2,
+            duration: 1.1,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: media,
-              start: 'top 82%'
+              start: 'top 84%'
             }
           }
         );
@@ -357,51 +363,53 @@
 
       if (image) {
         gsap.to(image, {
-          yPercent: -8,
+          yPercent: -6,
           ease: 'none',
           scrollTrigger: {
             trigger: section,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1.5
+            scrub: 1.4
           }
         });
       }
 
       if (title) {
-        gsap.fromTo(title,
+        gsap.fromTo(
+          title,
           {
-            y: 50,
+            y: 40,
             opacity: 0
           },
           {
             y: 0,
             opacity: 1,
-            duration: 1,
+            duration: 0.95,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: title,
-              start: 'top 85%'
+              start: 'top 86%'
             }
           }
         );
       }
 
       if (fades.length) {
-        gsap.fromTo(fades,
+        gsap.fromTo(
+          fades,
           {
-            y: 26,
+            y: 22,
             opacity: 0
           },
           {
             y: 0,
             opacity: 1,
-            duration: 0.9,
+            duration: 0.8,
             stagger: 0.12,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: section.querySelector('.founder-story__content'),
-              start: 'top 80%'
+              start: 'top 82%'
             }
           }
         );
@@ -409,38 +417,41 @@
 
       if (text) {
         var paragraphs = text.querySelectorAll('p');
+
         if (paragraphs.length) {
-          gsap.fromTo(paragraphs,
+          gsap.fromTo(
+            paragraphs,
             {
-              y: 34,
+              y: 28,
               opacity: 0
             },
             {
               y: 0,
               opacity: 1,
-              duration: 0.9,
-              stagger: 0.14,
+              duration: 0.85,
+              stagger: 0.12,
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: text,
-                start: 'top 78%'
+                start: 'top 80%'
               }
             }
           );
         } else {
-          gsap.fromTo(text,
+          gsap.fromTo(
+            text,
             {
-              y: 34,
+              y: 28,
               opacity: 0
             },
             {
               y: 0,
               opacity: 1,
-              duration: 0.9,
+              duration: 0.85,
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: text,
-                start: 'top 78%'
+                start: 'top 80%'
               }
             }
           );
@@ -456,6 +467,10 @@
 
     document.addEventListener('shopify:section:load', function(event) {
       if (event.target && event.target.id === 'shopify-section-{{ section.id }}') {
+        var currentSection = document.getElementById('FounderStory-{{ section.id }}');
+        if (currentSection) {
+          currentSection.dataset.founderStoryInit = '';
+        }
         initFounderStory('{{ section.id }}');
       }
     });
@@ -465,6 +480,7 @@
 {% schema %}
 {
   "name": "Founder story",
+  "limit": 1,
   "settings": [
     {
       "type": "color_scheme",
@@ -480,19 +496,35 @@
         { "value": "container", "label": "Container" },
         { "value": "container-fluid", "label": "Container fluid" },
         { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
         { "value": "extended", "label": "Extended" }
       ],
       "default": "container-fluid"
     },
     {
       "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    },
+    {
+      "type": "select",
       "id": "layout_style",
       "label": "Layout style",
       "options": [
-        { "value": "image-left", "label": "Image left" },
-        { "value": "image-right", "label": "Image right" }
+        { "value": "left", "label": "Image left" },
+        { "value": "right", "label": "Image right" }
       ],
-      "default": "image-left"
+      "default": "left"
+    },
+
+    {
+      "type": "header",
+      "content": "Content"
     },
     {
       "type": "text",
@@ -530,6 +562,11 @@
       "label": "Signature text",
       "default": "Founder"
     },
+
+    {
+      "type": "header",
+      "content": "Image"
+    },
     {
       "type": "image_picker",
       "id": "image",
@@ -542,15 +579,43 @@
       "default": "Portrait / leadership image"
     },
     {
-      "type": "text",
-      "id": "bg_title_left",
-      "label": "Background title left",
-      "default": "Meet CEO"
+      "type": "checkbox",
+      "id": "adapt_image_height",
+      "label": "Adapt to actual image height",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "cropped-image--square", "label": "Square" },
+        { "value": "cropped-image--portrait", "label": "Portrait" },
+        { "value": "cropped-image--portrait-tall", "label": "Portrait tall" },
+        { "value": "cropped-image--landscape", "label": "Landscape" },
+        { "value": "cropped-image--wide", "label": "Wide" }
+      ],
+      "default": "cropped-image--portrait"
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "min": 280,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "label": "Image max width",
+      "default": 520
+    },
+
+    {
+      "type": "header",
+      "content": "Background title"
     },
     {
       "type": "text",
-      "id": "bg_title_right",
-      "label": "Background title right",
+      "id": "bg_title",
+      "label": "Background title",
       "default": "Founder"
     },
     {
@@ -573,15 +638,10 @@
       "label": "Background title opacity",
       "default": 10
     },
+
     {
-      "type": "range",
-      "id": "image_max_width",
-      "min": 280,
-      "max": 900,
-      "step": 10,
-      "unit": "px",
-      "label": "Image max width",
-      "default": 520
+      "type": "header",
+      "content": "Layout control"
     },
     {
       "type": "range",
@@ -602,6 +662,11 @@
       "unit": "%",
       "label": "Desktop section height",
       "default": 92
+    },
+
+    {
+      "type": "header",
+      "content": "Typography"
     },
     {
       "type": "range",
@@ -633,6 +698,7 @@
       "label": "Body text size",
       "default": 18
     },
+
     {
       "type": "header",
       "content": "Section padding"
