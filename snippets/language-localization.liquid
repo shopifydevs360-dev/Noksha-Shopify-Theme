@@ -1,183 +1,283 @@
 <localization-form class="sidebar-localization">
   {%- form 'localization', id: 'SidebarLanguageForm', class: 'localization-form' -%}
-    <div class="disclosure disclosure--language js-language-disclosure">
-      <button
-        type="button"
-        class="disclosure__button localization-form__select localization-selector link link--text caption-large js-language-toggle"
-        aria-expanded="false"
-        aria-controls="SidebarLanguageList"
-      >
-        <span class="language-selected-text">
-          {{ localization.language.endonym_name | capitalize }}
-        </span>
-        <span class="disclosure__caret">
-          {{ 'icon-caret.svg' | inline_asset_content }}
-        </span>
-      </button>
+    <div class="sidebar-localization__inner">
+      <p class="sidebar-localization__eyebrow">Your Language</p>
+      <label class="sidebar-localization__label" for="SidebarLanguageToggle">
+        Select Language
+      </label>
 
-      <div class="disclosure__list-wrapper language-selector js-language-list">
-        <ul id="SidebarLanguageList" role="list" class="disclosure__list list-unstyled">
-          {%- for language in localization.available_languages -%}
-            <li class="disclosure__item">
-              <button
-                type="submit"
-                name="locale_code"
-                class="disclosure__link link--text caption-large"
-                value="{{ language.iso_code }}"
-                lang="{{ language.iso_code }}"
-                {% if language.iso_code == localization.language.iso_code %}
-                  aria-current="true"
-                {% endif %}
-              >
-                <span class="checkmark-icon-wrapper">
+      <div class="disclosure disclosure--language js-language-disclosure">
+        <button
+          id="SidebarLanguageToggle"
+          type="button"
+          class="disclosure__button localization-form__select localization-selector js-language-toggle"
+          aria-expanded="false"
+          aria-controls="SidebarLanguageList"
+        >
+          <span class="disclosure__button-text">
+            <span class="language-selected-text">
+              {{ localization.language.endonym_name | capitalize }}
+            </span>
+          </span>
+
+          <span class="disclosure__caret" aria-hidden="true">
+            {{ 'icon-caret.svg' | inline_asset_content }}
+          </span>
+        </button>
+
+        <div class="disclosure__list-wrapper language-selector js-language-list">
+          <ul id="SidebarLanguageList" role="list" class="disclosure__list list-unstyled">
+            {%- for language in localization.available_languages -%}
+              <li class="disclosure__item">
+                <button
+                  type="submit"
+                  name="locale_code"
+                  class="disclosure__link"
+                  value="{{ language.iso_code }}"
+                  lang="{{ language.iso_code }}"
                   {% if language.iso_code == localization.language.iso_code %}
-                    {{ 'icon-checkmark.svg' | inline_asset_content }}
+                    aria-current="true"
                   {% endif %}
-                </span>
-                <span class="language-name">
-                  {{ language.endonym_name | capitalize }}
-                </span>
-              </button>
-            </li>
-          {%- endfor -%}
-        </ul>
+                >
+                  <span class="checkmark-icon-wrapper" aria-hidden="true">
+                    {% if language.iso_code == localization.language.iso_code %}
+                      {{ 'icon-checkmark.svg' | inline_asset_content }}
+                    {% endif %}
+                  </span>
+
+                  <span class="language-name">
+                    {{ language.endonym_name | capitalize }}
+                  </span>
+                </button>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
       </div>
     </div>
   {%- endform -%}
 </localization-form>
+
 {% stylesheet %}
   .sidebar-localization {
-  width: 100%;
-}
+    width: 100%;
+  }
 
-.sidebar-localization .disclosure {
-  position: relative;
-  width: 100%;
-}
+  .sidebar-localization__inner {
+    width: 100%;
+  }
 
-.sidebar-localization .disclosure__button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  text-align: left;
-  padding: 0.8rem 0;
-  color: rgb(var(--color-heading));
-}
+  .sidebar-localization__eyebrow {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-heading-family, sans-serif);
+    font-weight: var(--font-heading-weight, 600);
+    font-size: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-heading));
+  }
 
-.sidebar-localization .language-selected-text {
-  display: inline-block;
-}
+  .sidebar-localization__label {
+    display: block;
+    margin: 0 0 0.75rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    color: rgb(var(--color-subtext));
+  }
 
-.sidebar-localization .disclosure__caret {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
-}
+  .sidebar-localization .disclosure {
+    position: relative;
+    width: 100%;
+  }
 
-.sidebar-localization .disclosure__list-wrapper {
-  display: none;
-  margin-top: 0.75rem;
-  padding: 0.75rem 0;
-  border-top: 1px solid rgb(var(--color-border));
-}
+  .sidebar-localization .disclosure__button {
+    width: 100%;
+    min-height: 3.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgb(var(--color-border));
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-heading));
+    cursor: pointer;
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
 
-.sidebar-localization .disclosure.is-open .disclosure__list-wrapper {
-  display: block;
-}
+  .sidebar-localization .disclosure__button:hover {
+    background: rgba(var(--color-text), 0.03);
+    border-color: rgb(var(--color-heading));
+  }
 
-.sidebar-localization .disclosure.is-open .disclosure__caret {
-  transform: rotate(180deg);
-}
+  .sidebar-localization .disclosure__button:focus-visible {
+    outline: none;
+    border-color: rgb(var(--color-heading));
+  }
 
-.sidebar-localization .disclosure__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  .sidebar-localization .disclosure__button-text {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
 
-.sidebar-localization .disclosure__item + .disclosure__item {
-  margin-top: 0.35rem;
-}
+  .sidebar-localization .language-selected-text {
+    display: inline-block;
+    font-size: 0.98rem;
+    line-height: 1.3;
+    color: rgb(var(--color-heading));
+  }
 
-.sidebar-localization .disclosure__link {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  text-align: left;
-  padding: 0.5rem 0;
-  color: rgb(var(--color-text));
-}
+  .sidebar-localization .disclosure__caret {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.3s ease;
+  }
 
-.sidebar-localization .checkmark-icon-wrapper {
-  width: 1rem;
-  min-width: 1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
+  .sidebar-localization .disclosure__caret svg {
+    width: 100%;
+    height: 100%;
+  }
 
-.sidebar-localization .language-name {
-  display: inline-block;
-}
+  .sidebar-localization .disclosure__list-wrapper {
+    display: none;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgb(var(--color-border));
+  }
 
-body.rtl .sidebar-localization .disclosure__button,
-body.rtl .sidebar-localization .disclosure__link {
-  text-align: right;
-}
+  .sidebar-localization .disclosure.is-open .disclosure__list-wrapper {
+    display: block;
+  }
+
+  .sidebar-localization .disclosure.is-open .disclosure__caret {
+    transform: rotate(180deg);
+  }
+
+  .sidebar-localization .disclosure__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sidebar-localization .disclosure__item + .disclosure__item {
+    margin-top: 0.2rem;
+  }
+
+  .sidebar-localization .disclosure__link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+    padding: 0.7rem 0;
+    color: rgb(var(--color-text));
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .sidebar-localization .disclosure__link:hover {
+    opacity: 0.7;
+    transform: translateX(2px);
+  }
+
+  .sidebar-localization .disclosure__link[aria-current="true"] {
+    color: rgb(var(--color-heading));
+    font-weight: 600;
+  }
+
+  .sidebar-localization .checkmark-icon-wrapper {
+    width: 1rem;
+    min-width: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-localization .checkmark-icon-wrapper svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .sidebar-localization .language-name {
+    display: inline-block;
+    line-height: 1.4;
+  }
+
+  body.rtl .sidebar-localization .disclosure__button,
+  body.rtl .sidebar-localization .disclosure__link {
+    text-align: right;
+  }
+
+  body.rtl .sidebar-localization .disclosure__link:hover {
+    transform: translateX(-2px);
+  }
 {% endstylesheet %}
+
 {% javascript %}
-  document.addEventListener('DOMContentLoaded', () => {
-  initSidebarLanguageSelector();
-});
+  (function () {
+    function initSidebarLanguageSelector(scope) {
+      var container = scope || document;
+      var languageDisclosures = container.querySelectorAll('.js-language-disclosure');
 
-document.addEventListener('shopify:section:load', () => {
-  initSidebarLanguageSelector();
-});
+      if (!languageDisclosures.length) return;
 
-function initSidebarLanguageSelector() {
-  const languageDisclosures = document.querySelectorAll('.js-language-disclosure');
+      languageDisclosures.forEach(function (disclosure) {
+        if (disclosure.dataset.initialized === 'true') return;
+        disclosure.dataset.initialized = 'true';
 
-  if (!languageDisclosures.length) return;
+        var toggleBtn = disclosure.querySelector('.js-language-toggle');
 
-  languageDisclosures.forEach((disclosure) => {
-    if (disclosure.dataset.initialized === 'true') return;
-    disclosure.dataset.initialized = 'true';
+        if (!toggleBtn) return;
 
-    const toggleBtn = disclosure.querySelector('.js-language-toggle');
-    const listWrapper = disclosure.querySelector('.js-language-list');
+        toggleBtn.addEventListener('click', function (event) {
+          event.preventDefault();
 
-    if (!toggleBtn || !listWrapper) return;
+          var isOpen = disclosure.classList.contains('is-open');
 
-    toggleBtn.addEventListener('click', (event) => {
-      event.preventDefault();
+          document.querySelectorAll('.js-language-disclosure.is-open').forEach(function (item) {
+            if (item !== disclosure) {
+              item.classList.remove('is-open');
 
-      const isOpen = disclosure.classList.contains('is-open');
+              var itemBtn = item.querySelector('.js-language-toggle');
+              if (itemBtn) {
+                itemBtn.setAttribute('aria-expanded', 'false');
+              }
+            }
+          });
 
-      document.querySelectorAll('.js-language-disclosure.is-open').forEach((item) => {
-        if (item !== disclosure) {
-          item.classList.remove('is-open');
-          const btn = item.querySelector('.js-language-toggle');
-          if (btn) btn.setAttribute('aria-expanded', 'false');
+          disclosure.classList.toggle('is-open', !isOpen);
+          toggleBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initSidebarLanguageSelector(document);
+    });
+
+    document.addEventListener('shopify:section:load', function (event) {
+      initSidebarLanguageSelector(event.target);
+    });
+
+    document.addEventListener('click', function (event) {
+      document.querySelectorAll('.js-language-disclosure.is-open').forEach(function (disclosure) {
+        if (!disclosure.contains(event.target)) {
+          disclosure.classList.remove('is-open');
+
+          var toggleBtn = disclosure.querySelector('.js-language-toggle');
+          if (toggleBtn) {
+            toggleBtn.setAttribute('aria-expanded', 'false');
+          }
         }
       });
-
-      disclosure.classList.toggle('is-open', !isOpen);
-      toggleBtn.setAttribute('aria-expanded', String(!isOpen));
     });
-  });
-
-  document.addEventListener('click', function (event) {
-    document.querySelectorAll('.js-language-disclosure.is-open').forEach((disclosure) => {
-      if (!disclosure.contains(event.target)) {
-        disclosure.classList.remove('is-open');
-        const btn = disclosure.querySelector('.js-language-toggle');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-  });
-}
+  })();
 {% endjavascript %}
