@@ -203,6 +203,30 @@
         "padding_top": 0,
         "padding_bottom": 0
       }
+    },
+    "about_editorial_portrait_Eiwnxd": {
+      "type": "about-editorial-portrait",
+      "name": "About editorial portrait",
+      "settings": {
+        "enable_sidebar_space": true,
+        "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "container_width": "extended",
+        "text_align": "left",
+        "font_size": "h3",
+        "bg_word_top": "MEET",
+        "bg_word_bottom": "FOUNDER",
+        "subheading": "About the founder",
+        "heading": "A refined vision behind the brand.",
+        "button_label": "Read our story",
+        "button_link": "",
+        "button_style": "btn--primary",
+        "aspect_ratio": "cropped-image--portrait-tall",
+        "hover_effect_action": "no-effect",
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "custom_class": "",
+        "color_control": "section-light"
+      }
     }
   },
   "order": [
@@ -210,6 +234,7 @@
     "about_story_reveal_QHe7wL",
     "image_features_split_WNBMaA",
     "image_features_split_7cNjbW",
-    "image_features_split_DeXfct"
+    "image_features_split_DeXfct",
+    "about_editorial_portrait_Eiwnxd"
   ]
 }

@@ -38,41 +38,89 @@
           </div>
         {% endif %}
 
-        <div class="about-editorial-portrait__center" data-portrait-wrap>
-          <div class="about-editorial-portrait__media" data-portrait-media>
-            {% render 'image',
-              class: portrait_classes,
-              image: ss.image,
-              mobile_image: ss.image_mobile,
-              width: 1600,
-              img_alt: ss.heading,
-              loading: 'lazy'
-            %}
+        <div class="about-editorial-portrait__hero">
+          <div class="about-editorial-portrait__center" data-portrait-wrap>
+            <div class="about-editorial-portrait__media" data-portrait-media>
+              {% render 'image',
+                class: portrait_classes,
+                image: ss.image,
+                mobile_image: ss.image_mobile,
+                width: 1600,
+                img_alt: ss.heading,
+                loading: 'lazy'
+              %}
+            </div>
+
+            <div class="about-editorial-portrait__shape" data-portrait-shape></div>
+
+            <div class="about-editorial-portrait__card text-{{ ss.text_align }}" data-portrait-card>
+              {% if ss.subheading != blank %}
+                <div class="about-editorial-portrait__eyebrow">
+                  {{ ss.subheading }}
+                </div>
+              {% endif %}
+
+              {% if ss.heading != blank %}
+                <h2 class="about-editorial-portrait__heading {{ ss.font_size }}">
+                  {{ ss.heading }}
+                </h2>
+              {% endif %}
+
+              {% if ss.short_text != blank %}
+                <div class="about-editorial-portrait__text rte">
+                  {{ ss.short_text }}
+                </div>
+              {% endif %}
+            </div>
           </div>
+        </div>
 
-          <div class="about-editorial-portrait__shape" data-portrait-shape></div>
-
-          <div class="about-editorial-portrait__card text-{{ ss.text_align }}" data-portrait-card>
-            {% if ss.subheading != blank %}
-              <div class="about-editorial-portrait__eyebrow">
-                {{ ss.subheading }}
+        <div class="about-editorial-portrait__story">
+          <div class="about-editorial-portrait__story-inner">
+            {% if ss.story_heading != blank %}
+              <div class="about-editorial-portrait__story-head" data-story-item>
+                <h3 class="about-editorial-portrait__story-title">{{ ss.story_heading }}</h3>
               </div>
             {% endif %}
 
-            {% if ss.heading != blank %}
-              <h2 class="about-editorial-portrait__heading {{ ss.font_size }}">
-                {{ ss.heading }}
-              </h2>
-            {% endif %}
+            {% if section.blocks.size > 0 %}
+              <div class="about-editorial-portrait__story-grid">
+                {% for block in section.blocks %}
+                  {% case block.type %}
+                    {% when 'text_block' %}
+                      <div class="about-editorial-portrait__story-block" {{ block.shopify_attributes }} data-story-item>
+                        {% if block.settings.title != blank %}
+                          <h4 class="about-editorial-portrait__block-title">{{ block.settings.title }}</h4>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                          <div class="about-editorial-portrait__block-text rte">
+                            {{ block.settings.text }}
+                          </div>
+                        {% endif %}
+                      </div>
 
-            {% if ss.text != blank %}
-              <div class="about-editorial-portrait__text rte">
-                {{ ss.text }}
+                    {% when 'highlight' %}
+                      <div class="about-editorial-portrait__highlight" {{ block.shopify_attributes }} data-story-item>
+                        {% if block.settings.number != blank %}
+                          <div class="about-editorial-portrait__highlight-number">{{ block.settings.number }}</div>
+                        {% endif %}
+                        {% if block.settings.label != blank %}
+                          <div class="about-editorial-portrait__highlight-label">{{ block.settings.label }}</div>
+                        {% endif %}
+                      </div>
+                  {% endcase %}
+                {% endfor %}
+              </div>
+            {% elsif ss.long_text != blank %}
+              <div class="about-editorial-portrait__story-block" data-story-item>
+                <div class="about-editorial-portrait__block-text rte">
+                  {{ ss.long_text }}
+                </div>
               </div>
             {% endif %}
 
             {% if ss.button_label != blank and ss.button_link != blank %}
-              <div class="about-editorial-portrait__button">
+              <div class="about-editorial-portrait__button-row" data-story-item>
                 <a href="{{ ss.button_link }}" class="btn {{ ss.button_style }}">
                   {{ ss.button_label }}
                 </a>
@@ -92,18 +140,17 @@
 
 .about-editorial-portrait__wrap {
   position: relative;
-  min-height: 38rem;
   padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 }
 
 .about-editorial-portrait__word {
   position: absolute;
   font-family: var(--font-heading-family, sans-serif);
   font-weight: var(--font-heading-weight, 600);
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-  color: rgba(var(--color-heading), 0.12);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  color: rgba(var(--color-heading), 0.10);
   pointer-events: none;
   user-select: none;
   z-index: 1;
@@ -113,20 +160,25 @@
 .about-editorial-portrait__word--top {
   top: 0;
   left: 0;
-  font-size: clamp(5rem, 13vw, 12rem);
+  font-size: clamp(4.8rem, 13vw, 12rem);
 }
 
 .about-editorial-portrait__word--bottom {
   right: 0;
-  bottom: 0;
+  bottom: 18%;
   text-align: right;
-  font-size: clamp(4.5rem, 12vw, 11rem);
+  font-size: clamp(4rem, 11vw, 10rem);
+}
+
+.about-editorial-portrait__hero {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 3rem;
 }
 
 .about-editorial-portrait__center {
   position: relative;
-  z-index: 2;
-  width: min(100%, 62rem);
+  width: min(100%, 64rem);
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -135,7 +187,7 @@
 }
 
 .about-editorial-portrait__media {
-  width: min(100%, 32rem);
+  width: min(100%, 33rem);
   position: relative;
   z-index: 3;
   will-change: transform;
@@ -146,8 +198,8 @@
   width: 9rem;
   height: 9rem;
   border-radius: 50%;
-  background: rgba(var(--color-additional-1), 0.12);
-  top: 8%;
+  background: rgba(var(--color-additional-1), 0.10);
+  top: 10%;
   right: 8%;
   z-index: 1;
   will-change: transform;
@@ -157,7 +209,7 @@
   position: absolute;
   left: -2rem;
   bottom: 2.5rem;
-  width: min(100%, 24rem);
+  width: min(100%, 25rem);
   background: rgb(var(--color-background));
   padding: 1.35rem 1.35rem 1.5rem;
   z-index: 4;
@@ -184,18 +236,97 @@
 
 .about-editorial-portrait__text p {
   margin-bottom: 0.9rem;
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
-.about-editorial-portrait__button {
-  margin-top: 1.1rem;
+.about-editorial-portrait__story {
+  position: relative;
+  z-index: 3;
+}
+
+.about-editorial-portrait__story-inner {
+  max-width: 58rem;
+  margin: 0 auto;
+}
+
+.about-editorial-portrait__story-head {
+  margin-bottom: 1.4rem;
+}
+
+.about-editorial-portrait__story-title {
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.about-editorial-portrait__story-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+.about-editorial-portrait__story-block {
+  background: rgba(var(--color-background), 0.65);
+  padding: 1.35rem 1.4rem;
+  border: 1px solid rgba(var(--color-border), 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.about-editorial-portrait__block-title {
+  margin: 0 0 0.8rem;
+  line-height: 1.15;
+  color: rgb(var(--color-heading));
+}
+
+.about-editorial-portrait__block-text {
+  color: rgba(var(--color-text), 0.84);
+}
+
+.about-editorial-portrait__block-text p {
+  margin-bottom: 1rem;
+  line-height: 1.85;
+}
+
+.about-editorial-portrait__block-text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-editorial-portrait__highlight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgb(var(--color-background));
+  padding: 1.35rem 1.4rem;
+  border: 1px solid rgba(var(--color-border), 0.55);
+  min-height: 100%;
+}
+
+.about-editorial-portrait__highlight-number {
+  font-family: var(--font-heading-family, sans-serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1;
+  margin-bottom: 0.45rem;
+  color: rgb(var(--color-heading));
+}
+
+.about-editorial-portrait__highlight-label {
+  color: rgba(var(--color-text), 0.78);
+  line-height: 1.65;
+}
+
+.about-editorial-portrait__button-row {
+  margin-top: 1.5rem;
 }
 
 @media (min-width: 991px) {
   .about-editorial-portrait__wrap {
-    min-height: 48rem;
     padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-bottom: 2rem;
+  }
+
+  .about-editorial-portrait__hero {
+    margin-bottom: 4rem;
   }
 
   .about-editorial-portrait__center {
@@ -203,13 +334,13 @@
   }
 
   .about-editorial-portrait__media {
-    width: min(100%, 34rem);
+    width: min(100%, 35rem);
   }
 
   .about-editorial-portrait__card {
     left: -5rem;
     bottom: 3rem;
-    width: min(100%, 26rem);
+    width: min(100%, 27rem);
     padding: 1.6rem 1.6rem 1.8rem;
   }
 
@@ -219,13 +350,24 @@
     top: 12%;
     right: 4%;
   }
+
+  .about-editorial-portrait__story-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.62fr);
+    gap: 1.5rem;
+  }
+
+  .about-editorial-portrait__story-block {
+    padding: 1.6rem 1.7rem;
+  }
+
+  .about-editorial-portrait__highlight {
+    padding: 1.6rem;
+  }
 }
 
 @media (max-width: 990px) {
-  .about-editorial-portrait__wrap {
-    min-height: auto;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+  .about-editorial-portrait__hero {
+    margin-bottom: 2rem;
   }
 
   .about-editorial-portrait__center {
@@ -257,11 +399,12 @@
 
 @media (max-width: 767px) {
   .about-editorial-portrait__word--top {
-    font-size: clamp(3.5rem, 16vw, 6rem);
+    font-size: clamp(3.4rem, 16vw, 6rem);
   }
 
   .about-editorial-portrait__word--bottom {
-    font-size: clamp(3rem, 14vw, 5.5rem);
+    font-size: clamp(3rem, 14vw, 5.2rem);
+    bottom: 28%;
   }
 
   .about-editorial-portrait__card {
@@ -274,8 +417,14 @@
     margin-bottom: 0.65rem;
   }
 
-  .about-editorial-portrait__text p {
-    line-height: 1.65;
+  .about-editorial-portrait__text p,
+  .about-editorial-portrait__block-text p {
+    line-height: 1.7;
+  }
+
+  .about-editorial-portrait__story-block,
+  .about-editorial-portrait__highlight {
+    padding: 1rem;
   }
 }
 {% endstylesheet %}
@@ -299,16 +448,26 @@
       var portraitMedia = section.querySelector('[data-portrait-media]');
       var portraitCard = section.querySelector('[data-portrait-card]');
       var portraitShape = section.querySelector('[data-portrait-shape]');
+      var storyItems = section.querySelectorAll('[data-story-item]');
 
-      gsap.set(portraitMedia, {
-        opacity: 0,
-        y: 60,
-        scale: 0.92
-      });
+      if (portraitMedia) {
+        gsap.set(portraitMedia, {
+          opacity: 0,
+          y: 60,
+          scale: 0.94
+        });
+      }
 
-      gsap.set(portraitCard, {
+      if (portraitCard) {
+        gsap.set(portraitCard, {
+          opacity: 0,
+          y: 40
+        });
+      }
+
+      gsap.set(storyItems, {
         opacity: 0,
-        y: 40
+        y: 30
       });
 
       var introTimeline = gsap.timeline({
@@ -319,20 +478,38 @@
         }
       });
 
-      introTimeline
-        .to(portraitMedia, {
+      if (portraitMedia) {
+        introTimeline.to(portraitMedia, {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 1.1,
+          duration: 1.05,
           ease: 'power3.out'
-        })
-        .to(portraitCard, {
+        });
+      }
+
+      if (portraitCard) {
+        introTimeline.to(portraitCard, {
           opacity: 1,
           y: 0,
           duration: 0.8,
           ease: 'power3.out'
         }, '-=0.55');
+      }
+
+      storyItems.forEach(function(item) {
+        gsap.to(item, {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 84%',
+            once: true
+          }
+        });
+      });
 
       if (typeof ScrollTrigger !== 'undefined') {
         if (wordTop) {
@@ -376,7 +553,7 @@
 
         if (portraitCard) {
           gsap.to(portraitCard, {
-            yPercent: -12,
+            yPercent: -10,
             ease: 'none',
             scrollTrigger: {
               trigger: section,
@@ -389,7 +566,7 @@
 
         if (portraitShape) {
           gsap.to(portraitShape, {
-            yPercent: 18,
+            yPercent: 16,
             xPercent: -10,
             ease: 'none',
             scrollTrigger: {
@@ -489,7 +666,7 @@
     },
     {
       "type": "header",
-      "content": "Content"
+      "content": "Hero content"
     },
     {
       "type": "text",
@@ -505,9 +682,25 @@
     },
     {
       "type": "richtext",
-      "id": "text",
-      "label": "Text",
-      "default": "<p>Introduce the founder, creative director, or brand story with a strong editorial portrait and elegant motion that feels premium and modern.</p>"
+      "id": "short_text",
+      "label": "Short text",
+      "default": "<p>Introduce the founder with a strong editorial image and a concise, elegant overview.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Story content"
+    },
+    {
+      "type": "text",
+      "id": "story_heading",
+      "label": "Story heading",
+      "default": "About the founder"
+    },
+    {
+      "type": "richtext",
+      "id": "long_text",
+      "label": "Fallback long text",
+      "default": "<p>Use blocks for better storytelling. This text will appear only if no blocks are added.</p>"
     },
     {
       "type": "text",
@@ -615,9 +808,58 @@
       "default": "section-light"
     }
   ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block title",
+          "default": "Her journey began with a clear vision"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Block text",
+          "default": "<p>Add a well-formatted part of the founder story here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "highlight",
+      "name": "Highlight",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number / short highlight",
+          "default": "2017"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Brand established with a premium beauty vision."
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "About editorial portrait"
+      "name": "About editorial portrait",
+      "blocks": [
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "highlight"
+        },
+        {
+          "type": "text_block"
+        }
+      ]
     }
   ]
 }
