@@ -20,12 +20,14 @@
   if ss.hover_effect_action != 'no-effect'
     assign portrait_classes = portrait_classes | append: ' ' | append: ss.hover_effect_action
   endif
+
+  assign panel_count = section.blocks.size | plus: 1
 %}
 
 <div class="{{ first_class }}" id="about-editorial-portrait-{{ section.id }}">
   <div class="{{ container_width }}">
     <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
-      <div class="about-editorial-portrait__wrap">
+      <div class="about-editorial-portrait__scene" data-editorial-scene data-panels="{{ panel_count }}">
         {% if ss.bg_word_top != blank %}
           <div class="about-editorial-portrait__word about-editorial-portrait__word--top" data-word-top>
             {{ ss.bg_word_top }}
@@ -38,22 +40,104 @@
           </div>
         {% endif %}
 
-        <div class="about-editorial-portrait__hero">
-          <div class="about-editorial-portrait__center" data-portrait-wrap>
-            <div class="about-editorial-portrait__media" data-portrait-media>
-              {% render 'image',
-                class: portrait_classes,
-                image: ss.image,
-                mobile_image: ss.image_mobile,
-                width: 1600,
-                img_alt: ss.heading,
-                loading: 'lazy'
-              %}
+        <div class="about-editorial-portrait__sticky" data-editorial-sticky>
+          <div class="about-editorial-portrait__grid">
+            <div class="about-editorial-portrait__content-col">
+              <div class="about-editorial-portrait__panels" data-editorial-panels>
+                <div class="about-editorial-portrait__panel about-editorial-portrait__panel--intro" data-editorial-panel>
+                  {% if ss.subheading != blank %}
+                    <div class="about-editorial-portrait__eyebrow">
+                      {{ ss.subheading }}
+                    </div>
+                  {% endif %}
+
+                  {% if ss.heading != blank %}
+                    <h2 class="about-editorial-portrait__heading {{ ss.font_size }}">
+                      {{ ss.heading }}
+                    </h2>
+                  {% endif %}
+
+                  {% if ss.short_text != blank %}
+                    <div class="about-editorial-portrait__text rte">
+                      {{ ss.short_text }}
+                    </div>
+                  {% endif %}
+
+                  {% if ss.button_label != blank and ss.button_link != blank %}
+                    <div class="about-editorial-portrait__button-row">
+                      <a href="{{ ss.button_link }}" class="btn {{ ss.button_style }}">
+                        {{ ss.button_label }}
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+
+                {% for block in section.blocks %}
+                  {% case block.type %}
+                    {% when 'text_block' %}
+                      <div class="about-editorial-portrait__panel about-editorial-portrait__panel--story" data-editorial-panel {{ block.shopify_attributes }}>
+                        {% if block.settings.title != blank %}
+                          <h3 class="about-editorial-portrait__block-title">{{ block.settings.title }}</h3>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                          <div class="about-editorial-portrait__block-text rte">
+                            {{ block.settings.text }}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                    {% when 'highlight' %}
+                      <div class="about-editorial-portrait__panel about-editorial-portrait__panel--highlight" data-editorial-panel {{ block.shopify_attributes }}>
+                        {% if block.settings.number != blank %}
+                          <div class="about-editorial-portrait__highlight-number">{{ block.settings.number }}</div>
+                        {% endif %}
+                        {% if block.settings.label != blank %}
+                          <div class="about-editorial-portrait__highlight-label">{{ block.settings.label }}</div>
+                        {% endif %}
+                      </div>
+                  {% endcase %}
+                {% endfor %}
+              </div>
+
+              <div class="about-editorial-portrait__progress">
+                <span class="about-editorial-portrait__progress-line"></span>
+                <span class="about-editorial-portrait__progress-fill" data-editorial-progress></span>
+              </div>
             </div>
 
-            <div class="about-editorial-portrait__shape" data-portrait-shape></div>
+            <div class="about-editorial-portrait__media-col">
+              <div class="about-editorial-portrait__media-wrap" data-portrait-wrap>
+                <div class="about-editorial-portrait__media" data-portrait-media>
+                  {% render 'image',
+                    class: portrait_classes,
+                    image: ss.image,
+                    mobile_image: ss.image_mobile,
+                    width: 1800,
+                    img_alt: ss.heading,
+                    loading: 'lazy'
+                  %}
+                </div>
 
-            <div class="about-editorial-portrait__card text-{{ ss.text_align }}" data-portrait-card>
+                <div class="about-editorial-portrait__shape" data-portrait-shape></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-editorial-portrait__mobile-stack">
+          <div class="about-editorial-portrait__mobile-media">
+            {% render 'image',
+              class: portrait_classes,
+              image: ss.image,
+              mobile_image: ss.image_mobile,
+              width: 1400,
+              img_alt: ss.heading,
+              loading: 'lazy'
+            %}
+          </div>
+
+          <div class="about-editorial-portrait__mobile-content">
+            <div class="about-editorial-portrait__panel about-editorial-portrait__panel--intro is-mobile-visible">
               {% if ss.subheading != blank %}
                 <div class="about-editorial-portrait__eyebrow">
                   {{ ss.subheading }}
@@ -72,55 +156,35 @@
                 </div>
               {% endif %}
             </div>
-          </div>
-        </div>
 
-        <div class="about-editorial-portrait__story">
-          <div class="about-editorial-portrait__story-inner">
-            {% if ss.story_heading != blank %}
-              <div class="about-editorial-portrait__story-head" data-story-item>
-                <h3 class="about-editorial-portrait__story-title">{{ ss.story_heading }}</h3>
-              </div>
-            {% endif %}
-
-            {% if section.blocks.size > 0 %}
-              <div class="about-editorial-portrait__story-grid">
-                {% for block in section.blocks %}
-                  {% case block.type %}
-                    {% when 'text_block' %}
-                      <div class="about-editorial-portrait__story-block" {{ block.shopify_attributes }} data-story-item>
-                        {% if block.settings.title != blank %}
-                          <h4 class="about-editorial-portrait__block-title">{{ block.settings.title }}</h4>
-                        {% endif %}
-                        {% if block.settings.text != blank %}
-                          <div class="about-editorial-portrait__block-text rte">
-                            {{ block.settings.text }}
-                          </div>
-                        {% endif %}
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'text_block' %}
+                  <div class="about-editorial-portrait__panel about-editorial-portrait__panel--story is-mobile-visible" {{ block.shopify_attributes }}>
+                    {% if block.settings.title != blank %}
+                      <h3 class="about-editorial-portrait__block-title">{{ block.settings.title }}</h3>
+                    {% endif %}
+                    {% if block.settings.text != blank %}
+                      <div class="about-editorial-portrait__block-text rte">
+                        {{ block.settings.text }}
                       </div>
+                    {% endif %}
+                  </div>
 
-                    {% when 'highlight' %}
-                      <div class="about-editorial-portrait__highlight" {{ block.shopify_attributes }} data-story-item>
-                        {% if block.settings.number != blank %}
-                          <div class="about-editorial-portrait__highlight-number">{{ block.settings.number }}</div>
-                        {% endif %}
-                        {% if block.settings.label != blank %}
-                          <div class="about-editorial-portrait__highlight-label">{{ block.settings.label }}</div>
-                        {% endif %}
-                      </div>
-                  {% endcase %}
-                {% endfor %}
-              </div>
-            {% elsif ss.long_text != blank %}
-              <div class="about-editorial-portrait__story-block" data-story-item>
-                <div class="about-editorial-portrait__block-text rte">
-                  {{ ss.long_text }}
-                </div>
-              </div>
-            {% endif %}
+                {% when 'highlight' %}
+                  <div class="about-editorial-portrait__panel about-editorial-portrait__panel--highlight is-mobile-visible" {{ block.shopify_attributes }}>
+                    {% if block.settings.number != blank %}
+                      <div class="about-editorial-portrait__highlight-number">{{ block.settings.number }}</div>
+                    {% endif %}
+                    {% if block.settings.label != blank %}
+                      <div class="about-editorial-portrait__highlight-label">{{ block.settings.label }}</div>
+                    {% endif %}
+                  </div>
+              {% endcase %}
+            {% endfor %}
 
             {% if ss.button_label != blank and ss.button_link != blank %}
-              <div class="about-editorial-portrait__button-row" data-story-item>
+              <div class="about-editorial-portrait__button-row is-mobile-visible">
                 <a href="{{ ss.button_link }}" class="btn {{ ss.button_style }}">
                   {{ ss.button_label }}
                 </a>
@@ -138,10 +202,8 @@
   overflow: hidden;
 }
 
-.about-editorial-portrait__wrap {
+.about-editorial-portrait__scene {
   position: relative;
-  padding-top: 2rem;
-  padding-bottom: 1rem;
 }
 
 .about-editorial-portrait__word {
@@ -150,7 +212,7 @@
   font-weight: var(--font-heading-weight, 600);
   line-height: 0.82;
   letter-spacing: -0.05em;
-  color: rgba(var(--color-heading), 0.10);
+  color: rgba(var(--color-heading), 0.09);
   pointer-events: none;
   user-select: none;
   z-index: 1;
@@ -158,63 +220,51 @@
 }
 
 .about-editorial-portrait__word--top {
-  top: 0;
+  top: 1rem;
   left: 0;
-  font-size: clamp(4.8rem, 13vw, 12rem);
+  font-size: clamp(4.5rem, 12vw, 11rem);
 }
 
 .about-editorial-portrait__word--bottom {
   right: 0;
-  bottom: 18%;
+  bottom: 2rem;
   text-align: right;
   font-size: clamp(4rem, 11vw, 10rem);
 }
 
-.about-editorial-portrait__hero {
+.about-editorial-portrait__sticky {
   position: relative;
   z-index: 2;
-  margin-bottom: 3rem;
-}
-
-.about-editorial-portrait__center {
-  position: relative;
-  width: min(100%, 64rem);
-  margin: 0 auto;
+  min-height: 100svh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 42rem;
 }
 
-.about-editorial-portrait__media {
-  width: min(100%, 33rem);
+.about-editorial-portrait__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  align-items: center;
+}
+
+.about-editorial-portrait__content-col {
   position: relative;
-  z-index: 3;
-  will-change: transform;
 }
 
-.about-editorial-portrait__shape {
-  position: absolute;
-  width: 9rem;
-  height: 9rem;
-  border-radius: 50%;
-  background: rgba(var(--color-additional-1), 0.10);
-  top: 10%;
-  right: 8%;
-  z-index: 1;
-  will-change: transform;
+.about-editorial-portrait__panels {
+  position: relative;
+  min-height: 24rem;
 }
 
-.about-editorial-portrait__card {
-  position: absolute;
-  left: -2rem;
-  bottom: 2.5rem;
-  width: min(100%, 25rem);
+.about-editorial-portrait__panel {
   background: rgb(var(--color-background));
-  padding: 1.35rem 1.35rem 1.5rem;
-  z-index: 4;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
-  will-change: transform, opacity;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.06);
+}
+
+.about-editorial-portrait__panel--intro,
+.about-editorial-portrait__panel--story,
+.about-editorial-portrait__panel--highlight {
+  padding: 1.25rem;
 }
 
 .about-editorial-portrait__eyebrow {
@@ -234,77 +284,25 @@
   color: rgba(var(--color-text), 0.8);
 }
 
-.about-editorial-portrait__text p {
-  margin-bottom: 0.9rem;
-  line-height: 1.7;
+.about-editorial-portrait__text p,
+.about-editorial-portrait__block-text p {
+  margin-bottom: 0.95rem;
+  line-height: 1.8;
 }
 
-.about-editorial-portrait__story {
-  position: relative;
-  z-index: 3;
-}
-
-.about-editorial-portrait__story-inner {
-  max-width: 58rem;
-  margin: 0 auto;
-}
-
-.about-editorial-portrait__story-head {
-  margin-bottom: 1.4rem;
-}
-
-.about-editorial-portrait__story-title {
-  margin: 0;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.about-editorial-portrait__story-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.4rem;
-}
-
-.about-editorial-portrait__story-block {
-  background: rgba(var(--color-background), 0.65);
-  padding: 1.35rem 1.4rem;
-  border: 1px solid rgba(var(--color-border), 0.55);
-  backdrop-filter: blur(2px);
+.about-editorial-portrait__block-text p:last-child,
+.about-editorial-portrait__text p:last-child {
+  margin-bottom: 0;
 }
 
 .about-editorial-portrait__block-title {
   margin: 0 0 0.8rem;
   line-height: 1.15;
-  color: rgb(var(--color-heading));
-}
-
-.about-editorial-portrait__block-text {
-  color: rgba(var(--color-text), 0.84);
-}
-
-.about-editorial-portrait__block-text p {
-  margin-bottom: 1rem;
-  line-height: 1.85;
-}
-
-.about-editorial-portrait__block-text p:last-child {
-  margin-bottom: 0;
-}
-
-.about-editorial-portrait__highlight {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: rgb(var(--color-background));
-  padding: 1.35rem 1.4rem;
-  border: 1px solid rgba(var(--color-border), 0.55);
-  min-height: 100%;
 }
 
 .about-editorial-portrait__highlight-number {
   font-family: var(--font-heading-family, sans-serif);
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(2.1rem, 4vw, 3.8rem);
   line-height: 1;
   margin-bottom: 0.45rem;
   color: rgb(var(--color-heading));
@@ -316,115 +314,156 @@
 }
 
 .about-editorial-portrait__button-row {
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
+}
+
+.about-editorial-portrait__progress {
+  display: none;
+}
+
+.about-editorial-portrait__media-col {
+  position: relative;
+}
+
+.about-editorial-portrait__media-wrap {
+  position: relative;
+  width: min(100%, 38rem);
+  margin: 0 auto;
+}
+
+.about-editorial-portrait__media {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.about-editorial-portrait__shape {
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background: rgba(var(--color-additional-1), 0.10);
+  right: -2rem;
+  bottom: 10%;
+  z-index: 1;
+  will-change: transform;
+}
+
+.about-editorial-portrait__mobile-stack {
+  display: none;
 }
 
 @media (min-width: 991px) {
-  .about-editorial-portrait__wrap {
-    padding-top: 3rem;
-    padding-bottom: 2rem;
+  .about-editorial-portrait__scene {
+    min-height: 220vh;
   }
 
-  .about-editorial-portrait__hero {
-    margin-bottom: 4rem;
+  .about-editorial-portrait__sticky {
+    min-height: 100svh;
   }
 
-  .about-editorial-portrait__center {
-    min-height: 48rem;
+  .about-editorial-portrait__grid {
+    grid-template-columns: minmax(22rem, 0.92fr) minmax(22rem, 1.08fr);
+    gap: 2rem;
+  }
+
+  .about-editorial-portrait__content-col {
+    z-index: 4;
+  }
+
+  .about-editorial-portrait__panels {
+    min-height: 28rem;
+    max-width: 30rem;
+  }
+
+  .about-editorial-portrait__panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .about-editorial-portrait__panel--intro,
+  .about-editorial-portrait__panel--story,
+  .about-editorial-portrait__panel--highlight {
+    padding: 1.8rem 1.8rem 2rem;
+  }
+
+  .about-editorial-portrait__progress {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    height: 2px;
+    margin-top: 1.4rem;
+    background: rgba(var(--color-border), 0.75);
+    overflow: hidden;
+  }
+
+  .about-editorial-portrait__progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: rgb(var(--color-heading));
+  }
+
+  .about-editorial-portrait__media-wrap {
+    width: min(100%, 42rem);
+    min-height: 42rem;
   }
 
   .about-editorial-portrait__media {
-    width: min(100%, 35rem);
-  }
-
-  .about-editorial-portrait__card {
-    left: -5rem;
-    bottom: 3rem;
-    width: min(100%, 27rem);
-    padding: 1.6rem 1.6rem 1.8rem;
+    width: min(100%, 36rem);
+    margin: 0 auto;
   }
 
   .about-editorial-portrait__shape {
     width: 11rem;
     height: 11rem;
-    top: 12%;
-    right: 4%;
-  }
-
-  .about-editorial-portrait__story-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.62fr);
-    gap: 1.5rem;
-  }
-
-  .about-editorial-portrait__story-block {
-    padding: 1.6rem 1.7rem;
-  }
-
-  .about-editorial-portrait__highlight {
-    padding: 1.6rem;
+    right: 0;
+    bottom: 12%;
   }
 }
 
 @media (max-width: 990px) {
-  .about-editorial-portrait__hero {
-    margin-bottom: 2rem;
+  .about-editorial-portrait__sticky {
+    display: none;
   }
 
-  .about-editorial-portrait__center {
-    min-height: auto;
+  .about-editorial-portrait__word {
+    display: none;
+  }
+
+  .about-editorial-portrait__mobile-stack {
     display: block;
-    width: min(100%, 34rem);
   }
 
-  .about-editorial-portrait__media {
-    width: 100%;
+  .about-editorial-portrait__mobile-media {
+    max-width: 34rem;
+    margin: 0 auto 1.5rem;
   }
 
-  .about-editorial-portrait__card {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    width: calc(100% - 1.5rem);
-    margin: -3rem 0 0 1.5rem;
-  }
-
-  .about-editorial-portrait__shape {
-    width: 7rem;
-    height: 7rem;
-    top: auto;
-    right: 0;
-    bottom: 6rem;
+  .about-editorial-portrait__mobile-content {
+    max-width: 34rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
   }
 }
 
 @media (max-width: 767px) {
-  .about-editorial-portrait__word--top {
-    font-size: clamp(3.4rem, 16vw, 6rem);
-  }
-
-  .about-editorial-portrait__word--bottom {
-    font-size: clamp(3rem, 14vw, 5.2rem);
-    bottom: 28%;
-  }
-
-  .about-editorial-portrait__card {
-    width: calc(100% - 1rem);
-    margin: -2.2rem 0 0 1rem;
-    padding: 1rem 1rem 1.15rem;
-  }
-
-  .about-editorial-portrait__heading {
-    margin-bottom: 0.65rem;
+  .about-editorial-portrait__panel--intro,
+  .about-editorial-portrait__panel--story,
+  .about-editorial-portrait__panel--highlight {
+    padding: 1rem;
   }
 
   .about-editorial-portrait__text p,
   .about-editorial-portrait__block-text p {
     line-height: 1.7;
-  }
-
-  .about-editorial-portrait__story-block,
-  .about-editorial-portrait__highlight {
-    padding: 1rem;
   }
 }
 {% endstylesheet %}
@@ -437,147 +476,143 @@
 
       section.dataset.gsapInitialized = 'true';
 
-      if (typeof gsap === 'undefined') return;
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-      if (typeof ScrollTrigger !== 'undefined' && gsap.registerPlugin) {
-        gsap.registerPlugin(ScrollTrigger);
-      }
+      gsap.registerPlugin(ScrollTrigger);
 
+      var scene = section.querySelector('[data-editorial-scene]');
+      var sticky = section.querySelector('[data-editorial-sticky]');
+      var panels = section.querySelectorAll('[data-editorial-panel]');
+      var portraitMedia = section.querySelector('[data-portrait-media]');
+      var portraitShape = section.querySelector('[data-portrait-shape]');
+      var progress = section.querySelector('[data-editorial-progress]');
       var wordTop = section.querySelector('[data-word-top]');
       var wordBottom = section.querySelector('[data-word-bottom]');
-      var portraitMedia = section.querySelector('[data-portrait-media]');
-      var portraitCard = section.querySelector('[data-portrait-card]');
-      var portraitShape = section.querySelector('[data-portrait-shape]');
-      var storyItems = section.querySelectorAll('[data-story-item]');
+      var panelCount = parseInt(scene.getAttribute('data-panels'), 10) || panels.length || 1;
 
-      if (portraitMedia) {
-        gsap.set(portraitMedia, {
-          opacity: 0,
-          y: 60,
-          scale: 0.94
-        });
-      }
+      if (!scene || !sticky || !panels.length || !portraitMedia) return;
 
-      if (portraitCard) {
-        gsap.set(portraitCard, {
-          opacity: 0,
+      var mm = gsap.matchMedia();
+
+      mm.add('(min-width: 991px)', function() {
+        gsap.set(panels, {
+          autoAlpha: 0,
           y: 40
         });
-      }
 
-      gsap.set(storyItems, {
-        opacity: 0,
-        y: 30
-      });
-
-      var introTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 78%',
-          once: true
-        }
-      });
-
-      if (portraitMedia) {
-        introTimeline.to(portraitMedia, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.05,
-          ease: 'power3.out'
+        gsap.set(panels[0], {
+          autoAlpha: 1,
+          y: 0
         });
-      }
 
-      if (portraitCard) {
-        introTimeline.to(portraitCard, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out'
-        }, '-=0.55');
-      }
+        gsap.set(portraitMedia, {
+          xPercent: 0,
+          yPercent: 0,
+          scale: 1
+        });
 
-      storyItems.forEach(function(item) {
-        gsap.to(item, {
-          opacity: 1,
-          y: 0,
-          duration: 0.85,
-          ease: 'power3.out',
+        if (portraitShape) {
+          gsap.set(portraitShape, {
+            xPercent: 0,
+            yPercent: 0
+          });
+        }
+
+        var timeline = gsap.timeline({
           scrollTrigger: {
-            trigger: item,
-            start: 'top 84%',
-            once: true
+            trigger: scene,
+            start: 'top top',
+            end: '+=' + ((panelCount + 1) * 90) + '%',
+            scrub: 1,
+            pin: sticky,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
           }
         });
-      });
 
-      if (typeof ScrollTrigger !== 'undefined') {
-        if (wordTop) {
-          gsap.to(wordTop, {
-            xPercent: -10,
+        timeline.to(portraitMedia, {
+          scale: 0.72,
+          xPercent: 24,
+          yPercent: -2,
+          ease: 'none',
+          duration: 1.2
+        }, 0);
+
+        if (portraitShape) {
+          timeline.to(portraitShape, {
+            xPercent: -18,
+            yPercent: 14,
             ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1
-            }
-          });
+            duration: 1.2
+          }, 0);
+        }
+
+        if (wordTop) {
+          timeline.to(wordTop, {
+            xPercent: -12,
+            ease: 'none',
+            duration: 1.2
+          }, 0);
         }
 
         if (wordBottom) {
-          gsap.to(wordBottom, {
-            xPercent: 12,
+          timeline.to(wordBottom, {
+            xPercent: 14,
             ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.1
-            }
-          });
+            duration: 1.2
+          }, 0);
         }
 
-        if (portraitMedia) {
-          gsap.to(portraitMedia, {
-            yPercent: -8,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.9
-            }
-          });
-        }
+        panels.forEach(function(panel, index) {
+          var enterAt = 0.25 + (index * 0.85);
 
-        if (portraitCard) {
-          gsap.to(portraitCard, {
-            yPercent: -10,
+          timeline.to(panel, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.28,
+            ease: 'power2.out'
+          }, enterAt);
+
+          if (index < panels.length - 1) {
+            timeline.to(panel, {
+              autoAlpha: 0,
+              y: -18,
+              duration: 0.22,
+              ease: 'power2.inOut'
+            }, enterAt + 0.48);
+          }
+        });
+
+        if (progress) {
+          gsap.to(progress, {
+            width: '100%',
             ease: 'none',
             scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
+              trigger: scene,
+              start: 'top top',
+              end: '+=' + ((panelCount + 1) * 90) + '%',
               scrub: 1
             }
           });
         }
 
-        if (portraitShape) {
-          gsap.to(portraitShape, {
-            yPercent: 16,
-            xPercent: -10,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.2
+        return function() {
+          ScrollTrigger.getAll().forEach(function(trigger) {
+            if (
+              trigger.trigger === scene ||
+              trigger.trigger === panels[0]
+            ) {
+              trigger.kill();
             }
           });
-        }
-      }
+        };
+      });
+
+      mm.add('(max-width: 990px)', function() {
+        gsap.set(section.querySelectorAll('.is-mobile-visible'), {
+          clearProps: 'all'
+        });
+      });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -627,17 +662,6 @@
     },
     {
       "type": "select",
-      "id": "text_align",
-      "label": "Text align",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "select",
       "id": "font_size",
       "label": "Heading size",
       "options": [
@@ -646,7 +670,7 @@
         { "value": "h3", "label": "h3" },
         { "value": "h4", "label": "h4" }
       ],
-      "default": "h3"
+      "default": "h2"
     },
     {
       "type": "header",
@@ -666,7 +690,7 @@
     },
     {
       "type": "header",
-      "content": "Hero content"
+      "content": "Intro panel"
     },
     {
       "type": "text",
@@ -685,22 +709,6 @@
       "id": "short_text",
       "label": "Short text",
       "default": "<p>Introduce the founder with a strong editorial image and a concise, elegant overview.</p>"
-    },
-    {
-      "type": "header",
-      "content": "Story content"
-    },
-    {
-      "type": "text",
-      "id": "story_heading",
-      "label": "Story heading",
-      "default": "About the founder"
-    },
-    {
-      "type": "richtext",
-      "id": "long_text",
-      "label": "Fallback long text",
-      "default": "<p>Use blocks for better storytelling. This text will appear only if no blocks are added.</p>"
     },
     {
       "type": "text",
@@ -811,7 +819,7 @@
   "blocks": [
     {
       "type": "text_block",
-      "name": "Text block",
+      "name": "Story block",
       "settings": [
         {
           "type": "text",
@@ -823,13 +831,13 @@
           "type": "richtext",
           "id": "text",
           "label": "Block text",
-          "default": "<p>Add a well-formatted part of the founder story here.</p>"
+          "default": "<p>Add a readable part of the founder story here.</p>"
         }
       ]
     },
     {
       "type": "highlight",
-      "name": "Highlight",
+      "name": "Highlight block",
       "settings": [
         {
           "type": "text",
