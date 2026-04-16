@@ -1,52 +1,19 @@
 <localization-form class="sidebar-localization">
   {%- form 'localization', id: 'SidebarLanguageForm', class: 'localization-form' -%}
     <div class="disclosure disclosure--language js-language-disclosure">
-<div class="sidebar-language">
-
-  <p class="sidebar-language__label">Select Language</p>
-
-  <div class="disclosure disclosure--language js-language-disclosure">
-
-    <button
-      type="button"
-      class="disclosure__button js-language-toggle"
-      aria-expanded="false"
-      aria-controls="SidebarLanguageList"
-    >
-      <span class="language-selected-text">
-        {{ localization.language.endonym_name | capitalize }}
-      </span>
-
-      <span class="disclosure__caret">
-        {{ 'icon-caret.svg' | inline_asset_content }}
-      </span>
-    </button>
-
-    <div class="disclosure__list-wrapper js-language-list">
-      <ul id="SidebarLanguageList" class="disclosure__list list-unstyled">
-
-        {%- for language in localization.available_languages -%}
-          <li class="disclosure__item">
-            <button
-              type="submit"
-              name="locale_code"
-              class="disclosure__link"
-              value="{{ language.iso_code }}"
-              lang="{{ language.iso_code }}"
-              {% if language.iso_code == localization.language.iso_code %}
-                aria-current="true"
-              {% endif %}
-            >
-              {{ language.endonym_name | capitalize }}
-            </button>
-          </li>
-        {%- endfor -%}
-
-      </ul>
-    </div>
-
-  </div>
-</div>
+      <button
+        type="button"
+        class="disclosure__button localization-form__select localization-selector link link--text caption-large js-language-toggle"
+        aria-expanded="false"
+        aria-controls="SidebarLanguageList"
+      >
+        <span class="language-selected-text">
+          {{ localization.language.endonym_name | capitalize }}
+        </span>
+        <span class="disclosure__caret">
+          {{ 'icon-caret.svg' | inline_asset_content }}
+        </span>
+      </button>
 
       <div class="disclosure__list-wrapper language-selector js-language-list">
         <ul id="SidebarLanguageList" role="list" class="disclosure__list list-unstyled">
