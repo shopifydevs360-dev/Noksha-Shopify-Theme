@@ -1,22 +1,22 @@
-<localization-form class="header-localization">
-  {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
-    <div class="disclosure disclosure--language">
+<localization-form class="sidebar-localization">
+  {%- form 'localization', id: 'SidebarLanguageForm', class: 'localization-form' -%}
+    <div class="disclosure disclosure--language js-language-disclosure">
       <button
         type="button"
-        class="disclosure__button localization-form__select localization-selector link link--text caption-large"
+        class="disclosure__button localization-form__select localization-selector link link--text caption-large js-language-toggle"
         aria-expanded="false"
-        aria-controls="LanguageList"
-        aria-describedby="HeaderLanguageLabel"
+        aria-controls="SidebarLanguageList"
       >
-        <span class="language-selected-text">{{ localization.language.endonym_name | capitalize }}</span>
+        <span class="language-selected-text">
+          {{ localization.language.endonym_name | capitalize }}
+        </span>
         <span class="disclosure__caret">
           {{ 'icon-caret.svg' | inline_asset_content }}
         </span>
       </button>
 
-      <!-- ✅ Use CSS visibility, not 'hidden' attribute -->
-      <div class="disclosure__list-wrapper language-selector" style="display: none;">
-        <ul id="LanguageList" role="list" class="disclosure__list list-unstyled">
+      <div class="disclosure__list-wrapper language-selector js-language-list">
+        <ul id="SidebarLanguageList" role="list" class="disclosure__list list-unstyled">
           {%- for language in localization.available_languages -%}
             <li class="disclosure__item">
               <button
@@ -45,21 +45,6 @@
     </div>
   {%- endform -%}
 </localization-form>
-<script>
-  const toggleBtn = document.querySelector('.disclosure__button');
-const listWrapper = document.querySelector('.language-selector');
-
-toggleBtn.addEventListener('click', () => {
-  const isOpen = listWrapper.style.display === 'block';
-  listWrapper.style.display = isOpen ? 'none' : 'block';
-});
-
-</script>
-{% if request.locale.iso_code == 'ar' %}
-<style>
-  .disclosure__list-wrapper {
-    left: unset !important;
-    right: 0;
-}
-</style>
-{% endif %}
+{% stylesheet %}
+  css_styles
+{% endstylesheet %}
