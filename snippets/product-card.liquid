@@ -147,16 +147,19 @@
 {% endif %}
 {% if settings.enable_hover_to_show_btn %}
 <style>
+  @media screen and (min-width: 991px) {
   .product-card .image-wrap:hover .hover-img {
     opacity: 1;
     transform: translate(-50%,-50%) scale(1);
+  }
+
+  /* Button Style */
+  .product-card .cart-button-wrapper {
+      opacity: 0;
+      transform: translateY(20px);
+  }
 }
 
-/* Button Style */
-.product-card .cart-button-wrapper {
-    opacity: 0;
-    transform: translateY(20px);
-}
 </style>
 {% endif %}
 {% stylesheet %}
