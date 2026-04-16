@@ -1,29 +1,22 @@
 <localization-form class="header-localization">
   {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
-    <div class="disclosure disclosure--language" data-localization-disclosure>
+    <div class="disclosure disclosure--language">
       <button
         type="button"
         class="disclosure__button localization-form__select localization-selector link link--text caption-large"
         aria-expanded="false"
         aria-controls="LanguageList"
         aria-describedby="HeaderLanguageLabel"
-        data-localization-toggle
       >
-        <span class="language-selected-text">
-          {{ localization.language.endonym_name | capitalize }}
-        </span>
-        <span class="disclosure__caret" aria-hidden="true">
+        <span class="language-selected-text">{{ localization.language.endonym_name | capitalize }}</span>
+        <span class="disclosure__caret">
           {{ 'icon-caret.svg' | inline_asset_content }}
         </span>
       </button>
 
-      <div
-        id="LanguageList"
-        class="disclosure__list-wrapper language-selector"
-        hidden
-        data-localization-panel
-      >
-        <ul role="list" class="disclosure__list list-unstyled">
+      <!-- ✅ Use CSS visibility, not 'hidden' attribute -->
+      <div class="disclosure__list-wrapper language-selector" style="display: none;">
+        <ul id="LanguageList" role="list" class="disclosure__list list-unstyled">
           {%- for language in localization.available_languages -%}
             <li class="disclosure__item">
               <button
@@ -36,7 +29,7 @@
                   aria-current="true"
                 {% endif %}
               >
-                <span class="checkmark-icon-wrapper" aria-hidden="true">
+                <span class="checkmark-icon-wrapper">
                   {% if language.iso_code == localization.language.iso_code %}
                     {{ 'icon-checkmark.svg' | inline_asset_content }}
                   {% endif %}
@@ -52,169 +45,21 @@
     </div>
   {%- endform -%}
 </localization-form>
-
-<style>
-  .header-localization {
-    position: relative;
-    display: inline-block;
-  }
-
-  .header-localization .disclosure--language {
-    position: relative;
-  }
-
-  .header-localization .disclosure__button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-  }
-
-  .header-localization .disclosure__caret {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.25s ease;
-  }
-
-  .header-localization .disclosure__button[aria-expanded="true"] .disclosure__caret {
-    transform: rotate(180deg);
-  }
-
-  .header-localization .disclosure__list-wrapper {
-    position: absolute;
-    top: calc(100% + 0.75rem);
-    left: 0;
-    min-width: 14rem;
-    z-index: 30;
-    padding: 0.5rem 0;
-    background: rgb(var(--color-background));
-    border: 1px solid rgb(var(--color-border));
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  }
-
-  .header-localization .disclosure__list-wrapper[hidden] {
-    display: none;
-  }
-
-  .header-localization .disclosure__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .header-localization .disclosure__item {
-    margin: 0;
-  }
-
-  .header-localization .disclosure__link {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    text-align: left;
-    padding: 0.7rem 1rem;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-  }
-
-  .header-localization .disclosure__link:hover {
-    background: rgba(var(--color-heading), 0.05);
-  }
-
-  .header-localization .checkmark-icon-wrapper {
-    width: 1rem;
-    height: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .header-localization .language-name {
-    flex: 1;
-  }
-
-  .rtl .header-localization .disclosure__list-wrapper,
-  [dir="rtl"] .header-localization .disclosure__list-wrapper {
-    left: auto;
-    right: 0;
-  }
-
-  .rtl .header-localization .disclosure__link,
-  [dir="rtl"] .header-localization .disclosure__link {
-    text-align: right;
-  }
-</style>
-
 <script>
-  (function () {
-    function initLocalizationDisclosure(scope) {
-      var container = scope || document;
-      var disclosures = container.querySelectorAll('[data-localization-disclosure]');
+  const toggleBtn = document.querySelector('.disclosure__button');
+const listWrapper = document.querySelector('.language-selector');
 
-      disclosures.forEach(function(disclosure) {
-        if (disclosure.dataset.initialized === 'true') return;
-        disclosure.dataset.initialized = 'true';
+toggleBtn.addEventListener('click', () => {
+  const isOpen = listWrapper.style.display === 'block';
+  listWrapper.style.display = isOpen ? 'none' : 'block';
+});
 
-        var toggle = disclosure.querySelector('[data-localization-toggle]');
-        var panel = disclosure.querySelector('[data-localization-panel]');
-
-        if (!toggle || !panel) return;
-
-        function openPanel() {
-          panel.hidden = false;
-          toggle.setAttribute('aria-expanded', 'true');
-        }
-
-        function closePanel() {
-          panel.hidden = true;
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-
-        function togglePanel() {
-          var isOpen = toggle.getAttribute('aria-expanded') === 'true';
-          if (isOpen) {
-            closePanel();
-          } else {
-            document.querySelectorAll('[data-localization-disclosure]').forEach(function(otherDisclosure) {
-              var otherToggle = otherDisclosure.querySelector('[data-localization-toggle]');
-              var otherPanel = otherDisclosure.querySelector('[data-localization-panel]');
-              if (otherDisclosure !== disclosure && otherToggle && otherPanel) {
-                otherPanel.hidden = true;
-                otherToggle.setAttribute('aria-expanded', 'false');
-              }
-            });
-            openPanel();
-          }
-        }
-
-        toggle.addEventListener('click', function(event) {
-          event.preventDefault();
-          togglePanel();
-        });
-
-        document.addEventListener('click', function(event) {
-          if (!disclosure.contains(event.target)) {
-            closePanel();
-          }
-        });
-
-        document.addEventListener('keydown', function(event) {
-          if (event.key === 'Escape') {
-            closePanel();
-          }
-        });
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      initLocalizationDisclosure(document);
-    });
-
-    document.addEventListener('shopify:section:load', function(event) {
-      initLocalizationDisclosure(event.target);
-    });
-  })();
 </script>
+{% if request.locale.iso_code == 'ar' %}
+<style>
+  .disclosure__list-wrapper {
+    left: unset !important;
+    right: 0;
+}
+</style>
+{% endif %}
