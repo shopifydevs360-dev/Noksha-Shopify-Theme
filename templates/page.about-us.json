@@ -206,6 +206,26 @@
     },
     "about_editorial_portrait_Eiwnxd": {
       "type": "about-editorial-portrait",
+      "blocks": {
+        "highlight_934TN8": {
+          "type": "highlight",
+          "settings": {
+            "number": "2017",
+            "label": "Brand established with a premium beauty vision."
+          }
+        },
+        "text_block_qNw3qf": {
+          "type": "text_block",
+          "settings": {
+            "title": "Her journey began with a clear vision",
+            "text": "<p>Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.Add a well-formatted part of the founder story here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "highlight_934TN8",
+        "text_block_qNw3qf"
+      ],
       "name": "About editorial portrait",
       "settings": {
         "enable_sidebar_space": true,
