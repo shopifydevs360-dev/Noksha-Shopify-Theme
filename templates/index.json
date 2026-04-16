@@ -216,7 +216,7 @@
           "settings": {
             "image": "shopify://shop_images/Youmi01693.jpg",
             "subtitle": "Look 01",
-            "title": "Soft tailoring",
+            "title": "Effortless waves",
             "link_label": "Shop this",
             "link": "",
             "depth_strength": 40
@@ -227,7 +227,7 @@
           "settings": {
             "image": "shopify://shop_images/Youmi00496.jpg",
             "subtitle": "Look 02",
-            "title": "Layered neutrals",
+            "title": "Smooth volume",
             "link_label": "Shop this",
             "link": "",
             "depth_strength": 70
@@ -238,7 +238,7 @@
           "settings": {
             "image": "shopify://shop_images/Youmi0088_3_Option_1_6c0415b2-8e81-4b71-a529-83991434b087.jpg",
             "subtitle": "Look 03",
-            "title": "Quiet statement",
+            "title": "Polished finish",
             "link_label": "Shop this",
             "link": "",
             "depth_strength": 100
@@ -254,10 +254,10 @@
       "settings": {
         "color_scheme": "",
         "container_width": "container-fluid",
-        "eyebrow": "Editorial motion",
-        "heading": "A layered scroll composition with depth, movement, and premium pacing.",
+        "eyebrow": "SIGNATURE STYLING",
+        "heading": "Elevated toolsfor modern beauty",
         "heading_size": "h2",
-        "text": "<p>Use this section to create an elevated campaign story. The content stays calm while the layered images shift with scroll for a more immersive editorial feel.</p>",
+        "text": "<p>Experience a refined approach to styling with tools designed for precision, ease, and everyday elegance.</p>",
         "button_label": "Explore now",
         "button_link": "",
         "enable_pin": true,
