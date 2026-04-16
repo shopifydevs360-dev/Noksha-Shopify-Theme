@@ -47,7 +47,7 @@
                 loading: 'lazy'
               %}
             </div>
-
+            {% if ss.secondary_image != blank %}
             <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--secondary" data-parallax-image="secondary">
               {% render 'image',
                 class: secondary_image_classes,
@@ -58,7 +58,8 @@
                 loading: 'lazy'
               %}
             </div>
-
+            {% endif %}
+            {% if ss.accent_image != blank %}
             <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--accent" data-parallax-image="accent">
               {% render 'image',
                 class: accent_image_classes,
@@ -69,6 +70,7 @@
                 loading: 'lazy'
               %}
             </div>
+            {% endif %}
           </div>
         </div>
 
