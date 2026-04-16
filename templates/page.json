@@ -11,15 +11,75 @@
   "sections": {
     "main": {
       "type": "page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "default",
+        "container_width": "container",
+        "custom_class": "",
+        "color_control": "section-light"
+      }
+    },
+    "faq_elegant_NGTE6n": {
+      "type": "faq-elegant",
+      "blocks": {
+        "faq_item_KDqTge": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What makes your brand different?",
+            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+          }
+        },
+        "faq_item_eJmg4y": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What makes your brand different?",
+            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+          }
+        },
+        "faq_item_9PaxxW": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What makes your brand different?",
+            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+          }
+        },
+        "faq_item_BhVmPN": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What makes your brand different?",
+            "answer": "<p>Use this answer area to explain your brand, shipping, returns, quality, or any customer support topic.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_KDqTge",
+        "faq_item_eJmg4y",
+        "faq_item_9PaxxW",
+        "faq_item_BhVmPN"
+      ],
+      "name": "FAQ elegant",
       "settings": {
         "color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
-        "container_width": "container",
+        "container_width": "container-narrow",
+        "text_align": "left",
+        "eyebrow": "Frequently asked questions",
+        "heading": "Everything you may want to know.",
+        "text": "<p>Use this section to answer the most common customer questions in a clean and elegant way.</p>",
+        "heading_size": "h2",
+        "bg_text": "FAQ",
+        "bg_text_size": 180,
+        "bg_text_opacity": 6,
+        "content_max_width": 760,
+        "faq_max_width": 920,
+        "padding_top": 80,
+        "padding_bottom": 80,
         "custom_class": "",
         "color_control": "section-light"
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "faq_elegant_NGTE6n"
   ]
 }
