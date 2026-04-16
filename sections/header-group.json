@@ -80,6 +80,7 @@
       "name": "Sidebar",
       "settings": {
         "sidebar_color_scheme": "scheme-49da4596-ce95-41b0-af9e-06e9092dbbf6",
+        "white_logo": "shopify://shop_images/Youmi_Beauty_Logo_whit.png",
         "brand_text": "YOUMI BEAUTY",
         "primary_menu": "primary-menu",
         "secondary_menu": "header-2nd-menu"
