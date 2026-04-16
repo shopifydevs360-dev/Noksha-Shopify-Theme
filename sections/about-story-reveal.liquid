@@ -1,0 +1,587 @@
+{% render 'section-base-style' %}
+
+{% liquid
+  assign ss = section.settings
+
+  assign first_class = 'about-story-reveal m-color-' | append: ss.color_scheme
+  assign first_class = first_class | append: ' ' | append: ss.color_control
+  assign first_class = first_class | append: ' ' | append: ss.custom_class
+  assign first_class = first_class | append: ' ' | append: 'section-' | append: section.id | append: '-padding'
+
+  assign container_width = ss.container_width
+
+  assign main_image_classes = 'cropped-image-wrapper about-story-reveal__image about-story-reveal__image--main '
+  assign secondary_image_classes = 'cropped-image-wrapper about-story-reveal__image about-story-reveal__image--secondary '
+  assign accent_image_classes = 'cropped-image-wrapper about-story-reveal__image about-story-reveal__image--accent '
+
+  if ss.aspect_ratio == 'adapt-to-image'
+    assign main_image_classes = main_image_classes | append: 'adapt-image-height'
+    assign secondary_image_classes = secondary_image_classes | append: 'adapt-image-height'
+    assign accent_image_classes = accent_image_classes | append: 'adapt-image-height'
+  else
+    assign main_image_classes = main_image_classes | append: ss.aspect_ratio
+    assign secondary_image_classes = secondary_image_classes | append: ss.aspect_ratio
+    assign accent_image_classes = accent_image_classes | append: ss.aspect_ratio
+  endif
+
+  if ss.hover_effect_action != 'no-effect'
+    assign main_image_classes = main_image_classes | append: ' ' | append: ss.hover_effect_action
+    assign secondary_image_classes = secondary_image_classes | append: ' ' | append: ss.hover_effect_action
+    assign accent_image_classes = accent_image_classes | append: ' ' | append: ss.hover_effect_action
+  endif
+%}
+
+<div class="{{ first_class }}" id="about-story-reveal-{{ section.id }}">
+  <div class="{{ container_width }}">
+    <div class="inner-section {% if ss.enable_sidebar_space %}sidebar-space{% endif %}">
+      <div class="about-story-reveal__inner {% if ss.layout == 'image-right' %}is-reversed{% endif %}">
+        <div class="about-story-reveal__media" data-about-media>
+          <div class="about-story-reveal__media-stack">
+            <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--main" data-parallax-image="main">
+              {% render 'image',
+                class: main_image_classes,
+                image: ss.main_image,
+                mobile_image: ss.main_image_mobile,
+                width: 1400,
+                img_alt: ss.heading,
+                loading: 'lazy'
+              %}
+            </div>
+
+            <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--secondary" data-parallax-image="secondary">
+              {% render 'image',
+                class: secondary_image_classes,
+                image: ss.secondary_image,
+                mobile_image: ss.secondary_image_mobile,
+                width: 900,
+                img_alt: ss.heading,
+                loading: 'lazy'
+              %}
+            </div>
+
+            <div class="about-story-reveal__image-wrap about-story-reveal__image-wrap--accent" data-parallax-image="accent">
+              {% render 'image',
+                class: accent_image_classes,
+                image: ss.accent_image,
+                mobile_image: ss.accent_image_mobile,
+                width: 700,
+                img_alt: ss.heading,
+                loading: 'lazy'
+              %}
+            </div>
+          </div>
+        </div>
+
+        <div class="about-story-reveal__content text-{{ ss.text_align }}" data-about-content>
+          {% if ss.subheading != blank %}
+            <div class="about-story-reveal__eyebrow" data-about-item>
+              {{ ss.subheading }}
+            </div>
+          {% endif %}
+
+          {% if ss.heading != blank %}
+            <h2 class="about-story-reveal__heading {{ ss.font_size }}" data-about-item>
+              {{ ss.heading }}
+            </h2>
+          {% endif %}
+
+          {% if ss.text != blank %}
+            <div class="about-story-reveal__text rte" data-about-item>
+              {{ ss.text }}
+            </div>
+          {% endif %}
+
+          {% if ss.button_label != blank and ss.button_link != blank %}
+            <div class="about-story-reveal__button" data-about-item>
+              <a href="{{ ss.button_link }}" class="btn {{ ss.button_style }}">
+                {{ ss.button_label }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.about-story-reveal {
+  overflow: hidden;
+}
+
+.about-story-reveal__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.about-story-reveal__media {
+  position: relative;
+}
+
+.about-story-reveal__media-stack {
+  position: relative;
+  min-height: 28rem;
+}
+
+.about-story-reveal__image-wrap {
+  position: relative;
+  will-change: transform;
+}
+
+.about-story-reveal__image-wrap--main {
+  width: min(100%, 34rem);
+  z-index: 2;
+}
+
+.about-story-reveal__image-wrap--secondary {
+  width: min(56%, 18rem);
+  position: absolute;
+  right: 0;
+  top: 12%;
+  z-index: 3;
+}
+
+.about-story-reveal__image-wrap--accent {
+  width: min(42%, 13rem);
+  position: absolute;
+  left: 6%;
+  bottom: -6%;
+  z-index: 4;
+}
+
+.about-story-reveal__content {
+  max-width: 38rem;
+}
+
+.about-story-reveal__eyebrow {
+  margin-bottom: 0.9rem;
+  font-size: 0.82em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(var(--color-heading), 0.65);
+}
+
+.about-story-reveal__heading {
+  margin: 0 0 1rem;
+  line-height: 1.05;
+}
+
+.about-story-reveal__text {
+  color: rgba(var(--color-text), 0.82);
+}
+
+.about-story-reveal__text p {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.about-story-reveal__button {
+  margin-top: 1.4rem;
+}
+
+@media (min-width: 991px) {
+  .about-story-reveal__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
+    gap: 4rem;
+  }
+
+  .about-story-reveal__inner.is-reversed {
+    grid-template-columns: minmax(22rem, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  .about-story-reveal__inner.is-reversed .about-story-reveal__media {
+    order: 2;
+  }
+
+  .about-story-reveal__inner.is-reversed .about-story-reveal__content {
+    order: 1;
+  }
+
+  .about-story-reveal__media-stack {
+    min-height: 40rem;
+  }
+
+  .about-story-reveal__image-wrap--main {
+    width: min(100%, 40rem);
+  }
+
+  .about-story-reveal__image-wrap--secondary {
+    width: min(48%, 20rem);
+    right: 2%;
+    top: 10%;
+  }
+
+  .about-story-reveal__image-wrap--accent {
+    width: min(34%, 14rem);
+    left: 4%;
+    bottom: -5%;
+  }
+
+  .about-story-reveal__content {
+    padding-top: 2rem;
+  }
+}
+
+@media (max-width: 990px) {
+  .about-story-reveal__media-stack {
+    min-height: 25rem;
+  }
+
+  .about-story-reveal__image-wrap--main {
+    width: min(100%, 100%);
+  }
+
+  .about-story-reveal__image-wrap--secondary {
+    width: min(48%, 14rem);
+    top: 10%;
+  }
+
+  .about-story-reveal__image-wrap--accent {
+    width: min(36%, 10rem);
+    left: 2%;
+    bottom: -3%;
+  }
+}
+
+@media (max-width: 767px) {
+  .about-story-reveal__inner {
+    gap: 1.5rem;
+  }
+
+  .about-story-reveal__media-stack {
+    min-height: 21rem;
+  }
+
+  .about-story-reveal__eyebrow {
+    margin-bottom: 0.7rem;
+    font-size: 0.72em;
+  }
+
+  .about-story-reveal__heading {
+    margin-bottom: 0.8rem;
+  }
+
+  .about-story-reveal__text p {
+    line-height: 1.65;
+  }
+
+  .about-story-reveal__button {
+    margin-top: 1rem;
+  }
+}
+{% endstylesheet %}
+
+<script>
+  (function() {
+    function initAboutStoryReveal(sectionId) {
+      var section = document.getElementById('about-story-reveal-' + sectionId);
+      if (!section || section.dataset.gsapInitialized === 'true') return;
+
+      section.dataset.gsapInitialized = 'true';
+
+      if (typeof gsap === 'undefined') return;
+
+      if (typeof ScrollTrigger !== 'undefined' && gsap.registerPlugin) {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      var contentItems = section.querySelectorAll('[data-about-item]');
+      var mainImage = section.querySelector('[data-parallax-image="main"]');
+      var secondaryImage = section.querySelector('[data-parallax-image="secondary"]');
+      var accentImage = section.querySelector('[data-parallax-image="accent"]');
+
+      gsap.set(contentItems, {
+        opacity: 0,
+        y: 30
+      });
+
+      gsap.to(contentItems, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 78%',
+          once: true
+        }
+      });
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        if (mainImage) {
+          gsap.to(mainImage, {
+            yPercent: -8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.8
+            }
+          });
+        }
+
+        if (secondaryImage) {
+          gsap.to(secondaryImage, {
+            yPercent: 14,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1
+            }
+          });
+        }
+
+        if (accentImage) {
+          gsap.to(accentImage, {
+            yPercent: -18,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.1
+            }
+          });
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initAboutStoryReveal('{{ section.id }}');
+    });
+
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.target && event.target.querySelector('#about-story-reveal-{{ section.id }}')) {
+        initAboutStoryReveal('{{ section.id }}');
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About story reveal",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar_space",
+      "label": "Enable sidebar space",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-narrow", "label": "Container narrow" },
+        { "value": "container-extra-narrow", "label": "Container extra narrow" },
+        { "value": "full-width", "label": "Full width" },
+        { "value": "extended", "label": "Extended" }
+      ],
+      "default": "extended"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "image-left", "label": "Image left" },
+        { "value": "image-right", "label": "Image right" }
+      ],
+      "default": "image-left"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text align",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "h4", "label": "h4" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our story"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Crafting a more editorial and premium brand story."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Use this section to introduce your brand story, philosophy, process, or founder message with elegant layered imagery and subtle scrolling motion.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "btn--primary", "label": "Primary" },
+        { "value": "btn--secondary", "label": "Secondary" },
+        { "value": "btn--underline", "label": "Underline" }
+      ],
+      "default": "btn--primary"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image_mobile",
+      "label": "Main image mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image",
+      "label": "Secondary image"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image_mobile",
+      "label": "Secondary image mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "accent_image",
+      "label": "Accent image"
+    },
+    {
+      "type": "image_picker",
+      "id": "accent_image_mobile",
+      "label": "Accent image mobile"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "adapt-to-image", "label": "Adapt to image" },
+        { "value": "cropped-image--square", "label": "Square" },
+        { "value": "cropped-image--portrait", "label": "Portrait" },
+        { "value": "cropped-image--portrait-tall", "label": "Portrait tall" },
+        { "value": "cropped-image--landscape", "label": "Landscape" },
+        { "value": "cropped-image--wide", "label": "Wide" }
+      ],
+      "default": "cropped-image--portrait"
+    },
+    {
+      "type": "select",
+      "id": "hover_effect_action",
+      "label": "Image hover effect",
+      "options": [
+        { "value": "no-effect", "label": "No effect" },
+        { "value": "is-hover-zoom-in", "label": "Zoom in" },
+        { "value": "is-hover-zoom-out", "label": "Zoom out" },
+        { "value": "is-hover-zoom-up", "label": "Zoom up" },
+        { "value": "is-hover-fade", "label": "Fade" },
+        { "value": "is-hover-cinematic", "label": "Cinematic" },
+        { "value": "is-hover-drift", "label": "Drift" },
+        { "value": "is-hover-overlay", "label": "Overlay" }
+      ],
+      "default": "no-effect"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class"
+    },
+    {
+      "type": "select",
+      "id": "color_control",
+      "label": "Color Control",
+      "options": [
+        { "value": "section-dark", "label": "Dark" },
+        { "value": "section-light", "label": "Light" }
+      ],
+      "default": "section-light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About story reveal"
+    }
+  ]
+}
+{% endschema %}
