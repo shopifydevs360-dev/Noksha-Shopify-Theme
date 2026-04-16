@@ -168,16 +168,25 @@
     "shop_the_look_VCTH6r": {
       "type": "shop-the-look",
       "blocks": {
+        "product_hotspot_wdtzpE": {
+          "type": "product_hotspot",
+          "settings": {
+            "product": "ash-blonde-ponytail-hair-extension",
+            "top_position": 90,
+            "left_position": 50
+          }
+        },
         "product_hotspot_kVfhPV": {
           "type": "product_hotspot",
           "settings": {
-            "product": "3d-silk-lashes",
-            "top_position": 40,
+            "product": "youmi-beauty-hair-curler",
+            "top_position": 23,
             "left_position": 50
           }
         }
       },
       "block_order": [
+        "product_hotspot_wdtzpE",
         "product_hotspot_kVfhPV"
       ],
       "name": "Shop the Look",
@@ -191,7 +200,7 @@
         "text": "<p>Highlight a complete look and guide customers to the exact products featured in the image.</p>",
         "button_label": "Explore collection",
         "button_link": "",
-        "look_image": "shopify://shop_images/Youmi0088_3_Option2.jpg",
+        "look_image": "shopify://shop_images/2_999965f5-697e-4b13-8e5c-bf126ee4302c.png",
         "aspect_ratio": "cropped-image--square",
         "padding_top": 48,
         "padding_bottom": 48,
