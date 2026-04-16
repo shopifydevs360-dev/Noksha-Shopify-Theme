@@ -441,7 +441,82 @@ button:disabled,
   cursor: not-allowed;
 }
 
+/* ======================
+    Animation Button
+=========================*/
+/* Hover to underline */
+.hover-underline {
+  display: inline-block;
+  width: fit-content;
+  background: transparent;
+  font-size: var(--btn_link_font_size);
+  color: rgb(var(--color-link));
+  padding-bottom: 8px;
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+  overflow: hidden;
+  line-height: 1.2;
+}
 
+.hover-underline:before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateX(-130%);
+  transition: all .3s cubic-bezier(.34,.615,.4,.985);
+  background: rgb(var(--color-link-hover));
+}
+
+a:hover .hover-underline:before {
+  transform: translateX(0);
+  transition-delay: .3s;
+}
+
+a:hover .hover-underline {
+  color: rgb(var(--color-link-hover));
+}
+
+/* Hover to fill Background */
+.hover-fill-bg {
+  display: inline-block;
+  width: fit-content;
+  background: transparent;
+  font-size: var(--btn_link_font_size);
+  color: rgb(var(--color-link));
+  padding: 8px 16px;
+  position: relative;
+  overflow: hidden;
+  z-index: 9;
+  line-height: 1.2;
+}
+
+.hover-fill-bg:before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-130%);
+  transition: all .3s cubic-bezier(.34,.615,.4,.985);
+  background: rgb(var(--color-link-hover));
+  z-index: -1;
+}
+
+a:hover .hover-fill-bg:before {
+  transform: translateX(0);
+  transition-delay: .3s;
+}
+
+a:hover .hover-fill-bg {
+  color: rgb(var(--color-background));
+}
 /* ------------------------------
    LAYOUT CONTAINERS
 ------------------------------- */
