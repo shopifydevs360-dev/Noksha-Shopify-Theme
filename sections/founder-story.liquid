@@ -10,6 +10,10 @@
 -%}
 
 <section class="{{ section_classes }}" id="FounderStory" {{ section.shopify_attributes }}>
+  <div class="founder-story__shape founder-story__shape--one"></div>
+  <div class="founder-story__shape founder-story__shape--two"></div>
+  <div class="founder-story__shape founder-story__shape--three"></div>
+
   <div class="{{ container_class }}">
     <div class="sidebar-space">
       <div class="founder-story__wrap founder-story__layout-{{ section.settings.layout_style }}">
@@ -93,6 +97,7 @@
     position: relative;
     overflow: hidden;
     background: rgb(var(--color-background));
+    isolation: isolate;
   }
 
   .founder-story .founder-story__wrap {
@@ -100,6 +105,7 @@
     min-height: 100%;
     padding-top: 2rem;
     padding-bottom: 2rem;
+    z-index: 2;
   }
 
   .founder-story .founder-story__grid {
@@ -111,6 +117,43 @@
     z-index: 2;
   }
 
+  .founder-story .founder-story__shape {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .founder-story .founder-story__shape--one {
+    top: 8%;
+    left: -4rem;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--color-additional-1), 0.08) 0%, rgba(var(--color-additional-1), 0) 72%);
+    filter: blur(8px);
+  }
+
+  .founder-story .founder-story__shape--two {
+    right: -3rem;
+    bottom: 8%;
+    width: 22rem;
+    height: 22rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--color-additional-2), 0.07) 0%, rgba(var(--color-additional-2), 0) 72%);
+    filter: blur(10px);
+  }
+
+  .founder-story .founder-story__shape--three {
+    top: 50%;
+    right: 12%;
+    width: 12rem;
+    height: 12rem;
+    border: 1px solid rgba(var(--color-border), 0.45);
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+
   .founder-story .founder-story__media {
     position: relative;
     max-width: min(100%, {{ section.settings.image_max_width }}px);
@@ -120,12 +163,14 @@
 
   .founder-story .founder-story__media-inner {
     overflow: hidden;
-    background: rgba(var(--color-background-secondary), 1);
+    background: transparent;
+    box-shadow: none;
   }
 
   .founder-story .founder-story__image {
     display: block;
     width: 100%;
+    background: transparent;
   }
 
   .founder-story .founder-story__image img,
@@ -280,6 +325,22 @@
     .founder-story .founder-story__media {
       max-width: min(100%, 520px);
     }
+
+    .founder-story .founder-story__shape--one {
+      width: 12rem;
+      height: 12rem;
+    }
+
+    .founder-story .founder-story__shape--two {
+      width: 14rem;
+      height: 14rem;
+    }
+
+    .founder-story .founder-story__shape--three {
+      width: 8rem;
+      height: 8rem;
+      right: -1rem;
+    }
   }
 </style>
 
@@ -301,6 +362,7 @@
       var text = section.querySelector('.founder-story__anim-text');
       var bgTitles = section.querySelectorAll('.founder-story__bg-title');
       var image = section.querySelector('.founder-story__image img');
+      var shapes = section.querySelectorAll('.founder-story__shape');
 
       if (bgTitles.length) {
         bgTitles.forEach(function(item, index) {
@@ -329,6 +391,22 @@
               start: 'top bottom',
               end: 'bottom top',
               scrub: 1.2
+            }
+          });
+        });
+      }
+
+      if (shapes.length) {
+        shapes.forEach(function(shape, index) {
+          gsap.to(shape, {
+            yPercent: index === 1 ? -12 : 10,
+            xPercent: index === 2 ? 8 : 0,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5
             }
           });
         });
