@@ -1,5 +1,11 @@
 {% liquid
-  assign enable_rtl = settings.enable_rtl
+  assign rtl_locales = 'ar,he,ps,ug,ur' | split: ','
+  assign current_locale = request.locale.iso_code | downcase
+  assign enable_rtl = false
+
+  if settings.enable_rtl and rtl_locales contains current_locale
+    assign enable_rtl = true
+  endif
 
   assign body_classes = 'template-' | append: template.name
 
@@ -46,7 +52,6 @@
     {% if settings.enable_wishlist %}
       <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
     {% endif %}
-    
 
     {{ content_for_header }}
   </head>
