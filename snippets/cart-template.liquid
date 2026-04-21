@@ -113,5 +113,13 @@
   </div>
 </div>
 
+<script>
+  window.themePriceDisplaySettings = {
+    enabled: {{ settings.enable_product_price_display_mode | json }},
+    mode: {{ settings.product_price_tax_display_mode | json }},
+    manualTaxRate: {{ settings.product_manual_tax_rate | json }},
+    taxesIncluded: {{ cart.taxes_included | json }}
+  };
+</script>
 <script src="{{ 'cart-template.js' | asset_url }}" defer></script>
 
