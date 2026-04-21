@@ -1034,50 +1034,56 @@
       },
     ]
   },
-  {
-    "name": "Product price display",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Product price display"
-      },
-      {
-        "type": "select",
-        "id": "product_price_tax_display_mode",
-        "label": "Price display mode",
-        "options": [
-          {
-            "value": "single_price",
-            "label": "Single price only"
-          },
-          {
-            "value": "single_price_with_tax_label",
-            "label": "Single price with tax label"
-          },
-          {
-            "value": "single_price_without_tax",
-            "label": "Single price without tax"
-          },
-          {
-            "value": "price_with_and_without_tax",
-            "label": "Show price with and without tax"
-          }
-        ],
-        "default": "single_price"
-      },
-      {
-        "type": "range",
-        "id": "product_manual_tax_rate",
-        "label": "Manual tax rate",
-        "min": 0,
-        "max": 30,
-        "step": 1,
-        "unit": "%",
-        "default": 15,
-        "info": "Used for 'Single price without tax' and 'Show price with and without tax' options."
-      }
-    ]
-  },
+{
+  "name": "Product price display",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product price display"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_product_price_display_mode",
+      "label": "Enable different price display function",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "product_price_tax_display_mode",
+      "label": "Price display mode",
+      "options": [
+        {
+          "value": "single_price",
+          "label": "Single price only"
+        },
+        {
+          "value": "single_price_with_tax_label",
+          "label": "Single price with tax label"
+        },
+        {
+          "value": "single_price_without_tax",
+          "label": "Single price without tax"
+        },
+        {
+          "value": "price_with_and_without_tax",
+          "label": "Show price with and without tax"
+        }
+      ],
+      "default": "single_price"
+    },
+    {
+      "type": "range",
+      "id": "product_manual_tax_rate",
+      "label": "Manual tax rate",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 15,
+      "info": "Used for 'Single price without tax' and 'Show price with and without tax' options."
+    }
+  ]
+},
   {
     "name": "Wishlist",
     "settings": [
