@@ -15,8 +15,8 @@ function initCartAjax() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ updates }),
     })
-      .then(res => res.json())
-      .then(cart => {
+      .then((res) => res.json())
+      .then((cart) => {
         renderAllCarts(cart);
         updateCartCount();
       });
@@ -42,13 +42,76 @@ function renderSingleCart(cart, root) {
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
 
-  // ✅ If cart has NEW items, refresh HTML list
   const domItems = root.querySelectorAll(".cart-item").length;
   if (cart.items.length > domItems) {
     refreshCartItemList(root);
   }
 }
 
+/* ============================
+   SETTINGS / PRICE HELPERS
+============================ */
+function getPriceDisplaySettings() {
+  const settings = window.themePriceDisplaySettings || {};
+
+  return {
+    enabled: !!settings.enabled,
+    mode: settings.mode || "single_price",
+    manualTaxRate: Number(settings.manualTaxRate || 0),
+    taxesIncluded: !!settings.taxesIncluded,
+  };
+}
+
+function getTaxMultiplier() {
+  const { manualTaxRate } = getPriceDisplaySettings();
+  return manualTaxRate > 0 ? manualTaxRate / 100 + 1 : 1;
+}
+
+function getDisplayPrice(cents) {
+  const settings = getPriceDisplaySettings();
+
+  if (!settings.enabled) return cents;
+  if (settings.mode !== "single_price_without_tax") return cents;
+  if (settings.manualTaxRate <= 0) return cents;
+  if (!settings.taxesIncluded) return cents;
+
+  return Math.round(cents / getTaxMultiplier());
+}
+
+function getSecondaryPrice(cents) {
+  const settings = getPriceDisplaySettings();
+
+  if (!settings.enabled) return null;
+  if (settings.mode !== "price_with_and_without_tax") return null;
+  if (settings.manualTaxRate <= 0) return null;
+
+  if (settings.taxesIncluded) {
+    return Math.round(cents / getTaxMultiplier());
+  }
+
+  return cents;
+}
+
+function getTaxLabelText(type) {
+  if (type === "included") return "Incl. tax";
+  if (type === "excluded") return "Excl. tax";
+  return "";
+}
+
+function ensureSingleElement(parent, selector, tagName, className) {
+  let el = parent.querySelector(selector);
+  if (!el) {
+    el = document.createElement(tagName);
+    if (className) el.className = className;
+    parent.appendChild(el);
+  }
+  return el;
+}
+
+function removeElement(parent, selector) {
+  const el = parent.querySelector(selector);
+  if (el) el.remove();
+}
 
 /* ============================
    SUBTOTAL
@@ -57,7 +120,71 @@ function updateSubtotal(cart, root) {
   const subtotalEl = root.querySelector(".cart-subtotal");
   if (!subtotalEl) return;
 
-  subtotalEl.textContent = formatMoney(cart.items_subtotal_price);
+  const settings = getPriceDisplaySettings();
+  const subtotalRow = subtotalEl.closest(".cart-summary-row");
+  if (!subtotalRow) {
+    subtotalEl.textContent = formatMoney(getDisplayPrice(cart.items_subtotal_price));
+    return;
+  }
+
+  const mainSubtotal = getDisplayPrice(cart.items_subtotal_price);
+  const secondarySubtotal = getSecondaryPrice(cart.items_subtotal_price);
+
+  subtotalEl.textContent = formatMoney(mainSubtotal);
+
+  if (!settings.enabled) {
+    removeElement(subtotalRow, ".cart-subtotal-tax-label");
+    removeElement(subtotalRow, ".cart-subtotal-secondary");
+    removeElement(subtotalRow, ".cart-subtotal-secondary-tax-label");
+    return;
+  }
+
+  if (settings.mode === "single_price_with_tax_label") {
+    const labelEl = ensureSingleElement(
+      subtotalRow,
+      ".cart-subtotal-tax-label",
+      "span",
+      "cart-subtotal-tax-label"
+    );
+    labelEl.textContent = settings.taxesIncluded
+      ? getTaxLabelText("included")
+      : getTaxLabelText("excluded");
+
+    removeElement(subtotalRow, ".cart-subtotal-secondary");
+    removeElement(subtotalRow, ".cart-subtotal-secondary-tax-label");
+    return;
+  }
+
+  if (settings.mode === "price_with_and_without_tax" && secondarySubtotal !== null) {
+    const mainLabelEl = ensureSingleElement(
+      subtotalRow,
+      ".cart-subtotal-tax-label",
+      "span",
+      "cart-subtotal-tax-label"
+    );
+    mainLabelEl.textContent = getTaxLabelText("included");
+
+    const secondaryEl = ensureSingleElement(
+      subtotalRow,
+      ".cart-subtotal-secondary",
+      "div",
+      "cart-subtotal-secondary"
+    );
+    secondaryEl.textContent = formatMoney(secondarySubtotal);
+
+    const secondaryLabelEl = ensureSingleElement(
+      subtotalRow,
+      ".cart-subtotal-secondary-tax-label",
+      "span",
+      "cart-subtotal-secondary-tax-label"
+    );
+    secondaryLabelEl.textContent = getTaxLabelText("excluded");
+    return;
+  }
+
+  removeElement(subtotalRow, ".cart-subtotal-tax-label");
+  removeElement(subtotalRow, ".cart-subtotal-secondary");
+  removeElement(subtotalRow, ".cart-subtotal-secondary-tax-label");
 }
 
 /* ============================
@@ -71,23 +198,21 @@ function updateFreeShipping(cart, root) {
   const remainingEl = wrapper.querySelector(".cart-shipping-remaining");
   const threshold = parseInt(root.dataset.freeShippingThreshold, 10);
 
-  const progress = Math.min(
-    (cart.total_price / threshold) * 100,
-    100
-  );
+  if (!threshold || threshold === 0) return;
+
+  const displayTotal = getDisplayPrice(cart.total_price);
+  const progress = Math.min((displayTotal / threshold) * 100, 100);
 
   if (bar) {
     bar.style.width = progress + "%";
   }
 
-  if (cart.total_price >= threshold) {
+  if (displayTotal >= threshold) {
     wrapper.classList.add("is-success");
   } else {
     wrapper.classList.remove("is-success");
     if (remainingEl) {
-      remainingEl.textContent = formatMoney(
-        threshold - cart.total_price
-      );
+      remainingEl.textContent = formatMoney(threshold - displayTotal);
     }
   }
 }
@@ -96,22 +221,106 @@ function updateFreeShipping(cart, root) {
    LINE ITEMS (PRICE + QTY)
 ============================ */
 function updateLineItems(cart, root) {
+  const settings = getPriceDisplaySettings();
+
   cart.items.forEach((item) => {
-    const row = root.querySelector(
-      `.cart-item[data-key="${item.key}"]`
-    );
+    const row = root.querySelector(`.cart-item[data-key="${item.key}"]`);
     if (!row) return;
 
     const priceEl = row.querySelector(".cart-item-price");
+    const comparePriceEl = row.querySelector(".cart-item-price-compare");
     const qtyInput = row.querySelector("input");
 
+    const mainPrice = getDisplayPrice(item.final_line_price);
+    const secondaryPrice = getSecondaryPrice(item.final_line_price);
+
+    const compareMainPrice =
+      item.original_line_price > item.final_line_price
+        ? getDisplayPrice(item.original_line_price)
+        : null;
+
     if (priceEl) {
-      priceEl.textContent = formatMoney(item.final_line_price);
+      priceEl.textContent = formatMoney(mainPrice);
     }
 
     if (qtyInput) {
       qtyInput.value = item.quantity;
     }
+
+    if (comparePriceEl && compareMainPrice !== null) {
+      comparePriceEl.textContent = formatMoney(compareMainPrice);
+    }
+
+    const infoRight = row.querySelector(".info-right");
+    if (!infoRight) return;
+
+    if (!settings.enabled) {
+      removeElement(infoRight, ".cart-item-tax-label");
+      removeElement(infoRight, ".cart-item-price--secondary");
+      removeElement(infoRight, ".cart-item-tax-label-secondary");
+      return;
+    }
+
+    if (settings.mode === "single_price_with_tax_label") {
+      const labelEl = ensureSingleElement(
+        infoRight,
+        ".cart-item-tax-label",
+        "p",
+        "cart-item-tax-label"
+      );
+      labelEl.textContent = settings.taxesIncluded
+        ? getTaxLabelText("included")
+        : getTaxLabelText("excluded");
+
+      removeElement(infoRight, ".cart-item-price--secondary");
+      removeElement(infoRight, ".cart-item-tax-label-secondary");
+      return;
+    }
+
+    if (settings.mode === "price_with_and_without_tax" && secondaryPrice !== null) {
+      let mainLabelEl = infoRight.querySelector(".cart-item-tax-label");
+      if (!mainLabelEl) {
+        mainLabelEl = document.createElement("p");
+        mainLabelEl.className = "cart-item-tax-label";
+        if (priceEl && priceEl.nextSibling) {
+          infoRight.insertBefore(mainLabelEl, priceEl.nextSibling);
+        } else if (priceEl) {
+          priceEl.insertAdjacentElement("afterend", mainLabelEl);
+        } else {
+          infoRight.prepend(mainLabelEl);
+        }
+      }
+      mainLabelEl.textContent = getTaxLabelText("included");
+
+      let secondaryPriceEl = infoRight.querySelector(".cart-item-price--secondary");
+      if (!secondaryPriceEl) {
+        secondaryPriceEl = document.createElement("p");
+        secondaryPriceEl.className = "cart-item-price cart-item-price--secondary";
+        if (mainLabelEl.nextSibling) {
+          infoRight.insertBefore(secondaryPriceEl, mainLabelEl.nextSibling);
+        } else {
+          infoRight.appendChild(secondaryPriceEl);
+        }
+      }
+      secondaryPriceEl.textContent = formatMoney(secondaryPrice);
+
+      let secondaryLabelEl = infoRight.querySelector(".cart-item-tax-label-secondary");
+      if (!secondaryLabelEl) {
+        secondaryLabelEl = document.createElement("p");
+        secondaryLabelEl.className = "cart-item-tax-label cart-item-tax-label-secondary";
+        if (secondaryPriceEl.nextSibling) {
+          infoRight.insertBefore(secondaryLabelEl, secondaryPriceEl.nextSibling);
+        } else {
+          infoRight.appendChild(secondaryLabelEl);
+        }
+      }
+      secondaryLabelEl.textContent = getTaxLabelText("excluded");
+      return;
+    }
+
+    removeElement(infoRight, ".cart-item-tax-label");
+    removeElement(infoRight, ".cart-item-price--secondary");
+    removeElement(infoRight, ".cart-item-tax-label-secondary");
   });
 }
 
@@ -186,7 +395,6 @@ function formatMoney(cents) {
   });
 }
 
-
 function refreshCartItemList(root) {
   fetch("/cart?view=ajax")
     .then((res) => res.text())
@@ -201,18 +409,14 @@ function refreshCartItemList(root) {
       const emptyMessage = root.querySelector(".cart-empty-message");
       const continueLink = root.querySelector(".continue-shopping");
 
-      // 🔥 CART WAS EMPTY → CREATE LIST
       if (!currentList) {
         if (emptyMessage) emptyMessage.remove();
         if (continueLink) continueLink.remove();
 
-        root.querySelector(".cart-template-left")
-          .appendChild(newList);
-
+        root.querySelector(".cart-template-left").appendChild(newList);
         return;
       }
 
-      // 🔁 CART HAD ITEMS → UPDATE LIST
       currentList.innerHTML = newList.innerHTML;
     });
 }
@@ -230,37 +434,27 @@ function updateDiscountProgress(cart, root) {
 
   if (!threshold || threshold === 0) return;
 
-  const progress = Math.min(
-    (cart.total_price / threshold) * 100,
-    100
-  );
+  const displayTotal = getDisplayPrice(cart.total_price);
+  const progress = Math.min((displayTotal / threshold) * 100, 100);
 
-  // Update progress bar
   if (bar) {
     bar.style.width = progress + "%";
   }
 
-  // Unlock state
-  if (cart.total_price >= threshold) {
+  if (displayTotal >= threshold) {
     wrapper.classList.add("is-success");
-
-    // Optional: Replace text when unlocked
-    wrapper.querySelector("p").innerHTML =
-      '<span class="success-text">🔥 Discount unlocked!</span>';
-
+    const textEl = wrapper.querySelector("p");
+    if (textEl) {
+      textEl.innerHTML = '<span class="success-text">🔥 Discount unlocked!</span>';
+    }
   } else {
     wrapper.classList.remove("is-success");
 
     if (remainingEl) {
-      remainingEl.textContent = formatMoney(
-        threshold - cart.total_price
-      );
+      remainingEl.textContent = formatMoney(threshold - displayTotal);
     }
   }
 }
-
-
-
 
 function refreshAllCartsUI() {
   fetch("/cart.js")
