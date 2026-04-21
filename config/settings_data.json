@@ -51,7 +51,7 @@
     "enable_hover_to_show_btn": true,
     "aspect_ratio": "cropped-image--portrait",
     "product_price_tax_display_mode": "single_price",
-    "product_manual_tax_rate": 5,
+    "product_manual_tax_rate": 30,
     "enable_wishlist": true,
     "variant_option_design1": "button",
     "variant_option_design2": "button",
