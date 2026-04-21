@@ -999,31 +999,18 @@
         "label": "Button Showing",
         "info": "The add to cart/bag button will showing when you hover the product card",
         "default": true
+
       },
       {
-        "type": "header",
-        "content": "Price display"
-      },
-      {
-        "type": "select",
-        "id": "price_display_type",
-        "label": "Price display type",
-        "default": "including_tax",
-        "options": [
-          {
-            "value": "including_tax",
-            "label": "Show price including tax"
-          },
-          {
-            "value": "excluding_tax",
-            "label": "Show price excluding tax"
-          },
-          {
-            "value": "both",
-            "label": "Show both (incl. & excl. tax)"
-          }
-        ]
-      },
+  "type": "header",
+  "content": "Price tax label"
+},
+{
+  "type": "checkbox",
+  "id": "show_price_tax_label",
+  "label": "Show tax label with price",
+  "default": true
+},
       {
         "type": "header",
         "content": "Image"
