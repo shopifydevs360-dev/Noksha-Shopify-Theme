@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =================================
-   VARIANT PRICE UPDATE
+   VARIANT PRICE UPDATE (EXTENDED)
 ================================= */
 function initVariantPriceUpdate() {
   const root = document.querySelector('.main-product');
@@ -65,10 +65,10 @@ function initVariantPriceUpdate() {
   function togglePrice(variantId) {
     priceItems.forEach(item => {
       if (item.dataset.variantId === String(variantId)) {
-        item.classList.remove('hide');
+        item.classList.remove('hide-price');
         item.classList.add('show-price');
       } else {
-        item.classList.add('hide');
+        item.classList.add('hide-price');
         item.classList.remove('show-price');
       }
     });
@@ -175,9 +175,8 @@ function initMainProductCart() {
   if (!form || !actions || !variantInput) return;
 
   const behavior = actions.dataset.cartBehavior;
-  const addToCartBtn = form.querySelector('[data-role="add-to-cart"]');
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', e => {
     e.preventDefault();
 
     if (behavior === 'redirect') {
@@ -185,71 +184,42 @@ function initMainProductCart() {
       return;
     }
 
-    if (!addToCartBtn || addToCartBtn.disabled) {
+    if (form.querySelector('[data-role="add-to-cart"]').disabled) {
       return;
     }
 
     const formData = new FormData(form);
 
-    try {
-      addToCartBtn.disabled = true;
+    fetch('/cart/add.js', {
+      method: 'POST',
+      body: formData
+    })
+      .then(res => res.json())
+      .then(() => {
+        refreshAllCartsUI();
 
-      const response = await fetch('/cart/add.js', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add item to cart');
-      }
-
-      await response.json();
-
-      if (typeof refreshAllCartsUI === 'function') {
-        await refreshAllCartsUI();
-      }
-
-      if (behavior === 'ajax_drawer') {
-        if (typeof openBagDrawer === 'function') {
+        if (behavior === 'ajax_drawer') {
           openBagDrawer();
         }
-
-        await waitForNextFrame();
-
-        if (typeof refreshAllCartsUI === 'function') {
-          await refreshAllCartsUI();
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      const currentVariant = window.product?.variants?.find(v => String(v.id) === String(variantInput.value));
-      addToCartBtn.disabled = currentVariant ? !currentVariant.available : false;
-    }
+      })
+      .catch(err => console.error(err));
   });
 
   const buyNowBtn = root.querySelector('.btn-buy-now');
   if (buyNowBtn) {
-    buyNowBtn.addEventListener('click', async () => {
+    buyNowBtn.addEventListener('click', () => {
       if (buyNowBtn.classList.contains('hide')) return;
 
       const formData = new FormData(form);
 
-      try {
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to add item to cart for checkout');
-        }
-
-        await response.json();
-        window.location.href = '/checkout';
-      } catch (err) {
-        console.error(err);
-      }
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+        .then(() => {
+          window.location.href = '/checkout';
+        })
+        .catch(err => console.error(err));
     });
   }
 }
@@ -349,16 +319,5 @@ function initVariantSelectedLabelUpdate() {
         selectedValueEl.textContent = this.value;
       });
     }
-  });
-}
-
-/* =================================
-   HELPERS
-================================= */
-function waitForNextFrame() {
-  return new Promise(resolve => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(resolve);
-    });
   });
 }
