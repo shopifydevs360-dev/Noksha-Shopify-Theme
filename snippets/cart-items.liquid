@@ -1,165 +1,34 @@
-{% liquid
-  assign enable_price_display_mode = settings.enable_product_price_display_mode
-  assign tax_display_mode = settings.product_price_tax_display_mode | default: 'single_price'
-  assign manual_tax_rate = settings.product_manual_tax_rate | plus: 0
-  assign tax_multiplier = manual_tax_rate | divided_by: 100.0 | plus: 1.0
+<div class="cart-item" data-key="{{ item.key }}" data-product="{{ item.product.id }}" data-variant="{{ item.variant.id }}" data-quantity="{{ item.quantity }}">
 
-  assign cart_display_main_price = item.final_line_price
-  assign cart_display_tax_exclusive_price = blank
-  assign cart_display_compare_price = item.original_line_price
-  assign cart_display_compare_tax_exclusive_price = blank
-
-  if manual_tax_rate > 0
-    if cart.taxes_included
-      assign cart_display_tax_exclusive_price = item.final_line_price | divided_by: tax_multiplier
-      assign cart_display_compare_tax_exclusive_price = item.original_line_price | divided_by: tax_multiplier
-    else
-      assign cart_display_tax_exclusive_price = item.final_line_price
-      assign cart_display_compare_tax_exclusive_price = item.original_line_price
-    endif
-  endif
-%}
-
-<div
-  class="cart-item"
-  data-key="{{ item.key }}"
-  data-product="{{ item.product.id }}"
-  data-variant="{{ item.variant.id }}"
-  data-quantity="{{ item.quantity }}"
->
-  <div class="cart-item-image">
-    <a href="{{ item.url }}" aria-label="{{ item.product.title | escape }}">
-      {% if item.image %}
-        {{
-          item.image
-          | image_url: width: 200
-          | image_tag:
-            loading: 'lazy',
-            widths: '120,160,200,260,320',
-            alt: item.product.title
-        }}
-      {% else %}
-        {%- render 'theme-icon', icon: 'default-image' -%}
-      {% endif %}
+    <div class="cart-item-image">
+    <a href="{{ item.url }}">
+        {{ item.image | image_url: width: 200 | image_tag }}
     </a>
-  </div>
+    </div>
 
-  <div class="cart-item-info">
+    <div class="cart-item-info">
     <div class="info-left">
-      <a href="{{ item.url }}" class="cart-item-title">
+        <a href="{{ item.url }}" class="cart-item-title">
         {{ item.product.title }}
-      </a>
-
-      {% if item.variant.title != 'Default Title' and item.variant.title != blank %}
+        </a>
+        {% if item.variant.title != 'Default Title' %}
         <p class="cart-item-variant">{{ item.variant.title }}</p>
-      {% endif %}
-
-      {% if item.properties.size > 0 %}
-        <div class="cart-item-properties">
-          {% for property in item.properties %}
-            {% assign first_char = property.first | slice: 0 %}
-            {% unless property.last == blank or first_char == '_' %}
-              <p class="cart-item-property">
-                <span>{{ property.first }}:</span>
-                <span>
-                  {% if property.last contains '/uploads/' %}
-                    <a href="{{ property.last }}" target="_blank" rel="noopener">
-                      {{ property.last | split: '/' | last }}
-                    </a>
-                  {% else %}
-                    {{ property.last }}
-                  {% endif %}
-                </span>
-              </p>
-            {% endunless %}
-          {% endfor %}
+        {% endif %}
+        <div class="cart-item-qty">
+        <button type="button" class="qty-btn qty-minus">−</button>
+        <input type="number" name="updates[]" value="{{ item.quantity }}" min="1">
+        <button type="button" class="qty-btn qty-plus">+</button>
         </div>
-      {% endif %}
-
-      <div class="cart-item-qty">
-        <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
-        <input
-          type="number"
-          name="updates[]"
-          value="{{ item.quantity }}"
-          min="1"
-          aria-label="Quantity for {{ item.product.title | escape }}"
-        >
-        <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
-      </div>
     </div>
 
     <div class="info-right">
-      {% if enable_price_display_mode %}
-        {% case tax_display_mode %}
-          {% when 'single_price' %}
-            <p class="cart-item-price">
-              {{ cart_display_main_price | money }}
-            </p>
-
-          {% when 'single_price_with_tax_label' %}
-            <p class="cart-item-price">
-              {{ cart_display_main_price | money }}
-            </p>
-            {% if cart.taxes_included %}
-              <p class="cart-item-tax-label">Incl. tax</p>
-            {% else %}
-              <p class="cart-item-tax-label">Excl. tax</p>
-            {% endif %}
-
-          {% when 'single_price_without_tax' %}
-            <p class="cart-item-price">
-              {% if cart_display_tax_exclusive_price != blank %}
-                {{ cart_display_tax_exclusive_price | money }}
-              {% else %}
-                {{ cart_display_main_price | money }}
-              {% endif %}
-            </p>
-
-          {% when 'price_with_and_without_tax' %}
-            <div class="cart-item-price-group">
-              <p class="cart-item-price">
-                {{ cart_display_main_price | money }}
-              </p>
-              <p class="cart-item-tax-label">Incl. tax</p>
-
-              {% if cart_display_tax_exclusive_price != blank %}
-                <p class="cart-item-price cart-item-price--secondary">
-                  {{ cart_display_tax_exclusive_price | money }}
-                </p>
-                <p class="cart-item-tax-label">Excl. tax</p>
-              {% endif %}
-            </div>
-        {% endcase %}
-      {% else %}
         <p class="cart-item-price">
-          {{ item.final_line_price | money }}
+        {{ item.final_line_price | money }}
         </p>
-      {% endif %}
-
-      {% if item.original_line_price > item.final_line_price %}
-        <p class="cart-item-price-compare">
-          {% if enable_price_display_mode and tax_display_mode == 'single_price_without_tax' and cart_display_compare_tax_exclusive_price != blank %}
-            {{ cart_display_compare_tax_exclusive_price | money }}
-          {% else %}
-            {{ item.original_line_price | money }}
-          {% endif %}
-        </p>
-      {% endif %}
-
-      {% if item.line_level_discount_allocations.size > 0 %}
-        <div class="cart-item-discounts">
-          {% for discount_allocation in item.line_level_discount_allocations %}
-            <p class="cart-item-discount">
-              {{ discount_allocation.discount_application.title }}
-            </p>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <button type="button" class="cart-item-remove" aria-label="Remove {{ item.product.title | escape }}">
+        <button type="button" class="cart-item-remove">
         Remove
-      </button>
+        </button>
     </div>
-  </div>
+    </div>
+
 </div>
