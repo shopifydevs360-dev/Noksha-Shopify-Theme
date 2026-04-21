@@ -8,175 +8,159 @@
   <div class="inner-section drawer-space m-color-{{ section.settings.sidebar_color_scheme }}">
     <div class="container">
       <div class="nav-template">
-
         <div class="initial-panel">
-                    <!-- ================= PRIMARY MENU ================= -->
-            <div class="primary-menu-inner">
+          <!-- ================= PRIMARY MENU ================= -->
+          <div class="primary-menu-inner">
             <ul class="nav-drawer-menu">
-                {% for parent in linklists[section.settings.primary_menu].links %}
-
+              {% for parent in linklists[section.settings.primary_menu].links %}
                 {% assign parent_has_children = false %}
                 {% if parent.links.size > 0 %}
-                    {% assign parent_has_children = true %}
+                  {% assign parent_has_children = true %}
                 {% endif %}
 
                 {% assign parent_is_collection = false %}
                 {% if parent.type == 'collection_link' %}
-                    {% assign parent_is_collection = true %}
+                  {% assign parent_is_collection = true %}
                 {% endif %}
 
                 <li
-                    class="nav-drawer-item"
-                    data-level="parent"
-                    data-parent-handle="{{ parent.handle }}"
-                    data-has-children="{% if parent_has_children %}true{% else %}false{% endif %}"
-                    data-is-collection="{% if parent_is_collection %}true{% else %}false{% endif %}"
-                    {% if parent_is_collection %}
+                  class="nav-drawer-item"
+                  data-level="parent"
+                  data-parent-handle="{{ parent.handle }}"
+                  data-has-children="{% if parent_has_children %}true{% else %}false{% endif %}"
+                  data-is-collection="{% if parent_is_collection %}true{% else %}false{% endif %}"
+                  {% if parent_is_collection %}
                     data-collection-handle="{{ parent.object.handle }}"
-                    {% endif %}
+                  {% endif %}
                 >
-                    <a href="{{ parent.url }}" class="nav-drawer-link">
+                  <a href="{{ parent.url }}" class="nav-drawer-link">
                     {{ parent.title }}
-                    </a>
+                  </a>
                 </li>
-
-                {% endfor %}
+              {% endfor %}
             </ul>
-            </div>
+          </div>
 
-
-            <!-- ================= SECONDARY MENU ================= -->
-            <div class="secondary-menu-inner">
+          <!-- ================= SECONDARY MENU ================= -->
+          <div class="secondary-menu-inner">
             <ul class="nav-drawer-menu">
-                {% for link in linklists[section.settings.secondary_menu].links %}
+              {% for link in linklists[section.settings.secondary_menu].links %}
                 <li class="nav-drawer-item">
-                    <a href="{{ link.url }}" class="nav-drawer-link">
+                  <a href="{{ link.url }}" class="nav-drawer-link">
                     {{ link.title }}
-                    </a>
+                  </a>
                 </li>
-                {% endfor %}
+              {% endfor %}
             </ul>
+          </div>
+        </div>
+        <!-- ================= CHILD PANEL ================= -->
+        <div id="js-child-linklist" class="child-linklist element-hide">
+          <div class="child-linklist-inner">
+            <div class="child-linklist-header">
+              <button id="js-back-to-parent" class="back-to-parent-btn">
+                <span>{%- render 'theme-icon', icon: 'left-arrow' -%}</span>
+                <span class="text">Back</span>
+              </button>
+              <h4 class="child-linklist-title"></h4>
             </div>
-        </div>
-            <!-- ================= CHILD PANEL ================= -->
-    <div id="js-child-linklist" class="child-linklist element-hide">
-    <div class="child-linklist-inner">
-        <div class="child-linklist-header">
-        <button id="js-back-to-parent" class="back-to-parent-btn">
-            <span>{%- render 'theme-icon', icon: 'left-arrow' -%}</span>
-            <span class="text">Back</span>
-        </button>
-        <h4 class="child-linklist-title"></h4>
-        </div>
 
-        <ul class="child-menu">
-        {% for parent in linklists[section.settings.primary_menu].links %}
-            {% if parent.links.size > 0 %}
+            <ul class="child-menu">
+              {% for parent in linklists[section.settings.primary_menu].links %}
+                {% if parent.links.size > 0 %}
+                  {% assign parent_handle = parent.handle %}
 
-            {% assign parent_handle = parent.handle %}
+                  {% for child in parent.links %}
+                    {% assign child_has_children = false %}
+                    {% if child.links.size > 0 %}
+                      {% assign child_has_children = true %}
+                    {% endif %}
 
-            {% for child in parent.links %}
-
-                {% assign child_has_children = false %}
-                {% if child.links.size > 0 %}
-                {% assign child_has_children = true %}
-                {% endif %}
-
-                {% assign child_is_collection = false %}
-                {% if child.type == 'collection_link' %}
-                {% assign child_is_collection = true %}
-                {% endif %}
-
-                <li
-                class="child-menu-item"
-                data-parent="{{ parent_handle }}"
-                data-child-handle="{{ child.handle }}"
-                data-has-children="{% if child_has_children %}true{% else %}false{% endif %}"
-                data-is-collection="{% if child_is_collection %}true{% else %}false{% endif %}"
-                {% if child_is_collection %}
-                    data-collection-handle="{{ child.object.handle }}"
-                {% endif %}
-                >
-                <a href="{{ child.url }}">
-                    {{ child.title }}
-                </a>
-                </li>
-
-            {% endfor %}
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </div>
-    </div>
-
-
-
-    <!-- ================= GRAND CHILD PANEL ================= -->
-    <div id="js-grandchild-linklist" class="grandchild-linklist element-hide">
-    <div class="grandchild-linklist-inner">
-        <div class="grandchild-linklist-header">
-        <button id="js-back-to-child" class="back-to-child-btn">
-            <span>{%- render 'theme-icon', icon: 'left-arrow' -%}</span>
-            <span class="text">Back</span>
-        </button>
-        <h4 class="grandchild-linklist-title"></h4>
-        </div>
-
-        <ul class="grandchild-menu">
-        {% for parent in linklists[section.settings.primary_menu].links %}
-            {% if parent.links.size > 0 %}
-            {% for child in parent.links %}
-                {% if child.links.size > 0 %}
-
-                {% for grandchild in child.links %}
-
-                    {% assign grandchild_is_collection = false %}
-                    {% if grandchild.type == 'collection_link' %}
-                    {% assign grandchild_is_collection = true %}
+                    {% assign child_is_collection = false %}
+                    {% if child.type == 'collection_link' %}
+                      {% assign child_is_collection = true %}
                     {% endif %}
 
                     <li
-                    class="grandchild-menu-item"
-                    data-parent="{{ parent.handle }}"
-                    data-child="{{ child.handle }}"
-                    data-is-collection="{% if grandchild_is_collection %}true{% else %}false{% endif %}"
-                    {% if grandchild_is_collection %}
-                        data-collection-handle="{{ grandchild.object.handle }}"
-                    {% endif %}
+                      class="child-menu-item"
+                      data-parent="{{ parent_handle }}"
+                      data-child-handle="{{ child.handle }}"
+                      data-has-children="{% if child_has_children %}true{% else %}false{% endif %}"
+                      data-is-collection="{% if child_is_collection %}true{% else %}false{% endif %}"
+                      {% if child_is_collection %}
+                        data-collection-handle="{{ child.object.handle }}"
+                      {% endif %}
                     >
-                    <a href="{{ grandchild.url }}">
-                        {{ grandchild.title }}
-                    </a>
+                      <a href="{{ child.url }}">
+                        {{ child.title }}
+                      </a>
                     </li>
-
-                {% endfor %}
+                  {% endfor %}
                 {% endif %}
-            {% endfor %}
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </div>
-    </div>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
 
+        <!-- ================= GRAND CHILD PANEL ================= -->
+        <div id="js-grandchild-linklist" class="grandchild-linklist element-hide">
+          <div class="grandchild-linklist-inner">
+            <div class="grandchild-linklist-header">
+              <button id="js-back-to-child" class="back-to-child-btn">
+                <span>{%- render 'theme-icon', icon: 'left-arrow' -%}</span>
+                <span class="text">Back</span>
+              </button>
+              <h4 class="grandchild-linklist-title"></h4>
+            </div>
 
+            <ul class="grandchild-menu">
+              {% for parent in linklists[section.settings.primary_menu].links %}
+                {% if parent.links.size > 0 %}
+                  {% for child in parent.links %}
+                    {% if child.links.size > 0 %}
+                      {% for grandchild in child.links %}
+                        {% assign grandchild_is_collection = false %}
+                        {% if grandchild.type == 'collection_link' %}
+                          {% assign grandchild_is_collection = true %}
+                        {% endif %}
 
-  <!-- ================= COLLECTION PRODUCTS PANEL ================= -->
-  <div id="js-collections" class="collections-productlist element-hide">
-    <div class="collections-productlist-inner">
-      <div class="collections-productlist-header">
-        <button id="js-back-to-collections" class="back-to-collections-btn">
-            <span>{%- render 'theme-icon', icon: 'left-arrow' -%}</span>
-            <span class="text">Back</span>
-        </button>
-        <h4 class="collections-productlist-title"></h4>
-      </div>
+                        <li
+                          class="grandchild-menu-item"
+                          data-parent="{{ parent.handle }}"
+                          data-child="{{ child.handle }}"
+                          data-is-collection="{% if grandchild_is_collection %}true{% else %}false{% endif %}"
+                          {% if grandchild_is_collection %}
+                            data-collection-handle="{{ grandchild.object.handle }}"
+                          {% endif %}
+                        >
+                          <a href="{{ grandchild.url }}">
+                            {{ grandchild.title }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
 
-      <div id="CollectionProducts"></div>
-      <div class="collection-product-loader loader"></div>
-    </div>
-  </div>
+        <!-- ================= COLLECTION PRODUCTS PANEL ================= -->
+        <div id="js-collections" class="collections-productlist element-hide">
+          <div class="collections-productlist-inner">
+            <div class="collections-productlist-header">
+              <button id="js-back-to-collections" class="back-to-collections-btn">
+                <span>{%- render 'theme-icon', icon: 'left-arrow' -%}</span>
+                <span class="text">Back</span>
+              </button>
+              <h4 class="collections-productlist-title"></h4>
+            </div>
 
-
+            <div id="CollectionProducts"></div>
+            <div class="collection-product-loader loader"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
