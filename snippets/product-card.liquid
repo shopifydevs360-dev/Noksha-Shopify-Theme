@@ -26,6 +26,16 @@
     if rating_value != blank
       assign rating_percentage = rating_value_number | times: 100.0 | divided_by: rating_scale_max
     endif
+
+    assign tax_rate_percent = settings.product_tax_rate | default: 15 | plus: 0
+    assign tax_multiplier = tax_rate_percent | divided_by: 100.0 | plus: 1.0
+
+    assign display_price_incl_tax = product.price
+    assign display_price_excl_tax = product.price
+
+    if tax_multiplier > 0
+      assign display_price_excl_tax = product.price | divided_by: tax_multiplier
+    endif
   %}
 
   <div
@@ -162,9 +172,32 @@
         <span class="title">
           <a href="{{ product.url }}">{{ product.title }}</a>
         </span>
-        <p class="price">
-          {{ product.price | money }}
-        </p>
+
+        <div class="price-block">
+          {% case settings.price_display_type %}
+            {% when 'including_tax' %}
+              <p class="price price--including-tax">
+                {{ display_price_incl_tax | money }}
+              </p>
+
+            {% when 'excluding_tax' %}
+              <p class="price price--excluding-tax">
+                {{ display_price_excl_tax | money }}
+              </p>
+
+            {% when 'both' %}
+              <div class="price price--both">
+                <span class="price-line price-line--including">
+                  {{ display_price_incl_tax | money }}
+                  <small>Incl. tax</small>
+                </span>
+                <span class="price-line price-line--excluding">
+                  {{ display_price_excl_tax | money }}
+                  <small>Excl. tax</small>
+                </span>
+              </div>
+          {% endcase %}
+        </div>
       </div>
 
       {% if rating_value != blank and rating_count_number > 0 %}
@@ -206,6 +239,32 @@
 </style>
 {% endif %}
 
+<style>
+  .product-card .price-block {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .product-card .price--both {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    line-height: 1.2;
+  }
+
+  .product-card .price-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .product-card .price-line small {
+    font-size: 0.72em;
+    opacity: 0.7;
+  }
+</style>
 {% stylesheet %}
 .product-card .image-wrap {
   display: block;
