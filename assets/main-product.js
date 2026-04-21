@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =================================
-   VARIANT PRICE UPDATE
+   VARIANT PRICE UPDATE (EXTENDED)
 ================================= */
 function initVariantPriceUpdate() {
   const root = document.querySelector('.main-product');
@@ -36,7 +36,7 @@ function initVariantPriceUpdate() {
   form.addEventListener('change', () => {
     const selectedOptions = [];
 
-    form.querySelectorAll('.variant-group').forEach((group) => {
+    form.querySelectorAll('.variant-group').forEach(group => {
       const checked = group.querySelector('input[type="radio"]:checked');
       const select = group.querySelector('select');
 
@@ -47,7 +47,7 @@ function initVariantPriceUpdate() {
       }
     });
 
-    const variant = window.product?.variants?.find((v) =>
+    const variant = window.product?.variants?.find(v =>
       v.options.every((opt, i) => opt === selectedOptions[i])
     );
 
@@ -63,19 +63,19 @@ function initVariantPriceUpdate() {
   });
 
   function togglePrice(variantId) {
-    priceItems.forEach((item) => {
+    priceItems.forEach(item => {
       if (item.dataset.variantId === String(variantId)) {
-        item.classList.remove('hide');
+        item.classList.remove('hide-price');
         item.classList.add('show-price');
       } else {
-        item.classList.add('hide');
+        item.classList.add('hide-price');
         item.classList.remove('show-price');
       }
     });
   }
 
   function toggleStockUI(variantId) {
-    const variant = window.product?.variants?.find((v) => v.id == variantId);
+    const variant = window.product?.variants?.find(v => v.id == variantId);
     if (!variant) return;
 
     if (variant.available) {
@@ -103,7 +103,7 @@ function initVariantButtonState() {
   function getSelectedOptions() {
     const options = [];
 
-    variantGroups.forEach((group) => {
+    variantGroups.forEach(group => {
       const checked = group.querySelector('input[type="radio"]:checked');
       const select = group.querySelector('select');
 
@@ -118,7 +118,7 @@ function initVariantButtonState() {
   }
 
   function updateCheckedState() {
-    document.querySelectorAll('.variant-btn').forEach((btn) => {
+    document.querySelectorAll('.variant-btn').forEach(btn => {
       const input = btn.querySelector('input[type="radio"]');
       btn.classList.toggle('checked', input && input.checked);
     });
@@ -127,10 +127,10 @@ function initVariantButtonState() {
   function updateStockState() {
     const selectedOptions = getSelectedOptions();
 
-    variantGroups.forEach((group) => {
+    variantGroups.forEach(group => {
       const optionIndex = parseInt(group.dataset.optionIndex, 10);
 
-      group.querySelectorAll('.variant-btn').forEach((btn) => {
+      group.querySelectorAll('.variant-btn').forEach(btn => {
         const input = btn.querySelector('input[type="radio"]');
         if (!input) return;
 
@@ -139,7 +139,7 @@ function initVariantButtonState() {
         const testOptions = [...selectedOptions];
         testOptions[optionIndex] = input.value;
 
-        const match = productData.variants.find((v) =>
+        const match = productData.variants.find(v =>
           v.options.every((opt, i) => opt === testOptions[i])
         );
 
@@ -153,11 +153,8 @@ function initVariantButtonState() {
   updateCheckedState();
   updateStockState();
 
-  document.addEventListener('change', (e) => {
-    if (
-      e.target.matches('.variant-btn input') ||
-      e.target.matches('.variant-group select')
-    ) {
+  document.addEventListener('change', e => {
+    if (e.target.matches('.variant-btn input') || e.target.matches('.variant-group select')) {
       updateCheckedState();
       updateStockState();
     }
@@ -178,9 +175,8 @@ function initMainProductCart() {
   if (!form || !actions || !variantInput) return;
 
   const behavior = actions.dataset.cartBehavior;
-  const addToCartBtn = form.querySelector('[data-role="add-to-cart"]');
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', e => {
     e.preventDefault();
 
     if (behavior === 'redirect') {
@@ -188,79 +184,42 @@ function initMainProductCart() {
       return;
     }
 
-    if (!addToCartBtn || addToCartBtn.disabled) {
+    if (form.querySelector('[data-role="add-to-cart"]').disabled) {
       return;
     }
 
     const formData = new FormData(form);
 
-    try {
-      addToCartBtn.disabled = true;
+    fetch('/cart/add.js', {
+      method: 'POST',
+      body: formData
+    })
+      .then(res => res.json())
+      .then(() => {
+        refreshAllCartsUI();
 
-      const response = await fetch('/cart/add.js', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add item to cart');
-      }
-
-      await response.json();
-
-      if (typeof refreshAllCartsUI === 'function') {
-        await refreshAllCartsUI();
-      }
-
-      if (behavior === 'ajax_drawer') {
-        await waitForNextFrame();
-
-        const bagDrawerTrigger = document.querySelector(
-          '[data-trigger-section="bag-drawer"]'
-        );
-
-        if (bagDrawerTrigger) {
-          bagDrawerTrigger.click();
+        if (behavior === 'ajax_drawer') {
+          openBagDrawer();
         }
-
-        await waitForNextFrame();
-
-        if (typeof refreshAllCartsUI === 'function') {
-          await refreshAllCartsUI();
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      const currentVariant = window.product?.variants?.find(
-        (v) => String(v.id) === String(variantInput.value)
-      );
-      addToCartBtn.disabled = currentVariant ? !currentVariant.available : false;
-    }
+      })
+      .catch(err => console.error(err));
   });
 
   const buyNowBtn = root.querySelector('.btn-buy-now');
   if (buyNowBtn) {
-    buyNowBtn.addEventListener('click', async () => {
+    buyNowBtn.addEventListener('click', () => {
       if (buyNowBtn.classList.contains('hide')) return;
 
       const formData = new FormData(form);
 
-      try {
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to add item to cart for checkout');
-        }
-
-        await response.json();
-        window.location.href = '/checkout';
-      } catch (err) {
-        console.error(err);
-      }
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+        .then(() => {
+          window.location.href = '/checkout';
+        })
+        .catch(err => console.error(err));
     });
   }
 }
@@ -269,12 +228,12 @@ function initMainProductCart() {
    QUANTITY DROPDOWN
 ================================= */
 function initQuantityDropdown() {
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const dropdown = e.target.closest('[data-qty-dropdown]');
     const toggle = e.target.closest('[data-qty-toggle]');
     const item = e.target.closest('.qty-item');
 
-    document.querySelectorAll('.quantity-dropdown').forEach((d) => {
+    document.querySelectorAll('.quantity-dropdown').forEach(d => {
       if (d !== dropdown) d.classList.remove('is-open');
     });
 
@@ -293,7 +252,7 @@ function initQuantityDropdown() {
       if (input) input.value = value;
       if (label) label.textContent = item.textContent;
 
-      container.querySelectorAll('.qty-item').forEach((i) => {
+      container.querySelectorAll('.qty-item').forEach(i => {
         i.classList.remove('is-selected');
       });
 
@@ -307,7 +266,7 @@ function initQuantityDropdown() {
    QUANTITY BUTTONS (PLUS / MINUS)
 ================================= */
 function initQuantityButtons() {
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const minusBtn = e.target.closest('.qty-minus');
     const plusBtn = e.target.closest('.qty-plus');
 
@@ -340,14 +299,14 @@ function initQuantityButtons() {
 function initVariantSelectedLabelUpdate() {
   const variantGroups = document.querySelectorAll('.variant-group');
 
-  variantGroups.forEach((group) => {
+  variantGroups.forEach(group => {
     const selectedValueEl = group.querySelector('[data-selected-value]');
     if (!selectedValueEl) return;
 
     const radios = group.querySelectorAll('input[type="radio"]');
     const select = group.querySelector('select');
 
-    radios.forEach((radio) => {
+    radios.forEach(radio => {
       radio.addEventListener('change', function () {
         if (this.checked) {
           selectedValueEl.textContent = this.value;
@@ -360,16 +319,5 @@ function initVariantSelectedLabelUpdate() {
         selectedValueEl.textContent = this.value;
       });
     }
-  });
-}
-
-/* =================================
-   HELPERS
-================================= */
-function waitForNextFrame() {
-  return new Promise((resolve) => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(resolve);
-    });
   });
 }
