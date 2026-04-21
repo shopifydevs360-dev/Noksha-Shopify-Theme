@@ -1055,6 +1055,10 @@
             "label": "Single price with tax label"
           },
           {
+            "value": "single_price_without_tax",
+            "label": "Single price without tax"
+          },
+          {
             "value": "price_with_and_without_tax",
             "label": "Show price with and without tax"
           }
@@ -1070,7 +1074,7 @@
         "step": 1,
         "unit": "%",
         "default": 15,
-        "info": "Used only for the 'Show price with and without tax' option."
+        "info": "Used for 'Single price without tax' and 'Show price with and without tax' options."
       }
     ]
   },
