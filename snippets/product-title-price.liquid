@@ -1,4 +1,5 @@
 {% liquid
+  assign enable_price_display_mode = settings.enable_product_price_display_mode
   assign tax_display_mode = settings.product_price_tax_display_mode | default: 'single_price'
   assign manual_tax_rate = settings.product_manual_tax_rate | plus: 0
   assign tax_multiplier = manual_tax_rate | divided_by: 100.0 | plus: 1.0
@@ -35,57 +36,9 @@
         class="variant-price-item {{ block.settings.price_font_size }}{% unless variant.id == selected_variant_id %} hide{% endunless %}"
         data-variant-id="{{ variant.id }}"
       >
-        {% case tax_display_mode %}
-          {% when 'single_price' %}
-            {% if variant.compare_at_price > variant.price %}
-              <span class="price price--sale">{{ variant.price | money }}</span>
-              <span class="price price--compare">{{ variant.compare_at_price | money }}</span>
-            {% else %}
-              <span class="price price--regular">{{ variant.price | money }}</span>
-            {% endif %}
-
-          {% when 'single_price_with_tax_label' %}
-            {% if variant.compare_at_price > variant.price %}
-              <span class="price price--sale">{{ variant.price | money }}</span>
-              <span class="price price--compare">{{ variant.compare_at_price | money }}</span>
-            {% else %}
-              <span class="price price--regular">{{ variant.price | money }}</span>
-            {% endif %}
-
-            {% if cart.taxes_included %}
-              <span class="product-price-tax-label">Incl. tax</span>
-            {% else %}
-              <span class="product-price-tax-label">Excl. tax</span>
-            {% endif %}
-
-          {% when 'single_price_without_tax' %}
-            {% if variant.compare_at_price > variant.price %}
-              <span class="price price--sale">
-                {% if variant_tax_exclusive_price != blank %}
-                  {{ variant_tax_exclusive_price | money }}
-                {% else %}
-                  {{ variant.price | money }}
-                {% endif %}
-              </span>
-              <span class="price price--compare">
-                {% if variant_compare_tax_exclusive_price != blank %}
-                  {{ variant_compare_tax_exclusive_price | money }}
-                {% else %}
-                  {{ variant.compare_at_price | money }}
-                {% endif %}
-              </span>
-            {% else %}
-              <span class="price price--regular">
-                {% if variant_tax_exclusive_price != blank %}
-                  {{ variant_tax_exclusive_price | money }}
-                {% else %}
-                  {{ variant.price | money }}
-                {% endif %}
-              </span>
-            {% endif %}
-
-          {% when 'price_with_and_without_tax' %}
-            <div class="product-page-price-group">
+        {% if enable_price_display_mode %}
+          {% case tax_display_mode %}
+            {% when 'single_price' %}
               {% if variant.compare_at_price > variant.price %}
                 <span class="price price--sale">{{ variant.price | money }}</span>
                 <span class="price price--compare">{{ variant.compare_at_price | money }}</span>
@@ -93,26 +46,83 @@
                 <span class="price price--regular">{{ variant.price | money }}</span>
               {% endif %}
 
-              <span class="product-price-tax-label">Incl. tax</span>
+            {% when 'single_price_with_tax_label' %}
+              {% if variant.compare_at_price > variant.price %}
+                <span class="price price--sale">{{ variant.price | money }}</span>
+                <span class="price price--compare">{{ variant.compare_at_price | money }}</span>
+              {% else %}
+                <span class="price price--regular">{{ variant.price | money }}</span>
+              {% endif %}
 
-              {% if variant_tax_exclusive_price != blank %}
-                {% if variant.compare_at_price > variant.price %}
-                  <span class="price price--sale-secondary">{{ variant_tax_exclusive_price | money }}</span>
-                  {% if variant_compare_tax_exclusive_price != blank %}
-                    <span class="price price--compare secondary-compare-price">
-                      {{ variant_compare_tax_exclusive_price | money }}
-                    </span>
-                  {% endif %}
-                {% else %}
-                  <span class="price price--regular secondary-price">
-                    {{ variant_tax_exclusive_price | money }}
-                  </span>
-                {% endif %}
-
+              {% if cart.taxes_included %}
+                <span class="product-price-tax-label">Incl. tax</span>
+              {% else %}
                 <span class="product-price-tax-label">Excl. tax</span>
               {% endif %}
-            </div>
-        {% endcase %}
+
+            {% when 'single_price_without_tax' %}
+              {% if variant.compare_at_price > variant.price %}
+                <span class="price price--sale">
+                  {% if variant_tax_exclusive_price != blank %}
+                    {{ variant_tax_exclusive_price | money }}
+                  {% else %}
+                    {{ variant.price | money }}
+                  {% endif %}
+                </span>
+                <span class="price price--compare">
+                  {% if variant_compare_tax_exclusive_price != blank %}
+                    {{ variant_compare_tax_exclusive_price | money }}
+                  {% else %}
+                    {{ variant.compare_at_price | money }}
+                  {% endif %}
+                </span>
+              {% else %}
+                <span class="price price--regular">
+                  {% if variant_tax_exclusive_price != blank %}
+                    {{ variant_tax_exclusive_price | money }}
+                  {% else %}
+                    {{ variant.price | money }}
+                  {% endif %}
+                </span>
+              {% endif %}
+
+            {% when 'price_with_and_without_tax' %}
+              <div class="product-page-price-group">
+                {% if variant.compare_at_price > variant.price %}
+                  <span class="price price--sale">{{ variant.price | money }}</span>
+                  <span class="price price--compare">{{ variant.compare_at_price | money }}</span>
+                {% else %}
+                  <span class="price price--regular">{{ variant.price | money }}</span>
+                {% endif %}
+
+                <span class="product-price-tax-label">Incl. tax</span>
+
+                {% if variant_tax_exclusive_price != blank %}
+                  {% if variant.compare_at_price > variant.price %}
+                    <span class="price price--sale-secondary">{{ variant_tax_exclusive_price | money }}</span>
+                    {% if variant_compare_tax_exclusive_price != blank %}
+                      <span class="price price--compare secondary-compare-price">
+                        {{ variant_compare_tax_exclusive_price | money }}
+                      </span>
+                    {% endif %}
+                  {% else %}
+                    <span class="price price--regular secondary-price">
+                      {{ variant_tax_exclusive_price | money }}
+                    </span>
+                  {% endif %}
+
+                  <span class="product-price-tax-label">Excl. tax</span>
+                {% endif %}
+              </div>
+          {% endcase %}
+        {% else %}
+          {% if variant.compare_at_price > variant.price %}
+            <span class="price price--sale">{{ variant.price | money }}</span>
+            <span class="price price--compare">{{ variant.compare_at_price | money }}</span>
+          {% else %}
+            <span class="price price--regular">{{ variant.price | money }}</span>
+          {% endif %}
+        {% endif %}
       </div>
     {% endfor %}
   </div>
