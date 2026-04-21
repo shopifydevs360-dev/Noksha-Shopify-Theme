@@ -1,34 +1,96 @@
-<div class="cart-item" data-key="{{ item.key }}" data-product="{{ item.product.id }}" data-variant="{{ item.variant.id }}" data-quantity="{{ item.quantity }}">
-
-    <div class="cart-item-image">
-    <a href="{{ item.url }}">
-        {{ item.image | image_url: width: 200 | image_tag }}
+<div
+  class="cart-item"
+  data-key="{{ item.key }}"
+  data-product="{{ item.product.id }}"
+  data-variant="{{ item.variant.id }}"
+  data-quantity="{{ item.quantity }}"
+>
+  <div class="cart-item-image">
+    <a href="{{ item.url }}" aria-label="{{ item.product.title | escape }}">
+      {% if item.image %}
+        {{
+          item.image
+          | image_url: width: 200
+          | image_tag:
+            loading: 'lazy',
+            widths: '120,160,200,260,320',
+            alt: item.product.title
+        }}
+      {% else %}
+        {%- render 'theme-icon', icon: 'default-image' -%}
+      {% endif %}
     </a>
-    </div>
+  </div>
 
-    <div class="cart-item-info">
+  <div class="cart-item-info">
     <div class="info-left">
-        <a href="{{ item.url }}" class="cart-item-title">
+      <a href="{{ item.url }}" class="cart-item-title">
         {{ item.product.title }}
-        </a>
-        {% if item.variant.title != 'Default Title' %}
+      </a>
+
+      {% if item.variant.title != 'Default Title' and item.variant.title != blank %}
         <p class="cart-item-variant">{{ item.variant.title }}</p>
-        {% endif %}
-        <div class="cart-item-qty">
-        <button type="button" class="qty-btn qty-minus">−</button>
-        <input type="number" name="updates[]" value="{{ item.quantity }}" min="1">
-        <button type="button" class="qty-btn qty-plus">+</button>
+      {% endif %}
+
+      {% if item.properties.size > 0 %}
+        <div class="cart-item-properties">
+          {% for property in item.properties %}
+            {% assign first_char = property.first | slice: 0 %}
+            {% unless property.last == blank or first_char == '_' %}
+              <p class="cart-item-property">
+                <span>{{ property.first }}:</span>
+                <span>
+                  {% if property.last contains '/uploads/' %}
+                    <a href="{{ property.last }}" target="_blank" rel="noopener">
+                      {{ property.last | split: '/' | last }}
+                    </a>
+                  {% else %}
+                    {{ property.last }}
+                  {% endif %}
+                </span>
+              </p>
+            {% endunless %}
+          {% endfor %}
         </div>
+      {% endif %}
+
+      <div class="cart-item-qty">
+        <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
+        <input
+          type="number"
+          name="updates[]"
+          value="{{ item.quantity }}"
+          min="1"
+          aria-label="Quantity for {{ item.product.title | escape }}"
+        >
+        <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+      </div>
     </div>
 
     <div class="info-right">
-        <p class="cart-item-price">
+      <p class="cart-item-price">
         {{ item.final_line_price | money }}
-        </p>
-        <button type="button" class="cart-item-remove">
-        Remove
-        </button>
-    </div>
-    </div>
+      </p>
 
+      {% if item.original_line_price > item.final_line_price %}
+        <p class="cart-item-price-compare">
+          {{ item.original_line_price | money }}
+        </p>
+      {% endif %}
+
+      {% if item.line_level_discount_allocations.size > 0 %}
+        <div class="cart-item-discounts">
+          {% for discount_allocation in item.line_level_discount_allocations %}
+            <p class="cart-item-discount">
+              {{ discount_allocation.discount_application.title }}
+            </p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <button type="button" class="cart-item-remove" aria-label="Remove {{ item.product.title | escape }}">
+        Remove
+      </button>
+    </div>
+  </div>
 </div>
