@@ -125,6 +125,18 @@
           <div class="variants-outer-wrapper">
             <div class="card-variants-wrapper">
               {% for variant in product.variants %}
+                {% liquid
+                  assign card_variant_display_price = variant.price
+
+                  if enable_price_display_mode and tax_display_mode == 'single_price_without_tax' and manual_tax_rate > 0
+                    if cart.taxes_included
+                      assign card_variant_display_price = variant.price | divided_by: tax_multiplier
+                    else
+                      assign card_variant_display_price = variant.price
+                    endif
+                  endif
+                %}
+
                 <button
                   type="button"
                   class="card-variant-btn {% unless variant.available %} disabled{% endunless %}"
@@ -134,7 +146,7 @@
                   {% endunless %}
                 >
                   <span>{{ variant.title }}</span>
-                  <span>{{ variant.price | money }}</span>
+                  <span>{{ card_variant_display_price | money }}</span>
                 </button>
               {% endfor %}
             </div>
