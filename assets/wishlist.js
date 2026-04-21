@@ -160,8 +160,6 @@ function updateWishlistCount() {
 
   countElements.forEach((element) => {
     element.textContent = count;
-
-    // Always show count (even 0)
     element.classList.remove('hide');
   });
 }
@@ -329,21 +327,33 @@ function fetchWishlistProduct(item) {
       return response.json();
     })
     .then((product) => {
+      const displayPrices = getWishlistDisplayPrices(product.price);
+
       return {
         id: product.id || item.id,
         title: product.title || item.title || '',
         url: product.url || item.url || '#',
-        price: formatMoney(product.price),
+        price: displayPrices.main,
+        secondaryPrice: displayPrices.secondary,
+        showTaxIncludedLabel: displayPrices.showTaxIncludedLabel,
+        showTaxExcludedLabel: displayPrices.showTaxExcludedLabel,
         image: getWishlistProductImage(product, item)
       };
     })
     .catch((error) => {
       console.warn(error);
+
+      const fallbackPriceValue = parseStoredPriceToCents(item.price);
+      const displayPrices = getWishlistDisplayPrices(fallbackPriceValue);
+
       return {
         id: item.id || '',
         title: item.title || '',
         url: item.url || '#',
-        price: item.price || '',
+        price: displayPrices.main,
+        secondaryPrice: displayPrices.secondary,
+        showTaxIncludedLabel: displayPrices.showTaxIncludedLabel,
+        showTaxExcludedLabel: displayPrices.showTaxExcludedLabel,
         image: item.image || ''
       };
     });
@@ -391,6 +401,21 @@ function renderWishlistDrawerCard(product) {
       </div>
     `;
 
+  const mainTaxLabel = product.showTaxIncludedLabel
+    ? `<div class="wishlist-drawer__card-tax-label">Incl. tax</div>`
+    : product.showTaxExcludedLabel && !product.secondaryPrice
+      ? `<div class="wishlist-drawer__card-tax-label">Excl. tax</div>`
+      : '';
+
+  const secondaryMarkup = product.secondaryPrice
+    ? `
+      <div class="wishlist-drawer__card-price wishlist-drawer__card-price--secondary">
+        ${escapeHtml(product.secondaryPrice)}
+      </div>
+      <div class="wishlist-drawer__card-tax-label">Excl. tax</div>
+    `
+    : '';
+
   return `
     <div class="wishlist-drawer__card" data-wishlist-item="${escapeHtml(product.id)}">
       <button
@@ -415,12 +440,114 @@ function renderWishlistDrawerCard(product) {
           <a href="${escapeHtml(product.url)}">${escapeHtml(product.title)}</a>
         </h5>
 
-        <div class="wishlist-drawer__card-price">
-          ${escapeHtml(product.price)}
+        <div class="wishlist-drawer__card-price-wrap">
+          <div class="wishlist-drawer__card-price">
+            ${escapeHtml(product.price)}
+          </div>
+          ${mainTaxLabel}
+          ${secondaryMarkup}
         </div>
       </div>
     </div>
   `;
+}
+
+/* ======================================
+   PRICE DISPLAY HELPERS
+====================================== */
+function getThemePriceDisplaySettings() {
+  const settings = window.themePriceDisplaySettings || {};
+
+  return {
+    enabled: !!settings.enabled,
+    mode: settings.mode || 'single_price',
+    manualTaxRate: Number(settings.manualTaxRate || 0),
+    taxesIncluded: !!settings.taxesIncluded
+  };
+}
+
+function getWishlistDisplayPrices(priceInCents) {
+  const settings = getThemePriceDisplaySettings();
+
+  if (typeof priceInCents !== 'number' || Number.isNaN(priceInCents)) {
+    return {
+      main: '',
+      secondary: '',
+      showTaxIncludedLabel: false,
+      showTaxExcludedLabel: false
+    };
+  }
+
+  const mainPriceFormatted = formatMoney(priceInCents);
+
+  if (!settings.enabled) {
+    return {
+      main: mainPriceFormatted,
+      secondary: '',
+      showTaxIncludedLabel: false,
+      showTaxExcludedLabel: false
+    };
+  }
+
+  const taxMultiplier =
+    settings.manualTaxRate > 0 ? settings.manualTaxRate / 100 + 1 : 1;
+
+  const taxExclusiveCents =
+    settings.manualTaxRate > 0
+      ? settings.taxesIncluded
+        ? Math.round(priceInCents / taxMultiplier)
+        : priceInCents
+      : priceInCents;
+
+  switch (settings.mode) {
+    case 'single_price_with_tax_label':
+      return {
+        main: mainPriceFormatted,
+        secondary: '',
+        showTaxIncludedLabel: settings.taxesIncluded,
+        showTaxExcludedLabel: !settings.taxesIncluded
+      };
+
+    case 'single_price_without_tax':
+      return {
+        main: formatMoney(taxExclusiveCents),
+        secondary: '',
+        showTaxIncludedLabel: false,
+        showTaxExcludedLabel: false
+      };
+
+    case 'price_with_and_without_tax':
+      return {
+        main: mainPriceFormatted,
+        secondary: settings.manualTaxRate > 0 ? formatMoney(taxExclusiveCents) : '',
+        showTaxIncludedLabel: true,
+        showTaxExcludedLabel: settings.manualTaxRate <= 0 && !settings.taxesIncluded
+      };
+
+    case 'single_price':
+    default:
+      return {
+        main: mainPriceFormatted,
+        secondary: '',
+        showTaxIncludedLabel: false,
+        showTaxExcludedLabel: false
+      };
+  }
+}
+
+function parseStoredPriceToCents(value) {
+  if (typeof value === 'number') return value;
+
+  if (typeof value === 'string') {
+    const numericValue = value.replace(/[^0-9.-]/g, '');
+    const parsed = Number(numericValue);
+
+    if (!Number.isNaN(parsed)) {
+      return Math.round(parsed * 100);
+    }
+  }
+
+  return 0;
 }
 
 /* ======================================
