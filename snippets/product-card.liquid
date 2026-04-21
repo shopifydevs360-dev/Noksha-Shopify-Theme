@@ -34,8 +34,12 @@
     assign display_main_price = product.price
     assign display_tax_exclusive_price = blank
 
-    if tax_display_mode == 'price_with_and_without_tax' and cart.taxes_included and manual_tax_rate > 0
-      assign display_tax_exclusive_price = product.price | divided_by: tax_multiplier
+    if manual_tax_rate > 0
+      if cart.taxes_included
+        assign display_tax_exclusive_price = product.price | divided_by: tax_multiplier
+      else
+        assign display_tax_exclusive_price = product.price
+      endif
     endif
   %}
 
@@ -110,7 +114,6 @@
                 height="{{ hover_image.height }}"
               >
             {% endif %}
-
           {% else %}
             {%- render 'theme-icon', icon: 'default-image' -%}
           {% endif %}
@@ -197,6 +200,17 @@
                 {% endif %}
               </div>
 
+            {% when 'single_price_without_tax' %}
+              <div class="product-card-price-group">
+                <span class="price price--main">
+                  {% if display_tax_exclusive_price != blank %}
+                    {{ display_tax_exclusive_price | money }}
+                  {% else %}
+                    {{ display_main_price | money }}
+                  {% endif %}
+                </span>
+              </div>
+
             {% when 'price_with_and_without_tax' %}
               <div class="product-card-price-group">
                 <span class="price price--main">
@@ -225,8 +239,7 @@
             <span
               class="product-card__rating-stars-fill"
               style="width: {{ rating_percentage }}%;"
-              >★★★★★</span
-            >
+            >★★★★★</span>
           </div>
 
           <div class="product-card__rating-text">
