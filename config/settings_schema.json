@@ -999,18 +999,35 @@
         "label": "Button Showing",
         "info": "The add to cart/bag button will showing when you hover the product card",
         "default": true
-
       },
       {
-  "type": "header",
-  "content": "Price tax label"
-},
-{
-  "type": "checkbox",
-  "id": "show_price_tax_label",
-  "label": "Show tax label with price",
-  "default": true
-},
+        "type": "header",
+        "content": "Tax display"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_price_tax_label",
+        "label": "Show tax label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_tax_exclusive_price",
+        "label": "Show price excluding tax",
+        "default": false,
+        "info": "Enable only if your product prices include tax and you want to calculate tax-exclusive display price manually."
+      },
+      {
+        "type": "range",
+        "id": "manual_tax_rate",
+        "label": "Manual tax rate",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "%",
+        "default": 15,
+        "info": "Used only when tax-exclusive price is enabled."
+      },
       {
         "type": "header",
         "content": "Image"
