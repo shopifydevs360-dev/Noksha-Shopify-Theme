@@ -27,16 +27,15 @@
       assign rating_percentage = rating_value_number | times: 100.0 | divided_by: rating_scale_max
     endif
 
-    assign show_tax_label = settings.show_price_tax_label
-    assign enable_tax_exclusive_price = settings.enable_tax_exclusive_price
-    assign manual_tax_rate = settings.manual_tax_rate | plus: 0
+    assign tax_display_mode = settings.product_price_tax_display_mode | default: 'single_price'
+    assign manual_tax_rate = settings.product_manual_tax_rate | plus: 0
     assign tax_multiplier = manual_tax_rate | divided_by: 100.0 | plus: 1.0
 
     assign display_main_price = product.price
-    assign display_exclusive_price = blank
+    assign display_tax_exclusive_price = blank
 
-    if enable_tax_exclusive_price and cart.taxes_included and manual_tax_rate > 0
-      assign display_exclusive_price = product.price | divided_by: tax_multiplier
+    if tax_display_mode == 'price_with_and_without_tax' and cart.taxes_included and manual_tax_rate > 0
+      assign display_tax_exclusive_price = product.price | divided_by: tax_multiplier
     endif
   %}
 
@@ -176,43 +175,42 @@
         </span>
 
         <div class="product-card-price-wrap">
-          {% if display_exclusive_price != blank %}
-            <div class="product-card-price-group">
-              <span class="price price--main">
-                {{ display_main_price | money }}
-              </span>
-
-              {% if show_tax_label %}
-                <span class="product-card-tax-label">
-                  Incl. tax
+          {% case tax_display_mode %}
+            {% when 'single_price' %}
+              <div class="product-card-price-group">
+                <span class="price price--main">
+                  {{ display_main_price | money }}
                 </span>
-              {% endif %}
+              </div>
 
-              <span class="price price--tax-exclusive">
-                {{ display_exclusive_price | money }}
-              </span>
-
-              {% if show_tax_label %}
-                <span class="product-card-tax-label">
-                  Excl. tax
+            {% when 'single_price_with_tax_label' %}
+              <div class="product-card-price-group">
+                <span class="price price--main">
+                  {{ display_main_price | money }}
                 </span>
-              {% endif %}
-            </div>
-          {% else %}
-            <div class="product-card-price-group">
-              <span class="price price--main">
-                {{ display_main_price | money }}
-              </span>
 
-              {% if show_tax_label %}
                 {% if cart.taxes_included %}
                   <span class="product-card-tax-label">Incl. tax</span>
                 {% else %}
                   <span class="product-card-tax-label">Excl. tax</span>
                 {% endif %}
-              {% endif %}
-            </div>
-          {% endif %}
+              </div>
+
+            {% when 'price_with_and_without_tax' %}
+              <div class="product-card-price-group">
+                <span class="price price--main">
+                  {{ display_main_price | money }}
+                </span>
+                <span class="product-card-tax-label">Incl. tax</span>
+
+                {% if display_tax_exclusive_price != blank %}
+                  <span class="price price--tax-exclusive">
+                    {{ display_tax_exclusive_price | money }}
+                  </span>
+                  <span class="product-card-tax-label">Excl. tax</span>
+                {% endif %}
+              </div>
+          {% endcase %}
         </div>
       </div>
 
@@ -244,7 +242,7 @@
     @media screen and (min-width: 991px) {
       .product-card .image-wrap:hover .hover-img {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+        transform: translate(-50%,-50%) scale(1);
       }
 
       .product-card .cart-button-wrapper {
@@ -266,8 +264,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.1rem;
-    line-height: 1.2;
+    gap: 0.12rem;
+    line-height: 1.15;
   }
 
   .product-card-tax-label {
@@ -277,7 +275,7 @@
   }
 
   .product-card .price--tax-exclusive {
-    opacity: 0.9;
+    opacity: 0.92;
   }
 </style>
 {% stylesheet %}
