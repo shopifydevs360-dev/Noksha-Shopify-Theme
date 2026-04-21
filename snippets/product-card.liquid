@@ -27,6 +27,7 @@
       assign rating_percentage = rating_value_number | times: 100.0 | divided_by: rating_scale_max
     endif
 
+    assign enable_price_display_mode = settings.enable_product_price_display_mode
     assign tax_display_mode = settings.product_price_tax_display_mode | default: 'single_price'
     assign manual_tax_rate = settings.product_manual_tax_rate | plus: 0
     assign tax_multiplier = manual_tax_rate | divided_by: 100.0 | plus: 1.0
@@ -73,7 +74,6 @@
 
       <a href="{{ product.url }}" aria-label="{{ product.title }}">
         <div class="cropped-image-wrapper {{ settings.aspect_ratio }} is-hover-zoom-out">
-          <!-- ================= PRIMARY IMAGE ================= -->
           {% if product.featured_image %}
             <img
               srcset="
@@ -93,7 +93,6 @@
               height="{{ product.featured_image.height }}"
             >
 
-            <!-- ================= HOVER IMAGE ================= -->
             {% if product.images.size > 1 %}
               {% assign hover_image = product.images[1] %}
               <img
@@ -179,53 +178,61 @@
         </span>
 
         <div class="product-card-price-wrap">
-          {% case tax_display_mode %}
-            {% when 'single_price' %}
-              <div class="product-card-price-group">
-                <span class="price price--main">
-                  {{ display_main_price | money }}
-                </span>
-              </div>
-
-            {% when 'single_price_with_tax_label' %}
-              <div class="product-card-price-group">
-                <span class="price price--main">
-                  {{ display_main_price | money }}
-                </span>
-
-                {% if cart.taxes_included %}
-                  <span class="product-card-tax-label">Incl. tax</span>
-                {% else %}
-                  <span class="product-card-tax-label">Excl. tax</span>
-                {% endif %}
-              </div>
-
-            {% when 'single_price_without_tax' %}
-              <div class="product-card-price-group">
-                <span class="price price--main">
-                  {% if display_tax_exclusive_price != blank %}
-                    {{ display_tax_exclusive_price | money }}
-                  {% else %}
+          {% if enable_price_display_mode %}
+            {% case tax_display_mode %}
+              {% when 'single_price' %}
+                <div class="product-card-price-group">
+                  <span class="price price--main">
                     {{ display_main_price | money }}
-                  {% endif %}
-                </span>
-              </div>
-
-            {% when 'price_with_and_without_tax' %}
-              <div class="product-card-price-group">
-                <span class="price price--main">
-                  {{ display_main_price | money }}
-                </span>
-                <span class="product-card-tax-label">Incl. tax</span>
-
-                {% if display_tax_exclusive_price != blank %}
-                  <span class="price price--tax-exclusive">
-                    {{ display_tax_exclusive_price | money }}
                   </span>
-                  <span class="product-card-tax-label">Excl. tax</span>
-                {% endif %}
-              </div>
-          {% endcase %}
+                </div>
+
+              {% when 'single_price_with_tax_label' %}
+                <div class="product-card-price-group">
+                  <span class="price price--main">
+                    {{ display_main_price | money }}
+                  </span>
+
+                  {% if cart.taxes_included %}
+                    <span class="product-card-tax-label">Incl. tax</span>
+                  {% else %}
+                    <span class="product-card-tax-label">Excl. tax</span>
+                  {% endif %}
+                </div>
+
+              {% when 'single_price_without_tax' %}
+                <div class="product-card-price-group">
+                  <span class="price price--main">
+                    {% if display_tax_exclusive_price != blank %}
+                      {{ display_tax_exclusive_price | money }}
+                    {% else %}
+                      {{ display_main_price | money }}
+                    {% endif %}
+                  </span>
+                </div>
+
+              {% when 'price_with_and_without_tax' %}
+                <div class="product-card-price-group">
+                  <span class="price price--main">
+                    {{ display_main_price | money }}
+                  </span>
+                  <span class="product-card-tax-label">Incl. tax</span>
+
+                  {% if display_tax_exclusive_price != blank %}
+                    <span class="price price--tax-exclusive">
+                      {{ display_tax_exclusive_price | money }}
+                    </span>
+                    <span class="product-card-tax-label">Excl. tax</span>
+                  {% endif %}
+                </div>
+            {% endcase %}
+          {% else %}
+            <div class="product-card-price-group">
+              <span class="price price--main">
+                {{ product.price | money }}
+              </span>
+            </div>
+          {% endif %}
         </div>
       </div>
 
@@ -257,7 +264,7 @@
     @media screen and (min-width: 991px) {
       .product-card .image-wrap:hover .hover-img {
         opacity: 1;
-        transform: translate(-50%,-50%) scale(1);
+        transform: translate(-50%, -50%) scale(1);
       }
 
       .product-card .cart-button-wrapper {
