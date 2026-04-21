@@ -10,15 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
 ============================ */
 function initCartAjax() {
   window.updateCartAjax = function (updates) {
-    fetch("/cart/update.js", {
+    return fetch("/cart/update.js", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ updates }),
     })
       .then((res) => res.json())
       .then((cart) => {
-        renderAllCarts(cart);
-        updateCartCount();
+        return renderAllCarts(cart).then(() => {
+          if (typeof updateCartCount === "function") {
+            updateCartCount();
+          }
+          return cart;
+        });
       });
   };
 }
@@ -27,25 +31,29 @@ function initCartAjax() {
    RENDER ALL CARTS
 ============================ */
 function renderAllCarts(cart) {
-  document.querySelectorAll("[data-cart-root]").forEach((root) => {
-    renderSingleCart(cart, root);
-  });
+  const roots = document.querySelectorAll("[data-cart-root]");
+  return Promise.all(
+    Array.from(roots).map((root) => renderSingleCart(cart, root))
+  );
 }
 
 /* ============================
    RENDER SINGLE CART
 ============================ */
-function renderSingleCart(cart, root) {
+async function renderSingleCart(cart, root) {
+  const domItems = root.querySelectorAll(".cart-item").length;
+  const needsRefreshList = cart.items.length !== domItems;
+
   updateSubtotal(cart, root);
   updateFreeShipping(cart, root);
   updateDiscountProgress(cart, root);
+
+  if (needsRefreshList) {
+    await refreshCartItemList(root);
+  }
+
   updateLineItems(cart, root);
   removeDeletedItems(cart, root);
-
-  const domItems = root.querySelectorAll(".cart-item").length;
-  if (cart.items.length > domItems) {
-    refreshCartItemList(root);
-  }
 }
 
 /* ============================
@@ -227,9 +235,12 @@ function updateLineItems(cart, root) {
     const row = root.querySelector(`.cart-item[data-key="${item.key}"]`);
     if (!row) return;
 
+    const infoRight = row.querySelector(".info-right");
     const priceEl = row.querySelector(".cart-item-price");
     const comparePriceEl = row.querySelector(".cart-item-price-compare");
     const qtyInput = row.querySelector("input");
+
+    if (!infoRight || !priceEl) return;
 
     const mainPrice = getDisplayPrice(item.final_line_price);
     const secondaryPrice = getSecondaryPrice(item.final_line_price);
@@ -239,9 +250,7 @@ function updateLineItems(cart, root) {
         ? getDisplayPrice(item.original_line_price)
         : null;
 
-    if (priceEl) {
-      priceEl.textContent = formatMoney(mainPrice);
-    }
+    priceEl.textContent = formatMoney(mainPrice);
 
     if (qtyInput) {
       qtyInput.value = item.quantity;
@@ -251,9 +260,6 @@ function updateLineItems(cart, root) {
       comparePriceEl.textContent = formatMoney(compareMainPrice);
     }
 
-    const infoRight = row.querySelector(".info-right");
-    if (!infoRight) return;
-
     if (!settings.enabled) {
       removeElement(infoRight, ".cart-item-tax-label");
       removeElement(infoRight, ".cart-item-price--secondary");
@@ -262,12 +268,13 @@ function updateLineItems(cart, root) {
     }
 
     if (settings.mode === "single_price_with_tax_label") {
-      const labelEl = ensureSingleElement(
-        infoRight,
-        ".cart-item-tax-label",
-        "p",
-        "cart-item-tax-label"
-      );
+      let labelEl = infoRight.querySelector(".cart-item-tax-label");
+      if (!labelEl) {
+        labelEl = document.createElement("p");
+        labelEl.className = "cart-item-tax-label";
+        priceEl.insertAdjacentElement("afterend", labelEl);
+      }
+
       labelEl.textContent = settings.taxesIncluded
         ? getTaxLabelText("included")
         : getTaxLabelText("excluded");
@@ -282,13 +289,7 @@ function updateLineItems(cart, root) {
       if (!mainLabelEl) {
         mainLabelEl = document.createElement("p");
         mainLabelEl.className = "cart-item-tax-label";
-        if (priceEl && priceEl.nextSibling) {
-          infoRight.insertBefore(mainLabelEl, priceEl.nextSibling);
-        } else if (priceEl) {
-          priceEl.insertAdjacentElement("afterend", mainLabelEl);
-        } else {
-          infoRight.prepend(mainLabelEl);
-        }
+        priceEl.insertAdjacentElement("afterend", mainLabelEl);
       }
       mainLabelEl.textContent = getTaxLabelText("included");
 
@@ -296,11 +297,7 @@ function updateLineItems(cart, root) {
       if (!secondaryPriceEl) {
         secondaryPriceEl = document.createElement("p");
         secondaryPriceEl.className = "cart-item-price cart-item-price--secondary";
-        if (mainLabelEl.nextSibling) {
-          infoRight.insertBefore(secondaryPriceEl, mainLabelEl.nextSibling);
-        } else {
-          infoRight.appendChild(secondaryPriceEl);
-        }
+        mainLabelEl.insertAdjacentElement("afterend", secondaryPriceEl);
       }
       secondaryPriceEl.textContent = formatMoney(secondaryPrice);
 
@@ -308,11 +305,7 @@ function updateLineItems(cart, root) {
       if (!secondaryLabelEl) {
         secondaryLabelEl = document.createElement("p");
         secondaryLabelEl.className = "cart-item-tax-label cart-item-tax-label-secondary";
-        if (secondaryPriceEl.nextSibling) {
-          infoRight.insertBefore(secondaryLabelEl, secondaryPriceEl.nextSibling);
-        } else {
-          infoRight.appendChild(secondaryLabelEl);
-        }
+        secondaryPriceEl.insertAdjacentElement("afterend", secondaryLabelEl);
       }
       secondaryLabelEl.textContent = getTaxLabelText("excluded");
       return;
@@ -396,7 +389,7 @@ function formatMoney(cents) {
 }
 
 function refreshCartItemList(root) {
-  fetch("/cart?view=ajax")
+  return fetch("/cart?view=ajax")
     .then((res) => res.text())
     .then((html) => {
       const temp = document.createElement("div");
@@ -457,10 +450,14 @@ function updateDiscountProgress(cart, root) {
 }
 
 function refreshAllCartsUI() {
-  fetch("/cart.js")
+  return fetch("/cart.js")
     .then((res) => res.json())
     .then((cart) => {
-      renderAllCarts(cart);
-      updateCartCount();
+      return renderAllCarts(cart).then(() => {
+        if (typeof updateCartCount === "function") {
+          updateCartCount();
+        }
+        return cart;
+      });
     });
 }
