@@ -50,6 +50,7 @@
     "cart_behavior": "ajax_drawer",
     "enable_hover_to_show_btn": true,
     "aspect_ratio": "cropped-image--portrait",
+    "enable_product_price_display_mode": true,
     "product_price_tax_display_mode": "single_price_without_tax",
     "product_manual_tax_rate": 5,
     "enable_wishlist": true,
